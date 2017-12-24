@@ -1,0 +1,38 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load blog_tags %}
+
+{% block head_title %}{{ search_instance.name }}_{{ search_tag }}{% endblock %}
+{% block metas %}
+<meta name="description" content="{{ search_instance.description }}">
+<meta name="keywords" content="{{ search_instance.name }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="description bg-white p-3">
+                <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>
+                <p>{{ search_instance.description }}</p>
+            </div>
+            <div class="text-secondary font-weight-bold py-2 f-15 choice">
+                {% url 'blog:category' search_instance.slug as base_category %}
+                {% url 'blog:category_hot' search_instance.slug as hot_category %}
+                <a class="pb-2 {% if request.path == base_category %}active{% endif %}" href="{{ base_category }}">
+                    <i class="fa fa-bars mr-1"></i>时间排序{{ kwargs}}</a>
+                <a class="pb-2 ml-4 {% if request.path == hot_category %}active{% endif %}" href="{{ hot_category }}">
+                    <i class="fa fa-fire mr-1"></i>热度排序</a>
+            </div>
+            <div class="article-list">{% load_article_summary articles %}</div>
+            {% if is_paginated %}{% load_pages %}{% endif %}
+        </div>
+        <div class="col-lg-4">
+            <div class="alert alert-primary rounded-0 border-0" role="alert">
+                This is a primary alert—check it out!
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

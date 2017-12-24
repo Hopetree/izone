@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}" rel="stylesheet">
+
+    <title>Hello, world!</title>
+</head>
+<body>
+<div class="container">
+    <h1>Hello, world!</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="alert alert-primary border-0 rounded-0" role="alert">
+                This is a primary alert—check it out!
+                <p>{{ site_description }}</p>
+            </div>
+            <div class="summary_list">
+                <div class="media mb-3 p-3">
+                    <img class="align-self-center mr-3 w-25" src="http://cdn.stopfollow.com/014/Python.jpg"
+                         alt="Generic placeholder image">
+                    <div class="media-body">
+                        <div class="small text-muted mb-2">
+                            <span><img class="rounded-circle mr-1 avatar" src="http://www.stopfollow.com/media/avatar/timg_wX5F4n5.jpg" alt="用户名称">Hopetree</span>
+                            <span class="ml-2"><i class="fa fa-calendar-times-o"></i> 1 月，1 周 之前</span>
+                        </div>
+                        <h5 class="mt-0 font-weight-bold"><a href="#">第一步使用 bootstrap4 建立前端网页</a></h5>
+                        <p class="d-none d-sm-block mb-2">淘宝关键词搜索是淘宝/天猫运营自然流量主要的来源，也是进行 SEO
+                            优化的主要关注点，选择合适的宝贝标题关键词可以有效的提升宝贝的曝光几率，而选择词的方式又很多，本篇文章就来介绍一种使用爬虫手段来更加实际的选择关键词的方法。
+                        </p>
+                        <div class="small text-muted mb-0">
+                            <span><a href="#" title="查看当前分类下更多文章"><i
+                                    class="fa fa-th-list mr-1"></i>Python web开发</a></span>
+                            <span><i class="fa fa-eye ml-2 mr-1"></i>33</span>
+                            <span><a href="#comment-main-block" title="查看文章评论"><i
+                                    class="fa fa-commenting ml-2 mr-1"></i>34</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-primary rounded-0 border-0" role="alert">
+                This is a primary alert—check it out!
+                <p>{{ site_keywords }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+</body>
+</html>

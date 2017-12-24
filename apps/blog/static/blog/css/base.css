@@ -1,0 +1,302 @@
+/*Headroom.js*/
+.headroom {
+    transition: transform 300ms linear;
+}
+.headroom--pinned {
+    transform: translateY(0%);
+}
+.headroom--unpinned {
+    transform: translateY(-100%);
+}
+/* base css-------------------------------------------------*/
+body {
+    background: #f4f4f4;
+    padding-top:4.8rem;
+    font-size:10px;
+}
+.container {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+a {
+    color: inherit;
+}
+a:hover {
+    text-decoration: none;
+    color: #007bff;
+}
+.h1, h1 {
+    font-size: 1.3rem;
+}
+.h2, h2 {
+    font-size: 1.2rem;
+}
+.h3, h3 {
+    font-size: 1.15rem;
+}
+.h4, h4 {
+    font-size: 1.1rem;
+}
+.h5, h5 {
+    font-size: 1.05rem;
+}
+.h6, h6 {
+    font-size: 1rem;
+}
+.f-17 {
+    font-size:13px;
+}
+.f-16 {
+    font-size:12px;
+}
+.f-15 {
+    font-size:11px;
+}
+.f-14 {
+    font-size:10px;
+}
+.f-13 {
+    font-size:9px;
+}
+.f-12 {
+    font-size:8px;
+}
+/* top navbar-------------------------------------------------*/
+.blog-navbar {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
+}
+
+/*carousel---------------------------------------------*/
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(0,0,0,0);
+    border: 1px solid #fff;
+    border-radius: 10px;
+}
+.description h1 {
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f0f0f0;
+}
+.description strong {
+    padding-bottom: 7px;
+    border-bottom: 2px solid #00AAEE;
+}
+/* article summary --------------------------------------------------*/
+.choice .active {
+    color:#212529;
+    border-bottom: 2px solid #646464;
+}
+.summary_list .avatar {
+    width:1.2rem;
+    heigth:1.2rem;
+}
+.summary_list .media {
+    background-color: #fff;
+}
+.summary_list .media:hover {
+    box-shadow:-.15rem 0 0 #0CC;
+}
+/* base right --------------------------------------------------*/
+#tag-card .card-header,
+#category-card .card-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom:10px;
+}
+#tag-card .card-header strong,
+#category-card .card-header strong {
+    padding-bottom:11px;
+    border-bottom: 2px solid #00AAEE;
+}
+#category-card .badge {
+    width: 2.2rem;
+    background-color: #1abc9c;
+    color: #fff;
+    font-weight: 700;
+    border-radius: .2rem;
+}
+/*标签云*/
+.tag-cloud {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    text-align: left;
+}
+.tags {
+    color:#fff;
+    padding: .08rem .4rem;
+    float: left;
+    text-align: center;
+    margin: .3rem;
+    transition: all .5s;
+}
+.tags:hover {
+    color:#fff;
+    text-decoration:none;
+    opacity: .7;
+    border-radius:0;
+}
+/*云标签颜色*/
+#tag-1,#tag-10,#tag-25 {
+    background:#2ECC71;
+}
+#tag-2,#tag-11,#tag-18 {
+    background:#3498DB;
+}
+#tag-3 ,#tag-12,#tag-19 {
+    background:#9B59B6;
+}
+#tag-4 ,#tag-13,#tag-20 {
+    background:#F1C40F;
+}
+#tag-5 ,#tag-14,#tag-21 {
+    background:#E74C3C;
+}
+#tag-6 ,#tag-15,#tag-22 {
+    background:#BDC3C7;
+}
+#tag-7 ,#tag-16,#tag-23 {
+    background:#E67E22;
+}
+#tag-8 ,#tag-17,#tag-24 {
+    background:#1ABC9C;
+}
+#tag-9,#tag-26 {
+    background:#fc9d9a;
+}
+/* Small devices (landscape phones, 576px and up) */
+/* X-iPhone6 AND plus */
+@media (min-width: 576px) {
+body {
+    font-size:11px;
+}
+.container {
+    max-width: none;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.f-17 {
+    font-size:14px;
+}
+.f-16 {
+    font-size:13px;
+}
+.f-15 {
+    font-size:12px;
+}
+.f-14 {
+    font-size:11px;
+}
+.f-13 {
+    font-size:10px;
+}
+.f-12 {
+    font-size:9px;
+}
+}
+
+/* Medium devices (tablets, 768px and up) */
+/* Y-iPad mini */
+@media (min-width: 768px) {
+body {
+    font-size:12px;
+}
+.container {
+    max-width: 750px;
+    padding-right: 12px;
+    padding-left: 12px;
+}
+.f-17 {
+    font-size:15px;
+}
+.f-16 {
+    font-size:14px;
+}
+.f-15 {
+    font-size:13px;
+}
+.f-14 {
+    font-size:12px;
+}
+.f-13 {
+    font-size:11px;
+}
+.f-12 {
+    font-size:10px;
+}
+.summary_list .avatar {
+    width:1.35rem;
+    heigth:1.35rem;
+}
+}
+
+/* Large devices (desktops, 992px and up) */
+/* X-iPad Y-iPad Pro*/
+@media (min-width: 992px) {
+body {
+    font-size:13px;
+}
+.container {
+    max-width: 970px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.f-17 {
+    font-size:16px;
+}
+.f-16 {
+    font-size:15px;
+}
+.f-15 {
+    font-size:14px;
+}
+.f-14 {
+    font-size:13px;
+}
+.f-13 {
+    font-size:12px;
+}
+.f-12 {
+    font-size:11px;
+}
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+/* PC X-iPad Pro*/
+@media (min-width: 1200px) {
+body {
+    font-size:14px;
+}
+.container {
+    max-width: 1140px;
+}
+.f-17 {
+    font-size:17px;
+}
+.f-16 {
+    font-size:16px;
+}
+.f-15 {
+    font-size:15px;
+}
+.f-14 {
+    font-size:14px;
+}
+.f-13 {
+    font-size:13px;
+}
+.f-12 {
+    font-size:12px;
+}
+.article-img {
+    cursor: pointer;
+    transition: all 0.6s;
+}
+.article-img:hover {
+    transform: scale(1.1);
+}
+.summary_list .avatar {
+    width:1.5rem;
+    heigth:1.5rem;
+}
+}

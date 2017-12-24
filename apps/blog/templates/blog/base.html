@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- TDK and ICO -->
+    <title>{% block head_title %}{% endblock %}_{{ site_end_title }}</title>
+    {% block metas %}
+    <meta name="description" content="{{ site_description }}">
+    <meta name="keywords" content="{{ site_keywords }}">
+    {% endblock %}
+    <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico'%}" type="image/x-icon"/>
+    <!-- Bootstrap and font-awesome CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
+    <!-- blog CSS -->
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.02447" rel="stylesheet">
+    {% block top-file %}{% endblock %}
+</head>
+<body>
+<!--导航开始-->
+{% include 'blog/tags/navbar.html' %}
+<!--导航结束-->
+
+<!--主要内容块-->
+{% block content %}{% endblock %}
+
+<br><br><br><br><br><br><br>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<script>
+    var myElement = document.querySelector(".blog-navbar");
+    var headroom  = new Headroom(myElement);
+    headroom.init();
+</script>
+<script src="{% static 'blog/js/base.js'%}?v=20171222"></script>
+{% block end_file %}{% endblock %}
+</body>
+</html>

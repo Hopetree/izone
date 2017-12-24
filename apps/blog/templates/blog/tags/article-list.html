@@ -1,0 +1,35 @@
+{% load blog_tags %}
+{% load humanize %}
+<div class="summary_list">
+    {% for article in articles %}
+    <div class="media mb-1 mb-sm-2 mb-md-3 p-2 p-lg-3">
+        <div class="align-self-center mr-3 w-25 modal-open">
+            <a href="{{ article.get_absolute_url }}" target="_blank">
+                <img class="w-100 article-img" src="{{ article.img_link }}" alt="{{ article.title }}">
+            </a>
+        </div>
+        <div class="media-body">
+            <div class="text-muted mb-2 f-12">
+                <span><img class="rounded-circle mr-1 avatar"
+                           src="http://www.stopfollow.com/media/avatar/timg_wX5F4n5.jpg"
+                           alt="{% get_show_name article.author %}">{% get_show_name article.author %}</span>
+                <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ article.create_date|naturaltime}}</span>
+            </div>
+            <h2 class="mt-0 font-weight-bold f-16">
+                <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title}}</a>
+            </h2>
+            <p class="d-none d-sm-block mb-2">{{ article.summary|truncatechars:130 }}</p>
+            <p class="d-block d-sm-none mb-2">{{ article.summary|truncatechars:60 }}</p>
+            <div class="text-muted mb-0 f-12">
+                <a href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
+                    <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
+                <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
+                <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
+                    <i class="fa fa-comments ml-2 mr-1"></i>34</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="p-3 mt-3 bg-white"><p>暂时没有文章!</p></div>
+    {% endfor %}
+</div>

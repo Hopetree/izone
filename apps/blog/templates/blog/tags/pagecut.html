@@ -1,0 +1,13 @@
+<div class="text-center">
+    {% if page_obj.has_previous %}
+    <a class="text-success" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% else %}
+    <span class="text-warning" title="当前页已经是首页">上一页</span>
+    {% endif %}
+    <span class="mx-2">第&nbsp;{{ page_obj.number }}&nbsp;/&nbsp;{{ paginator.num_pages }}&nbsp;页</span>
+    {% if page_obj.has_next %}
+    <a class="text-success" href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% else %}
+    <span class="text-warning" title="当前页已经是末页">下一页</span>
+    {% endif %}
+</div>

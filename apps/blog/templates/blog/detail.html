@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+{% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
+{% block metas %}
+    <meta name="description" content="{{ article.summary }}">
+    <meta name="keywords" content="{% keywords_to_str article %}">
+{% endblock %}
+
+{% block content %}
+<p>{{ article.title }}</p>
+{% endblock %}
