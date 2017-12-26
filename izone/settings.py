@@ -146,9 +146,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 网站默认设置和上下文信息
 DEFAULT_IMG_LINL = 'http://cdn.stopfollow.com/summary_default.png'
-SITE_END_TITLE = '网站名称待定'
-SITE_DESCRIPTION = '一个后端使用Django框架，前端使用Bootstrap4搭建的个人博客网站，主要分享博主在Python学习、SEO优化、电子商务运营等方面的内容，网站所有文章都是原创。'
-SITE_KEYWORDS = 'Python爬虫实例,Django博客开发教程,个人博客网站,web开发,seo实战'
+SITE_END_TITLE = 'SEO空间'
+SITE_DESCRIPTION = 'SEO空间是一个研究网站SEO优化和分享Python学习的个人博客。本博客的后端使用Django框架搭建，前端使用Bootstrap4样式，主要分享博主在Python实战、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
+SITE_KEYWORDS = 'SEO优化实操,Python爬虫实例,Django博客,Python web开发,电子商务运营'
 
 # 统一分页设置
 BASE_PAGE_BY = 2

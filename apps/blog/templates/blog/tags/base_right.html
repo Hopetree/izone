@@ -1,20 +1,21 @@
 {% load blog_tags %}
 
+<!--文章分类-->
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="category-card">
     <div class="card-header bg-white px-0">
         <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
     </div>
     {% get_category_list as categories %}
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush f-16">
         {% for each in categories %}
-        <li class="list-group-item d-flex justify-content-between align-items-center pl-0 pr-2">
-            {{ each.name }}
-            <span class="badge text-center">{{ each.total_num }}</span>
+        <li class="list-group-item d-flex justify-content-between align-items-center pl-0 pr-2 py-2">
+            <a href="{{ each.get_absolute_url }}" title="查看【{{ each.name }}】分类下所有文章">{{ each.name }}</a>
+            <span class="badge text-center" title="当前分类下有{{ each.total_num }}篇文章">{{ each.total_num }}</span>
         </li>
         {% endfor %}
     </ul>
 </div>
-
+<!--标签云-->
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="tag-card">
     <div class="card-header bg-white px-0">
         <strong><i class="fa fa-tags mr-2 f-17"></i>标&nbsp;签&nbsp;云</strong>
@@ -23,7 +24,7 @@
         <div class="tag-cloud">
             {% get_tag_list as tag_list %}
             {% for tag in tag_list %}
-            <a href="{{ tag.get_absolute_url }}" class="tags" id="tag-{{ forloop.counter }}"
+            <a href="{{ tag.get_absolute_url }}" class="tags f-16" id="tag-{{ forloop.counter }}"
                title="【{{ tag.name }}】标签下有{{ tag.total_num }}篇文章">{{ tag.name }}</a>
             {% endfor %}
         </div>

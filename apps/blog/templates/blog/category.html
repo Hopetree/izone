@@ -14,8 +14,9 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="description bg-white p-3">
+                <p class="float-right d-none d-sm-block">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>
                 <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>
-                <p>{{ search_instance.description }}</p>
+                <p class="f-16">{{ search_instance.description }}</p>
             </div>
             <div class="text-secondary font-weight-bold py-2 f-15 choice">
                 {% url 'blog:category' search_instance.slug as base_category %}
@@ -29,9 +30,7 @@
             {% if is_paginated %}{% load_pages %}{% endif %}
         </div>
         <div class="col-lg-4">
-            <div class="alert alert-primary rounded-0 border-0" role="alert">
-                This is a primary alert—check it out!
-            </div>
+            {% include 'blog/tags/base_right.html' %}
         </div>
     </div>
 </div>

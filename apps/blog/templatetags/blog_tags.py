@@ -17,6 +17,19 @@ def get_show_name(user):
 
 # 文章相关标签函数
 @register.simple_tag
+def get_article_list(sort=None,num=None):
+    '''获取所有文章'''
+    if sort == '-views':
+        if num:
+            return Article.objects.order_by('-views', '-update_date')[:num]
+        return Article.objects.order_by('-views', '-update_date')
+    if num:
+        return Article.objects.all()[:num]
+    return Article.objects.all()
+
+
+
+@register.simple_tag
 def keywords_to_str(art):
     '''将文章关键词变成字符串'''
     keys = art.keywords.all()

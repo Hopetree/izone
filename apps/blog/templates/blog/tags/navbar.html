@@ -1,37 +1,69 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white fixed-top py-2 blog-navbar">
-    <a class="navbar-brand" href="{% url 'blog:index' %}">Navbar</a>
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top blog-navbar py-md-0">
+    <a class="navbar-brand" href="{% url 'blog:index' %}">
+        <img src="{% static 'blog/img/logo.png' %}" alt="SEO博客LOGO">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item mr-3 d-md-none d-lg-block active">
+                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">首页<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu mt-2 rounded-0" aria-labelledby="navbarDropdown">
+            <li class="nav-item mr-3 dropdown">
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">系列文章</a>
+                <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Action</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+            <li class="nav-item mr-3 dropdown">
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">在线工具</a>
+                <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
             </li>
+            <li class="nav-item mr-3 ">
+                <a class="nav-link py-md-3" href="#">关于</a>
+            </li>
+            <form class="nav-item navbar-form mr-3 py-md-2" role="search" method="get" id="searchform" action="#">
+                <div class="input-group">
+                    <input type="search" name="q" class="form-control f-15" placeholder="搜索" required=True>
+                    <div class="input-group-btn">
+                        <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </div><!-- /input-group -->
+            </form>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item mr-3 dropdown">
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">系列文章</a>
+                <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#"><i class="fa fa-user mr-3"></i>个人资料</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-bookmark mr-3"></i>我的收藏</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-envelope mr-3"></i>消息</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-sign-out mr-3"></i>退出</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item mr-3">
+                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">登录<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item mr-3 active">
+                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">注册<span class="sr-only">(current)</span></a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>

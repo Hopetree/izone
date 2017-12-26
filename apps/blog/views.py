@@ -10,6 +10,9 @@ import time
 
 # Create your views here.
 
+def goview(request):
+    return render(request,'test_html.html')
+
 class IndexView(generic.ListView):
     model = Article
     template_name = 'blog/index.html'

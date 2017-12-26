@@ -12,7 +12,6 @@
 body {
     background: #f4f4f4;
     padding-top:4.8rem;
-    font-size:10px;
 }
 .container {
     padding-right: 5px;
@@ -138,38 +137,35 @@ a:hover {
 }
 /*云标签颜色*/
 #tag-1,#tag-10,#tag-25 {
-    background:#2ECC71;
+    background:#78BBE6;
 }
 #tag-2,#tag-11,#tag-18 {
-    background:#3498DB;
+    background:#FF895D;
 }
 #tag-3 ,#tag-12,#tag-19 {
-    background:#9B59B6;
+    background:#A3DE83;
 }
 #tag-4 ,#tag-13,#tag-20 {
-    background:#F1C40F;
+    background:#00BBF0;
 }
 #tag-5 ,#tag-14,#tag-21 {
-    background:#E74C3C;
+    background:#FF2E63;
 }
 #tag-6 ,#tag-15,#tag-22 {
-    background:#BDC3C7;
+    background:#0D7377;
 }
 #tag-7 ,#tag-16,#tag-23 {
-    background:#E67E22;
+    background:#AC005D;
 }
 #tag-8 ,#tag-17,#tag-24 {
-    background:#1ABC9C;
+    background:#0881A3;
 }
 #tag-9,#tag-26 {
-    background:#fc9d9a;
+    background:#EDA045;
 }
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
-body {
-    font-size:11px;
-}
 .container {
     max-width: none;
     padding-right: 10px;
@@ -198,31 +194,28 @@ body {
 /* Medium devices (tablets, 768px and up) */
 /* Y-iPad mini */
 @media (min-width: 768px) {
-body {
-    font-size:12px;
-}
 .container {
     max-width: 750px;
     padding-right: 12px;
     padding-left: 12px;
 }
 .f-17 {
-    font-size:15px;
+    font-size:16px;
 }
 .f-16 {
-    font-size:14px;
+    font-size:15px;
 }
 .f-15 {
-    font-size:13px;
+    font-size:14px;
 }
 .f-14 {
-    font-size:12px;
+    font-size:13px;
 }
 .f-13 {
-    font-size:11px;
+    font-size:12px;
 }
 .f-12 {
-    font-size:10px;
+    font-size:11px;
 }
 .summary_list .avatar {
     width:1.35rem;
@@ -233,9 +226,6 @@ body {
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
-body {
-    font-size:13px;
-}
 .container {
     max-width: 970px;
     padding-right: 15px;
@@ -264,9 +254,6 @@ body {
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
-body {
-    font-size:14px;
-}
 .container {
     max-width: 1140px;
 }

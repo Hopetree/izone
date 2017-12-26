@@ -3,7 +3,7 @@
 <div class="summary_list">
     {% for article in articles %}
     <div class="media mb-1 mb-sm-2 mb-md-3 p-2 p-lg-3">
-        <div class="align-self-center mr-3 w-25 modal-open">
+        <div class="align-self-center mr-2 mr-lg-3 w-25 modal-open">
             <a href="{{ article.get_absolute_url }}" target="_blank">
                 <img class="w-100 article-img" src="{{ article.img_link }}" alt="{{ article.title }}">
             </a>
@@ -18,8 +18,8 @@
             <h2 class="mt-0 font-weight-bold f-16">
                 <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title}}</a>
             </h2>
-            <p class="d-none d-sm-block mb-2">{{ article.summary|truncatechars:130 }}</p>
-            <p class="d-block d-sm-none mb-2">{{ article.summary|truncatechars:60 }}</p>
+            <p class="d-none d-sm-block mb-2 f-15">{{ article.summary|truncatechars:130 }}</p>
+            <p class="d-block d-sm-none mb-2 f-15">{{ article.summary|truncatechars:64 }}</p>
             <div class="text-muted mb-0 f-12">
                 <a href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
                     <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
