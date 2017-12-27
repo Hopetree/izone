@@ -128,7 +128,7 @@ class Timeline(models.Model):
     )
     side = models.CharField('位置', max_length=1, choices=SIDE_CHOICE, default='L')
     star_num = models.IntegerField('星星个数',choices=STAR_NUM,default=3)
-    icon = models.CharField('图标', max_length=50, default='glyphicon glyphicon-pencil')
+    icon = models.CharField('图标', max_length=50, default='fa fa-pencil')
     icon_color = models.CharField('图标颜色', max_length=20, choices=COLOR_CHOICE, default='info')
     title = models.CharField('标题', max_length=100)
     update_date = models.DateTimeField('更新时间')

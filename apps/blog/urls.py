@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 from .views import goview
-from .views import IndexView, DetailView, CategoryView, TagView
+from .views import IndexView, DetailView, CategoryView, TagView,AboutView
 
 urlpatterns = [
     url(r'^go/$', goview,name='go'), # 测试用页面
@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^category/(?P<slug>[\w-]+)/hot/$', CategoryView.as_view(), {'sort': 'v'}, name='category_hot'),
     url(r'^tag/(?P<slug>[\w-]+)/$', TagView.as_view(), name='tag'),
     url(r'^tag/(?P<slug>[\w-]+)/hot/$', TagView.as_view(), {'sort': 'v'}, name='tag_hot'),
+    url(r'^about/$',AboutView.as_view(),name='about'),  # About页面
 ]

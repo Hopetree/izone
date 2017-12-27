@@ -1,7 +1,7 @@
-{% load static %}
+{% load static oauth_tags %}
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top blog-navbar py-md-0">
     <a class="navbar-brand" href="{% url 'blog:index' %}">
-        <img src="{% static 'blog/img/logo.png' %}" alt="SEO博客LOGO">
+        <img src="{% static 'blog/img/logo.png' %}" alt="{{ site_end_title }}">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +13,8 @@
                 <a class="nav-link py-md-3" href="{% url 'blog:index' %}">首页<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item mr-3 dropdown">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">系列文章</a>
                 <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Action</a>
@@ -23,7 +24,8 @@
                 </div>
             </li>
             <li class="nav-item mr-3 dropdown">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">在线工具</a>
                 <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Action</a>
@@ -33,7 +35,7 @@
                 </div>
             </li>
             <li class="nav-item mr-3 ">
-                <a class="nav-link py-md-3" href="#">关于</a>
+                <a class="nav-link py-md-3" href="{% url 'blog:about' %}">关于</a>
             </li>
             <form class="nav-item navbar-form mr-3 py-md-2" role="search" method="get" id="searchform" action="#">
                 <div class="input-group">
@@ -46,21 +48,29 @@
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            <li class="nav-item mr-3 dropdown">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">系列文章</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <!--<span class="get-msg text-center">4</span>-->
+                    {% get_user_avatar_tag user %}
+                </a>
                 <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#"><i class="fa fa-user mr-3"></i>个人资料</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-bookmark mr-3"></i>我的收藏</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-envelope mr-3"></i>消息</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-sign-out mr-3"></i>退出</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
+                    {% if user.is_staff %}
+                    <a class="dropdown-item" href="{% url 'admin:index' %}"><i class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-bookmark text-info mr-2"></i>我的收藏</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                        <!--<span class="badge badge-warning ml-3 text-center">9</span>-->
+                    </a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
                 </div>
             </li>
             {% else %}
             <li class="nav-item mr-3">
                 <a class="nav-link py-md-3" href="{% url 'blog:index' %}">登录<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item mr-3 active">
+            <li class="nav-item active">
                 <a class="nav-link py-md-3" href="{% url 'blog:index' %}">注册<span class="sr-only">(current)</span></a>
             </li>
             {% endif %}

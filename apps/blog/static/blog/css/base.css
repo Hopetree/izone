@@ -64,6 +64,21 @@ a:hover {
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
 }
+.get-msg {
+    font-size:13px;
+    position: absolute;
+    top: 5px;
+    left: 32px;
+    z-index: 3;
+    color: #fff;
+    display: block;
+    min-width: 16px;
+    padding: 0 3px;
+    height: 16px;
+    border-radius: 16px;
+    line-height: 16px;
+    background: red;
+}
 
 /*carousel---------------------------------------------*/
 .carousel-indicators li {
@@ -93,9 +108,7 @@ a:hover {
 .summary_list .media {
     background-color: #fff;
 }
-.summary_list .media:hover {
-    box-shadow:-.15rem 0 0 #0CC;
-}
+
 /* base right --------------------------------------------------*/
 #tag-card .card-header,
 #category-card .card-header {
@@ -109,10 +122,23 @@ a:hover {
 }
 #category-card .badge {
     width: 2.2rem;
-    background-color: #1abc9c;
+    background-color: #17a2b8;
     color: #fff;
     font-weight: 700;
     border-radius: .2rem;
+}
+.category-item:before {
+    position: absolute;
+    top: 1em;
+    left: .2rem;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: #fff #fff #fff #4285f4;
+    -webkit-transform-origin: 25% center;
+    transform-origin: 25% center;
+    border-width: 4px;
+    content: "";
 }
 /*标签云*/
 .tag-cloud {
@@ -221,6 +247,10 @@ a:hover {
     width:1.35rem;
     heigth:1.35rem;
 }
+.get-msg {
+    top: 3px;
+    left: 36px;
+}
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -282,8 +312,24 @@ a:hover {
 .article-img:hover {
     transform: scale(1.1);
 }
+.summary_list .media:hover {
+    box-shadow:0 2px 6px rgba(0, 0, 0, 0.275)
+}
 .summary_list .avatar {
     width:1.5rem;
     heigth:1.5rem;
+}
+.base-avatar {
+    transition: All 0.4s ease-in-out;
+    -webkit-transition: All 0.4s ease-in-out;
+    -moz-transition: All 0.4s ease-in-out;
+    -o-transition: All 0.4s ease-in-out;
+}
+.base-avatar:hover {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
 }
 }

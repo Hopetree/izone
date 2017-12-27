@@ -110,5 +110,10 @@ class TagView(generic.ListView):
         context_data['search_instance'] = tag
         return context_data
 
+class AboutView(generic.ListView):
+    template_name = 'blog/about.html'
+    context_object_name = 'timeline_list'
 
+    def get_queryset(self):
+        return Timeline.objects.all()
 

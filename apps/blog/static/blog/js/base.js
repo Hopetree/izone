@@ -1,17 +1,17 @@
 //bootstrap4 tooltips
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-})
+});
 //标题栏鼠标滑过显示下拉
-$(document).ready(function() {
+$(function() {
 	var $dropdownLi = $('li.nav-item');
 	$dropdownLi.mouseover(function() {
 		$(this).addClass('show');
-		$(this).children('a.dropdown-toggle').attr('aria-expanded','true');
-		$(this).children('div.dropdown-menu').addClass('show');
+		$(this).children('a.dropdown-toggle').attr('aria-expanded', 'true');
+		$(this).children('div.dropdown-menu').addClass('show')
 	}).mouseout(function() {
 		$(this).removeClass('show');
-		$(this).children('a.dropdown-toggle').attr('aria-expanded','false');
-		$(this).children('div.dropdown-menu').removeClass('show');
-	});
+		$(this).children('a.dropdown-toggle').attr('aria-expanded', 'false');
+		$(this).children('div.dropdown-menu').removeClass('show')
+	})
 });

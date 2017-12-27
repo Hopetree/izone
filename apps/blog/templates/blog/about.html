@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block top-file %}
+    <link href="{% static 'blog/css/timeline.css'%}?v=1.02" rel="stylesheet">
+{% endblock %}
+
+{% block head_title %}关于网站{% endblock %}
+{% block metas %}
+<meta name="description" content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+<meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 id="timeline">Timeline</h1>
+    </div>
+    <ul class="timeline">
+        {% for timeline in timeline_list %}
+        {% if timeline.side == 'L' %}
+        <li>
+        {% else %}<li class="timeline-inverted">{% endif %}
+            <div class="timeline-badge {{ timeline.icon_color }}"><i class="{{ timeline.icon }}"></i></div>
+            <div class="timeline-panel">
+                <div class="timeline-heading">
+                    <h2 class="timeline-title">{{ timeline.title_to_emoji }}</h2>
+                    <p>
+                        <span class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timeline.update_date|date:'Y-m-d'  }}</span>
+                        <span class="pull-right" id="star" title="{% get_star_title timeline.star_num %}">{% get_star timeline.star_num %}</span>
+                    </p>
+                </div>
+                <div class="timeline-body">
+                    {{ timeline.content_to_markdown|safe }}
+                </div>
+            </div>
+        </li>
+        {% empty %}
+        <p>暂时没有时间线</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block js-file %}
+<script>
+$(document).ready(function(){
+    $(".timeline-body a").attr("target","_blank");
+});
+</script>
+{% endblock %}
