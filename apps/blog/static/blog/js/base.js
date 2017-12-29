@@ -4,7 +4,7 @@ $(function () {
 });
 //标题栏鼠标滑过显示下拉
 $(function() {
-	var $dropdownLi = $('li.nav-item');
+	var $dropdownLi = $('ul.navbar-nav > li.dropdown');
 	$dropdownLi.mouseover(function() {
 		$(this).addClass('show');
 		$(this).children('a.dropdown-toggle').attr('aria-expanded', 'true');

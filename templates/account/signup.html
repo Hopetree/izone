@@ -1,0 +1,22 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block user_title %}{% trans "Signup" %}{% endblock %}
+{% block content %}
+
+
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    {% endif %}
+    <a class="secondaryAction" href="{{ login_url }}">已有账号登录</a>
+    <button class="pull-right btn btn-info btn-sm rounded-0" type="submit">{% trans "Sign Up" %}</button>
+</form>
+
+{% endblock %}

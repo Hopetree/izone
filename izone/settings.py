@@ -35,7 +35,6 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ]
 INSTALLED_APPS = [
     'bootstrap_admin',  # 注册bootstrap后台管理界面,这个必须放在最前面
 
-    # 默认应用
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,14 +45,62 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',  # 网站地图
 
     'oauth',  # 自定义用户应用
+    # allauth需要注册的应用
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.weibo',
+    'allauth.socialaccount.providers.github',
 
+    'crispy_forms',  # bootstrap表单样式
     'imagekit',  # 上传图片的应用
 
+    # 'haystack',  # 全文搜索应用 这个要放在其他应用之前
     'blog',  # 博客应用
+
 ]
 
 # 自定义用户model
 AUTH_USER_MODEL = 'oauth.Ouser'
+
+# allauth配置
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# allauth需要的配置
+# 当出现"SocialApp matching query does not exist"这种报错的时候就需要更换这个ID
+SITE_ID = 1
+
+# 设置登录和注册成功后重定向的页面，默认是/accounts/profile/
+LOGIN_REDIRECT_URL = "/"
+
+# Email setting
+# 邮箱配置
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_HOST_USER = 'seoerzone@163.com'
+EMAIL_HOST_PASSWORD = 'seoerzone666'  # 这个不是邮箱密码，而是授权码
+EMAIL_PORT = 465  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
+# 是否使用了SSL 或者TLS，为了用465端口，要使用这个
+EMAIL_USE_SSL = True
+# 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
+DEFAULT_FROM_EMAIL = 'SEO空间 <seoerzone@163.com>'
+# 禁用注册邮箱验证
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# 登录方式，选择用户名或者邮箱都能登录
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+# 设置用户注册的时候必须填写邮箱地址
+ACCOUNT_EMAIL_REQUIRED = True
+# 登出直接退出，不用确认
+ACCOUNT_LOGOUT_ON_GET = True
+
+# 表单插件的配置
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,9 +194,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 网站默认设置和上下文信息
 DEFAULT_IMG_LINL = 'http://cdn.stopfollow.com/summary_default.png'
 SITE_END_TITLE = 'SEO空间'
-SITE_DESCRIPTION = 'SEO空间是一个研究网站SEO优化和分享Python学习的个人博客。本博客的后端使用Django框架搭建，前端使用Bootstrap4样式，主要分享博主在Python实战、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
-SITE_KEYWORDS = 'SEO优化实操,Python爬虫实例,Django博客,Python web开发,电子商务运营'
+SITE_DESCRIPTION = 'SEO空间是一个研究网站SEO优化和分享Python编程学习的个人博客网站。本网站后端使用Django框架搭建，前端使用Bootstrap4框架，主要分享博主在Python实战、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
+SITE_KEYWORDS = 'SEO优化实操,Python自学,Python爬虫实例,Django博客,Python web开发,个人网站建设'
 
 # 统一分页设置
 BASE_PAGE_BY = 2
-BASE_ORPHANS = int((BASE_PAGE_BY + 1) / 2)
+BASE_ORPHANS = 1
+
+# messages 标签设置，设置成bootstrap4样式
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'alert-primary',
+    message_constants.INFO: 'alert-info',
+    message_constants.SUCCESS: 'alert-success',
+    message_constants.WARNING: 'alert-warning',
+    message_constants.ERROR: 'alert-danger'
+}

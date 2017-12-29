@@ -1,7 +1,7 @@
-User-agent: *
+﻿User-agent: *
 Disallow: /admin/
 Disallow: /accounts/
+Disallow: /comments/
 Disallow: /feed/
-Disallow: /hot/$
 
 Sitemap: http://www.stopfollow.com/sitemap.xml

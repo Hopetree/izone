@@ -146,7 +146,7 @@
     margin-top: 5px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     ul.timeline:before {
         left: 40px;
     }
@@ -198,11 +198,4 @@
 }
 #star {
     color:#ffac2d;
-}
-a {
-    color: #337ab7;
-    text-decoration: none;
-}
-a:hover {
-    color:#2ecc71;
 }

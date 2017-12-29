@@ -9,7 +9,7 @@
 <meta name="keywords" content="{{ site_keywords }}">
 {% endblock %}
 
-{% block content %}
+{% block base_content %}
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
@@ -18,7 +18,7 @@
                 {% url 'blog:index' as base_index %}
                 {% url 'blog:index_hot' as hot_index %}
                 <a class="pb-2 {% if request.path == base_index %}active{% endif %}" href="{{ base_index }}">
-                    <i class="fa fa-bars mr-1"></i>时间排序{{ kwargs}}</a>
+                    <i class="fa fa-bars mr-1"></i>时间排序</a>
                 <a class="pb-2 ml-4 {% if request.path == hot_index %}active{% endif %}" href="{{ hot_index }}">
                     <i class="fa fa-fire mr-1"></i>热度排序</a>
             </div>

@@ -18,7 +18,7 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20171223.05" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.0556" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -26,8 +26,23 @@
 {% include 'blog/tags/navbar.html' %}
 <!--导航结束-->
 
+<!--消息块-->
+{% if messages %}
+<div class="container">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-0 fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
 <!--主要内容块-->
-{% block content %}{% endblock %}
+{% block base_content %}{% endblock %}
 
 <br><br><br><br><br><br><br>
 
@@ -48,8 +63,9 @@ $(function(){
     var headroom  = new Headroom(myElement);
     headroom.init();
     });
+
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20171222.1"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20171222.226"></script>
 {% block end_file %}{% endblock %}
 </body>
 </html>

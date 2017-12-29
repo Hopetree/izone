@@ -1,0 +1,185 @@
+{% load i18n static bootstrap_admin_template_tags  %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="icon" href="{% static 'blog/img/favicon.ico'%}">
+  {% block bootstrap_admin_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap_admin/css/bootstrap.min.css' %}" />
+  {% endblock bootstrap_admin_css %}
+
+  <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
+  {% datetime_widget_css_path as datetime_widget_css %}
+  {% if datetime_widget_css %}
+    <link rel="stylesheet" type="text/css" href="{% static datetime_widget_css %}" />
+  {% endif %}
+
+{% block extrastyle %}{% endblock %}
+
+{% if LANGUAGE_BIDI %}
+  {# PUT HERE YOUR CUSTOM RTL STYLESHEET #}
+  {% comment %}
+  <link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />
+  {% endcomment %}
+{% endif %}
+
+{% block jquery %}
+  {% jquery_vendor_path as jquery_path  %}
+  {% if jquery_path %}
+    <script type="text/javascript" src="{% static jquery_path %}"></script>
+  {% else %}
+    <script type="text/javascript" src="{% static "admin/js/jquery.js" %}"></script>
+  {% endif %}
+    <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+{% endblock jquery %}
+  <script>
+    (function ($) {
+      $(document).ready(function(){
+        $("#overlay").delay(600).fadeOut(500);
+      });
+    })(django.jQuery);
+  </script>
+  <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+  <script type="text/javascript">window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";</script>
+
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+{% load i18n %}
+{% display_sidebar_menu cl.has_filters as is_displaying_menu %}
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}{% if not is_displaying_menu %} no-sidebar{% endif %}" data-admin-utc-offset="{% now "Z" %}">
+
+  <div id="overlay">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- <div class="col-sm-3 col-md-2 sidebar"> -->
+      {% if not is_popup %}
+        {% if is_displaying_menu %}
+          {% block sidebar_menu %}
+
+            <div id="sidebar-menu" class="col-xs-6 col-sm-3 col-md-2 sidebar-menu">
+              {% block branding %}
+                <a href="{% url 'admin:index' %}" class="django-admin-logo">
+                  <!-- Django Administration -->
+                  <img src="{% static "bootstrap_admin/img/logo-140x60.png" %}" alt="{{ site_header|default:_('Django administration') }}">
+                </a>
+              {% endblock branding %}
+              {% block filters %}{% endblock filters %}
+              {% render_menu_app_list %}
+            </div>
+          {% endblock sidebar_menu %}
+        {% endif %}
+      {% endif %}
+
+      {% block content_container %}
+        <div id="content" class="{% if is_displaying_menu %}col-xs-6 col-xs-offset-6 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{% else %}col-sm-12{% endif %} main {% block coltype %}colM{% endblock %}">
+          {% block main_header %}
+            <div class="main-header">
+              {% if is_displaying_menu %}
+                <button type="button" class="show-hide-sidebar-menu">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              {% endif %}
+              {% block pretitle %}{% endblock %}
+              {% block content_title %}
+                <h1>
+                {% if title %}
+                  <span class="django-admin-title">{{ site_header|default:_('Django administration') }} &raquo;</span>
+                  {{ title }}
+                {% else %}
+                  {{ site_header|default:_('Django administration') }}
+                {% endif %}
+                </h1>
+              {% endblock %}
+              <div id="user-tools" class="btn-group">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {% if user.is_active and user.is_staff %}
+                      {% block welcome-msg %}
+                        {% firstof user.get_short_name user.get_username %}
+                      {% endblock %}
+                    {% endif %}
+                    <span class="caret"></span>
+                  </button>
+
+                  {% url 'django-admindocs-docroot' as docsroot %}
+                  <ul class="dropdown-menu pull-right" role="menu">
+                    {% if docsroot %}
+                      <li class="hidden-sm">
+                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a>
+                      </li>
+                    {% endif %}
+                    {% if user.has_usable_password %}
+                      <li>
+                        <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a>
+                      </li>
+                    {% endif %}
+                    <li>
+                      <a href="/">返回主页</a>
+                      <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+                    </li>
+                  </ul>
+                </div>
+                {% if docsroot %}
+                  <a href="{{ docsroot }}" title="{% trans 'Documentation' %}" class="btn btn-default hidden-sm"><span class="glyphicon glyphicon-book"></span></a>
+                {% endif %}
+                <a href="{% url 'admin:logout' %}" title="{% trans 'Log out' %}" class="btn btn-default hidden-xs">
+                  <span class="glyphicon glyphicon-off"></span>
+                </a>
+              </div>
+            </div>
+          {% endblock main_header %}
+          {% block breadcrumbs %}
+            <ol class="breadcrumb">
+              <li class="home">
+                <a href="{% url 'admin:index' %}" title="{% trans 'Home' %}"><span class="glyphicon glyphicon-home"></span></a>
+              </li>
+              <li class="active">{% if title %}{{ title }}{% endif %}</li>
+            </ol>
+          {% endblock %}
+
+          {% block messages %}
+            {% if messages %}
+                {% for message in messages %}
+                  <div role="alert" class="messagelist alert alert-{% if message.tags == 'info' %}success{% else %}{{ message.tags }}{% endif %} fade in">
+                    <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">{% trans "Close" %}</span></button>
+                    {{ message|capfirst }}
+                  </div>
+                {% endfor %}
+            {% endif %}
+          {% endblock messages %}
+
+          {% block content %}
+            {% block object-tools %}{% endblock %}
+            {{ content }}
+          {% endblock %}
+        </div>
+      {% endblock content_container %}
+    </div>
+  </div>
+
+{% block bootstrap_admin_js %}
+  <script src="{% static 'bootstrap_admin/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'bootstrap_admin/js/base.js' %}"></script>
+{% endblock bootstrap_admin_js %}
+
+{% block js %}{% endblock js %}
+</body>
+</html>

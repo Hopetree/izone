@@ -7,6 +7,7 @@
     <meta name="keywords" content="{% keywords_to_str article %}">
 {% endblock %}
 
-{% block content %}
+{% block base_content %}
 <p>{{ article.title }}</p>
+{{ article.body }}
 {% endblock %}

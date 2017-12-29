@@ -1,6 +1,6 @@
 {% load static oauth_tags %}
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top blog-navbar py-md-0">
-    <a class="navbar-brand" href="{% url 'blog:index' %}">
+<nav class="navbar navbar-expand-md bg-white fixed-top blog-navbar py-md-0">
+    <a class="navbar-brand d-md-none d-lg-block" href="{% url 'blog:index' %}">
         <img src="{% static 'blog/img/logo.png' %}" alt="{{ site_end_title }}">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -9,7 +9,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-3 d-md-none d-lg-block active">
+            <li class="nav-item mr-3 active">
                 <a class="nav-link py-md-3" href="{% url 'blog:index' %}">首页<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item mr-3 dropdown">
@@ -39,9 +39,9 @@
             </li>
             <form class="nav-item navbar-form mr-3 py-md-2" role="search" method="get" id="searchform" action="#">
                 <div class="input-group">
-                    <input type="search" name="q" class="form-control f-15" placeholder="搜索" required=True>
+                    <input type="search" name="q" class="form-control rounded-0 f-15" placeholder="搜索" required=True>
                     <div class="input-group-btn">
-                        <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-info rounded-0" type="submit"><i class="fa fa-search"></i></button>
                     </div>
                 </div><!-- /input-group -->
             </form>
@@ -51,27 +51,29 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    <!--<span class="get-msg text-center">4</span>-->
+                    <span class="get-msg text-center">4</span>
                     {% get_user_avatar_tag user %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
                     {% if user.is_staff %}
-                    <a class="dropdown-item" href="{% url 'admin:index' %}"><i class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
+                    <a class="dropdown-item" href="{% url 'admin:index' %}"><i
+                            class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
                     {% endif %}
                     <a class="dropdown-item" href="#"><i class="fa fa-fw fa-bookmark text-info mr-2"></i>我的收藏</a>
                     <a class="dropdown-item" href="#"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
-                        <!--<span class="badge badge-warning ml-3 text-center">9</span>-->
+                        <span class="badge badge-warning ml-3 text-center">19</span>
                     </a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
+                    <a class="dropdown-item" href="{% url 'account_logout' %}"><i
+                            class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
                 </div>
             </li>
             {% else %}
             <li class="nav-item mr-3">
-                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">登录<span class="sr-only">(current)</span></a>
+                <a class="nav-link py-md-3" href="{% url 'account_login' %}?next={{ request.path }}">登录</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">注册<span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link py-md-3" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a>
             </li>
             {% endif %}
         </ul>
