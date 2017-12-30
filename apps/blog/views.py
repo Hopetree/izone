@@ -111,9 +111,12 @@ class TagView(generic.ListView):
         return context_data
 
 class AboutView(generic.ListView):
+    model = Timeline
     template_name = 'blog/about.html'
     context_object_name = 'timeline_list'
 
-    def get_queryset(self):
-        return Timeline.objects.all()
+class SilianView(generic.ListView):
+    model = Silian
+    template_name = 'blog/silian.xml'
+    context_object_name = 'badurls'
 

@@ -9,30 +9,21 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-3 active">
+            <li class="nav-item mr-3">
                 <a class="nav-link py-md-3" href="{% url 'blog:index' %}">首页<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item mr-3 dropdown">
                 <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button"
                    data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">系列文章</a>
+                   aria-haspopup="true" aria-expanded="false">系列专题</a>
                 <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Django博客搭建</a>
+                    <a class="dropdown-item" href="#"></a>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
-            <li class="nav-item mr-3 dropdown">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button"
-                   data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">在线工具</a>
-                <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+            <li class="nav-item mr-3">
+                <a class="nav-link py-md-3" href="#">在线工具</a>
             </li>
             <li class="nav-item mr-3 ">
                 <a class="nav-link py-md-3" href="{% url 'blog:about' %}">关于</a>
@@ -50,12 +41,12 @@
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                   aria-haspopup="true" aria-expanded="false" title="{% get_show_name user %}，欢迎回来！">
                     <span class="get-msg text-center">4</span>
                     {% get_user_avatar_tag user %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
+                    <a class="dropdown-item" href="{% url 'oauth:profile' %}"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
                     {% if user.is_staff %}
                     <a class="dropdown-item" href="{% url 'admin:index' %}"><i
                             class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>

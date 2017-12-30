@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 from .views import goview
-from .views import IndexView, DetailView, CategoryView, TagView,AboutView
+from .views import IndexView, DetailView, CategoryView, TagView, AboutView, SilianView
 
 urlpatterns = [
-    url(r'^go/$', goview,name='go'), # 测试用页面
+    url(r'^go/$', goview, name='go'),  # 测试用页面
 
     url(r'^$', IndexView.as_view(), name='index'),  # 主页，自然排序
     url(r'^hot/$', IndexView.as_view(), {'sort': 'v'}, name='index_hot'),  # 主页，按照浏览量排序
@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^category/(?P<slug>[\w-]+)/hot/$', CategoryView.as_view(), {'sort': 'v'}, name='category_hot'),
     url(r'^tag/(?P<slug>[\w-]+)/$', TagView.as_view(), name='tag'),
     url(r'^tag/(?P<slug>[\w-]+)/hot/$', TagView.as_view(), {'sort': 'v'}, name='tag_hot'),
-    url(r'^about/$',AboutView.as_view(),name='about'),  # About页面
+    url(r'^about/$', AboutView.as_view(), name='about'),  # About页面
+    url(r'^silian\.xml$', SilianView.as_view(content_type='application/xml'), name='silian'), # 死链页面
 ]

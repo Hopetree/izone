@@ -11,11 +11,11 @@ register = template.Library()
 # 文章相关标签函数
 @register.simple_tag
 def get_article_list(sort=None,num=None):
-    '''获取所有文章'''
-    if sort == '-views':
+    '''获取指定排序方式和指定数量的文章'''
+    if sort:
         if num:
-            return Article.objects.order_by('-views', '-update_date')[:num]
-        return Article.objects.order_by('-views', '-update_date')
+            return Article.objects.order_by(sort)[:num]
+        return Article.objects.order_by(sort)
     if num:
         return Article.objects.all()[:num]
     return Article.objects.all()
@@ -38,7 +38,7 @@ def get_category_list():
     '''返回分类列表'''
     return Category.objects.annotate(total_num=Count('article')).filter(total_num__gt=0)
 
-@register.inclusion_tag('blog/tags/article-list.html')
+@register.inclusion_tag('blog/tags/article_list.html')
 def load_article_summary(articles):
     '''返回文章列表模板'''
     return {'articles':articles}

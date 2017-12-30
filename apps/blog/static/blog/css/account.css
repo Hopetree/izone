@@ -47,16 +47,27 @@
 .btn-sm {
     padding:.2rem .7rem;
 }
+.change_profile .form-control,
 .card-login .form-control {
     border-radius: 0;
 }
+.change_profile .alert,
 .card-login .alert {
     border-radius: 0;
 }
+.change_profile .alert li,
 .card-login .alert li {
     margin-bottom: .5rem;
 }
+.change_profile .alert ul,
 .card-login .alert ul {
-    padding-left:1rem;
+    padding-left:.5rem;
     margin-bottom: 0;
+}
+#profile-avatar .avatar {
+    width:80px;
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
 }

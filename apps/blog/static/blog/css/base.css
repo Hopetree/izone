@@ -64,6 +64,10 @@ a:hover {
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
 }
+#navbarDropdown .avatar {
+    border-radius: 50%;
+    width:40px;
+}
 .get-msg {
     font-size:13px;
     position: absolute;

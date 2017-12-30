@@ -18,7 +18,7 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20171223.0556" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.05756" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -58,12 +58,11 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script>
-$(function(){
-    var myElement = document.querySelector(".blog-navbar");
-    var headroom  = new Headroom(myElement);
-    headroom.init();
-    });
-
+$(function() {
+	var myElement = document.querySelector(".blog-navbar");
+	var headroom = new Headroom(myElement);
+	headroom.init()
+});
 </script>
 <script src="{% static 'blog/js/base.js'%}?v=20171222.226"></script>
 {% block end_file %}{% endblock %}

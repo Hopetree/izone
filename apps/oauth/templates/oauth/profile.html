@@ -1,0 +1,59 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% load blog_tags oauth_tags %}
+{% load static %}
+
+{% block metas %}
+    <meta name="description" content="用户账号管理，使用django-allauth社交用户系统，支持微博、Github等社交账号登录，加入{{ site_end_title }}，查看更多信息。">
+    <meta name="keywords" content="django-allauth,社交用户系统,OAuth 2.0">
+{% endblock %}
+
+{% block top-file %}
+<link href="{% static 'blog/css/account.css' %}?v=20171229.01966" rel="stylesheet">
+{% endblock %}
+
+{% block head_title%}个人资料{% endblock%}
+
+{% block base_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 px-xl-5">
+            <div class="card rounded-0 px-3 px-lg-4">
+                <div class="card-header text-center bg-white py-2"><h3 class="my-1 text-info">个人资料</h3></div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item text-center border-0" id="profile-avatar">
+                            {% get_user_avatar_tag user %}
+                        </li>
+                        <li class="list-group-item ml-5 border-0">
+                            <span class="font-weight-bold">昵&emsp;称：</span>
+                            <span>{{ user.nickname }}</span>
+                        </li>
+                        <li class="list-group-item ml-5 border-0">
+                            <span class="font-weight-bold">用户名：</span>
+                            <span>{{ user.username }}</span>
+                        </li>
+                        <li class="list-group-item ml-5 border-0">
+                            <span class="font-weight-bold">邮&emsp;箱：</span>
+                            <span>{{ user.email|get_email_secret }}</span>
+                        </li>
+                        <li class="list-group-item ml-5 border-0">
+                            <span class="font-weight-bold">网&emsp;址：</span>
+                            <span>{{ user.link }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="text-center mb-5" id="social-login">
+                    <div class="login-title"><span>更多操作</span></div>
+                    <div class="more-link mt-3">
+                        <a class="btn btn-info btn-sm rounded-0 mx-3" href="{% url 'oauth:change_profile' %}">修改资料</a>
+                        <a class="btn btn-info btn-sm rounded-0 mx-3" href="{% url 'account_change_password' %}">修改密码</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

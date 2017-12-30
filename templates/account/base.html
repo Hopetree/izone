@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block metas %}
-<meta name="description" content="用户账号管理，使用django-allauth社交用户系统，支持微博、Github等社交账号登录，加入{{ site_end_title }}，查看更多信息。">
-<meta name="keywords" content="django-allauth,社交用户系统,OAuth 2.0">
+    <meta name="description" content="用户账号管理，使用django-allauth社交用户系统，支持微博、Github等社交账号登录，加入{{ site_end_title }}，查看更多信息。">
+    <meta name="keywords" content="django-allauth,社交用户系统,OAuth 2.0">
 {% endblock %}
 
 {% block top-file %}
-<link href="{% static 'blog/css/account.css' %}?v=20171229.0196" rel="stylesheet">
+<link href="{% static 'blog/css/account.css' %}?v=20171229.019906" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 px-xl-5">
             <div class="card rounded-0 px-3 px-lg-4">
-                <div class="card-header text-center bg-white py-1">
+                <div class="card-header text-center bg-white py-2">
                     <h3 class="my-1 text-info">{% block user_title %}账号管理{% endblock %}</h3>
                 </div>
                 <div class="card-body card-login">{% block content %}{% endblock %}</div>
@@ -24,8 +24,8 @@
                         <span>快速登录</span>
                     </div>
                     <div class="login-link">
-                        <a class="mx-4" href="/accounts/weibo/login/?process=login"><i class="fa fa-weibo fa-2x"></i></a>
-                        <a class="mx-4" href="/accounts/github/login/?process=login"><i class="fa fa-github fa-2x"></i></a>
+                        <a class="mx-4" href="/accounts/weibo/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-weibo fa-2x"></i></a>
+                        <a class="mx-4" href="/accounts/github/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-github fa-2x"></i></a>
                     </div>
                 </div>
             </div>
