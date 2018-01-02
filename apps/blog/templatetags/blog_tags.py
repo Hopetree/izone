@@ -72,3 +72,12 @@ def get_star_title(num):
         5: '【5颗星】：最大程度更新，一般涉及多个应用和表格的变动',
     }
     return the_dict[num]
+
+@register.simple_tag
+def my_highlight(text,q):
+    '''自定义标题搜索词高亮函数'''
+    try:
+        r = text.replace(q,'<span class="highlighted">{}</span>'.format(q))
+        return mark_safe(r)
+    except:
+        return text

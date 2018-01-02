@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'crispy_forms',  # bootstrap表单样式
     'imagekit',  # 上传图片的应用
 
-    # 'haystack',  # 全文搜索应用 这个要放在其他应用之前
+    'haystack',  # 全文搜索应用 这个要放在其他应用之前
     'blog',  # 博客应用
 
 ]
@@ -194,7 +194,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 网站默认设置和上下文信息
 DEFAULT_IMG_LINL = 'http://cdn.stopfollow.com/summary_default.png'
 SITE_END_TITLE = 'SEO空间'
-SITE_DESCRIPTION = 'SEO空间是一个研究网站SEO优化和分享Python编程学习的个人博客网站。本网站后端使用Django框架搭建，前端使用Bootstrap4框架，主要分享博主在Python实战、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
+SITE_DESCRIPTION = 'SEO空间是一个Django博客，主要研究网站SEO优化和分享Python编程自学的个人博客网站。本网站后端使用Django框架搭建，前端使用Bootstrap4框架，主要分享博主在Python自学、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
 SITE_KEYWORDS = 'SEO优化实操,Python自学,Python爬虫实例,Django博客,Python web开发,个人网站建设'
 
 # 统一分页设置
@@ -210,3 +210,12 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'alert-warning',
     message_constants.ERROR: 'alert-danger'
 }
+
+# 全文搜索应用配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',  # 选择语言解析器为自己更换的结巴分词
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),  # 保存索引文件的地址，选择主目录下，这个会自动生成
+    }
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

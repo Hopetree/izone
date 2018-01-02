@@ -9,26 +9,25 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-3">
-                <a class="nav-link py-md-3" href="{% url 'blog:index' %}">首页<span class="sr-only">(current)</span></a>
+            <li class="nav-item mr-2">
+                <a class="nav-link py-md-3" href="{% url 'blog:index' %}"><i class="fa fa-home mr-1"></i>首页<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item mr-3 dropdown">
+            <li class="nav-item mr-2">
+                <a class="nav-link py-md-3" href="#"><i class="fa fa-sitemap mr-1"></i>归档</a>
+            </li>
+            <li class="nav-item mr-2 dropdown">
                 <a class="nav-link dropdown-toggle py-md-3" href="#" id="navbarDropdown" role="button"
                    data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">系列专题</a>
-                <div class="dropdown-menu mt-0 rounded-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Django博客搭建</a>
-                    <a class="dropdown-item" href="#"></a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                   aria-haspopup="true" aria-expanded="false"><i class="fa fa-gavel mr-1"></i>在线工具</a>
+                <div class="dropdown-menu mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item px-3" href="#">百度主动推送</a>
+                    <a class="dropdown-item px-3" href="#">友链检测</a>
                 </div>
             </li>
-            <li class="nav-item mr-3">
-                <a class="nav-link py-md-3" href="#">在线工具</a>
+            <li class="nav-item mr-2 ">
+                <a class="nav-link py-md-3" href="{% url 'blog:about' %}"><i class="fa fa-anchor mr-1"></i>关于</a>
             </li>
-            <li class="nav-item mr-3 ">
-                <a class="nav-link py-md-3" href="{% url 'blog:about' %}">关于</a>
-            </li>
-            <form class="nav-item navbar-form mr-3 py-md-2" role="search" method="get" id="searchform" action="#">
+            <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform" action="{% url 'blog:search_view'%}">
                 <div class="input-group">
                     <input type="search" name="q" class="form-control rounded-0 f-15" placeholder="搜索" required=True>
                     <div class="input-group-btn">
@@ -45,7 +44,7 @@
                     <span class="get-msg text-center">4</span>
                     {% get_user_avatar_tag user %}
                 </a>
-                <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'oauth:profile' %}"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
                     {% if user.is_staff %}
                     <a class="dropdown-item" href="{% url 'admin:index' %}"><i
@@ -60,7 +59,7 @@
                 </div>
             </li>
             {% else %}
-            <li class="nav-item mr-3">
+            <li class="nav-item mr-2">
                 <a class="nav-link py-md-3" href="{% url 'account_login' %}?next={{ request.path }}">登录</a>
             </li>
             <li class="nav-item">

@@ -1,0 +1,51 @@
+.nowpage .breadcrumb {
+    background-color:transparent;
+}
+.article-body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+.codehilite pre {
+    border: none;
+    background-color: #e4eaef;
+    border-radius: 3px;
+    font-size: 85%;
+    padding: .5rem;
+}
+.article-body h2 {
+    font-weight:600;
+    margin: 10px 0 15px 0;
+    padding: 0 10px;
+    border-left: 5px solid #1abc9c;
+    background-color: #f7f7f7;
+    line-height: 40px;
+}
+.article-body h3 {
+    font-weight:600;
+}
+/* Small devices (landscape phones, 576px and up) */
+/* X-iPhone6 AND plus */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) */
+/* Y-iPad mini */
+@media (min-width: 768px) {
+
+}
+
+/* Large devices (desktops, 992px and up) */
+/* X-iPad Y-iPad Pro*/
+@media (min-width: 992px) {
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+/* PC X-iPad Pro*/
+@media (min-width: 1200px) {
+
+}

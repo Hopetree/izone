@@ -18,7 +18,7 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20171223.05756" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.0547" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -44,8 +44,6 @@
 <!--主要内容块-->
 {% block base_content %}{% endblock %}
 
-<br><br><br><br><br><br><br>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
@@ -64,7 +62,26 @@ $(function() {
 	headroom.init()
 });
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20171222.226"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20171222.293"></script>
+{% if user.is_authenticated %}
+<script>
+var msgs = 0;
+if (msgs > 0) {
+	var _record = 0;
+	var myTitle = document.title;
+	function titleBlink() {
+		_record++;
+		if (_record % 2) {
+			document.title = '【 】' + myTitle
+		} else {
+			document.title = '【新消息】' + myTitle
+		};
+		setTimeout("titleBlink()", 500)
+	};
+	titleBlink()
+}
+</script>
+{% endif %}
 {% block end_file %}{% endblock %}
 </body>
 </html>

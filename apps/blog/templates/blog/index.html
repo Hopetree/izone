@@ -5,8 +5,8 @@
 
 {% block head_title %}博客首页_一个后端使用Django前端使用Bootstrap4搭建的个人博客{% endblock %}
 {% block metas %}
-<meta name="description" content="{{ site_description }}">
-<meta name="keywords" content="{{ site_keywords }}">
+    <meta name="description" content="{{ site_description }}">
+    <meta name="keywords" content="{{ site_keywords }}">
 {% endblock %}
 
 {% block base_content %}
@@ -22,9 +22,7 @@
                 <a class="pb-2 ml-4 {% if request.path == hot_index %}active{% endif %}" href="{{ hot_index }}">
                     <i class="fa fa-fire mr-1"></i>热度排序</a>
             </div>
-            <div class="article-list">
-                {% load_article_summary articles %}
-            </div>
+            {% load_article_summary articles %}
             {% if is_paginated %}{% load_pages %}{% endif %}
         </div>
         <div class="col-lg-4">

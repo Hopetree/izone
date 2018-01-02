@@ -8,14 +8,14 @@
 
 {% block head_title %}关于网站{% endblock %}
 {% block metas %}
-<meta name="description" content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
-<meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
+    <meta name="description" content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
 {% endblock %}
 
 {% block base_content %}
 <div class="container">
     <div class="page-header">
-        <h1 id="timeline">Timeline</h1>
+        <h1 id="timeline"><i class="fa fa-hourglass-1 mr-2"></i>建站日志</h1>
     </div>
     <ul class="timeline">
         {% for timeline in timeline_list %}

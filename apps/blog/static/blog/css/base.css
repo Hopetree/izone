@@ -60,6 +60,9 @@ a:hover {
 .f-12 {
     font-size:8px;
 }
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+}
 /* top navbar-------------------------------------------------*/
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
@@ -82,6 +85,9 @@ a:hover {
     border-radius: 16px;
     line-height: 16px;
     background: red;
+}
+.blog-navbar .dropdown-menu {
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 .blog-navbar .navbar-toggler {
     color: rgba(0,0,0,.5);
@@ -114,9 +120,17 @@ a:hover {
 .summary-list .avatar {
     width:1.2rem;
     heigth:1.2rem;
+    margin-right:.2rem;
+    border-radius: 50%;
 }
 .summary-list .media {
     background-color: #fff;
+}
+.summary-list .cate {
+    color: #ea6f5a;
+}
+.summary-list .cate:hover {
+    color: #007bff;
 }
 
 /* base right --------------------------------------------------*/
@@ -198,6 +212,10 @@ a:hover {
 }
 #tag-9,#tag-26 {
     background:#EDA045;
+}
+/* 全文搜索 */
+.highlighted {
+    color:red;
 }
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */

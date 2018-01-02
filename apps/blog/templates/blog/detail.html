@@ -1,13 +1,38 @@
 {% extends 'blog/base.html' %}
-{% load blog_tags %}
+{% load blog_tags static %}
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
 {% block metas %}
-    <meta name="description" content="{{ article.summary }}">
-    <meta name="keywords" content="{% keywords_to_str article %}">
+<meta name="description" content="{{ article.summary }}">
+<meta name="keywords" content="{% keywords_to_str article %}">
+{% endblock %}
+
+
+{% block top-file %}
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.1" rel="stylesheet">
+<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.1" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
-<p>{{ article.title }}</p>
-{{ article.body }}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card rounded-0 border-0" id="article">
+                <div class="card-body px-2 px-md-3">
+                    <h1 class="card-title">{{ article.title }}</h1>
+                    <hr>
+                    <div class="text-center f-13">
+                        <span class="mx-2" data-toggle="tooltip" data-placement="bottom" title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
+                        <span class="mx-2">阅读 {{ article.views }}</span>
+                        <span class="mx-2">评论 12</span>
+                    </div>
+                    <div class="article-body mt-4">{{ article.body|safe }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            {{ article.toc|safe }}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -6,7 +6,8 @@ from django.conf import settings
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 import markdown
 import time
-
+from haystack.generic_views import SearchView  # 导入搜索视图
+from haystack.query import SearchQuerySet
 
 # Create your views here.
 
@@ -119,4 +120,12 @@ class SilianView(generic.ListView):
     model = Silian
     template_name = 'blog/silian.xml'
     context_object_name = 'badurls'
+
+# 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
+class MySearchView(SearchView):
+    context_object_name = 'search_list'
+    paginate_by = settings.BASE_PAGE_BY
+    paginate_orphans = settings.BASE_ORPHANS
+    queryset = SearchQuerySet().order_by('-views')
+
 

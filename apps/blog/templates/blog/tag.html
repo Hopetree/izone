@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load blog_tags %}
 
-{% block head_title %}{{ search_name }}_{{ search_tag }}{% endblock %}
+{% block head_title %}{{ search_instance.name }}_{{ search_tag }}{% endblock %}
 {% block metas %}
 <meta name="description" content="{{ search_instance.description }}">
 <meta name="keywords" content="{{ search_instance.name }}">
@@ -13,8 +13,8 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
-            <div class="description bg-white p-3">
-                <p class="float-right d-none d-sm-block">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>
+            <div class="description bg-white px-3 pt-3 pb-1">
+                <p class="float-right mb-0">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>
                 <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>
                 <p class="f-16">{{ search_instance.description }}</p>
             </div>
@@ -26,9 +26,7 @@
                 <a class="pb-2 ml-4 {% if request.path == hot_tag %}active{% endif %}" href="{{ hot_tag }}">
                     <i class="fa fa-fire mr-1"></i>热度排序</a>
             </div>
-            <div class="article-list">
-                {% load_article_summary articles %}
-            </div>
+            {% load_article_summary articles %}
             {% if is_paginated %}{% load_pages %}{% endif %}
         </div>
         <div class="col-lg-4">
