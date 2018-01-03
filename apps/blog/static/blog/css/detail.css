@@ -15,17 +15,56 @@
     font-size: 85%;
     padding: .5rem;
 }
-.article-body h2 {
+.article-body h2{
     font-weight:600;
-    margin: 10px 0 15px 0;
+    margin: 10px 0 10px 0;
     padding: 0 10px;
     border-left: 5px solid #1abc9c;
     background-color: #f7f7f7;
-    line-height: 40px;
+    line-height: 2em;
 }
 .article-body h3 {
     font-weight:600;
 }
+.article-body p {
+    margin-bottom:1em;
+}
+.article-body ul,
+.article-body ol {
+    padding-left:2.2em;
+}
+.article-body table th,
+.article-body table td {
+    padding:2px 15px;
+    border: 1px solid #95a5a6;
+}
+.article-body table th {
+    background-color:#212529;
+    color:#fff;
+}
+.article-body code {
+    background-color:#e4eaef;
+}
+.article-toc {
+    position: fixed;
+}
+.toc ul {
+    padding-left:2em;
+}
+.toc >ul > li {
+    list-style-type: upper-roman;
+    line-height: 1.8em;
+    color: #0099ff;
+}
+.toc > ul > li > ul > li {
+    list-style-type: decimal;
+}
+.toc > ul > li > ul > li:hover {
+    color: #ff6900;
+}
+
+
+
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {

@@ -22,25 +22,25 @@ a {
 }
 a:hover {
     text-decoration: none;
-    color: #007bff;
+    color: #ea6f5a;
 }
 .h1, h1 {
-    font-size: 1.3rem;
+    font-size: 1.4em;
 }
 .h2, h2 {
-    font-size: 1.2rem;
+    font-size: 1.3em;
 }
 .h3, h3 {
-    font-size: 1.15rem;
+    font-size: 1.2em;
 }
 .h4, h4 {
-    font-size: 1.1rem;
+    font-size: 1.1em;
 }
 .h5, h5 {
-    font-size: 1.05rem;
+    font-size: 1.05em;
 }
 .h6, h6 {
-    font-size: 1rem;
+    font-size: 1em;
 }
 .f-17 {
     font-size:13px;
@@ -96,6 +96,9 @@ a:hover {
 .blog-navbar .navbar-toggler-icon {
     background-image:url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E")
 }
+.nav-item a.active {
+    color: #ea6f5a;
+}
 /*carousel---------------------------------------------*/
 .carousel-indicators li {
     width: 10px;
@@ -130,7 +133,7 @@ a:hover {
     color: #ea6f5a;
 }
 .summary-list .cate:hover {
-    color: #007bff;
+    color: #17a2b8;
 }
 
 /* base right --------------------------------------------------*/

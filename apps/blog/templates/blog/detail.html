@@ -9,30 +9,44 @@
 
 
 {% block top-file %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.1" rel="stylesheet">
-<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.1" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.0" rel="stylesheet">
+<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <div class="card rounded-0 border-0" id="article">
                 <div class="card-body px-2 px-md-3">
-                    <h1 class="card-title">{{ article.title }}</h1>
+                    <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
                     <hr>
                     <div class="text-center f-13">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom" title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 12</span>
                     </div>
-                    <div class="article-body mt-4">{{ article.body|safe }}</div>
+                    <div class="article-body mt-4 f-16">{{ article.body|safe }}</div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            {{ article.toc|safe }}
+        <div class="col-lg-3">
+            <div class="article-toc d-md-none d-lg-block f-16">
+                {{ article.toc|safe }}
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block end_file %}
+<script>
+//锚点平滑移动到指定位置
+$('.toc a,#look-comments a').click(function () {
+    $('html, body').animate({
+        scrollTop: $($.attr(this, 'href')).offset().top-55
+        }, 500);
+    return false;
+});
+</script>
 {% endblock %}
