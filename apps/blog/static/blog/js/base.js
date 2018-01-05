@@ -15,3 +15,15 @@ $(function() {
 		$(this).children('div.dropdown-menu').removeClass('show')
 	})
 });
+//锚点平滑移动到指定位置
+function TOC_FUN(A) {
+	$(A).click(function() {
+		$(A).css("color", "#0099ff");
+		$(this).css("color", "red");
+		$('html, body').animate({
+			scrollTop: $($.attr(this, 'href')).offset().top - 55
+		}, 500);
+		return false
+	})
+}
+

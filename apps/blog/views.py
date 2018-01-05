@@ -14,6 +14,13 @@ from haystack.query import SearchQuerySet
 def goview(request):
     return render(request,'test_html.html')
 
+class ArchiveView(generic.ListView):
+    model = Article
+    template_name = 'blog/archive.html'
+    context_object_name = 'articles'
+    paginate_by = 500
+    paginate_orphans = 50
+
 class IndexView(generic.ListView):
     model = Article
     template_name = 'blog/index.html'

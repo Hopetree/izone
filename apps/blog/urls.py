@@ -2,6 +2,7 @@
 from django.conf.urls import url
 from .views import goview
 from .views import IndexView, DetailView, CategoryView, TagView, AboutView, SilianView, MySearchView
+from .views import ArchiveView
 
 urlpatterns = [
     url(r'^go/$', goview, name='go'),  # 测试用页面
@@ -14,6 +15,7 @@ urlpatterns = [
     url(r'^tag/(?P<slug>[\w-]+)/$', TagView.as_view(), name='tag'),
     url(r'^tag/(?P<slug>[\w-]+)/hot/$', TagView.as_view(), {'sort': 'v'}, name='tag_hot'),
     url(r'^about/$', AboutView.as_view(), name='about'),  # About页面
+    url(r'archive/$',ArchiveView.as_view(),name='archive'), # 归档页面
     url(r'^silian\.xml$', SilianView.as_view(content_type='application/xml'), name='silian'), # 死链页面
     url(r'^search/$', MySearchView.as_view(), name='search_view'), # 全文搜索
 ]

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ]
 
 # Application definition
 
+# 添加了新的app需要重启服务器
 INSTALLED_APPS = [
     'bootstrap_admin',  # 注册bootstrap后台管理界面,这个必须放在最前面
 
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
 
     'haystack',  # 全文搜索应用 这个要放在其他应用之前
     'blog',  # 博客应用
+    'tool',  # 工具
 
 ]
 

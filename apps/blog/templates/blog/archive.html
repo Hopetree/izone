@@ -1,0 +1,54 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load blog_tags %}
+
+{% block head_title %}博客归档，浏览网站所有文章{% endblock %}
+{% block metas %}
+<meta name="description" content="博客归档，按照年份、月份对整站文章进行归档排序">
+<meta name="keywords" content="博客归档">
+{% endblock %}
+
+{% block top-file %}
+<style type="text/css">
+.archive {
+    line-height:2;
+}
+</style>
+{% endblock %}
+
+{% block base_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 rounded-0 mb-3">
+                <div class="card-body f-16 archive">
+                    {% regroup articles by create_date.year as year_list %}
+                    <ul class="pl-4">
+                        {% for article in year_list %}
+                        <li>{{ article.grouper }} 年
+                            {% regroup article.list by create_date.month as month_list %}
+                            <ul class="pl-4">
+                                {% for each in month_list %}
+                                <li>{{ each.grouper }} 月
+                                    <ul class="pl-4">
+                                        {% for item in each.list %}
+                                        <li class="text-info"><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% if is_paginated %}{% load_pages %}{% endif %}
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+            {% include 'blog/tags/base_right.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

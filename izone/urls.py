@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^accounts/', include('oauth.urls', namespace='oauth')),  # oauth,只展现一个用户登录界面
     url('', include('blog.urls', namespace='blog')),  # blog
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')), # robots
+    url(r'^tool/', include('tool.urls',namespace='tool')), # tool
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 加入这个才能显示media文件

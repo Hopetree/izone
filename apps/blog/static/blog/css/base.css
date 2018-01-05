@@ -63,6 +63,12 @@ a:hover {
 .breadcrumb-item+.breadcrumb-item::before {
     content: ">";
 }
+blockquote {
+    padding: .8em;
+    margin: 0 0 2.2em;
+    border-left: 4px solid #b4b4b4;
+    background: #f7f7f7;;
+}
 /* top navbar-------------------------------------------------*/
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
@@ -182,39 +188,37 @@ a:hover {
     margin: .3rem;
     transition: all .5s;
 }
-.tags:hover {
-    color:#fff;
-    text-decoration:none;
-    opacity: .7;
-    border-radius:0;
-}
 /*云标签颜色*/
-#tag-1,#tag-10,#tag-25 {
+.tags:nth-child(9n+1) {
     background:#78BBE6;
 }
-#tag-2,#tag-11,#tag-18 {
+.tags:nth-child(9n+2){
     background:#FF895D;
 }
-#tag-3 ,#tag-12,#tag-19 {
+.tags:nth-child(9n+3) {
     background:#A3DE83;
 }
-#tag-4 ,#tag-13,#tag-20 {
+.tags:nth-child(9n+4) {
     background:#00BBF0;
 }
-#tag-5 ,#tag-14,#tag-21 {
+.tags:nth-child(9n+5) {
     background:#FF2E63;
 }
-#tag-6 ,#tag-15,#tag-22 {
+.tags:nth-child(9n+6) {
     background:#0D7377;
 }
-#tag-7 ,#tag-16,#tag-23 {
+.tags:nth-child(9n+7) {
     background:#AC005D;
 }
-#tag-8 ,#tag-17,#tag-24 {
+.tags:nth-child(9n+8) {
     background:#0881A3;
 }
-#tag-9,#tag-26 {
+.tags:nth-child(9n+9) {
     background:#EDA045;
+}
+.tags:hover {
+    color:#fff;
+    background:#333;
 }
 /* 全文搜索 */
 .highlighted {

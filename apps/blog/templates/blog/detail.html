@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load blog_tags static %}
+{% load humanize %}
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
 {% block metas %}
@@ -9,8 +10,8 @@
 
 
 {% block top-file %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.0" rel="stylesheet">
-<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.043" rel="stylesheet">
+<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.13" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
@@ -22,16 +23,49 @@
                     <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
                     <hr>
                     <div class="text-center f-13">
-                        <span class="mx-2" data-toggle="tooltip" data-placement="bottom" title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
+                        <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
+                              title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 12</span>
                     </div>
                     <div class="article-body mt-4 f-16">{{ article.body|safe }}</div>
+                    <div class="tag-cloud my-4">
+                        {% for tag in article.tags.all %}
+                        <a class="tags f-16" href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                    <nav class="more-page f-16">
+                        <ul class="pagination justify-content-between">
+                            <li class="page-item">
+                                {% if article.get_pre %}
+                                <a class="d-none d-md-block" href="{{ article.get_pre.get_absolute_url }}"
+                                   title="上一篇：{{ article.get_pre.title }}">
+                                    <i class="fa fa-chevron-left mr-1"></i>
+                                    {{ article.get_pre.title|truncatechars:18 }}
+                                </a>
+                                <a class="d-md-none" href="{{ article.get_pre.get_absolute_url }}">
+                                    <i class="fa fa-chevron-left mr-1"></i>上一篇</a>
+                                {% endif %}
+                            </li>
+                            <li class="page-item">
+                                {% if article.get_next %}
+                                <a class="d-none d-md-block" href="{{ article.get_next.get_absolute_url }}"
+                                   title="下一篇：{{ article.get_next.title }}">
+                                    {{ article.get_next.title|truncatechars:18 }}
+                                    <i class="fa fa-chevron-right ml-1"></i>
+                                </a>
+                                <a class="d-md-none" href="{{ article.get_next.get_absolute_url }}">
+                                    下一页<i class="fa fa-chevron-right ml-1"></i>
+                                </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="article-toc d-md-none d-lg-block f-16">
+            <div class="article-toc d-none d-lg-block f-16">
                 {{ article.toc|safe }}
             </div>
         </div>
@@ -41,12 +75,11 @@
 
 {% block end_file %}
 <script>
-//锚点平滑移动到指定位置
-$('.toc a,#look-comments a').click(function () {
-    $('html, body').animate({
-        scrollTop: $($.attr(this, 'href')).offset().top-55
-        }, 500);
-    return false;
-});
+$(TOC_FUN('.toc a'));
+
+
+
+
+
 </script>
 {% endblock %}
