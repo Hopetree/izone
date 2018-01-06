@@ -18,7 +18,7 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20171223.0" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.0188" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -40,6 +40,10 @@
 </div>
 {% endif %}
 
+<!--回到顶部按钮-->
+<div class="text-center" id="to-top">
+    <i class="fa fa-chevron-up" id="btn-top" title="回到顶部"></i>
+</div>
 
 <!--主要内容块-->
 {% block base_content %}{% endblock %}
@@ -60,7 +64,7 @@ $(function() {
 	headroom.init()
 });
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20171222.203"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20171222.2083"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = 0;

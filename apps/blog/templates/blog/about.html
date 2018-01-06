@@ -15,7 +15,7 @@
 {% block base_content %}
 <div class="container">
     <div class="page-header">
-        <h1 id="timeline"><i class="fa fa-hourglass-1 mr-2"></i>建站日志</h1>
+        <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
     </div>
     <ul class="timeline">
         {% for timeline in timeline_list %}
@@ -41,6 +41,7 @@
         {% endfor %}
     </ul>
 </div>
+{% include 'blog/tags/footer.html' %}
 {% endblock %}
 
 {% block js-file %}

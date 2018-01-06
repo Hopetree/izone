@@ -105,6 +105,31 @@ blockquote {
 .nav-item a.active {
     color: #ea6f5a;
 }
+/*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
+#to-top {
+    position: fixed;
+    bottom: 4em;
+    right: 5%;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #34495e;
+    top: auto;
+    display:none;
+    cursor: pointer;
+    color: #fff;
+    opacity: .4;
+}
+#to-top:hover{
+    opacity: .9;
+}
+#to-top i {
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+}
 /*carousel---------------------------------------------*/
 .carousel-indicators li {
     width: 10px;

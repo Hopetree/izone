@@ -3,5 +3,7 @@ Disallow: /admin/
 Disallow: /accounts/
 Disallow: /comments/
 Disallow: /feed/
+Disallow: /search/
+Disallow: /silian.xml
 
 Sitemap: http://www.stopfollow.com/sitemap.xml

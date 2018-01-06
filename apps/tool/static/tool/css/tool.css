@@ -1,0 +1,9 @@
+.tool-header img {
+    max-width: 5rem;
+}
+.tool-des {
+    height: 8rem;
+}
+.tool-des p {
+    line-height: 2;
+}

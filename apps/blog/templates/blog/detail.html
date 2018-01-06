@@ -18,6 +18,18 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
+                    <li class="breadcrumb-item">
+                        <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ article.category.get_absolute_url }}">{{ article.category}}</a>
+                    </li>
+                    <li class="breadcrumb-item active d-none d-md-block" aria-current="page">{{ article.title }}</li>
+                    <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
+                </ol>
+            </nav>
             <div class="card rounded-0 border-0" id="article">
                 <div class="card-body px-2 px-md-3">
                     <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
@@ -28,7 +40,13 @@
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 12</span>
                     </div>
-                    <div class="article-body mt-4 f-16">{{ article.body|safe }}</div>
+                    <div class="article-body mt-4 f-16">
+                        {{ article.body|safe }}
+                        <p class="font-weight-bold text-info">
+                            <i class="fa fa-bullhorn mx-1"></i>
+                            原创文章，转载请注明出处：{{ request.build_absolute_uri }}
+                        </p>
+                    </div>
                     <div class="tag-cloud my-4">
                         {% for tag in article.tags.all %}
                         <a class="tags f-16" href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
@@ -71,11 +89,16 @@
         </div>
     </div>
 </div>
+{% include 'blog/tags/footer.html' %}
 {% endblock %}
 
 {% block end_file %}
 <script>
 $(TOC_FUN('.toc a'));
+
+
+
+
 
 
 
