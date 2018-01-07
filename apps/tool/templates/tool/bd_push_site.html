@@ -1,10 +1,10 @@
 {% extends "tool/base_tool.html" %}
 {% load static %}
 
-{% block head_title %}调用百度主动推送API，向百度批量推送链接_站长工具{% endblock %}
+{% block head_title %}sitemap主动推送，百度主动推送工具升级版_站长工具{% endblock %}
 {% block metas %}
-<meta name="description" content="百度主动推送工具，是一个在线推送链接工具，这个工具调用百度站长平台提供的API接口，批量向百度推送网站链接，提高网站收录速度和效率。">
-<meta name="keywords" content="百度主动推送,站长工具,SEO工具,在线工具">
+<meta name="description" content="Sitemap主动推送是百度主动推送工具的升级版，是一个在线推送链接工具，这个工具提取网站sitemap中所有链接，然后调用百度站长平台提供的API接口，批量推送链接，提高网站收录速度和效率。">
+<meta name="keywords" content="百度主动推送,站长工具,在线工具,sitemap链接推送">
 {% endblock %}
 
 {% block left_content %}
@@ -16,17 +16,17 @@
         <li class="breadcrumb-item">
             <a href="{% url 'tool:total' %}">在线工具</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">百度主动推送工具</li>
+        <li class="breadcrumb-item active" aria-current="page">Sitemap主动推送</li>
     </ol>
 </nav>
 <div class="card-body p-0">
     <h3 class="card-title pl-2 title-info">工具说明：</h3>
     <ul>
-        <li>本工具使用的百度站长平台官方提供的API</li>
-        <li>工具的作用是批量提交网站链接，主动推送给百度收录，具体作用请查看
+        <li>这个Sitemap主动推送工具是百度主动推送工具的升级版</li>
+        <li>本工具的作用是提取网站sitemap页面中所有的链接，并且使用百度站长官方提供的API主动推送链接给百度收录，百度主动推送的作用请查看
             <a class="text-info" href="https://ziyuan.baidu.com/linksubmit/index" target="_blank">官方说明</a>
         </li>
-        <li>首先将百度站长提供的“接口调用地址”复制到下面表单中，然后按示例输入自己网站要提交的链接，点击提交按钮即可看到返回的信息</li>
+        <li>首先将百度站长提供的“接口调用地址”复制到下面表单中，然后将自己网站的sitemap页面的地址复制到对应表单中，点击提交按钮即可看到返回的信息</li>
         <li>想了解这个工具的原理和查看源代码，可以前往
             <a class="text-info" href="#" target="_blank">百度主动推送工具</a>，有任何问题都可以到文章底部评论留言
         </li>
@@ -41,9 +41,10 @@
         <small class="form-text text-muted">注：请填写百度站长平台提供给您的接口调用地址</small>
     </div>
     <div class="form-group">
-        <label>网址链接：</label>
-        <textarea class="form-control rounded-0" id="form-urls" rows="5" required
-                  placeholder="示例如下：&#10;http://www.example.com/mip/&#10;http://www.example.com/mip/1.html&#10;http://www.example.com/mip/2.php"></textarea>
+        <label>sitemap地址：</label>
+        <input type="url" class="form-control rounded-0" id="form-sitemap"
+               placeholder="例：http://www.example.com/sitemap.xml"
+               required>
         <small class="form-text text-muted">注：提交的链接的域名必须与接口中site保持一直才能推送成功</small>
     </div>
     <button type="submit" class="btn btn-info btn-sm" id="start-push">开始推送</button>
@@ -154,10 +155,10 @@
 {% endblock %}
 
 {% block end_file %}
-<script src="{% static 'tool/js/tool.js'%}?v=20180105.2"></script>
+<script src="{% static 'tool/js/tool.js'%}?v=20180105.245"></script>
 <script>
 $('#start-push').click(function() {
-	push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_api' %}");
+	site_push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_api_site' %}");
 })
 
 </script>

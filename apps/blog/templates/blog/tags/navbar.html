@@ -19,7 +19,7 @@
             </li>
             <li class="nav-item mr-2">
                 {% url 'tool:total' as tool_url %}
-                <a class="nav-link py-md-3 {% if request.path == tool_url %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-gavel mr-1"></i>在线工具</a>
+                <a class="nav-link py-md-3 {% if request.path == tool_url %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
             </li>
             <li class="nav-item mr-2 ">
                 {% url 'blog:about' as about_url %}

@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block top-file %}
+<link href="{% static 'tool/css/tool.css' %}?v=20180107.09078" rel="stylesheet">
+{% endblock %}
+
+{% block base_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            {% block left_content %}{% endblock %}
+        </div>
+        <div class="col-lg-4">
+            {% include 'blog/tags/base_right.html' %}
+        </div>
+    </div>
+</div>
+{% include 'blog/tags/footer.html' %}
+{% endblock %}
+
