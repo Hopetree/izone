@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .apis.bd_push import push_urls, get_urls
+from .apis.links_test import check_links
 
 # Create your views here.
 
@@ -44,4 +45,19 @@ def bd_api_site(request):
             info = push_urls(url,urls)
         return JsonResponse({'msg':info})
     return JsonResponse({'msg':'miss'})
+
+# 友链检测
+def Link_testview(request):
+    return render(request, 'tool/link_test.html')
+
+@login_required
+@require_POST
+def Link_test_api(request):
+    if request.is_ajax():
+        data = request.POST
+        p = data.get('p')
+        urls = data.get('urls')
+        info = check_links(urls,p)
+        return JsonResponse(info)
+    return JsonResponse({'msg': 'miss'})
 

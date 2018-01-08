@@ -1,0 +1,84 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}友链检测工具，可以批量检查友情链接的反链是否有效_站长工具{% endblock %}
+{% block metas %}
+<meta name="description" content="友链检测工具，是一个高效检查友情链接的工具，可以实时查询友情链接的反链是否有效，帮助站长及时知晓友链状态从而做出调整">
+<meta name="keywords" content="友情链接查询,友链检测,在线工具,站长工具,反链查询">
+{% endblock %}
+
+{% block left_content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white border-0 rounded-0 mb-3 p-2 f-15">
+        <li class="breadcrumb-item">
+            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'tool:total' %}">在线工具</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">友链检测工具</li>
+    </ol>
+</nav>
+<div class="card-body p-0">
+    <h3 class="card-title pl-2 title-info">工具说明：</h3>
+    <ul>
+        <li>本工具可以批量检查友情链接的状态，查看站长添加的友链是否依然有反链到自己网站，便于站长对无效的友链进行删除和调整</li>
+        <li>首先将需要检测的信息（一般是自己的网站地址）填入下面表单，然后批量填入友链的链接，点击“开始检测”即可等待结果返回</li>
+        <li>注意：友情链接可能并没有放在友站的首页，所以务必填写友站放置友链的页面的链接，否则会判断为没有添加友链</li>
+    </ul>
+</div>
+<div class="mb-3">
+    <div class="form-group">
+        <label>需要检测的信息：</label>
+        <input type="text" class="form-control rounded-0" id="form-info"
+               placeholder="例：www.example.com"
+               required>
+        <small class="form-text text-muted">注：检测的信息一般为自己提供给友站的地址，即自己网站的地址</small>
+    </div>
+    <div class="form-group">
+        <label>友情链接地址：</label>
+        <textarea class="form-control rounded-0" id="form-links" rows="5" required
+                  placeholder="示例如下：&#10;http://www.example1.com/&#10;http://www.example2.com/friends/&#10;http://www.example3.com/youlian/"></textarea>
+        <small class="form-text text-muted">注：友站的友链不一定都放在首页，友链放在哪里就提供哪个链接</small>
+    </div>
+    <button type="submit" class="btn btn-info btn-sm" id="start-push">开始检测</button>
+</div>
+<div class="card mb-3 rounded-0">
+    <div class="card-header text-center text-info font-weight-bold py-2">检测结果</div>
+    <div class="card-body push-result text-center p-0"><div class="p-3">结果显示区</div></div>
+</div>
+<h3 class="mb-3 pl-2 title-info">检测结果参数解读：</h3>
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">状态信息</th>
+        <th scope="col">状态说明</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">true</th>
+        <td>友链存在，能够检测到信息</td>
+    </tr>
+    <tr>
+        <th scope="row">false</th>
+        <td>友链不存在，没有检查到信息</td>
+    </tr>
+    <tr>
+        <th scope="row">bad url</th>
+        <td>友链页面打不开，无法检测，友链的网址可能错误</td>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}
+
+{% block end_file %}
+<script src="{% static 'tool/js/tool.js'%}?v=20180105.25"></script>
+<script>
+$('#start-push').click(function() {
+	link_test_spider("{{ csrf_token }}", "{% url 'tool:link_test_api' %}");
+})
+
+
+</script>
+{% endblock %}

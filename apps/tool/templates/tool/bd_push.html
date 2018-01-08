@@ -1,10 +1,10 @@
 {% extends "tool/base_tool.html" %}
 {% load static %}
 
-{% block head_title %}调用百度主动推送API，向百度批量推送链接_站长工具{% endblock %}
+{% block head_title %}百度主动推送工具在线使用，实时主动提交网站链接，加快网站内容抓取_站长工具{% endblock %}
 {% block metas %}
-<meta name="description" content="百度主动推送工具，是一个在线推送链接工具，这个工具调用百度站长平台提供的API接口，批量向百度推送网站链接，提高网站收录速度和效率。">
-<meta name="keywords" content="百度主动推送,站长工具,SEO工具,在线工具">
+    <meta name="description" content="百度主动推送工具，是一个在线实时推送链接的站长工具，这个工具调用百度站长平台提供的主动提交API接口，自动批量向百度推送网站链接，使网页更快的被百度收录，加快抓取速度和提升效率。">
+    <meta name="keywords" content="百度主动推送工具,自动提交,站长工具,百度收录,实时提交,在线工具">
 {% endblock %}
 
 {% block left_content %}
@@ -22,13 +22,16 @@
 <div class="card-body p-0">
     <h3 class="card-title pl-2 title-info">工具说明：</h3>
     <ul>
-        <li>本工具使用的百度站长平台官方提供的API</li>
+        <li>本工具使用的百度站长平台官方提供的推送接口</li>
         <li>工具的作用是批量提交网站链接，主动推送给百度收录，具体作用请查看
             <a class="text-info" href="https://ziyuan.baidu.com/linksubmit/index" target="_blank">官方说明</a>
         </li>
         <li>首先将百度站长提供的“接口调用地址”复制到下面表单中，然后按示例输入自己网站要提交的链接，点击提交按钮即可看到返回的信息</li>
-        <li>想了解这个工具的原理和查看源代码，可以前往
-            <a class="text-info" href="#" target="_blank">百度主动推送工具</a>，有任何问题都可以到文章底部评论留言
+        <li>想了解这个工具的原理和查看源代码，可以阅读文章
+            <a class="text-info" href="#" target="_blank">百度主动推送工具</a>，有任何问题或建议都可以到文章底部评论留言
+        </li>
+        <li>本工具适合网站大部分链接已经被百度收录的老站使用，新站建议使用
+            <a class="text-info" href="{% url 'tool:baidu_push_site' %}">Sitemap主动推送</a> 可以直接批量提交整站链接
         </li>
     </ul>
 </div>
@@ -50,7 +53,7 @@
 </div>
 <div class="card mb-3 rounded-0">
     <div class="card-header text-center text-info font-weight-bold py-2">推送结果</div>
-    <div class="card-body push-result text-center py-3"></div>
+    <div class="card-body push-result text-center py-3">结果显示区</div>
 </div>
 <h3 class="mb-3 pl-2 title-info">推送结果参数解读：</h3>
 <ul class="nav nav-tabs" id="myTab" role="tablist">

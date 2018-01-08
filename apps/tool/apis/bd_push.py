@@ -27,10 +27,10 @@ def get_urls(url):
 
 
 if __name__ == '__main__':
-    url = 'http://data.zz.baidu.com/urls?site=www.stopfollow.com&token=NpU01TxKEtTQAlBV'
-    urls = 'http://www.stopfollow.com/tools/wordsearch/'
-    ret = push_urls(url,urls)
-    print(ret)
-    print(type(ret))
-    # url = 'http://www.stopfollow.com/sitemap.xml'
-    # print(get_urls(url))
+    # url = 'http://data.zz.baidu.com/urls?site=www.stopfollow.com&token=NpU01TxKEtTQAlBV'
+    # urls = 'http://www.stopfollow.com/tools/wordsearch/'
+    # ret = push_urls(url,urls)
+    # print(ret)
+    # print(type(ret))
+    url = 'http://www.stopfollow.com/sitemap.xml'
+    print(get_urls(url))
