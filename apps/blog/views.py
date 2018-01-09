@@ -18,15 +18,15 @@ class ArchiveView(generic.ListView):
     model = Article
     template_name = 'blog/archive.html'
     context_object_name = 'articles'
-    paginate_by = 500
+    paginate_by = 200
     paginate_orphans = 50
 
 class IndexView(generic.ListView):
     model = Article
     template_name = 'blog/index.html'
     context_object_name = 'articles'
-    paginate_by = settings.BASE_PAGE_BY
-    paginate_orphans = settings.BASE_ORPHANS
+    paginate_by = getattr(settings,'BASE_PAGE_BY',None)
+    paginate_orphans = getattr(settings,'BASE_ORPHANS',0)
 
     def get_ordering(self):
         ordering = super(IndexView, self).get_ordering()
@@ -70,8 +70,8 @@ class CategoryView(generic.ListView):
     model = Article
     template_name = 'blog/category.html'
     context_object_name = 'articles'
-    paginate_by = settings.BASE_PAGE_BY
-    paginate_orphans = settings.BASE_ORPHANS
+    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
+    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
 
     def get_ordering(self):
         ordering = super(CategoryView, self).get_ordering()
@@ -96,8 +96,8 @@ class TagView(generic.ListView):
     model = Article
     template_name = 'blog/tag.html'
     context_object_name = 'articles'
-    paginate_by = settings.BASE_PAGE_BY
-    paginate_orphans = settings.BASE_ORPHANS
+    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
+    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
 
     def get_ordering(self):
         ordering = super(TagView, self).get_ordering()
@@ -131,8 +131,8 @@ class SilianView(generic.ListView):
 # 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
 class MySearchView(SearchView):
     context_object_name = 'search_list'
-    paginate_by = settings.BASE_PAGE_BY
-    paginate_orphans = settings.BASE_ORPHANS
+    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
+    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
 
 

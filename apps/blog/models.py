@@ -14,7 +14,7 @@ class Keyword(models.Model):
     class Meta:
         verbose_name = '关键词'
         verbose_name_plural = verbose_name
-        ordering = ['id']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -77,7 +77,8 @@ class Article(models.Model):
 
     category = models.ForeignKey(Category, verbose_name='文章分类')
     tags = models.ManyToManyField(Tag, verbose_name='标签')
-    keywords = models.ManyToManyField(Keyword,verbose_name='文章关键词',help_text='文章关键词，用来作为SEO中keywords，最好使用长尾词，3-4个足够')
+    keywords = models.ManyToManyField(Keyword,verbose_name='文章关键词',
+                                      help_text='文章关键词，用来作为SEO中keywords，最好使用长尾词，3-4个足够')
 
     class Meta:
         verbose_name = '文章'
@@ -137,7 +138,7 @@ class Timeline(models.Model):
     class Meta:
         verbose_name = '时间线'
         verbose_name_plural = verbose_name
-        ordering = ['update_date']
+        ordering = ['-update_date']
 
     def __str__(self):
         return self.title[:20]

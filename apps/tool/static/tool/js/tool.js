@@ -87,3 +87,35 @@ function link_test_spider(CSRF, URL) {
 		},
 	})
 }
+
+//regex api
+function regex_api(CSRF, URL) {
+	var r = $('#form-regex').val();
+	var texts = $('#form-text').val();
+	if (r.length == 0 | texts.length == 0) {
+		alert('待提取信息和正则表达式都不能为空！');
+		return false
+	};
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: CSRF
+		}
+	});
+	$('.push-result').html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
+	$.ajax({
+		type: 'post',
+		url: URL,
+		data: {
+			'r': r,
+			'texts': texts
+		},
+		dataType: 'json',
+		success: function(ret) {
+		    var newhtml = '匹配到'+ret.result.length+'个结果：<br>'
+		    for (var i=0;i<ret.result.length;i++){
+		        newhtml += ret.result[i] + '<br>'
+		    }
+			$('.push-result').removeClass('text-center').html(newhtml);
+		},
+	})
+}

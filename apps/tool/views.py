@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import check_links
+
+import re
 
 # Create your views here.
 
@@ -14,7 +15,6 @@ def Toolview(request):
 def BD_pushview(request):
     return render(request,'tool/bd_push.html')
 
-@login_required
 @require_POST
 def bd_api_view(request):
     if request.is_ajax():
@@ -29,7 +29,6 @@ def bd_api_view(request):
 def BD_pushview_site(request):
     return render(request, 'tool/bd_push_site.html')
 
-@login_required
 @require_POST
 def bd_api_site(request):
     if request.is_ajax():
@@ -50,7 +49,6 @@ def bd_api_site(request):
 def Link_testview(request):
     return render(request, 'tool/link_test.html')
 
-@login_required
 @require_POST
 def Link_test_api(request):
     if request.is_ajax():
@@ -59,5 +57,19 @@ def Link_test_api(request):
         urls = data.get('urls')
         info = check_links(urls,p)
         return JsonResponse(info)
+    return JsonResponse({'msg': 'miss'})
+
+# 在线正则表达式
+def regexview(request):
+    return render(request, 'tool/regex.html')
+
+@require_POST
+def regex_api(request):
+    if request.is_ajax():
+        data = request.POST
+        texts = data.get('texts')
+        regex = data.get('r')
+        result = re.findall(r'{}'.format(regex),texts)
+        return JsonResponse({'result':result})
     return JsonResponse({'msg': 'miss'})
 
