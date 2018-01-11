@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-{% load blog_tags static %}
+{% load blog_tags static comment_tags %}
 {% load humanize %}
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
@@ -10,7 +10,7 @@
 
 
 {% block top-file %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.043" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.070" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.13" rel="stylesheet">
 {% endblock %}
 
@@ -31,14 +31,14 @@
                 </ol>
             </nav>
             <div class="card rounded-0 border-0" id="article">
-                <div class="card-body px-2 px-md-3">
+                <div class="card-body px-2 px-md-3 pb-0">
                     <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
                     <hr>
                     <div class="text-center f-13">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
                               title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
                         <span class="mx-2">阅读 {{ article.views }}</span>
-                        <span class="mx-2">评论 12</span>
+                        <span class="mx-2">评论 {% get_comment_count article %}</span>
                     </div>
                     <div class="article-body mt-4 f-16">
                         {{ article.body|safe }}
@@ -80,6 +80,10 @@
                         </ul>
                     </nav>
                 </div>
+            </div>
+            <div class="card mt-2 mt-md-3 rounded-0 border-0" id="comment-block">
+                {% get_parent_comments article as comment_list %}
+                {% include 'comment/comment_list.html' %}
             </div>
         </div>
         <div class="col-lg-3">

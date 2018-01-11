@@ -38,7 +38,7 @@
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" title="{% get_show_name user %}，欢迎回来！">
+                   aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
                     <span class="get-msg text-center">4</span>
                     {% get_user_avatar_tag user %}
                 </a>

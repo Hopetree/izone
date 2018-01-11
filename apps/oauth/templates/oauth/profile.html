@@ -26,16 +26,12 @@
                             {% get_user_avatar_tag user %}
                         </li>
                         <li class="list-group-item ml-5 border-0">
-                            <span class="font-weight-bold">昵&emsp;称：</span>
-                            <span>{{ user.nickname }}</span>
-                        </li>
-                        <li class="list-group-item ml-5 border-0">
                             <span class="font-weight-bold">用户名：</span>
                             <span>{{ user.username }}</span>
                         </li>
                         <li class="list-group-item ml-5 border-0">
                             <span class="font-weight-bold">邮&emsp;箱：</span>
-                            <span>{{ user.email|get_email_secret }}</span>
+                            <span>{{ user.email }}</span>
                         </li>
                         <li class="list-group-item ml-5 border-0">
                             <span class="font-weight-bold">网&emsp;址：</span>

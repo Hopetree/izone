@@ -12,8 +12,8 @@
     border: none;
     background-color: #e4eaef;
     border-radius: 3px;
-    font-size: 85%;
-    padding: .5rem;
+    font-size: 80%;
+    padding: .8rem;
 }
 .article-body h2{
     font-weight:600;
@@ -63,7 +63,19 @@
     color: #ff6900;
 }
 
-
+/* comemnts block */
+.comment-parent .avatar {
+    width: 40px;
+    heigth: 40px;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
+.comment-child .avatar {
+    width: 35px;
+    heigth: 35px;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
 
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */

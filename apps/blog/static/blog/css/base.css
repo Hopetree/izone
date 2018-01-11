@@ -69,6 +69,15 @@ blockquote {
     border-left: 4px solid #b4b4b4;
     background: #f7f7f7;;
 }
+.clear-right {
+    clear:right;
+}
+.clear-left {
+    clear:left;
+}
+.clear-both {
+    clear:both;
+}
 /* top navbar-------------------------------------------------*/
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);

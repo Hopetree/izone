@@ -72,8 +72,7 @@
 </table>
 {% endblock %}
 
-{% block end_file %}
-<script src="{% static 'tool/js/tool.js'%}?v=20180105.25"></script>
+{% block end_f %}
 <script>
 $('#start-push').click(function() {
 	link_test_spider("{{ csrf_token }}", "{% url 'tool:link_test_api' %}");

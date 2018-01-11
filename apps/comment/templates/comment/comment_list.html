@@ -1,0 +1,52 @@
+{% load comment_tags oauth_tags %}
+{% load humanize %}
+
+<div class="card-body p-2 p-md-3 f-16" id="comment-list">
+    <ul class="list-unstyled">
+        <div class="mb-3">
+            <strong>{% get_comment_user_count article %}&nbsp;人参与&nbsp;|&nbsp;{% get_comment_count article %}&nbsp;条评论</strong>
+        </div>
+        {% for comment in comment_list %}
+        <div class="comment-parent">
+            <li class="media">
+                {% get_user_avatar_tag comment.author %}
+                <div class="media-body">
+                    <p class="mt-0 mb-1">
+                        <strong>{{ comment.author }}</strong>
+                        {% if comment.author.username == 'Hopetree' %}
+                        <small class="text-danger">[博主]</small>
+                        {% endif %}
+                    </p>
+                    <p class="small">{{ forloop.counter }}楼&nbsp;-&nbsp;{{ comment.create_date|naturaltime }}</p>
+                </div>
+            </li>
+            <div class="comment-body">{{ comment.content_to_markdown|safe }}</div>
+        </div>
+        {% get_child_comments comment as child_comments %}
+        {% if child_comments %}
+        <ul class="list-unstyled ml-4">
+            {% for each in child_comments %}
+            <div class="comment-child">
+                <li class="media">
+                    {% get_user_avatar_tag each.author %}
+                    <div class="media-body">
+                        <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
+                            {% if each.author.username == 'Hopetree' %}
+                            <small class="text-danger">[博主]</small>
+                            {% endif %}
+                            <i class="fa fa-share"></i>
+                            @{{ each.rep_to.author.username }}
+                        </p>
+                        <p class="small">{{ each.create_date|naturaltime }}</p>
+                    </div>
+                </li>
+                <div class="comment-body">{{ each.content_to_markdown|safe }}</div>
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% empty %}
+        暂时没有评论，欢迎来尬聊！
+        {% endfor %}
+    </ul>
+</div>

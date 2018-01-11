@@ -157,8 +157,7 @@
 </div>
 {% endblock %}
 
-{% block end_file %}
-<script src="{% static 'tool/js/tool.js'%}?v=20180105.245"></script>
+{% block end_f %}
 <script>
 $('#start-push').click(function() {
 	site_push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_api_site' %}");

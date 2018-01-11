@@ -43,8 +43,7 @@
 </div>
 {% endblock %}
 
-{% block end_file %}
-<script src="{% static 'tool/js/tool.js'%}?v=20180105.06"></script>
+{% block end_f %}
 <script>
 $('#start-re').click(function() {
 	regex_api("{{ csrf_token }}", "{% url 'tool:regex_api' %}");

@@ -1,4 +1,4 @@
-{% load blog_tags oauth_tags %}
+{% load blog_tags oauth_tags comment_tags %}
 {% load humanize %}
 <div class="summary-list">
     {% for article in articles %}
@@ -11,7 +11,7 @@
         <div class="media-body">
             <div class="text-muted mb-2 f-12">
                 {% get_user_avatar_tag article.author %}
-                <span>{% get_show_name article.author %}</span>
+                <span>{{ article.author }}</span>
                 <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ article.create_date|naturaltime}}</span>
             </div>
             <h2 class="mt-0 font-weight-bold text-info f-17">
@@ -24,7 +24,7 @@
                     <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
                 <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
                 <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
-                    <i class="fa fa-comments ml-2 mr-1"></i>34</a>
+                    <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
             </div>
         </div>
     </div>

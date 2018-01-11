@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-{% load blog_tags oauth_tags %}
+{% load blog_tags oauth_tags comment_tags %}
 {% load humanize %}
 {% load highlight %}
 
@@ -31,7 +31,7 @@
                     <div class="media-body">
                         <div class="text-muted mb-2 f-12">
                             {% get_user_avatar_tag article.object.author %}
-                            <span>{% get_show_name article.object.author %}</span>
+                            <span>{{ article.object.author }}</span>
                             <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>
                                     {{ article.object.create_date|naturaltime}}</span>
                         </div>
@@ -49,7 +49,7 @@
                             <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.object.views }}</span>
                             <a href="{{ article.object.get_absolute_url }}#comment-block" target="_blank"
                                title="查看文章评论">
-                                <i class="fa fa-comments ml-2 mr-1"></i>34</a>
+                                <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article.object %}</a>
                         </div>
                     </div>
                 </div>
