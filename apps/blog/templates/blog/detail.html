@@ -10,7 +10,7 @@
 
 
 {% block top-file %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.070" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.058" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.13" rel="stylesheet">
 {% endblock %}
 
@@ -36,7 +36,7 @@
                     <hr>
                     <div class="text-center f-13">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
-                              title="最后编辑于{{ article.update_date }}">{{ article.create_date }}</span>
+                              title="最后编辑于{{ article.update_date|date:'Y年m月d日' }}">{{ article.create_date }}</span>
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 {% get_comment_count article %}</span>
                     </div>
@@ -81,7 +81,8 @@
                     </nav>
                 </div>
             </div>
-            <div class="card mt-2 mt-md-3 rounded-0 border-0" id="comment-block">
+            <div class="card mt-2 rounded-0 border-0" id="comment-block">
+                {% include 'comment/comment_form.html' %}
                 {% get_parent_comments article as comment_list %}
                 {% include 'comment/comment_list.html' %}
             </div>
@@ -97,16 +98,9 @@
 {% endblock %}
 
 {% block end_file %}
+<script src="{% static 'comment/js/editor.js' %}?v=20180113.08"></script>
 <script>
 $(TOC_FUN('.toc a'));
-
-
-
-
-
-
-
-
 
 </script>
 {% endblock %}

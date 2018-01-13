@@ -78,6 +78,11 @@ blockquote {
 .clear-both {
     clear:both;
 }
+.form-control:focus,
+.btn:focus {
+    outline:0;
+    box-shadow:none;
+}
 /* top navbar-------------------------------------------------*/
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
@@ -256,7 +261,7 @@ blockquote {
 }
 /* 全文搜索 */
 .highlighted {
-    color:red;
+    color: #ea6f5a;
 }
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */

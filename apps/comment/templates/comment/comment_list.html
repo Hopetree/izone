@@ -7,10 +7,10 @@
             <strong>{% get_comment_user_count article %}&nbsp;人参与&nbsp;|&nbsp;{% get_comment_count article %}&nbsp;条评论</strong>
         </div>
         {% for comment in comment_list %}
-        <div class="comment-parent">
+        <div class="comment-parent pt-2">
             <li class="media">
                 {% get_user_avatar_tag comment.author %}
-                <div class="media-body">
+                <div class="media-body ml-2">
                     <p class="mt-0 mb-1">
                         <strong>{{ comment.author }}</strong>
                         {% if comment.author.username == 'Hopetree' %}
@@ -26,10 +26,10 @@
         {% if child_comments %}
         <ul class="list-unstyled ml-4">
             {% for each in child_comments %}
-            <div class="comment-child">
+            <div class="comment-child pt-2">
                 <li class="media">
                     {% get_user_avatar_tag each.author %}
-                    <div class="media-body">
+                    <div class="media-body ml-2">
                         <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
                             {% if each.author.username == 'Hopetree' %}
                             <small class="text-danger">[博主]</small>

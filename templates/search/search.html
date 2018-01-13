@@ -21,7 +21,7 @@
             {% if query %}
             <div class="summary-list">
                 {% for article in search_list %}
-                <div class="media mb-1 mb-sm-2 mb-md-3 p-2 p-lg-3">
+                <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
                     <div class="align-self-center mr-2 mr-lg-3 w-25 modal-open">
                         <a href="{{ article.object.get_absolute_url }}" target="_blank">
                             <img class="w-100 article-img" src="{{ article.object.img_link }}"
