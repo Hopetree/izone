@@ -10,8 +10,10 @@
 
 
 {% block top-file %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 <link href="{% static 'blog/css/detail.css' %}?v=20180102.058" rel="stylesheet">
-<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.13" rel="stylesheet">
+<link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
+<link href="{% static 'comment/css/base_comment.css' %}?v=20180114.07878" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
@@ -98,7 +100,11 @@
 {% endblock %}
 
 {% block end_file %}
-<script src="{% static 'comment/js/editor.js' %}?v=20180113.08"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+
+</script>
+<script src="{% static 'comment/js/editor.js' %}?v=20180113.000"></script>
 <script>
 $(TOC_FUN('.toc a'));
 

@@ -1,0 +1,71 @@
+/* comment form */
+#emoji-btns,
+.editor-btns .btn {
+    background: #fff;
+}
+#emoji-btns:hover,
+.editor-btns .btn:hover {
+    background: #f4f4f4;
+}
+
+#emoji-btns:focus,
+.editor-btns .btn:focus {
+    outline:0;
+    box-shadow:none;
+}
+#emoji-btns:active,
+.editor-btns .btn:active {
+    box-shadow:inset 0 3px 5px rgba(0,0,0,.125)
+}
+.editor-btns img {
+    width: 24px;
+    height: 24px;
+}
+.CodeMirror,
+.CodeMirror-scroll {
+    min-height: 100px;
+}
+.editor-toolbar,
+.CodeMirror {
+    border-radius: 0!important;
+}
+.editor-toolbar a {
+    margin: 0 .15em;
+}
+.hidden {
+    display: none!important;
+}
+/* comemnts block */
+#comment-list img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+.comment-parent {
+    border-top: 1px solid #f0f0f0;
+}
+.comment-parent .avatar {
+    width: 40px;
+    heigth: 40px;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
+.comment-child {
+    border-top: 1px dashed #f0f0f0;
+}
+.comment-child .avatar {
+    width: 35px;
+    heigth: 35px;
+    margin-right: 1rem;
+    border-radius: 50%;
+    margin-top: 5px;
+}
+/* Extra large devices (large desktops, 1200px and up) */
+/* PC X-iPad Pro*/
+@media (min-width: 1200px) {
+.comment-parent .avatar {
+    margin-top: 5px;
+}
+}
