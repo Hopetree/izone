@@ -83,6 +83,16 @@ blockquote {
     outline:0;
     box-shadow:none;
 }
+.alert-debug {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
 /* top navbar-------------------------------------------------*/
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);

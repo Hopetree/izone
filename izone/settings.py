@@ -204,16 +204,6 @@ SITE_KEYWORDS = 'SEO优化实操,Python自学,Python爬虫实例,Django博客,Py
 BASE_PAGE_BY = 2
 BASE_ORPHANS = 1
 
-# messages 标签设置，设置成bootstrap4样式
-from django.contrib.messages import constants as message_constants
-MESSAGE_TAGS = {
-    message_constants.DEBUG: 'alert-primary',
-    message_constants.INFO: 'alert-info',
-    message_constants.SUCCESS: 'alert-success',
-    message_constants.WARNING: 'alert-warning',
-    message_constants.ERROR: 'alert-danger'
-}
-
 # 全文搜索应用配置
 HAYSTACK_CONNECTIONS = {
     'default': {

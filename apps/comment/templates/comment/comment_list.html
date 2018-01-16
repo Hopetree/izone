@@ -11,13 +11,14 @@
             <li class="media">
                 {% get_user_avatar_tag comment.author %}
                 <div class="media-body ml-2">
+                    <a class="float-right small text-muted mr-2" href="#">回复</a>
                     <p class="mt-0 mb-1">
                         <strong>{{ comment.author }}</strong>
                         {% if comment.author.username == 'Hopetree' %}
                         <small class="text-danger">[博主]</small>
                         {% endif %}
                     </p>
-                    <p class="small">{{ forloop.counter }}楼&nbsp;-&nbsp;{{ comment.create_date|naturaltime }}</p>
+                    <p class="small text-muted">{{ forloop.counter }}楼&nbsp;-&nbsp;{{ comment.create_date|naturaltime }}</p>
                 </div>
             </li>
             <div class="comment-body">{{ comment.content_to_markdown|safe }}</div>
@@ -30,6 +31,7 @@
                 <li class="media">
                     {% get_user_avatar_tag each.author %}
                     <div class="media-body ml-2">
+                        <a class="float-right small text-muted mr-2" href="#">回复</a>
                         <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
                             {% if each.author.username == 'Hopetree' %}
                             <small class="text-danger">[博主]</small>
@@ -37,7 +39,7 @@
                             <i class="fa fa-share"></i>
                             @{{ each.rep_to.author.username }}
                         </p>
-                        <p class="small">{{ each.create_date|naturaltime }}</p>
+                        <p class="small text-muted">{{ each.create_date|naturaltime }}</p>
                     </div>
                 </li>
                 <div class="comment-body">{{ each.content_to_markdown|safe }}</div>

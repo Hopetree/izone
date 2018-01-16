@@ -18,7 +18,7 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/headroom/0.5.0/headroom.min.js"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20171223.018878" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20171223.018" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -30,7 +30,7 @@
 {% if messages %}
 <div class="container">
     {% for message in messages %}
-    <div class="alert {% if message.tags %}{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-0 fade show" role="alert">
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-0 fade show" role="alert">
         {{ message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -64,7 +64,7 @@ $(function() {
 	headroom.init()
 });
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20171222.20"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20171222.201"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = 0;

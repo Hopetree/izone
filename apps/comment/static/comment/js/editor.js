@@ -1,6 +1,12 @@
 $(function() {
 	var simplemde = new SimpleMDE({
 		element: document.getElementById("comment-form"),
+		insertTexts: {
+		horizontalRule: ["", "\n\n-----\n\n"],
+		image: ["![图片Alt](http://", ")"],
+		link: ["[链接描述](http://", ")"],
+		table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
+	    },
 		toolbar: [{
 			name: "bold",
 			action: SimpleMDE.toggleBold,
@@ -62,6 +68,7 @@ $(function() {
 		var e = $(this).data('emoji');
 		$("#rep-to").text("回复 @"+e).removeClass('hidden');
 		$("#no-rep").removeClass('hidden');
+		simplemde.value(simplemde.value()+e);
 	});
 
 })
