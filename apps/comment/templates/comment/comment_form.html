@@ -143,8 +143,17 @@
         </div>
     </div>
     {% else %}
-    <div class="card-body p-2 p-md-3">
-        请登录后评论
+    <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
+        <div>您尚未登录，请
+            <a class="text-danger" href="{% url 'account_login' %}?next={{ request.path }}">登录</a> 或
+            <a class="text-danger" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a> 后评论
+        </div>
+        <div class="login-link mt-2">
+            <a class="mx-3" href="/accounts/weibo/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i
+                    class="fa fa-weibo fa-2x"></i></a>
+            <a class="mx-3" href="/accounts/github/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i
+                    class="fa fa-github fa-2x"></i></a>
+        </div>
     </div>
     {% endif %}
 </div>

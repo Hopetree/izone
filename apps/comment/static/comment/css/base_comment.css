@@ -1,4 +1,8 @@
 /* comment form */
+#no-editor {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
 #emoji-btns,
 .editor-btns .btn {
     background: #fff;
@@ -24,6 +28,9 @@
 .CodeMirror,
 .CodeMirror-scroll {
     min-height: 100px;
+}
+.editor-statusbar span {
+    min-width: 0;
 }
 .editor-toolbar,
 .CodeMirror {

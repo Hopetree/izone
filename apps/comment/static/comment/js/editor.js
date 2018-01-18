@@ -61,14 +61,31 @@ $(function() {
 			"default": !0
 		}],
 	});
-	$(".editor-statusbar").append("<span class='float-left text-info ml-0 hidden' id='rep-to'>4444444</span>");
+	$(".editor-statusbar").append("<span class='float-left text-info ml-0 hidden' id='rep-to'></span>");
 	$("#editor-footer").append("<button type='button' class='btn btn-danger btn-sm float-right mr-4 hidden' id='no-rep'>取消回复</button>");
+
 	var emoji_tag = $("#emoji-list img");
 	emoji_tag.click(function() {
 		var e = $(this).data('emoji');
-		$("#rep-to").text("回复 @"+e).removeClass('hidden');
-		$("#no-rep").removeClass('hidden');
 		simplemde.value(simplemde.value()+e);
+	});
+
+//    点击回复
+	$(".rep-btn").click(function(){
+	    simplemde.value('')
+	    var u = $(this).data('repuser')
+	    var i = $(this).data('repid')
+	    sessionStorage.setItem('rep_id',i);
+	    $("#rep-to").text("回复 @"+u).removeClass('hidden');
+		$("#no-rep").removeClass('hidden');
+	});
+
+//    点击取消回复
+	$("#no-rep").click(function(){
+	    simplemde.value('')
+	    sessionStorage.removeItem('rep_id');
+	    $("#rep-to").text('').addClass('hidden');
+		$("#no-rep").addClass('hidden');
 	});
 
 })

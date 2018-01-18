@@ -11,7 +11,8 @@
             <li class="media">
                 {% get_user_avatar_tag comment.author %}
                 <div class="media-body ml-2">
-                    <a class="float-right small text-muted mr-2" href="#">回复</a>
+                    <a class="float-right small text-muted mr-2 rep-btn" href="#editor-block"
+                       data-repid="{{ comment.id }}" data-repuser="{{ comment.author.username }}">回复</a>
                     <p class="mt-0 mb-1">
                         <strong>{{ comment.author }}</strong>
                         {% if comment.author.username == 'Hopetree' %}
@@ -31,7 +32,8 @@
                 <li class="media">
                     {% get_user_avatar_tag each.author %}
                     <div class="media-body ml-2">
-                        <a class="float-right small text-muted mr-2" href="#">回复</a>
+                        <a class="float-right small text-muted mr-2 rep-btn" href="#editor-block"
+                           data-repid="{{ each.id }}" data-repuser="{{ each.author.username }}">回复</a>
                         <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
                             {% if each.author.username == 'Hopetree' %}
                             <small class="text-danger">[博主]</small>
