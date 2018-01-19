@@ -69,6 +69,30 @@
     border-radius: 50%;
     margin-top: 5px;
 }
+#comment-list table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+#comment-list table th,
+#comment-list table td {
+    padding:2px 15px;
+    border: 1px solid #95a5a6;
+}
+#comment-list table th {
+    background-color:#212529;
+    color:#fff;
+}
+#comment-list p {
+    margin-bottom:1em;
+}
+.rep-btn {
+    color:#868e96;
+}
+.rep-btn:hover {
+    color:#ea6f5a;
+}
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {

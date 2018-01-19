@@ -33,6 +33,12 @@
 .article-body ol {
     padding-left:2.2em;
 }
+.article-body table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
 .article-body table th,
 .article-body table td {
     padding:2px 15px;
@@ -63,7 +69,9 @@
     color: #ff6900;
 }
 
-
+blockquote {
+    margin: 0 0 .5em;
+}
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {

@@ -1,7 +1,7 @@
 ﻿User-agent: *
-Disallow: /admin/
+Disallow: /adminx/
 Disallow: /accounts/
-Disallow: /comments/
+Disallow: /comment/
 Disallow: /feed/
 Disallow: /search/
 Disallow: /silian.xml

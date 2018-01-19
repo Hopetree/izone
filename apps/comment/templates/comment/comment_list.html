@@ -7,15 +7,15 @@
             <strong>{% get_comment_user_count article %}&nbsp;人参与&nbsp;|&nbsp;{% get_comment_count article %}&nbsp;条评论</strong>
         </div>
         {% for comment in comment_list %}
-        <div class="comment-parent pt-2">
+        <div class="comment-parent pt-2" id="com-{{ comment.id }}">
             <li class="media">
                 {% get_user_avatar_tag comment.author %}
                 <div class="media-body ml-2">
-                    <a class="float-right small text-muted mr-2 rep-btn" href="#editor-block"
+                    <a class="float-right small mr-2 rep-btn" href="#editor-block"
                        data-repid="{{ comment.id }}" data-repuser="{{ comment.author.username }}">回复</a>
                     <p class="mt-0 mb-1">
                         <strong>{{ comment.author }}</strong>
-                        {% if comment.author.username == 'Hopetree' %}
+                        {% if comment.author.is_superuser %}
                         <small class="text-danger">[博主]</small>
                         {% endif %}
                     </p>
@@ -28,14 +28,14 @@
         {% if child_comments %}
         <ul class="list-unstyled ml-4">
             {% for each in child_comments %}
-            <div class="comment-child pt-2">
+            <div class="comment-child pt-2" id="com-{{ each.id }}">
                 <li class="media">
                     {% get_user_avatar_tag each.author %}
                     <div class="media-body ml-2">
-                        <a class="float-right small text-muted mr-2 rep-btn" href="#editor-block"
+                        <a class="float-right small mr-2 rep-btn" href="#editor-block"
                            data-repid="{{ each.id }}" data-repuser="{{ each.author.username }}">回复</a>
                         <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
-                            {% if each.author.username == 'Hopetree' %}
+                            {% if each.author.is_superuser %}
                             <small class="text-danger">[博主]</small>
                             {% endif %}
                             <i class="fa fa-share"></i>

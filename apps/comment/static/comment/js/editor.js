@@ -62,7 +62,7 @@ $(function() {
 		}],
 	});
 	$(".editor-statusbar").append("<span class='float-left text-info ml-0 hidden' id='rep-to'></span>");
-	$("#editor-footer").append("<button type='button' class='btn btn-danger btn-sm float-right mr-4 hidden' id='no-rep'>取消回复</button>");
+	$("#editor-footer").append("<button type='button' class='btn btn-danger btn-sm float-right mr-4 f-16 hidden' id='no-rep'>取消回复</button>");
 
 	var emoji_tag = $("#emoji-list img");
 	emoji_tag.click(function() {
@@ -88,4 +88,51 @@ $(function() {
 		$("#no-rep").addClass('hidden');
 	});
 
+//    点击提交评论
+    $("#push-com").click(function() {
+        var csrf = $(this).data('csrf');
+        var article_id = $(this).data('article-id');
+        var URL = $(this).data('ajax-url');
+        var content = simplemde.value();
+        var rep_id = sessionStorage.getItem('rep_id');
+        if (content.length == 0) {
+            alert("评论内容不能为空！");
+            return false;
+        }
+        $.ajaxSetup({
+            data: {
+                'csrfmiddlewaretoken': csrf
+            }
+        });
+        $.ajax({
+            type: 'post',
+            url: URL,
+            data: {
+                'rep_id': rep_id,
+                'content': content,
+                'article_id': article_id
+            },
+            dataType: 'json',
+            success: function(ret) {
+                simplemde.value('')
+                sessionStorage.removeItem('rep_id');
+                sessionStorage.setItem('new_point', ret.new_point);
+                window.location.reload();
+            },
+            error: function(ret) {
+                alert(ret.msg);
+            }
+        });
+    });
+
+//    提交评论后定位到新评论处
+    if(sessionStorage.getItem('new_point')){
+        var top = $(sessionStorage.getItem('new_point')).offset().top-100;
+        $('body,html').animate({scrollTop:top}, 200);
+        window.location.hash = sessionStorage.getItem('new_point');
+        sessionStorage.removeItem('new_point');
+    };
+    sessionStorage.removeItem('rep_id');
+
+    $(".comment-body a").attr("target","_blank");
 })

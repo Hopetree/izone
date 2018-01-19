@@ -81,3 +81,8 @@ def my_highlight(text,q):
         return mark_safe(r)
     except:
         return text
+
+@register.simple_tag
+def get_request_param(request, param, default=None):
+    '''获取请求的参数'''
+    return request.POST.get(param) or request.GET.get(param, default)

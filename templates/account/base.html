@@ -1,5 +1,5 @@
 {% extends "blog/base.html" %}
-{% load static %}
+{% load static blog_tags %}
 
 {% block metas %}
     <meta name="description" content="用户账号管理，使用django-allauth社交用户系统，支持微博、Github等社交账号登录，加入{{ site_end_title }}，查看更多信息。">
@@ -24,8 +24,9 @@
                         <span>快速登录</span>
                     </div>
                     <div class="login-link">
-                        <a class="mx-4" href="/accounts/weibo/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-weibo fa-2x"></i></a>
-                        <a class="mx-4" href="/accounts/github/login/?process=login" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-github fa-2x"></i></a>
+                        {% get_request_param request 'next' as next_url %}
+                        <a class="mx-4" href="/accounts/weibo/login/?next={{ next_url }}" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-weibo fa-2x"></i></a>
+                        <a class="mx-4" href="/accounts/github/login/?next={{ next_url }}" title="社交账号登录有点慢，请耐心等候！"><i class="fa fa-github fa-2x"></i></a>
                     </div>
                 </div>
             </div>

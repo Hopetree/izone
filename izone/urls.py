@@ -31,10 +31,11 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^adminx/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),  # allauth
     url(r'^accounts/', include('oauth.urls', namespace='oauth')),  # oauth,只展现一个用户登录界面
     url('', include('blog.urls', namespace='blog')),  # blog
+    url(r'^comment/',include('comment.urls',namespace='comment')), # comment
     url(r'^tool/', include('tool.urls',namespace='tool')), # tool
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')), # robots
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'), # 网站地图
