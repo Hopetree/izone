@@ -38,4 +38,4 @@ function TOC_FUN(A) {
 		return false
 	})
 }
-$(TOC_FUN('.toc a,.rep-btn'));
+$(TOC_FUN('.toc a'));

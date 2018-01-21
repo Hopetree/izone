@@ -1,4 +1,4 @@
-{% load static oauth_tags %}
+{% load static oauth_tags comment_tags %}
 <nav class="navbar navbar-expand-md bg-white fixed-top blog-navbar py-md-0">
     <a class="navbar-brand d-md-none d-lg-block" href="{% url 'blog:index' %}">
         <img src="{% static 'blog/img/logo.png' %}" alt="{{ site_end_title }}">
@@ -36,10 +36,13 @@
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
+            {% get_notifications_count user 'false' as msgnum %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
-                    <span class="get-msg text-center">4</span>
+                    {% if msgnum > 0%}
+                    <span class="get-msg text-center">{{ msgnum }}</span>
+                    {% endif %}
                     {% get_user_avatar_tag user %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
@@ -48,9 +51,10 @@
                     <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
                             class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
                     {% endif %}
-                    <a class="dropdown-item pl-3" href="#"><i class="fa fa-fw fa-bookmark text-info mr-2"></i>我的收藏</a>
-                    <a class="dropdown-item pl-3" href="#"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
-                        <span class="badge badge-warning ml-3 text-center">19</span>
+                    <a class="dropdown-item pl-3" href="{% url 'comment:notification' %}"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                        {% if msgnum > 0%}
+                        <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>
+                        {% endif %}
                     </a>
                     <a class="dropdown-item pl-3" href="{% url 'account_logout' %}"><i
                             class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>

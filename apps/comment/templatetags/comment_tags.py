@@ -1,7 +1,6 @@
 # 创建了新的tags标签文件后必须重启服务器
 
 from django import template
-from ..models import ArticleComment
 
 register = template.Library()
 
@@ -33,4 +32,24 @@ def get_comment_user_count(entry):
             p.append(each.author)
     return len(p)
 
+@register.simple_tag
+def get_notifications(user,f=None):
+    '''获取一个用户的对应条件下的提示信息'''
+    if f=='true':
+        lis = user.notification_get.filter(is_read=True)
+    elif f=='false':
+        lis = user.notification_get.filter(is_read=False)
+    else:
+        lis = user.notification_get.all()
+    return lis
 
+@register.simple_tag
+def get_notifications_count(user,f=None):
+    '''获取一个用户的对应条件下的提示信息总数'''
+    if f=='true':
+        lis = user.notification_get.filter(is_read=True)
+    elif f=='false':
+        lis = user.notification_get.filter(is_read=False)
+    else:
+        lis = user.notification_get.all()
+    return lis.count()

@@ -78,6 +78,11 @@ $(function() {
 	    sessionStorage.setItem('rep_id',i);
 	    $("#rep-to").text("回复 @"+u).removeClass('hidden');
 		$("#no-rep").removeClass('hidden');
+		$(".rep-btn").css("color", "#868e96");
+		$(this).css("color", "red");
+		$('html, body').animate({
+			scrollTop: $($.attr(this, 'href')).offset().top - 55
+		}, 500);
 	});
 
 //    点击取消回复

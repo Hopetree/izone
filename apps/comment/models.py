@@ -39,3 +39,22 @@ class ArticleComment(Comment):
         verbose_name = '文章评论'
         verbose_name_plural = verbose_name
         ordering = ['create_date']
+
+class Notification(models.Model):
+    create_p = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='提示创建者',related_name='notification_create')
+    get_p = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='提示接收者',related_name='notification_get')
+    comment = models.ForeignKey(ArticleComment,verbose_name='所属评论',related_name='the_comment')
+    create_date = models.DateTimeField('提示时间',auto_now_add=True)
+    is_read = models.BooleanField('是否已读',default=False)
+
+    def mark_to_read(self):
+        self.is_read = True
+        self.save(update_fields=['is_read'])
+
+    class Meta:
+        verbose_name = '提示信息'
+        verbose_name_plural = verbose_name
+        ordering = ['-create_date']
+
+    def __str__(self):
+        return '{}@了{}'.format(self.create_p,self.get_p)
