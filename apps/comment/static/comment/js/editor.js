@@ -104,8 +104,8 @@ $(function() {
         var now_t = Date.parse(new Date());
         if (base_t) {
             var tt = now_t - base_t;
-            if (tt < 60000) {
-                alert('两次评论时间间隔必须大于60秒，还需等待' + (60 - parseInt(tt / 1000)) + '秒');
+            if (tt < 40000) {
+                alert('两次评论时间间隔必须大于40秒，还需等待' + (40 - parseInt(tt / 1000)) + '秒');
                 return;
             } else {
                 sessionStorage.setItem('base_t', now_t);
