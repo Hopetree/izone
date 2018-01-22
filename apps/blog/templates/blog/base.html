@@ -59,30 +59,13 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script>
-$(function() {
-	var myElement = document.querySelector(".blog-navbar");
-	var headroom = new Headroom(myElement);
-	headroom.init()
-});
+$(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
 <script src="{% static 'blog/js/base.js'%}?v=20171222.21"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
-if (msgs > 0) {
-	var _record = 0;
-	var myTitle = document.title;
-	function titleBlink() {
-		_record++;
-		if (_record % 2) {
-			document.title = '【 】' + myTitle
-		} else {
-			document.title = '【新消息】' + myTitle
-		};
-		setTimeout("titleBlink()", 500)
-	};
-	titleBlink()
-}
+if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_record++;if(_record%2){document.title='【 】'+myTitle}else{document.title='【新消息】'+myTitle};setTimeout("titleBlink()",500)};titleBlink()}
 </script>
 {% endif %}
 {% block end_file %}{% endblock %}

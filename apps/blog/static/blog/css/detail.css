@@ -53,6 +53,7 @@
 }
 .article-toc {
     position: fixed;
+    max-width: 20%;
 }
 .toc ul {
     padding-left:2em;
