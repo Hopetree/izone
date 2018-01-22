@@ -95,15 +95,28 @@ $(function() {
 
 //    点击提交评论
     $("#push-com").click(function() {
+        var content = simplemde.value();
+        if (content.length == 0) {
+            alert("评论内容不能为空！");
+            return;
+        }
+        var base_t = sessionStorage.getItem('base_t');
+        var now_t = Date.parse(new Date());
+        if (base_t) {
+            var tt = now_t - base_t;
+            if (tt < 60000) {
+                alert('两次评论时间间隔必须大于60秒，还需等待' + (60 - parseInt(tt / 1000)) + '秒');
+                return;
+            } else {
+                sessionStorage.setItem('base_t', now_t);
+            }
+        } else {
+            sessionStorage.setItem('base_t', now_t)
+        };
         var csrf = $(this).data('csrf');
         var article_id = $(this).data('article-id');
         var URL = $(this).data('ajax-url');
-        var content = simplemde.value();
         var rep_id = sessionStorage.getItem('rep_id');
-        if (content.length == 0) {
-            alert("评论内容不能为空！");
-            return false;
-        }
         $.ajaxSetup({
             data: {
                 'csrfmiddlewaretoken': csrf

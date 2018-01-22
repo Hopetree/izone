@@ -113,7 +113,7 @@ function regex_api(CSRF, URL) {
 		success: function(ret) {
 		    var newhtml = '匹配到'+ret.result.length+'个结果：<br>'
 		    for (var i=0;i<ret.result.length;i++){
-		        newhtml += ret.result[i] + '<br>'
+		        newhtml += ret.result[i].replace('<', '&lt;').replace('>','&gt;')+ '<br>'
 		    }
 			$('.push-result').removeClass('text-center').html(newhtml);
 		},
