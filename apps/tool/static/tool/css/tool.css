@@ -17,7 +17,12 @@ pre {
     font-size: 85%;
     padding: .5rem;
 }
-
+.re-result pre {
+    margin-bottom: 0;
+}
+.re-result p {
+    margin-bottom:5px;
+}
 @media (min-width: 1200px) {
 .tool-list .card:hover {
     box-shadow:0 3px 9px rgba(0, 0, 0, 0.275)

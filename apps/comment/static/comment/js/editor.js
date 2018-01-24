@@ -91,6 +91,7 @@ $(function() {
 	    sessionStorage.removeItem('rep_id');
 	    $("#rep-to").text('').addClass('hidden');
 		$("#no-rep").addClass('hidden');
+		$(".rep-btn").css("color", "#868e96");
 	});
 
 //    点击提交评论

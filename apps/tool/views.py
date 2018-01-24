@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import check_links
 
 import re
+import markdown
 
 # Create your views here.
 
@@ -69,7 +71,17 @@ def regex_api(request):
         data = request.POST
         texts = data.get('texts')
         regex = data.get('r')
-        result = re.findall(r'{}'.format(regex),texts)
-        return JsonResponse({'result':result})
+        try:
+            lis = re.findall(r'{}'.format(regex),texts)
+        except:
+            lis = []
+        num = len(lis)
+        info = '\n'.join(lis)
+        result = "匹配到&nbsp;{}&nbsp;个结果：\n".format(num) + "```\n" + info + "\n```"
+        result = markdown.markdown(result, extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+        ])
+        return JsonResponse({'result':mark_safe(result),'num':num})
     return JsonResponse({'msg': 'miss'})
 
