@@ -1,0 +1,83 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}网页HTTP请求头Request Headers在线生成User-Agent_在线工具{% endblock %}
+{% block metas %}
+<meta name="description"
+      content="user-agent生成器，网页请求头生成器，自动生成请求头Request Headers，在线生成各种浏览器ie、chrome、firefox等的请求头user-agent，Python爬虫的headers参数自动生成。">
+<meta name="keywords" content="网页请求头,Request Headers,user-agent,在线工具">
+{% endblock %}
+
+{% block left_content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white border-0 rounded-0 mb-3 p-2 f-15">
+        <li class="breadcrumb-item">
+            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'tool:total' %}">在线工具</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">user-agent生成器</li>
+    </ol>
+</nav>
+<div class="card-body p-0">
+    <h3 class="card-title pl-2 title-info">工具说明：</h3>
+    <ul>
+        <li>按照通用的正则表达式的规则填写表单即可提取信息</li>
+        <li>本工具使用Python的正则表达式库实现，支持Python正则表达式语法</li>
+    </ul>
+</div>
+<div class="mb-3">
+
+    <form class="form-horizontal">
+        <h3 class="card-title pl-2 title-info">请求头参数选择</h3>
+        <div class="control-group">
+            <label class="control-label">设备：</label>
+            <div class="controls" id="device_type">
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="device_type" type="checkbox"
+                                                      value="desktop">desktop</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="device_type" type="checkbox"
+                                                      value="tablet">tablet</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="device_type" type="checkbox"
+                                                      value="smartphone">smartphone</label>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">系统：</label>
+            <div class="controls" id="os">
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="os" type="checkbox"
+                                                      value="win">win</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="os" type="checkbox"
+                                                      value="linux">linux</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="os" type="checkbox"
+                                                      value="mac">mac</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="os" type="checkbox" value="android">android</label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">浏览器：</label>
+            <div class="controls" id="navigator">
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="navigator" type="checkbox"
+                                                      value="ie">ie</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="navigator" type="checkbox" value="chrome">chrome</label>
+                <label class="checkbox inline"><input class="ml-2 mr-3" name="navigator" type="checkbox"
+                                                      value="firefox">firefox</label>
+            </div>
+        </div>
+    </form>
+    <button type="submit" class="btn btn-info btn-sm rounded-0" id="get_useragent">生成 USER-AGENT</button>
+</div>
+<div class="card mb-3 rounded-0">
+    <div class="card-header text-center text-info font-weight-bold py-2">USER-AGENT</div>
+    <div class="card-body push-result text-center p-3">结果显示区</div>
+</div>
+{% endblock %}
+
+{% block end_f %}
+<script>
+$("#get_useragent").click(function(){
+    useragent_api("{{ csrf_token }}","{% url 'tool:useragent_api' %}")
+})
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Tag, Category, Timeline, Carousel, Silian, Keyword
+from .models import Article, Tag, Category, Timeline, Carousel, Silian, Keyword,FriendLink
 
 
 @admin.register(Article)
@@ -64,3 +64,9 @@ class SilianAdmin(admin.ModelAdmin):
 @admin.register(Keyword)
 class KeywordAdmin(admin.ModelAdmin):
     list_display = ('name','id')
+
+@admin.register(FriendLink)
+class FriendLinkAdmin(admin.ModelAdmin):
+    list_display = ('name','description','link','create_date','is_active','is_show')
+    date_hierarchy = 'create_date'
+    list_filter = ('is_active','is_show')

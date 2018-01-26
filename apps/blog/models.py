@@ -183,3 +183,28 @@ class Silian(models.Model):
 
     def __str__(self):
         return self.badurl
+
+class FriendLink(models.Model):
+    name = models.CharField('网站名称',max_length=50)
+    description = models.TextField('网站描述',blank=True)
+    link = models.URLField('网站地址',help_text='请填写http或https开头的完整形式地址')
+    logo = models.URLField('网站LOGO',help_text='请填写http或https开头的完整形式地址',blank=True)
+    create_date = models.DateTimeField('创建时间',auto_now_add=True)
+    is_active = models.BooleanField('是否有效',default=True)
+    is_show = models.BooleanField('是否首页展示',default=False)
+
+    class Meta:
+        verbose_name = '友情链接'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
+
+    def __str__(self):
+        return self.name
+
+    def active_to_false(self):
+        self.is_active = False
+        self.save(update_fields=['is_active'])
+
+    def show_to_false(self):
+        self.is_show = True
+        self.save(update_fields=['is_show'])

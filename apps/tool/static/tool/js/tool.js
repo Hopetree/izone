@@ -116,3 +116,46 @@ function regex_api(CSRF, URL) {
 		},
 	})
 }
+
+//user-agent api
+function useragent_api(CSRF, URL) {
+    var d_tags = $("#device_type input:checkbox:checked");
+    var os_tags = $("#os input:checkbox:checked");
+    var n_tags = $("#navigator input:checkbox:checked");
+    var d_lis = new Array();
+    var os_lis = new Array();
+    var n_lis = new Array();
+    if (d_tags.length > 0){
+        for (var i=0;i<d_tags.length;i++){
+            d_lis.push(d_tags[i].value);
+        }
+    };
+    if (os_tags.length > 0){
+        for (var i=0;i<os_tags.length;i++){
+            os_lis.push(os_tags[i].value);
+        }
+    };
+    if (n_tags.length > 0){
+        for (var i=0;i<n_tags.length;i++){
+            n_lis.push(n_tags[i].value);
+        }
+    };
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: CSRF
+		}
+	});
+	$.ajax({
+		type: 'post',
+		url: URL,
+		data: {
+		    'd_lis': d_lis.join(),
+			'os_lis': os_lis.join(),
+			'n_lis': n_lis.join()
+		},
+		dataType: 'json',
+		success: function(ret) {
+			$('.push-result').text(ret.result)
+		},
+	})
+}

@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import check_links
+from .apis.useragent import get_user_agent
 
 import re
 import markdown
@@ -85,3 +86,20 @@ def regex_api(request):
         return JsonResponse({'result':mark_safe(result),'num':num})
     return JsonResponse({'msg': 'miss'})
 
+# 在线正则表达式
+def useragent_view(request):
+    return render(request, 'tool/useragent.html')
+
+@require_POST
+def useragent_api(request):
+    if request.is_ajax():
+        data = request.POST
+        d_lis = data.get('d_lis')
+        os_lis = data.get('os_lis')
+        n_lis = data.get('n_lis')
+        d = d_lis.split(',') if len(d_lis) >0 else None
+        os = os_lis.split(',') if len(os_lis) > 0 else None
+        n = n_lis.split(',') if len(n_lis) > 0 else None
+        result = get_user_agent(os=os,navigator=n,device_type=d)
+        return JsonResponse({'result':result})
+    return JsonResponse({'msg': 'miss'})
