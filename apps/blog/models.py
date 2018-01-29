@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import reverse
 import markdown
 import emoji
+import re
 
 
 # Create your models here.
@@ -207,3 +208,16 @@ class FriendLink(models.Model):
     def __str__(self):
         return self.name
 
+    def get_home_url(self):
+        '''提取友链的主页'''
+        u = re.findall(r'(http|https://.*?)/.*?', self.link)
+        home_url = u[0] if u else self.link
+        return home_url
+
+    def active_to_false(self):
+        self.is_active = False
+        self.save(update_fields=['is_active'])
+
+    def show_to_false(self):
+        self.is_show = True
+        self.save(update_fields=['is_show'])

@@ -3,7 +3,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
-from .apis.links_test import check_links
+from .apis.links_test import Check
 from .apis.useragent import get_user_agent
 
 import re
@@ -58,7 +58,8 @@ def Link_test_api(request):
         data = request.POST
         p = data.get('p')
         urls = data.get('urls')
-        info = check_links(urls,p)
+        c = Check(urls,p)
+        info = c.run()
         return JsonResponse(info)
     return JsonResponse({'msg': 'miss'})
 
