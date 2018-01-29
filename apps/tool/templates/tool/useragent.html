@@ -4,8 +4,8 @@
 {% block head_title %}网页HTTP请求头Request Headers在线生成User-Agent_在线工具{% endblock %}
 {% block metas %}
 <meta name="description"
-      content="user-agent生成器，网页请求头生成器，自动生成请求头Request Headers，在线生成各种浏览器ie、chrome、firefox等的请求头user-agent，Python爬虫的headers参数自动生成。">
-<meta name="keywords" content="网页请求头,Request Headers,user-agent,在线工具">
+      content="User-Agent生成器，网页请求头生成器，自动生成请求头Request Headers，在线生成各种浏览器ie、chrome、firefox等的请求头user-agent，Python爬虫的headers参数自动生成。">
+<meta name="keywords" content="网页请求头,Request Headers,User-Agent,在线工具">
 {% endblock %}
 
 {% block left_content %}
@@ -17,14 +17,16 @@
         <li class="breadcrumb-item">
             <a href="{% url 'tool:total' %}">在线工具</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">user-agent生成器</li>
+        <li class="breadcrumb-item active" aria-current="page">User-Agent 生成器</li>
     </ol>
 </nav>
 <div class="card-body p-0">
     <h3 class="card-title pl-2 title-info">工具说明：</h3>
     <ul>
-        <li>按照通用的正则表达式的规则填写表单即可提取信息</li>
-        <li>本工具使用Python的正则表达式库实现，支持Python正则表达式语法</li>
+        <li>User-Agent多用于爬虫程序中设置请求头Headers，是爬虫程序最简单的伪装</li>
+        <li>本工具通过设置不同的参数自动生成不同平台不同系统不同浏览器的User-Agent</li>
+        <li>参数不选的时候表示不设置限制，随机生成User-Agent，设置了参数就生成对应参数的User-Agent</li>
+        <li>当设置的参数之间有冲突的时候，将无法生成合适的User-Agent，会显示错误信息</li>
     </ul>
 </div>
 <div class="mb-3">
@@ -66,10 +68,10 @@
             </div>
         </div>
     </form>
-    <button type="submit" class="btn btn-info btn-sm rounded-0" id="get_useragent">生成 USER-AGENT</button>
+    <button type="submit" class="btn btn-info btn-sm rounded-0" id="get_useragent">生成 User-Agent</button>
 </div>
 <div class="card mb-3 rounded-0">
-    <div class="card-header text-center text-info font-weight-bold py-2">USER-AGENT</div>
+    <div class="card-header text-center text-info font-weight-bold py-2">User-Agent</div>
     <div class="card-body push-result text-center p-3">结果显示区</div>
 </div>
 {% endblock %}

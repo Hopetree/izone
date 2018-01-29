@@ -27,10 +27,7 @@ def get_urls(url):
 
 
 if __name__ == '__main__':
-    # url = 'http://data.zz.baidu.com/urls?site=www.stopfollow.com&token=NpU01TxKEtTQAlBV'
-    # urls = 'http://www.stopfollow.com/tools/wordsearch/'
-    # ret = push_urls(url,urls)
-    # print(ret)
-    # print(type(ret))
-    url = 'http://www.stopfollow.com/sitemap.xml'
-    print(get_urls(url))
+    url = 'www.stopfollow-sh_8i.com'
+    u = re.findall(r'(http|https://.*?)/.*?', url)
+    home_url = u[0] if u else url
+    print(home_url)

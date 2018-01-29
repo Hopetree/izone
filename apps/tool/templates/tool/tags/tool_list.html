@@ -1,0 +1,22 @@
+{% load tool_tags %}
+
+{% get_toolcates as cates %}
+{% for each_cate in cates %}
+<div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 tool-cate">
+    <div class="card-header bg-white px-0">
+        <strong><i class="fa fa-link mr-2 f-17"></i>{{ each_cate.name }}</strong>
+    </div>
+    <div class="card-body px-0 py-3">
+        <div class="tool-list">
+            {% get_toollinks each_cate as tools %}
+            {% for tool in tools %}
+            <div class="w-50 float-left text-center mb-2">
+                <div class="mx-2 bg-info text-white">
+                    <a href="{{ tool.link }}" title="{{ tool.description }}" target="_blank">{{ tool.name }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endfor %}

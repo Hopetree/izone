@@ -206,7 +206,7 @@ blockquote {
 }
 #tag-card .card-header strong,
 #category-card .card-header strong {
-    padding-bottom:11px;
+    padding-bottom:12px;
     border-bottom: 2px solid #00AAEE;
 }
 #category-card .badge {

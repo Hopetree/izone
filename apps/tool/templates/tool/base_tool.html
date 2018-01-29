@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block top-file %}
-<link href="{% static 'tool/css/tool.css' %}?v=20180107.07" rel="stylesheet">
+<link href="{% static 'tool/css/tool.css' %}?v=20180107.074" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
@@ -12,7 +12,7 @@
             {% block left_content %}{% endblock %}
         </div>
         <div class="col-lg-4 d-none d-lg-block">
-            {% include 'blog/tags/base_right.html' %}
+            {% include 'tool/tags/tool_list.html' %}
         </div>
     </div>
 </div>

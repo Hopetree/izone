@@ -19,11 +19,12 @@ class Keyword(models.Model):
     def __str__(self):
         return self.name
 
+
 # 文章标签
 class Tag(models.Model):
     name = models.CharField('文章标签', max_length=20)
     slug = models.SlugField(unique=True)
-    description = models.TextField('描述',max_length=240,default=settings.SITE_DESCRIPTION,
+    description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
                                    help_text='用来作为SEO中description,长度参考SEO标准')
 
     class Meta:
@@ -41,11 +42,12 @@ class Tag(models.Model):
         '''返回当前标签下所有发表的文章列表'''
         return Article.objects.filter(tags=self)
 
+
 # 文章分类
 class Category(models.Model):
     name = models.CharField('文章分类', max_length=20)
     slug = models.SlugField(unique=True)
-    description = models.TextField('描述',max_length=240,default=settings.SITE_DESCRIPTION,
+    description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
                                    help_text='用来作为SEO中description,长度参考SEO标准')
 
     class Meta:
@@ -62,6 +64,7 @@ class Category(models.Model):
     def get_article_list(self):
         return Article.objects.filter(category=self)
 
+
 # 文章
 class Article(models.Model):
     IMG_LINK = settings.DEFAULT_IMG_LINL
@@ -77,7 +80,7 @@ class Article(models.Model):
 
     category = models.ForeignKey(Category, verbose_name='文章分类')
     tags = models.ManyToManyField(Tag, verbose_name='标签')
-    keywords = models.ManyToManyField(Keyword,verbose_name='文章关键词',
+    keywords = models.ManyToManyField(Keyword, verbose_name='文章关键词',
                                       help_text='文章关键词，用来作为SEO中keywords，最好使用长尾词，3-4个足够')
 
     class Meta:
@@ -107,6 +110,7 @@ class Article(models.Model):
     def get_next(self):
         return Article.objects.filter(id__gt=self.id).order_by('id').first()
 
+
 # 时间线
 class Timeline(models.Model):
     COLOR_CHOICE = (
@@ -121,14 +125,14 @@ class Timeline(models.Model):
         ('R', '右边'),
     )
     STAR_NUM = (
-        (1,'1颗星'),
-        (2,'2颗星'),
-        (3,'3颗星'),
-        (4,'4颗星'),
-        (5,'5颗星'),
+        (1, '1颗星'),
+        (2, '2颗星'),
+        (3, '3颗星'),
+        (4, '4颗星'),
+        (5, '5颗星'),
     )
     side = models.CharField('位置', max_length=1, choices=SIDE_CHOICE, default='L')
-    star_num = models.IntegerField('星星个数',choices=STAR_NUM,default=3)
+    star_num = models.IntegerField('星星个数', choices=STAR_NUM, default=3)
     icon = models.CharField('图标', max_length=50, default='fa fa-pencil')
     icon_color = models.CharField('图标颜色', max_length=20, choices=COLOR_CHOICE, default='info')
     title = models.CharField('标题', max_length=100)
@@ -138,33 +142,34 @@ class Timeline(models.Model):
     class Meta:
         verbose_name = '时间线'
         verbose_name_plural = verbose_name
-        ordering = ['-update_date']
+        ordering = ['update_date']
 
     def __str__(self):
         return self.title[:20]
 
     def title_to_emoji(self):
-        return emoji.emojize(self.title,use_aliases=True)
+        return emoji.emojize(self.title, use_aliases=True)
 
     def content_to_markdown(self):
         # 先转换成emoji然后转换成markdown
-        to_emoji_content = emoji.emojize(self.content,use_aliases=True)
+        to_emoji_content = emoji.emojize(self.content, use_aliases=True)
         return markdown.markdown(to_emoji_content,
-                                 extensions=['markdown.extensions.extra',]
+                                 extensions=['markdown.extensions.extra', ]
                                  )
+
 
 # 幻灯片
 class Carousel(models.Model):
-    number = models.IntegerField('编号',help_text='编号决定图片播放的顺序，图片不要多于5张')
-    title = models.CharField('标题',max_length=20,blank=True,null=True,help_text='标题可以为空')
-    content = models.CharField('描述',max_length=80)
-    img_url = models.CharField('图片地址',max_length=200)
-    url = models.CharField('跳转链接',max_length=200,default='#',help_text='图片跳转的超链接，默认#表示不跳转')
+    number = models.IntegerField('编号', help_text='编号决定图片播放的顺序，图片不要多于5张')
+    title = models.CharField('标题', max_length=20, blank=True, null=True, help_text='标题可以为空')
+    content = models.CharField('描述', max_length=80)
+    img_url = models.CharField('图片地址', max_length=200)
+    url = models.CharField('跳转链接', max_length=200, default='#', help_text='图片跳转的超链接，默认#表示不跳转')
 
     class Meta:
         verbose_name = '图片轮播'
         verbose_name_plural = verbose_name
-        ordering = ['number','id']
+        ordering = ['number', 'id']
 
     def __str__(self):
         return self.content[:25]
@@ -172,9 +177,9 @@ class Carousel(models.Model):
 
 # 死链
 class Silian(models.Model):
-    badurl = models.CharField('死链地址',max_length=200,help_text='注意：地址是以http开头的完整链接格式')
-    remark = models.CharField('死链说明',max_length=50,blank=True,null=True)
-    add_date = models.DateTimeField('提交日期',auto_now_add=True)
+    badurl = models.CharField('死链地址', max_length=200, help_text='注意：地址是以http开头的完整链接格式')
+    remark = models.CharField('死链说明', max_length=50, blank=True, null=True)
+    add_date = models.DateTimeField('提交日期', auto_now_add=True)
 
     class Meta:
         verbose_name = '死链'
@@ -184,14 +189,15 @@ class Silian(models.Model):
     def __str__(self):
         return self.badurl
 
+
 class FriendLink(models.Model):
-    name = models.CharField('网站名称',max_length=50)
-    description = models.TextField('网站描述',blank=True)
-    link = models.URLField('网站地址',help_text='请填写http或https开头的完整形式地址')
-    logo = models.URLField('网站LOGO',help_text='请填写http或https开头的完整形式地址',blank=True)
-    create_date = models.DateTimeField('创建时间',auto_now_add=True)
-    is_active = models.BooleanField('是否有效',default=True)
-    is_show = models.BooleanField('是否首页展示',default=False)
+    name = models.CharField('网站名称', max_length=50)
+    description = models.CharField('网站描述', max_length=100, blank=True)
+    link = models.URLField('友链地址', help_text='请填写http或https开头的完整形式地址')
+    logo = models.URLField('网站LOGO', help_text='请填写http或https开头的完整形式地址', blank=True)
+    create_date = models.DateTimeField('创建时间', auto_now_add=True)
+    is_active = models.BooleanField('是否有效', default=True)
+    is_show = models.BooleanField('是否首页展示', default=False)
 
     class Meta:
         verbose_name = '友情链接'
@@ -201,10 +207,3 @@ class FriendLink(models.Model):
     def __str__(self):
         return self.name
 
-    def active_to_false(self):
-        self.is_active = False
-        self.save(update_fields=['is_active'])
-
-    def show_to_false(self):
-        self.is_show = True
-        self.save(update_fields=['is_show'])

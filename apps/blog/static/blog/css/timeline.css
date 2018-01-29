@@ -197,3 +197,9 @@
 #star {
     color:#ffac2d;
 }
+.about-blog h2 {
+    font-weight: 600;
+    margin: 10px 0 10px 0;
+    padding: 0 10px;
+    border-left: 4px solid #ea6f5a;
+    line-height: 1.8em;}

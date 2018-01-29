@@ -1,11 +1,13 @@
-from .models import Article, Tag, Category, Timeline, Silian
 from django.shortcuts import get_object_or_404, render
 from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
+from .models import Article, Tag, Category, Timeline, Silian
+
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 import markdown
 import time
+
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
 
@@ -134,5 +136,4 @@ class MySearchView(SearchView):
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
-
 
