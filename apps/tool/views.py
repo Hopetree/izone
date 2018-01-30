@@ -104,3 +104,7 @@ def useragent_api(request):
         result = get_user_agent(os=os,navigator=n,device_type=d)
         return JsonResponse({'result':result})
     return JsonResponse({'msg': 'miss'})
+
+# HTML特殊字符对照表
+def html_characters(request):
+    return render(request, 'tool/characters.html')

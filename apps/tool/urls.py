@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 from .views import (Toolview, BD_pushview, bd_api_view, BD_pushview_site, bd_api_site, Link_testview,
-                    Link_test_api, regexview, regex_api, useragent_view, useragent_api)
+                    Link_test_api, regexview, regex_api, useragent_view, useragent_api, html_characters)
 
 urlpatterns = [
     url(r'^$', Toolview, name='total'),  # 工具汇总页
@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^regex/ajax/$', regex_api, name='regex_api'),
     url(r'^user-agent/$', useragent_view, name='useragent'),  # user-agent生成器
     url(r'^user-agent/ajax/$',useragent_api,name='useragent_api'),
+    url(r'^html-special-characters/$',html_characters,name='html_characters'), # HTML特殊字符查询
 ]
