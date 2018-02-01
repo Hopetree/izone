@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import sys
 
+# 导入网站个人信息，非通用信息
+from .base_settings import *
 # 更换默认的数据库连接
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -88,15 +90,7 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "/"
 
 # Email setting
-# 邮箱配置
-EMAIL_HOST = 'smtp.163.com'
-EMAIL_HOST_USER = 'seoerzone@163.com'
-EMAIL_HOST_PASSWORD = 'seoerzone666'  # 这个不是邮箱密码，而是授权码
-EMAIL_PORT = 465  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
-# 是否使用了SSL 或者TLS，为了用465端口，要使用这个
-EMAIL_USE_SSL = True
-# 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
-DEFAULT_FROM_EMAIL = 'SEO空间 <seoerzone@163.com>'
+# imoprt from base_settings more infos
 # 禁用注册邮箱验证
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 # 登录方式，选择用户名或者邮箱都能登录
@@ -197,12 +191,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # 媒体文件收集
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# 网站默认设置和上下文信息
-DEFAULT_IMG_LINL = 'http://cdn.stopfollow.com/summary_default.png'
-SITE_END_TITLE = 'SEO空间'
-SITE_DESCRIPTION = 'SEO空间是一个Django博客，主要研究网站SEO优化和分享Python编程自学的个人博客网站。本网站后端使用Django框架搭建，前端使用Bootstrap4框架，主要分享博主在Python自学、搜索引擎优化、电子商务运营等方面的学习心得，网站所有文章都是原创。'
-SITE_KEYWORDS = 'SEO空间,SEO优化实操,Python自学,Python爬虫实例,Django博客,Python web开发,个人网站建设'
 
 # 统一分页设置
 BASE_PAGE_BY = 2

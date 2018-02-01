@@ -1,5 +1,33 @@
-{% load blog_tags %}
+{% load blog_tags static %}
 
+<!--个人空间-->
+<div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
+    <div class="card-header bg-white px-0">
+        <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+    </div>
+    <div class="card-body px-0 pt-3 pb-1">
+        <div class="row text-center">
+            <div class="col">
+                <a href="https://github.com/Hopetree" target="_blank">
+                    <img style="max-width:45px" src="{% static 'blog/img/github.png' %}">
+                    <p class="mt-2">Github</p>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{% url 'blog:about'%}#timeline" target="_blank">
+                    <img style="max-width:45px" src="{% static 'blog/img/blog.png' %}">
+                    <p class="mt-2">Timeline</p>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{% url 'rss'%}" target="_blank">
+                    <img style="max-width:45px" src="{% static 'blog/img/rss.png' %}">
+                    <p class="mt-2">RSS订阅</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 <!--文章分类-->
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="category-card">
     <div class="card-header bg-white px-0">
