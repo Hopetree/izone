@@ -48,15 +48,6 @@
 
 <!--主要内容块-->
 <main>{% block base_content %}{% endblock %}</main>
-<footer class="container-fluid mt-4">
-    <div class="card-body text-center px-0 f-16">
-        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2017-2018
-            <a href="https://github.com/Hopetree" target="_blank" title="前往博主的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
-        </p>
-        <p class="mb-0"><a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备17114114号-2</a></p>
-    </div>
-</footer>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
@@ -77,5 +68,13 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
 </script>
 {% endif %}
 {% block end_file %}{% endblock %}
+<footer class="container-fluid mt-4">
+    <div class="card-body text-center px-0 f-16">
+        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2017-2018
+            <a href="https://github.com/Hopetree" target="_blank" title="前往博主的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+        </p>
+        <p class="mb-0"><a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备17114114号-2</a></p>
+    </div>
+</footer>
 </body>
 </html>
