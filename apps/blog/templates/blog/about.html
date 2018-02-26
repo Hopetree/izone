@@ -3,33 +3,45 @@
 {% load blog_tags %}
 
 {% block top-file %}
-    <link href="{% static 'blog/css/timeline.css'%}?v=1.07" rel="stylesheet">
+<link href="{% static 'blog/css/timeline.css'%}?v=1.07" rel="stylesheet">
 {% endblock %}
 
 {% block head_title %}关于网站{% endblock %}
 {% block metas %}
-    <meta name="description" content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
-    <meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
+<meta name="description"
+      content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+<meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
 {% endblock %}
 
 {% block base_content %}
 <div class="container">
-    <div class="card-body p-2 about-blog">
-        <h2>关于博客</h2>
-        <ul>
-            <li>本网站是一个个人博客网站，开发网站的所有代码都为博主自己所写，目前部署在阿里云</li>
-            <li>本站后端使用Django，前端主要使用Bootstrap4模板，前后端都使用了很多开源第三方库或JS插件，感谢大佬们</li>
-            <li>本网站主要用来分享博主在学习Python和其他编程语言及SEO等的心得，文章不定期更新，争取只发原创</li>
-        </ul>
-        <h2>关于博主</h2>
-        <ul>
-            <li>博主擅长 Ai、Fw、Br、Ae、Pr、PS 等软件的安装与卸载，
-                精通 CSS、JavaScript、PHP、java、Ruby、Objective-C、ActionScript 等单词的拼写，
-                熟悉 Windows、Linux、Mac、Android、IOS 等系统的开关机！</li>
-            <li>其实博主只是一个非计算机相关专业本科毕业的天猫运营，只会Python，稍微会一丢丢CSS、JavaScript，全都是凭兴趣自学的</li>
-            <li>总之，不会写代码的SEOer不是好的天猫运营，无论现在和将来我从事何种工作，代码我会一直写下去</li>
-            <li>还有，人生苦短，我用Python！</li>
-        </ul>
+    <div class="row card-body p-2 about-blog">
+        <div class="col-lg-8">
+            <h2>关于博客</h2>
+            <ul>
+                <li>本网站是一个个人博客网站，开发网站的所有代码都为博主自己所写，目前部署在阿里云</li>
+                <li>本站后端使用Django，前端主要使用Bootstrap4模板，前后端都使用了很多开源第三方库或JS插件，感谢大佬们</li>
+                <li>本网站主要用来分享博主在学习Python和其他编程语言及SEO等的心得，文章不定期更新，争取只发原创</li>
+            </ul>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+            <img class="w-75" src="{% static 'blog/img/aboutweb.png' %}">
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+            <img class="w-75 ml-4" src="{% static 'blog/img/aboutme.png' %}">
+        </div>
+        <div class="col-lg-8">
+            <h2>关于博主</h2>
+            <ul>
+                <li>博主擅长 Ai、Fw、Br、Ae、Pr、PS 等软件的安装与卸载，
+                    精通 CSS、JavaScript、PHP、java、Ruby、Objective-C、ActionScript 等单词的拼写，
+                    熟悉 Windows、Linux、Mac、Android、IOS 等系统的开关机！
+                </li>
+                <li>其实博主只是一个非计算机相关专业本科毕业的天猫运营，只会Python，主要用来写爬虫和数据处理还有Django开发，也会一些基本的CSS、JavaScript，全都是凭兴趣自学的</li>
+                <li>总之，不会写代码的SEOer不是好的天猫运营，无论现在和将来我从事何种工作，代码我会一直写下去</li>
+                <li>还有，人生苦短，我用Python！</li>
+            </ul>
+        </div>
     </div>
     <div class="page-header mt-0">
         <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
@@ -38,7 +50,8 @@
         {% for timeline in timeline_list %}
         {% if timeline.side == 'L' %}
         <li>
-        {% else %}<li class="timeline-inverted">{% endif %}
+            {% else %}
+        <li class="timeline-inverted">{% endif %}
             <div class="timeline-badge {{ timeline.icon_color }}"><i class="{{ timeline.icon }}"></i></div>
             <div class="timeline-panel">
                 <div class="timeline-heading">
@@ -65,5 +78,6 @@
 $(document).ready(function(){
     $(".timeline-body a").attr("target","_blank");
 });
+
 </script>
 {% endblock %}
