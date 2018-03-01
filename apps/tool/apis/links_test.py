@@ -26,8 +26,9 @@ class Check(object):
     def run(self):
         threads = []
         for url in self.urls:
-            t = threading.Thread(target=self.check_one, args=(url,))
-            threads.append(t)
+            if url != '':
+                t = threading.Thread(target=self.check_one, args=(url,))
+                threads.append(t)
         for t in threads:
             t.start()
         for t in threads:
