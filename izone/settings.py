@@ -84,7 +84,7 @@ AUTHENTICATION_BACKENDS = (
 
 # allauth需要的配置
 # 当出现"SocialApp matching query does not exist"这种报错的时候就需要更换这个ID
-SITE_ID = 1
+SITE_ID = 2
 
 # 设置登录和注册成功后重定向的页面，默认是/accounts/profile/
 LOGIN_REDIRECT_URL = "/"
