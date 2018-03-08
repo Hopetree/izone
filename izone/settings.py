@@ -34,7 +34,7 @@ SECRET_KEY = '#!kta!9e2)73d@3#=*=ca$r!0a8+p2@w+a%2g9ccof9+ad@4_('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.seoerzone.com', '119.23.106.34']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.seoerzone.com']
 
 # Application definition
 

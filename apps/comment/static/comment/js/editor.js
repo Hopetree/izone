@@ -55,7 +55,7 @@ $(function() {
 			"default": !0
 		}, {
 			name: "guide",
-			action: "http://www.stopfollow.com",
+			action: "http://www.seoerzone.com/article/Markdown-Guide/",
 			className: "fa fa-question-circle",
 			title: "Markdown语法参考",
 			"default": !0
