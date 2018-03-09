@@ -51,6 +51,12 @@
 .article-body code {
     background-color:#e4eaef;
 }
+.article-body a {
+    color: #ea6f5a;
+}
+.article-body a:hover {
+    color: #212529;
+}
 .article-toc {
     position: fixed;
     max-width: 20%;
