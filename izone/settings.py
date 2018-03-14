@@ -193,8 +193,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 统一分页设置
-BASE_PAGE_BY = 2
-BASE_ORPHANS = 1
+BASE_PAGE_BY = 10
+BASE_ORPHANS = 5
 
 # 全文搜索应用配置
 HAYSTACK_CONNECTIONS = {
