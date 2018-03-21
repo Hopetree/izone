@@ -41,14 +41,14 @@
 
 ### 克隆项目到本地
 使用如下命令讲项目克隆到本地：
-```python
+```
 git clone git@github.com:Hopetree/izone.git
 ```
 
 ### 创建网站关键信息文件
 由于涉及到网站的一些隐私信息，所以这个项目有一个文件没有上传到Github中，所以要在克隆项目之后自己创建这个文件。
 在settings.py文件所在的文件夹下创建一个base_settins.py文件，然后在里面写入如下代码：
-```python
+```
 # -*- coding: utf-8 -*-
 # 邮箱配置
 EMAIL_HOST = 'smtp.163.com'
@@ -72,7 +72,7 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 
 ### 创建数据库
 在自己的MySQL中创建一个数据,根据自己的数据信息去更改项目的setting.py文件中的信息：
-```python
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
@@ -88,15 +88,15 @@ DATABASES = {
 
 ### 在虚拟环境中运行项目
 首先要创建数据库表格，命令是：
-```python
+```
 (izone_env) F:\DjangoSpace\izone>python manage.py makemigrations
 ```
 然后确认迁移：
-```python
+```
 (izone_env) F:\DjangoSpace\izone>python manage.py migrate
 ```
 然后运行程序
-```python
+```
 (izone_env) F:\DjangoSpace\izone>python manage.py runserver --settings=izone.settings_dev
 ```
 
@@ -104,7 +104,7 @@ DATABASES = {
 在浏览器中输入 http://127.0.0.1:8000/ 即可查看项目的运行效果
 
 ### 要进入后台的话，需要先创建一个超级管理员账号:
-```python
+```
 (izone_env) F:\DjangoSpace\izone>python manage.py createsuperuser
 ```
 
