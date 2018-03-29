@@ -47,7 +47,7 @@ git clone git@github.com:Hopetree/izone.git
 
 ### 创建网站关键信息文件
 由于涉及到网站的一些隐私信息，所以这个项目有一个文件没有上传到Github中，所以要在克隆项目之后自己创建这个文件。
-在settings.py文件所在的文件夹下创建一个base_settins.py文件，然后在里面写入如下代码：
+在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码：
 ```
 # -*- coding: utf-8 -*-
 # 邮箱配置
