@@ -71,17 +71,23 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.seoerzone.com/article/virtualenv-for-python/
 
 ### 创建数据库
-在自己的MySQL中创建一个数据,根据自己的数据信息去更改项目的setting.py文件中的信息：
+
+首先在自己的电脑上面创建一个数据库，比如数据库的名字为izone,那么我建议你使用下面这段MySQL的语句，注意，创建的数据库的编码格式是utf8mb4，原因是我的博客中支持emoji表情，所以必须使用这个格式才行：
+```
+CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+数据库建好之后，在自己的MySQL中进行数据库设置,根据自己的数据信息去更改项目的setting.py文件中的信息：
 ```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'izone',
-        'USER': 'root',
-        'PASSWORD': 'python',
+        'NAME': 'database name',
+        'USER': 'database user',
+        'PASSWORD': 'database password',
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'OPTIONS': {'charset': 'utf8mb4', }
+        'OPTIONS': {'charset': 'utf8mb4', }  # 注意，这里不是utf8而是utf8mb4
     }
 }
 ```
