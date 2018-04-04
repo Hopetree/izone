@@ -1,7 +1,7 @@
 $(function() {
 	var simplemde = new SimpleMDE({
 		element: document.getElementById("comment-form"),
-		autoDownloadFontAwesome：false,
+		autoDownloadFontAwesome:false,
 		insertTexts: {
 		horizontalRule: ["", "\n\n-----\n\n"],
 		image: ["![图片Alt](http://", ")"],
