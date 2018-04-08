@@ -114,4 +114,4 @@ DATABASES = {
 (izone_env) F:\DjangoSpace\izone>python manage.py createsuperuser
 ```
 
-有任何问题可以去博客的博客留言
+有任何问题可以去博客的博客留言或者提交issues
