@@ -37,7 +37,8 @@
     <ul class="list-group list-group-flush f-16">
         {% for each in categories %}
         <li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">
-            <a class="category-item" href="{{ each.get_absolute_url }}" title="查看【{{ each.name }}】分类下所有文章">{{ each.name }}</a>
+            <a class="category-item" href="{{ each.get_absolute_url }}"
+               title="查看【{{ each.name }}】分类下所有文章">{{ each.name }}</a>
             <span class="badge text-center" title="当前分类下有{{ each.total_num }}篇文章">{{ each.total_num }}</span>
         </li>
         {% endfor %}
@@ -54,6 +55,24 @@
             {% for tag in tag_list %}
             <a href="{{ tag.get_absolute_url }}" class="tags f-16" id="tag-{{ forloop.counter }}"
                title="【{{ tag.name }}】标签下有{{ tag.total_num }}篇文章">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!--友链-->
+<div class="card border-0 rounded-0 px-3 mb-2 mb-md-3" id="friends-card">
+    <div class="card-header bg-white px-0">
+        <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
+    </div>
+    <div class="card-body px-0 py-3">
+        <div class="tool-list">
+            {% get_friends as friends %}
+            {% for friend in friends %}
+            <div class="w-50 float-left text-center mb-2">
+                <div class="mx-2">
+                    <a href="{{ friend.link }}" title="{{ friend.description }}" target="_blank">{{ friend.name }}</a>
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>

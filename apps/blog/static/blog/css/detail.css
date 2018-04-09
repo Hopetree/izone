@@ -1,3 +1,6 @@
+.f-17 {
+    font-size: 15px;
+}
 .nowpage .breadcrumb {
     background-color:transparent;
 }
@@ -79,16 +82,26 @@
 blockquote {
     margin: 0 0 .5em;
 }
+code {
+    padding: .1rem .3rem;
+    font-size: 90%;
+    color: #222;
+    border-radius: 3px;
+}
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
-
+.f-17 {
+    font-size: 15px;
+}
 }
 
 /* Medium devices (tablets, 768px and up) */
 /* Y-iPad mini */
 @media (min-width: 768px) {
-
+.f-17 {
+    font-size: 16px;
+}
 }
 
 /* Large devices (desktops, 992px and up) */

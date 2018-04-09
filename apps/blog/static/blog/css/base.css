@@ -201,13 +201,15 @@ blockquote {
 /* base right --------------------------------------------------*/
 #home-card .card-header,
 #tag-card .card-header,
-#category-card .card-header {
+#category-card .card-header,
+#friends-card .card-header {
     border-bottom: 2px solid #f0f0f0;
     padding-bottom:10px;
 }
 #home-card .card-header strong,
 #tag-card .card-header strong,
-#category-card .card-header strong {
+#category-card .card-header strong,
+#friends-card .card-header strong {
     padding-bottom:12px;
     border-bottom: 2px solid #00AAEE;
 }

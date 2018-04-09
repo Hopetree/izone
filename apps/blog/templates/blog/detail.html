@@ -13,7 +13,7 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 {% endif %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.046" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20180102.046688" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
 <link href="{% static 'comment/css/base_comment.css' %}?v=20180114.008" rel="stylesheet">
 {% endblock %}
@@ -44,7 +44,7 @@
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 {% get_comment_count article %}</span>
                     </div>
-                    <div class="article-body mt-4 f-16">
+                    <div class="article-body mt-4 f-17">
                         {{ article.body|safe }}
                         <p class="font-weight-bold text-info">
                             <i class="fa fa-bullhorn mx-1"></i>

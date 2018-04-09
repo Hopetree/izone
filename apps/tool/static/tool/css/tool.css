@@ -31,6 +31,9 @@ pre {
 .re-result p {
     margin-bottom:5px;
 }
+.tool-list a:hover {
+    color:#222;
+}
 @media (min-width: 1200px) {
 .tool-list .card:hover {
     box-shadow:0 3px 9px rgba(0, 0, 0, 0.275)
