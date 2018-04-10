@@ -44,7 +44,7 @@
                         <span class="mx-2">阅读 {{ article.views }}</span>
                         <span class="mx-2">评论 {% get_comment_count article %}</span>
                     </div>
-                    <div class="article-body mt-4 f-17">
+                    <div class="article-body mt-4 f-17" style="line-height:1.8">
                         {{ article.body|safe }}
                         <p class="font-weight-bold text-info">
                             <i class="fa fa-bullhorn mx-1"></i>
@@ -103,7 +103,7 @@
 {% block end_file %}
 {% if user.is_authenticated %}
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script src="{% static 'comment/js/editor.js' %}?v=20180113.059"></script>
+<script src="{% static 'comment/js/editor.js' %}?v=20180113.0590"></script>
 <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
 <script>
 var sw=window.screen.width;if(sw>1200){POWERMODE.colorful=true;POWERMODE.shake=false;document.body.addEventListener('input',POWERMODE)};

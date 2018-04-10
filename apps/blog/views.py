@@ -120,9 +120,12 @@ class TagView(generic.ListView):
         context_data['search_instance'] = tag
         return context_data
 
-class AboutView(generic.ListView):
+def AboutView(request):
+    return render(request,'blog/about.html')
+
+class TimelineView(generic.ListView):
     model = Timeline
-    template_name = 'blog/about.html'
+    template_name = 'blog/timeline.html'
     context_object_name = 'timeline_list'
 
 class SilianView(generic.ListView):

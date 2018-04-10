@@ -1,83 +1,74 @@
 {% extends 'blog/base.html' %}
 {% load static %}
-{% load blog_tags %}
 
 {% block top-file %}
 <link href="{% static 'blog/css/timeline.css'%}?v=1.07" rel="stylesheet">
 {% endblock %}
 
-{% block head_title %}关于网站{% endblock %}
+{% block head_title %}关于网站，网站及博主介绍{% endblock %}
 {% block metas %}
 <meta name="description"
       content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
-<meta name="keywords" content="Timeline时间轴,网站About页面,个人博客建站日志">
+<meta name="keywords" content="网站About页面,关于网站,关于博主,关于站长">
 {% endblock %}
+
 
 {% block base_content %}
 <div class="container">
-    <div class="row card-body p-2 about-blog">
-        <div class="col-lg-8">
-            <h2>关于博客</h2>
-            <ul>
-                <li>本网站是一个个人博客网站，开发网站的所有代码都为博主自己所写，目前部署在阿里云</li>
-                <li>本站后端使用Django，前端主要使用Bootstrap4模板，前后端都使用了很多开源第三方库或JS插件，感谢大佬们</li>
-                <li>本网站主要用来分享博主在学习Python和其他编程语言及SEO等的心得，文章不定期更新，争取只发原创</li>
-            </ul>
-        </div>
-        <div class="col-lg-4 d-none d-lg-block mt-3">
-            <img class="w-75" src="{% static 'blog/img/aboutweb.png' %}">
-        </div>
-        <div class="col-lg-4 d-none d-lg-block">
-            <img class="w-75 ml-4" src="{% static 'blog/img/aboutme.png' %}">
-        </div>
-        <div class="col-lg-8">
-            <h2>关于博主</h2>
-            <ul>
-                <li>博主擅长 Ai、Fw、Br、Ae、Pr、PS 等软件的安装与卸载，
-                    精通 CSS、JavaScript、PHP、java、Ruby、Objective-C、ActionScript 等单词的拼写，
-                    熟悉 Windows、Linux、Mac、Android、IOS 等系统的开关机！
-                </li>
-                <li>其实博主只是一个非计算机相关专业本科毕业的天猫运营，只会Python，主要用来写爬虫和数据处理还有Django开发，也会一些基本的CSS、JavaScript，全都是凭兴趣自学的</li>
-                <li>总之，不会写代码的SEOer不是好的天猫运营，无论现在和将来我从事何种工作，代码我会一直写下去</li>
-                <li>还有，人生苦短，我用Python！</li>
-            </ul>
-        </div>
-    </div>
-    <div class="page-header mt-0">
-        <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
-    </div>
-    <ul class="timeline" id="timeline">
-        {% for timeline in timeline_list %}
-        {% if timeline.side == 'L' %}
-        <li>
-            {% else %}
-        <li class="timeline-inverted">{% endif %}
-            <div class="timeline-badge {{ timeline.icon_color }}"><i class="{{ timeline.icon }}"></i></div>
-            <div class="timeline-panel">
-                <div class="timeline-heading">
-                    <h2 class="timeline-title text-info">{{ timeline.title_to_emoji }}</h2>
-                    <p class="mb-1">
-                        <span class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timeline.update_date|date:'Y-m-d'  }}</span>
-                        <span class="pull-right" id="star" title="{% get_star_title timeline.star_num %}">{% get_star timeline.star_num %}</span>
-                    </p>
-                </div>
-                <div class="timeline-body">
-                    {{ timeline.content_to_markdown|safe }}
-                </div>
+    <div class="row">
+        <div class="col-lg-8" style="line-height:2">
+            <div class="card rounded-0 border-0 p-3 f-16">
+                <h2 class="font-weight-bold">关于网站</h2>
+                <hr style="margin: .1rem;dashed #333;"/>
+                <ul class="pl-4 ml-2">
+                    <li>本网站是一个个人博客网站，主要分享博主的编程学习心得</li>
+                    <li>网站主要使用 Django + Bootstrap4 搭建，源码在博主 Github 中， 目前部署在阿里云 ECS</li>
+                    <li>我的目的是让这个博客网站不仅仅是一个博客，所以会尽己所能持续扩展网站的功能</li>
+                </ul>
+                <h2 class="mt-2 font-weight-bold">关于博主</h2>
+                <hr style="margin: .1rem;dashed #333;"/>
+                <ul class="pl-4 ml-2">
+                    <li>博主是一个自学编程的非计算机专业上班族</li>
+                    <li>博主在第一次接触到 Python 的时候就爱上了这门编程语言，所以主攻 Python，顺带学习其他编程语言，希望有机会成为 Python 开发者</li>
+                    <li>Python 技能加点：Django/Flask 的 web 框架，requests/scrapy/selenium 为主的爬虫库，正则/CSS/Xpath/ 信息提取方式，写过 PYQT5
+                        的多线程应用， 使用过 Pandas 和 Numpy
+                    </li>
+                    <li>数据库技能加点：常用 MySQL 做 web 后台数据库，MongoDB 做爬虫信息存储，Redis 用作缓存，只研究了常规的 CURD 操作</li>
+                    <li>前端技能加点：熟悉 HTML 基本规范，对 CSS 常规用法了解，JS 主要使用 jQuery 库，熟悉 bootstrap 框架</li>
+                    <li>博主 Github 地址：<a href="https://github.com/Hopetree"
+                                        target="_blank">https://github.com/Hopetree</a></li>
+                    <li>联系邮箱：zlwork2014@163.com</li>
+                </ul>
+                <h2 class="mt-2 font-weight-bold">功能介绍</h2>
+                <hr style="margin: .1rem;dashed #333;"/>
+                <ul class="pl-4 ml-2">
+                    <li>Django 自带的后台管理系统，方便对于文章、用户及其他动态内容的管理</li>
+                    <li>文章分类、标签、浏览量统计以及规范的 SEO 设置</li>
+                    <li>用户认证系统，在 Django 自带的用户系统的基础上扩展 Oauth 认证，支持微博、Github 等第三方认证</li>
+                    <li>文章评论系统，炫酷的输入框特效，支持 markdown 语法，二级评论结构和回复功能</li>
+                    <li>信息提醒功能，登录和退出提醒，收到评论和回复提醒，信息管理</li>
+                    <li>强大的全文搜索功能，只需要输入关键词就能展现全站与之关联的文章</li>
+                    <li>RSS 博客订阅功能及规范的 Sitemap 网站地图</li>
+                    <li>实用的在线工具</li>
+                    <li>友情链接和推荐工具网站的展示</li>
+                </ul>
+                <h2 class="mt-2 font-weight-bold">网站支持</h2>
+                <hr style="margin: .1rem;dashed #333;"/>
+                <ul class="pl-4 ml-2">
+                    <li>前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome</li>
+                    <li>后端 Python 3.5.2，Django 1.10.6，其他依赖查看源码中 requirements.txt</li>
+                    <li>数据库使用 MySQL</li>
+                    <li>网站部署使用 Nginx + uwsgi，之前使用的 Nginx + gunicorn</li>
+                    <li>bootstrap-admin 用于美化后台管理系统，变成响应式界面</li>
+                    <li>django-allauth 等用于第三方用户登录</li>
+                    <li>django-haystack 和 jieba 用于支持全文搜索</li>
+                    <li>其他依赖查看网站源码解释</li>
+                </ul>
             </div>
-        </li>
-        {% empty %}
-        <p>暂时没有时间线</p>
-        {% endfor %}
-    </ul>
+        </div>
+        <div class="col-lg-4">
+            {% include 'blog/tags/base_right.html' %}
+        </div>
+    </div>
 </div>
-{% endblock %}
-
-{% block js-file %}
-<script>
-$(document).ready(function(){
-    $(".timeline-body a").attr("target","_blank");
-});
-
-</script>
 {% endblock %}

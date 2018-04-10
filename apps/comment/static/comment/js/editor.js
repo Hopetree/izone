@@ -56,7 +56,7 @@ $(function() {
 			"default": !0
 		}, {
 			name: "guide",
-			action: "http://www.seoerzone.com/article/Markdown-Guide/",
+			action: "/article/Markdown-Guide/",
 			className: "fa fa-question-circle",
 			title: "Markdown语法参考",
 			"default": !0
