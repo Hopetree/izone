@@ -88,6 +88,10 @@ code {
     color: #222;
     border-radius: 3px;
 }
+pre {
+    line-height: 1.5;
+    overflow-:auto;
+}
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
