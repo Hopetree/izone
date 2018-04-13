@@ -13,11 +13,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import sys
 
-# 导入网站个人信息，非通用信息
-from .base_settings import *
 # 更换默认的数据库连接
 import pymysql
 pymysql.install_as_MySQLdb()
+# 导入网站个人信息，非通用信息
+from .base_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -137,18 +137,6 @@ WSGI_APPLICATION = 'izone.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'izone',
-        'USER': 'root',
-        'PASSWORD': 'python',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'OPTIONS': {'charset': 'utf8mb4', }
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
