@@ -48,6 +48,18 @@ git clone git@github.com:Hopetree/izone.git
 在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码：
 ```
 # -*- coding: utf-8 -*-
+# 配置数据库
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
+        'NAME': 'izone',
+        'USER': 'root',
+        'PASSWORD': 'python',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'OPTIONS': {'charset': 'utf8mb4', }
+    }
+}
 # 邮箱配置
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_HOST_USER = 'your-email@163.com'
@@ -69,24 +81,9 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 
 ### 创建数据库
 
-首先在自己的电脑上面创建一个数据库，比如数据库的名字为izone,那么我建议你使用下面这段MySQL的语句，注意，创建的数据库的编码格式是utf8mb4，原因是我的博客中支持emoji表情，所以必须使用这个格式才行：
+首先在自己的电脑上面创建一个数据库，根据配置信息里面填写的数据库信息去创建。比如数据库的名字为izone,那么我建议你使用下面这段MySQL的语句，注意，创建的数据库的编码格式是utf8mb4，原因是我的博客中支持emoji表情，所以必须使用这个格式才行：
 ```
 CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-```
-
-数据库建好之后，在自己的MySQL中进行数据库设置,根据自己的数据信息去更改项目的setting.py文件中的信息：
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'database name',
-        'USER': 'database user',
-        'PASSWORD': 'database password',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'OPTIONS': {'charset': 'utf8mb4', }  # 注意，这里不是utf8而是utf8mb4
-    }
-}
 ```
 
 ### 在虚拟环境中运行项目
