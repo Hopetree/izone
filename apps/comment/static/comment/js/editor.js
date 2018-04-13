@@ -54,12 +54,6 @@ $(function() {
 			className: "fa fa-eye no-disable",
 			title: "预览",
 			"default": !0
-		}, {
-			name: "guide",
-			action: "/article/Markdown-Guide/",
-			className: "fa fa-question-circle",
-			title: "Markdown语法参考",
-			"default": !0
 		}],
 	});
 	$(".editor-statusbar").append("<span class='float-left text-info ml-0 hidden' id='rep-to'></span>");

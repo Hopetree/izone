@@ -2,37 +2,35 @@
 
 博客主页 www.seoerzone.com
 
-博客主要功能：
-- 用户认证
-- 文章分类、标签云、文章内容页
-- 文章评论、回复、被@之后收到信息推送通知
-- 全文搜索功能
-- RSS博客订阅
-- 网站地图
-- 实用工具
+## 关于网站
+- 本网站是一个个人博客网站，主要分享博主的编程学习心得
+- 网站主要使用 Django + Bootstrap4 搭建，源码在博主 Github 中， 目前部署在阿里云 ECS
+- 我的目的是让这个博客网站不仅仅是一个博客，所以会尽己所能持续扩展网站的功能
 
-主要特点：
-- 前端采用bootstrap4 ，博客完全响应式
-- 文章内容采用markdown语法支持，简洁明了
-- 博客支持emoji表情
-- 评论采用ajax提交，被人@之后收到网页提醒和信息推送
-- 由haystack和jieba分词支持的强大的全文搜索功能
-- 用户认证支持第三方账号（微博、Github）登录
+## 功能介绍
+- Django 自带的后台管理系统，方便对于文章、用户及其他动态内容的管理
+- 文章分类、标签、浏览量统计以及规范的 SEO 设置
+- 用户认证系统，在 Django 自带的用户系统的基础上扩展 Oauth 认证，支持微博、Github 等第三方认证
+- 文章评论系统，炫酷的输入框特效，支持 markdown 语法，二级评论结构和回复功能
+- 信息提醒功能，登录和退出提醒，收到评论和回复提醒，信息管理
+- 强大的全文搜索功能，只需要输入关键词就能展现全站与之关联的文章
+- RSS 博客订阅功能及规范的 Sitemap 网站地图
+- 实用的在线工具
+- 友情链接和推荐工具网站的展示
+
+## 网站支持
+- 前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome
+- 后端 Python 3.5.2，Django 1.10.6，其他依赖查看源码中 requirements.txt
+- 数据库使用 MySQL
+- 网站部署使用 Nginx + uwsgi，之前使用的 Nginx + gunicorn
+- bootstrap-admin 用于美化后台管理系统，变成响应式界面
+- django-allauth 等用于第三方用户登录
+- django-haystack 和 jieba 用于支持全文搜索
+- 其他依赖查看网站源码解释
+
 
 ## 博客主页效果
 ![博客主页](http://cdn.seoerzone.com/article/180321/seoerzone-01.png)
-
-## 博客文章页效果
-![博客文章页](http://cdn.seoerzone.com/article/180321/seoerzone-03.png)
-
-## 博客工具页面效果
-![博客工具页面](http://cdn.seoerzone.com/article/180321/seoerzone-02.png)
-
-## 博客后台效果
-![博客后台页面](http://cdn.seoerzone.com/article/180321/seoerzone-admin.png)
-
-## 博客Timeline页面
-![博客TIMELINE](http://cdn.seoerzone.com/article/180321/seoerzone-timeline.png)
 
 ## 博客手机端显示效果（响应式）
 ![博客手机端效果](http://cdn.seoerzone.com/article/180321/seoerzone-m.png)
@@ -61,7 +59,6 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'your-webname <your-email@163.com>'
 
 # 网站默认设置和上下文信息
-DEFAULT_IMG_LINL = '一个默认的图片地址，用来给文章添加默认图片'
 SITE_END_TITLE = '网站的名称，如SEO空间'
 SITE_DESCRIPTION = '网站描述'
 SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
