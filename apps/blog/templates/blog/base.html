@@ -61,8 +61,6 @@
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
 <script src="{% static 'blog/js/base.js'%}?v=20171222.21"></script>
-<script>(function(){var bp=document.createElement('script');var curProtocol=window.location.protocol.split(':')[0];if(curProtocol==='https'){bp.src='https://zz.bdstatic.com/linksubmit/push.js'}else{bp.src='http://push.zhanzhang.baidu.com/push.js'}var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s)})();</script>
-<script>(function(){var src=(document.location.protocol=="http:")?"http://js.passport.qihucdn.com/11.0.1.js?e8ce9ebef777e0a34eacbdd092ae4831":"https://jspassport.ssl.qhimg.com/11.0.1.js?e8ce9ebef777e0a34eacbdd092ae4831";document.write('<script src="'+src+'" id="sozz"><\/script>')})();</script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
@@ -76,8 +74,8 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
             <a href="https://github.com/Hopetree" target="_blank" title="前往博主的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
         </p>
         <p class="mb-0">
-            <a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备17114114号-2</a>
-            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1273115157'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1273115157' type='text/javascript'%3E%3C/script%3E"));</script>
+            <a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备17114114号-3</a>
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1273432289'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1273432289' type='text/javascript'%3E%3C/script%3E"));</script>
         </p>
     </div>
 </footer>
