@@ -61,6 +61,7 @@
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
 <script src="{% static 'blog/js/base.js'%}?v=20171222.21"></script>
+<script>(function(){var bp=document.createElement('script');var curProtocol=window.location.protocol.split(':')[0];if(curProtocol==='https'){bp.src='https://zz.bdstatic.com/linksubmit/push.js'}else{bp.src='http://push.zhanzhang.baidu.com/push.js'}var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s)})();</script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
