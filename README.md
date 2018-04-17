@@ -1,6 +1,6 @@
 一个以 Django 作为框架搭建的个人博客。
 
-博客主页 www.seoerzone.com
+博客主页 http://www.tendcode.com/
 
 ## 关于网站
 - 本网站是一个个人博客网站，主要分享博主的编程学习心得
@@ -20,9 +20,9 @@
 
 ## 网站支持
 - 前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome
-- 后端 Python 3.5.2，Django 1.10.6，其他依赖查看源码中 requirements.txt
+- 后端 Python 3.5.2，Django 1.11.12，其他依赖查看源码中 requirements.txt
 - 数据库使用 MySQL
-- 网站部署使用 Nginx + uwsgi，之前使用的 Nginx + gunicorn
+- 网站部署使用的 Nginx + gunicorn
 - bootstrap-admin 用于美化后台管理系统，变成响应式界面
 - django-allauth 等用于第三方用户登录
 - django-haystack 和 jieba 用于支持全文搜索
@@ -30,10 +30,10 @@
 
 
 ## 博客主页效果
-![博客主页](http://cdn.seoerzone.com/article/180321/seoerzone-01.png)
+![博客主页 PC 效果](http://pic.tendcode.com/article/180417/blog-pc.png)
 
 ## 博客手机端显示效果（响应式）
-![博客手机端效果](http://cdn.seoerzone.com/article/180321/seoerzone-m.png)
+![博客手机端效果](http://pic.tendcode.com/article/180417/blog-m.jpg)
 
 ## 使用步骤：
 
