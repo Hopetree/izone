@@ -9,6 +9,7 @@ django-appconf==1.0.2
 django-crispy-forms==1.6.1
 django-haystack==2.6.1
 django-imagekit==4.0.1
+django-redis==4.9.0
 emoji==0.4.5
 gunicorn==19.7.1
 html5lib==1.0b10
@@ -23,6 +24,7 @@ Pygments==2.2.0
 PyMySQL==0.7.11
 python3-openid==3.1.0
 pytz==2017.2
+redis==2.10.6
 requests==2.18.4
 requests-oauthlib==0.8.0
 six==1.11.0
