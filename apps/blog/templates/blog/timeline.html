@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load cache %}
 {% load static %}
 {% load blog_tags %}
 
@@ -14,6 +15,7 @@
 {% endblock %}
 
 {% block base_content %}
+{% cache 7200 'cache_timeline_tag' %}
 <div class="container">
     <div class="page-header mt-0">
         <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
@@ -43,6 +45,7 @@
         {% endfor %}
     </ul>
 </div>
+{% endcache %}
 {% endblock %}
 
 {% block js-file %}

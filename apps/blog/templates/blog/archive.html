@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load cache %}
 {% load static %}
 {% load humanize %}
 {% load blog_tags %}
@@ -20,6 +21,7 @@
 {% block base_content %}
 <div class="container">
     <div class="row">
+        {% cache 3600 'cache_archive_html_tag' %}
         <div class="col-lg-8">
             <div class="card border-0 rounded-0 mb-3">
                 <div class="card-body f-16 archive">
@@ -46,6 +48,7 @@
             </div>
             {% if is_paginated %}{% load_pages %}{% endif %}
         </div>
+        {% endcache %}
         <div class="col-lg-4 d-none d-lg-block">
             {% include 'blog/tags/base_right.html' %}
         </div>

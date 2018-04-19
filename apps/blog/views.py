@@ -3,10 +3,11 @@ from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
 from .models import Article, Tag, Category, Timeline, Silian
+from django.core.cache import cache
 
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 import markdown
-import time
+import time, datetime
 
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
@@ -63,11 +64,19 @@ class DetailView(generic.DetailView):
                 if t > 60 * 30:
                     obj.update_views()
                     ses[the_key] = time.time()
-        md = markdown.Markdown(extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            TocExtension(slugify=slugify),
-        ])
+        # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
+        ud = obj.update_date.strftime("%Y%m%d%H%M%S")
+        md_key = '{}_md_{}'.format(obj.id, ud)
+        cache_md = cache.get(md_key)
+        if cache_md:
+            md = cache_md
+        else:
+            md = markdown.Markdown(extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+                TocExtension(slugify=slugify),
+            ])
+            cache.set(md_key, md, 60 * 60 * 12)
         obj.body = md.convert(obj.body)
         obj.toc = md.toc
         return obj
