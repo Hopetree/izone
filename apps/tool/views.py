@@ -5,7 +5,6 @@ from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import Check
 from .apis.useragent import get_user_agent
-from django.views.decorators.cache import cache_page
 
 import re
 import markdown
@@ -13,13 +12,11 @@ import markdown
 
 # Create your views here.
 
-@cache_page(60 * 60 * 24)
 def Toolview(request):
     return render(request, 'tool/tool.html')
 
 
 # 百度主动推送
-@cache_page(60 * 60 * 24)
 def BD_pushview(request):
     return render(request, 'tool/bd_push.html')
 
@@ -36,7 +33,6 @@ def bd_api_view(request):
 
 
 # 百度主动推送升级版，提取sitemap链接推送
-@cache_page(60 * 60 * 24)
 def BD_pushview_site(request):
     return render(request, 'tool/bd_push_site.html')
 
@@ -59,7 +55,6 @@ def bd_api_site(request):
 
 
 # 友链检测
-@cache_page(60 * 60 * 24)
 def Link_testview(request):
     return render(request, 'tool/link_test.html')
 
@@ -77,7 +72,6 @@ def Link_test_api(request):
 
 
 # 在线正则表达式
-@cache_page(60 * 60 * 24)
 def regexview(request):
     return render(request, 'tool/regex.html')
 
@@ -104,7 +98,6 @@ def regex_api(request):
 
 
 # 生成请求头
-@cache_page(60 * 60 * 24)
 def useragent_view(request):
     return render(request, 'tool/useragent.html')
 
@@ -125,6 +118,5 @@ def useragent_api(request):
 
 
 # HTML特殊字符对照表
-@cache_page(60 * 60 * 24)
 def html_characters(request):
     return render(request, 'tool/characters.html')

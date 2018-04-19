@@ -11,10 +11,12 @@ import time
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
 
+
 # Create your views here.
 
 def goview(request):
-    return render(request,'test_html.html')
+    return render(request, 'test_html.html')
+
 
 class ArchiveView(generic.ListView):
     model = Article
@@ -23,19 +25,21 @@ class ArchiveView(generic.ListView):
     paginate_by = 200
     paginate_orphans = 50
 
+
 class IndexView(generic.ListView):
     model = Article
     template_name = 'blog/index.html'
     context_object_name = 'articles'
-    paginate_by = getattr(settings,'BASE_PAGE_BY',None)
-    paginate_orphans = getattr(settings,'BASE_ORPHANS',0)
+    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
+    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
 
     def get_ordering(self):
         ordering = super(IndexView, self).get_ordering()
         sort = self.kwargs.get('sort')
         if sort == 'v':
-            return ('-views','-update_date','-id')
+            return ('-views', '-update_date', '-id')
         return ordering
+
 
 class DetailView(generic.DetailView):
     model = Article
@@ -44,7 +48,7 @@ class DetailView(generic.DetailView):
 
     def get_object(self):
         obj = super(DetailView, self).get_object()
-        # 设置浏览量增加时间判断,同一篇文章两次浏览超过2小时才重新统计阅览量,作者浏览忽略
+        # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
         ses = self.request.session
         the_key = 'is_read_{}'.format(obj.id)
@@ -56,7 +60,7 @@ class DetailView(generic.DetailView):
             else:
                 now_time = time.time()
                 t = now_time - is_read_time
-                if t > 7200:
+                if t > 60 * 30:
                     obj.update_views()
                     ses[the_key] = time.time()
         md = markdown.Markdown(extensions=[
@@ -67,6 +71,7 @@ class DetailView(generic.DetailView):
         obj.body = md.convert(obj.body)
         obj.toc = md.toc
         return obj
+
 
 class CategoryView(generic.ListView):
     model = Article
@@ -79,7 +84,7 @@ class CategoryView(generic.ListView):
         ordering = super(CategoryView, self).get_ordering()
         sort = self.kwargs.get('sort')
         if sort == 'v':
-            return ('-views','-update_date','-id')
+            return ('-views', '-update_date', '-id')
         return ordering
 
     def get_queryset(self, **kwargs):
@@ -94,6 +99,7 @@ class CategoryView(generic.ListView):
         context_data['search_instance'] = cate
         return context_data
 
+
 class TagView(generic.ListView):
     model = Article
     template_name = 'blog/tag.html'
@@ -105,7 +111,7 @@ class TagView(generic.ListView):
         ordering = super(TagView, self).get_ordering()
         sort = self.kwargs.get('sort')
         if sort == 'v':
-            return ('-views','-update_date','-id')
+            return ('-views', '-update_date', '-id')
         return ordering
 
     def get_queryset(self, **kwargs):
@@ -120,18 +126,22 @@ class TagView(generic.ListView):
         context_data['search_instance'] = tag
         return context_data
 
+
 def AboutView(request):
-    return render(request,'blog/about.html')
+    return render(request, 'blog/about.html')
+
 
 class TimelineView(generic.ListView):
     model = Timeline
     template_name = 'blog/timeline.html'
     context_object_name = 'timeline_list'
 
+
 class SilianView(generic.ListView):
     model = Silian
     template_name = 'blog/silian.xml'
     context_object_name = 'badurls'
+
 
 # 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
 class MySearchView(SearchView):
@@ -139,4 +149,3 @@ class MySearchView(SearchView):
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
-
