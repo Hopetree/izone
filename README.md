@@ -30,10 +30,10 @@
 
 
 ## 博客主页效果
-![博客主页 PC 效果](http://pic.tendcode.com/article/180417/blog-pc.png)
+![博客主页 PC 效果](https://user-images.githubusercontent.com/30201215/39047544-d980fc6c-44cc-11e8-942f-e4e7e0bb0c2c.png)
 
 ## 博客手机端显示效果（响应式）
-![博客手机端效果](http://pic.tendcode.com/article/180417/blog-m.jpg)
+![博客手机端效果](https://user-images.githubusercontent.com/30201215/39047823-e7daccb0-44cd-11e8-9851-5aa670a8a690.png)
 
 ## 使用步骤：
 
