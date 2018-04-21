@@ -34,6 +34,11 @@ pre {
 .tool-list a:hover {
     color:#222;
 }
+.tool-link-text {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
 @media (min-width: 1200px) {
 .tool-list .card:hover {
     box-shadow:0 3px 9px rgba(0, 0, 0, 0.275)

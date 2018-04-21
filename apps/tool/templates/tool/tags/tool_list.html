@@ -13,8 +13,8 @@
             {% get_toollinks each_cate as tools %}
             {% for tool in tools %}
             <div class="w-50 float-left text-center mb-2">
-                <div class="mx-2 bg-info text-white">
-                    <a href="{{ tool.link }}" title="{{ tool.description }}" target="_blank">{{ tool.name }}</a>
+                <div class="mx-2 bg-info text-white tool-link-text">
+                    <a class="mx-1" href="{{ tool.link }}" title="{{ tool.description }}" target="_blank">{{ tool.name }}</a>
                 </div>
             </div>
             {% endfor %}
