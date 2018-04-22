@@ -170,7 +170,8 @@ class Carousel(models.Model):
     class Meta:
         verbose_name = '图片轮播'
         verbose_name_plural = verbose_name
-        ordering = ['number', 'id']
+        # 编号越小越靠前，添加的时间约晚约靠前
+        ordering = ['number', '-id']
 
     def __str__(self):
         return self.content[:25]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Tag, Category, Timeline, Carousel, Silian, Keyword,FriendLink
+from .models import Article, Tag, Category, Timeline, Carousel, Silian, Keyword, FriendLink
 
 
 @admin.register(Article)
@@ -10,14 +10,17 @@ class ArticleAdmin(admin.ModelAdmin):
     exclude = ('views',)
 
     # 在查看修改的时候显示的属性，第一个字段带有<a>标签，所以最好放标题
-    list_display = ('title', 'author', 'create_date','update_date')
+    list_display = ('id', 'title', 'author', 'create_date', 'update_date')
+
+    # 设置需要添加<a>标签的字段
+    list_display_links = ('title',)
 
     # 激活过滤器，这个很有用
-    list_filter = ('author', 'create_date', 'category')
+    list_filter = ('create_date', 'category')
 
     list_per_page = 50  # 控制每页显示的对象数量，默认是100
 
-    filter_horizontal = ('tags','keywords')  # 给多选增加一个左右添加的框
+    filter_horizontal = ('tags', 'keywords')  # 给多选增加一个左右添加的框
 
     # 限制用户权限，只能看到自己编辑的文章
     def get_queryset(self, request):
@@ -53,20 +56,24 @@ class TimelineAdmin(admin.ModelAdmin):
     date_hierarchy = 'update_date'
     list_filter = ('star_num', 'update_date')
 
+
 @admin.register(Carousel)
 class CarouselAdmin(admin.ModelAdmin):
-    list_display = ('number','title','content','img_url','url')
+    list_display = ('number', 'title', 'content', 'img_url', 'url')
+
 
 @admin.register(Silian)
 class SilianAdmin(admin.ModelAdmin):
-    list_display = ('id','remark','badurl','add_date')
+    list_display = ('id', 'remark', 'badurl', 'add_date')
+
 
 @admin.register(Keyword)
 class KeywordAdmin(admin.ModelAdmin):
-    list_display = ('name','id')
+    list_display = ('name', 'id')
+
 
 @admin.register(FriendLink)
 class FriendLinkAdmin(admin.ModelAdmin):
-    list_display = ('name','description','link','create_date','is_active','is_show')
+    list_display = ('name', 'description', 'link', 'create_date', 'is_active', 'is_show')
     date_hierarchy = 'create_date'
-    list_filter = ('is_active','is_show')
+    list_filter = ('is_active', 'is_show')
