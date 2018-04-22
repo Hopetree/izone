@@ -151,6 +151,7 @@ blockquote {
     cursor: pointer;
     color: #fff;
     opacity: .4;
+    z-index:9999;
 }
 #to-top:hover{
     opacity: .9;

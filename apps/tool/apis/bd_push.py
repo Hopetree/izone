@@ -22,7 +22,7 @@ def get_urls(url):
     except:
         return 'miss'
     else:
-        urls = re.findall('<loc>(.*?)</loc>', html)
+        urls = re.findall('<loc>\s*?(.*?)\s*?</loc>', html)
         return '\n'.join(urls)
 
 
