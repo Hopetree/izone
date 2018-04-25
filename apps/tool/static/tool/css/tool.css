@@ -39,6 +39,9 @@ pre {
     text-overflow:ellipsis;
     white-space:nowrap;
 }
+.card ul {
+    line-height:2
+}
 @media (min-width: 1200px) {
 .tool-list .card:hover {
     box-shadow:0 3px 9px rgba(0, 0, 0, 0.275)
