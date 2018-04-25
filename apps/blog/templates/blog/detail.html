@@ -4,8 +4,14 @@
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
 {% block metas %}
-<meta name="description" content="{{ article.summary }}">
-<meta name="keywords" content="{% keywords_to_str article %}">
+    <meta name="description" content="{{ article.summary }}">
+    <meta name="keywords" content="{% keywords_to_str article %}">
+    <!--og-->
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="{{ article.img_link }}"/>
+    <meta property="og:release_date" content="{{ article.create_date|date:'Y-m-d H:i:s' }}"/>
+    <meta property="og:title" content="{{ article.title }}"/>
+    <meta property="og:description" content="{{ article.summary }}"/>
 {% endblock %}
 
 
@@ -107,6 +113,7 @@
 <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
 <script>
 var sw=window.screen.width;if(sw>1200){POWERMODE.colorful=true;POWERMODE.shake=false;document.body.addEventListener('input',POWERMODE)};
+
 </script>
 {% endif %}
 {% endblock %}
