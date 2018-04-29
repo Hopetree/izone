@@ -6,12 +6,6 @@
 {% block metas %}
     <meta name="description" content="{{ article.summary }}">
     <meta name="keywords" content="{% keywords_to_str article %}">
-    <!--og-->
-    <meta property="og:type" content="article"/>
-    <meta property="og:image" content="{{ article.img_link }}"/>
-    <meta property="og:release_date" content="{{ article.create_date|date:'Y-m-d H:i:s' }}"/>
-    <meta property="og:title" content="{{ article.title }}"/>
-    <meta property="og:description" content="{{ article.summary }}"/>
 {% endblock %}
 
 
