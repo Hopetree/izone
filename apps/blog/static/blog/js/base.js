@@ -38,4 +38,4 @@ function TOC_FUN(A) {
 		return false
 	})
 }
-$(TOC_FUN('.toc a'));
+$(TOC_FUN('.toc a,.to-com'));

@@ -48,7 +48,7 @@
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
                               title="最后编辑于{{ article.update_date|date:'Y年m月d日' }}">{{ article.create_date }}</span>
                         <span class="mx-2">阅读 {{ article.views }}</span>
-                        <span class="mx-2">评论 {% get_comment_count article %}</span>
+                        <a class="mx-2 to-com" href="#comment-block">评论 {% get_comment_count article %}</a>
                     </div>
                     <div class="article-body mt-4 f-17" style="line-height:1.8">
                         {{ article.body|safe }}
