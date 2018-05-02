@@ -158,3 +158,5 @@ class MySearchView(SearchView):
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
+
+

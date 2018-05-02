@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.weibo',
     'allauth.socialaccount.providers.github',
 
+    'rest_framework',
+
     'crispy_forms',  # bootstrap表单样式
     'imagekit',  # 上传图片的应用
 
