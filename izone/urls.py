@@ -24,7 +24,7 @@ from blog.sitemaps import ArticleSitemap, CategorySitemap, TagSitemap
 from blog.feeds import AllArticleRssFeed
 
 from rest_framework.routers import DefaultRouter
-from blog import api_views
+from api import views as api_views
 
 router = DefaultRouter()
 router.register(r'users',api_views.UserListSet)
@@ -50,5 +50,5 @@ urlpatterns = [
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')), # robots
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'), # 网站地图
     url(r'^feed/$', AllArticleRssFeed(), name='rss'),   # rss订阅
-    url(r'^api/',include(router.urls,namespace='api')),
+    url(r'^api/',include(router.urls,namespace='api')),   # restframework
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 加入这个才能显示media文件

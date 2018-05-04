@@ -15,6 +15,7 @@ import sys
 
 # 更换默认的数据库连接
 import pymysql
+
 pymysql.install_as_MySQLdb()
 # 导入网站个人信息，非通用信息
 from .base_settings import *
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
     'haystack',  # 全文搜索应用 这个要放在其他应用之前
     'blog',  # 博客应用
     'tool',  # 工具
-    'comment', # 评论
+    'comment',  # 评论
 
 ]
 
@@ -204,4 +205,11 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
+
+# restframework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
 }
