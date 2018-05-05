@@ -3,11 +3,12 @@
 
 from oauth.models import Ouser
 from blog.models import Article, Tag, Category, Timeline
+from tool.models import ToolLink
 from .serializers import (UserSerializer, ArticleSerializer,
-                          TimelineSerializer,TagSerializer,CategorySerializer)
+                          TimelineSerializer,TagSerializer,CategorySerializer,ToolLinkSerializer)
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
-from .permissions import IsAdminUserOrReadOnly
+# from .permissions import IsAdminUserOrReadOnly
 
 # RESEful API VIEWS
 class UserListSet(viewsets.ModelViewSet):
@@ -19,6 +20,9 @@ class ArticleListSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
+    def perform_create(self,serializer):
+        serializer.save(author=self.request.user)
 
 class TagListSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
@@ -33,4 +37,9 @@ class CategoryListSet(viewsets.ModelViewSet):
 class TimelineListSet(viewsets.ModelViewSet):
     queryset = Timeline.objects.all()
     serializer_class = TimelineSerializer
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
+class ToolLinkListSet(viewsets.ModelViewSet):
+    queryset = ToolLink.objects.all()
+    serializer_class = ToolLinkSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)

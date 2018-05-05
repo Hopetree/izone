@@ -32,7 +32,7 @@
                             {% regroup article.list by create_date.month as month_list %}
                             <ul class="pl-4">
                                 {% for each in month_list %}
-                                <li>{{ each.grouper }} 月
+                                <li>{{ each.grouper }} 月 (共 {{ each.list|length }} 篇)
                                     <ul class="pl-4">
                                         {% for item in each.list %}
                                         <li class="text-info">{{ item.create_date|date:'m-d' }}&nbsp;&nbsp;<a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
