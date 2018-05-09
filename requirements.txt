@@ -10,6 +10,7 @@ django-crispy-forms==1.6.1
 django-haystack==2.6.1
 django-imagekit==4.0.1
 django-redis==4.9.0
+djangorestframework==3.8.2
 emoji==0.4.5
 gunicorn==19.7.1
 html5lib==1.0b10

@@ -7,6 +7,7 @@
 - 网站主要使用 Django + Bootstrap4 搭建，源码在博主 Github 中， 目前部署在阿里云 ECS
 - 我的目的是让这个博客网站不仅仅是一个博客，所以会尽己所能持续扩展网站的功能
 
+
 ## 功能介绍
 - Django 自带的后台管理系统，方便对于文章、用户及其他动态内容的管理
 - 文章分类、标签、浏览量统计以及规范的 SEO 设置
@@ -17,6 +18,8 @@
 - RSS 博客订阅功能及规范的 Sitemap 网站地图
 - 实用的在线工具
 - 友情链接和推荐工具网站的展示
+- django-redis 支持的缓存系统，遵循缓存原则，加速网站打开速度
+- RESTful API 风格的 API 接口
 
 ## 网站支持
 - 前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome
@@ -26,6 +29,8 @@
 - bootstrap-admin 用于美化后台管理系统，变成响应式界面
 - django-allauth 等用于第三方用户登录
 - django-haystack 和 jieba 用于支持全文搜索
+- redis 支持缓存
+- django restframework 提供 API 接口
 - 其他依赖查看网站源码解释
 
 
@@ -42,6 +47,7 @@
 - redis 服务启动了，因为2018-4-18增加了django-redis缓存，所以必须要有redis了
 - MySQL
 - 其他依赖看依赖文件即可
+
 
 ### 克隆项目到本地
 使用如下命令讲项目克隆到本地：
@@ -77,7 +83,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'your-webname <your-email@163.com>'
 
 # 网站默认设置和上下文信息
-SITE_END_TITLE = '网站的名称，如SEO空间'
+SITE_END_TITLE = '网站的名称，如TendCode'
 SITE_DESCRIPTION = '网站描述'
 SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 ```
@@ -115,3 +121,5 @@ CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ```
 
 有任何问题可以去博客的博客留言或者提交issues
+
+PS：请各位使用了我的博客的源码或者直接参考我的博客源码改写成自己的博客的同学能够尊重我的成果，在您的网址上线之后能够给一个链接指向我的Github，写明您的博客主要支持的来源是我的Github博客项目，谢谢！
