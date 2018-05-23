@@ -1,0 +1,23 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}端口扫描_在线工具{% endblock %}
+{% block metas %}
+<meta name="description" content="网络端口扫描，批量在线扫描端口工具">
+<meta name="keywords" content="端口扫描工具,在线工具,在线端口扫描">
+{% endblock %}
+
+{% block tool_name %}端口扫描器{% endblock %}
+{% block left_content %}
+<div class="card-body p-0">
+    <h3 class="card-title pl-2 title-info">工具说明：</h3>
+    <ul>
+        <li>填入需要扫描的 IP 地址或者解析的域名</li>
+        <li>按照要求填写需要扫描的端口号，点击开始按钮即可返回扫描结果</li>
+    </ul>
+</div>
+
+<div class="card mb-3 rounded-0">
+    <div class="card-body push-result text-center p-3">待更新...</div>
+</div>
+{% endblock %}

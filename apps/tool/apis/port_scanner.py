@@ -6,6 +6,7 @@ import queue
 import threading
 import socket
 
+
 class PortScanner:
     def __init__(self, host, ports):
         '''
@@ -33,7 +34,7 @@ class PortScanner:
     def main(self):
         for each in self.ports:
             self.q.put(each)
-        result = dict()
+        result = []
         ths = []
         max = len(self.ports)
         # 设置线程数
@@ -46,18 +47,13 @@ class PortScanner:
             t.join()
         while not self.r.empty():
             r = self.r.get()
-            result[r[0]] = r[1]
+            result.append({r[0]:r[1]})
         return result
 
 
 if __name__ == '__main__':
-    host = '119.23.106.34'
-    ports = [22, 80, 1,4,4,5,56,6,]
-    s = PortScanner(host,ports)
+    host = 'tendcode.com'
+    ports = [22, 80, 1, 4, 4, 5, 56, 6, ]
+    s = PortScanner(host, ports)
     k = s.main()
     print(k)
-
-
-
-
-

@@ -120,3 +120,7 @@ def useragent_api(request):
 # HTML特殊字符对照表
 def html_characters(request):
     return render(request, 'tool/characters.html')
+
+# 端口扫描器
+def port_scanner(request):
+    return render(request,'tool/port_scanner.html')
