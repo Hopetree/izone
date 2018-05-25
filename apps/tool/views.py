@@ -5,8 +5,6 @@ from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import Check
 from .apis.useragent import get_user_agent
-from .apis.port_scanner import PortScanner
-import requests
 
 import re
 import markdown
