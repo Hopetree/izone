@@ -5,6 +5,8 @@ from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.links_test import Check
 from .apis.useragent import get_user_agent
+from .apis.port_scanner import PortScanner
+import requests
 
 import re
 import markdown
@@ -120,7 +122,3 @@ def useragent_api(request):
 # HTML特殊字符对照表
 def html_characters(request):
     return render(request, 'tool/characters.html')
-
-# 端口扫描器
-def port_scanner(request):
-    return render(request,'tool/port_scanner.html')
