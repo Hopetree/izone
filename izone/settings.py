@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import sys
+import platform
 
 # 更换默认的数据库连接
 import pymysql
@@ -33,7 +34,11 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '#!kta!9e2)73d@3#=*=ca$r!0a8+p2@w+a%2g9ccof9+ad@4_('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# 如果运行环境是Windows就开启DEBUG，否则关闭
+if platform.system() == 'Windows':
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.tendcode.com']
 
