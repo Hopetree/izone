@@ -4,6 +4,7 @@ from django import template
 from ..models import Article, Category, Tag, Carousel, FriendLink
 from django.db.models.aggregates import Count
 from django.utils.html import mark_safe
+import re
 
 register = template.Library()
 
@@ -82,12 +83,13 @@ def get_star_title(num):
 @register.simple_tag
 def my_highlight(text, q):
     '''自定义标题搜索词高亮函数'''
-    try:
-        r = text.replace(q, '<span class="highlighted">{}</span>'.format(q))
-        return mark_safe(r)
-    except:
-        return text
-
+    if len(q) > 1:
+        try:
+            text = re.sub(q, lambda a: '<span class="highlighted">{}</span>'.format(a), text, flags=re.IGNORECASE)
+            text = mark_safe(text)
+        except:
+            pass
+    return text
 
 @register.simple_tag
 def get_request_param(request, param, default=None):
