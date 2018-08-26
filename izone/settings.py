@@ -30,15 +30,17 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#!kta!9e2)73d@3#=*=ca$r!0a8+p2@w+a%2g9ccof9+ad@4_('
-
 # SECURITY WARNING: don't run with debug turned on in production!
-# 如果运行环境是Windows就开启DEBUG，否则关闭
-if platform.system() == 'Windows':
+if MY_DEBUG == 0:
+    DEBUG = False
+elif MY_DEBUG == 1:
     DEBUG = True
 else:
-    DEBUG = False
+    # 非强制开启DEBUG模式：如果运行环境是Windows就开启DEBUG，否则关闭
+    if platform.system() == 'Windows':
+        DEBUG = True
+    else:
+        DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.tendcode.com']
 
@@ -220,3 +222,4 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20
 }
+
