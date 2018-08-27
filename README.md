@@ -20,11 +20,12 @@
 - 友情链接和推荐工具网站的展示
 - django-redis 支持的缓存系统，遵循缓存原则，加速网站打开速度
 - RESTful API 风格的 API 接口
+- 支持部分功能热插拔，自由切换需要的功能模块
 
 ## 网站支持
 - 前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome
 - 后端 Python 3.5.2，Django 1.11.12，其他依赖查看源码中 requirements.txt
-- 数据库使用 MySQL
+- 数据库使用 MySQL > 5.7以上版本
 - 网站部署使用的 Nginx + gunicorn
 - bootstrap-admin 用于美化后台管理系统，变成响应式界面
 - django-allauth 等用于第三方用户登录
@@ -42,17 +43,23 @@
 
 ## 使用步骤：
 
+### 对应Github分支：feature/2.0
+
 ### 必须的支持项
 - Python3.4 以上
 - redis 服务启动了，因为2018-4-18增加了django-redis缓存，所以必须要有redis了
-- MySQL
+- MySQL 5.7以上（这个是必须的，因为要支持utf8mb4的编码格式）
 - 其他依赖看依赖文件即可
-
+- 注：如果不想使用 MySQL 和 redis 可以选择 feature/1.0 分支
 
 ### 克隆项目到本地
-使用如下命令讲项目克隆到本地：
+使用如下命令将项目克隆到本地：
 ```
 git clone git@github.com:Hopetree/izone.git
+```
+然后拉取本分支到本地同时切换到该分支上：
+```
+git checkout -b feature/2.0 origin/feature/2.0
 ```
 
 ### 创建网站关键信息文件
@@ -60,13 +67,26 @@ git clone git@github.com:Hopetree/izone.git
 在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码：
 ```
 # -*- coding: utf-8 -*-
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '#!kta!9e0)24d@9#<*=ra$r!0k0+p8@w+a%7g1bbof0+ad@4_('
+
+# 自由选择需要开启的功能
+# 是否开始[在线工具]应用
+TOOL_FLAG = True
+# 是否开启[API]应用
+API_FLAG = True
+# DEBUG模式是否开始的选择
+# 值为0：所有平台关闭DEBUG,值为1:所有平台开启DEBUG,值为其他：根据平台类型判断开启（默认设置的Windows下才开启）
+MY_DEBUG = 2
+
 # 配置数据库
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'izone',
-        'USER': 'root',
-        'PASSWORD': 'python',
+        'NAME': 'izone',       # 数据库的名称
+        'USER': 'root',        # 数据库的用户名
+        'PASSWORD': 'python',  # 数据库的密码
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'OPTIONS': {'charset': 'utf8mb4', }
@@ -89,6 +109,10 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 ```
 
 ### 在虚拟环境中安装依赖
+切换到项目根目录，执行如下语句安装依赖
+```buildoutcfg
+pip install -r requirements.txt
+```
 本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.seoerzone.com/article/virtualenv-for-python/
 
 ### 创建数据库
@@ -109,7 +133,7 @@ CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ```
 然后运行程序
 ```
-(izone_env) F:\DjangoSpace\izone>python manage.py runserver --settings=izone.settings_dev
+(izone_env) F:\DjangoSpace\izone>python manage.py runserver
 ```
 
 ### 打开浏览器查看项目运行效果
