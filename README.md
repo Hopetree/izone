@@ -50,7 +50,7 @@
 - redis 服务启动了，因为2018-4-18增加了django-redis缓存，所以必须要有redis了
 - MySQL 5.7以上（这个是必须的，因为要支持utf8mb4的编码格式）
 - 其他依赖看依赖文件即可
-- 注：如果不想使用 MySQL 和 redis 可以选择 feature/1.0 分支
+- 注：如果不想使用 MySQL 和 redis 可以选择 [feature/1.0 分支](https://github.com/Hopetree/izone/tree/feature/1.0)
 
 ### 克隆项目到本地
 使用如下命令将项目克隆到本地：
@@ -113,7 +113,7 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 ```buildoutcfg
 pip install -r requirements.txt
 ```
-本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.seoerzone.com/article/virtualenv-for-python/
+本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.tendcode.com/article/virtualenv-for-python/
 
 ### 创建数据库
 
@@ -145,5 +145,7 @@ CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ```
 
 有任何问题可以去博客的博客留言或者提交issues
+
+部署博客到服务器可以查看我的部署文章[在 Linux 服务器上使用 Nginx + Gunicorn 部署 Django 项目的正确姿势](http://www.tendcode.com/article/set-up-django-with-nginx-and-gunicorn/)
 
 PS：请各位使用了我的博客的源码或者直接参考我的博客源码改写成自己的博客的同学能够尊重我的成果，在您的网址上线之后能够给一个链接指向我的Github，写明您的博客主要支持的来源是我的Github博客项目，谢谢！
