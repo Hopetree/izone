@@ -15,7 +15,7 @@ import sys
 import platform
 
 # 导入网站个人信息，非通用信息
-from .base_settings import *
+from .my_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
