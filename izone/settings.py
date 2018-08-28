@@ -15,7 +15,7 @@ import sys
 import platform
 
 # 导入网站个人信息，非通用信息
-from .my_settings import *
+from .base_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,11 +27,16 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# 如果运行环境是Windows就开启DEBUG，否则关闭
-if platform.system() == 'Windows':
+if MY_DEBUG == 0:
+    DEBUG = False
+elif MY_DEBUG == 1:
     DEBUG = True
 else:
-    DEBUG = False
+    # 非强制开启DEBUG模式：如果运行环境是Windows就开启DEBUG，否则关闭
+    if platform.system() == 'Windows':
+        DEBUG = True
+    else:
+        DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.tendcode.com']
 

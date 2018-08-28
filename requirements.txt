@@ -23,6 +23,7 @@ pilkit==2.0
 Pillow==4.2.1
 Pygments==2.2.0
 PyMySQL==0.7.11
+python-memcached==1.59
 python3-openid==3.1.0
 pytz==2017.2
 redis==2.10.6

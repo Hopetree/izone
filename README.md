@@ -18,18 +18,18 @@
 - RSS 博客订阅功能及规范的 Sitemap 网站地图
 - 实用的在线工具
 - 友情链接和推荐工具网站的展示
-- django-redis 支持的缓存系统，遵循缓存原则，加速网站打开速度
+- django-redis 支持的缓存系统，遵循缓存原则，加速网站打开速度（本版本不需要使用）
 - RESTful API 风格的 API 接口
 
 ## 网站支持
 - 前端使用 Bootstrap4 + jQuery 支持响应式；图标使用 Font Awesome
 - 后端 Python 3.5.2，Django 1.11.12，其他依赖查看源码中 requirements.txt
-- 数据库使用 MySQL
+- 数据库使用 MySQL（本版本不使用）
 - 网站部署使用的 Nginx + gunicorn
 - bootstrap-admin 用于美化后台管理系统，变成响应式界面
 - django-allauth 等用于第三方用户登录
 - django-haystack 和 jieba 用于支持全文搜索
-- redis 支持缓存
+- redis 支持缓存（本版本不使用）
 - django restframework 提供 API 接口
 - 其他依赖查看网站源码解释
 
@@ -42,10 +42,10 @@
 
 ## 使用步骤：
 
+### 对应Github分支：feature/1.0
+
 ### 必须的支持项
 - Python3.4 以上
-- redis 服务启动了，因为2018-4-18增加了django-redis缓存，所以必须要有redis了
-- MySQL
 - 其他依赖看依赖文件即可
 
 
@@ -54,24 +54,30 @@
 ```
 git clone git@github.com:Hopetree/izone.git
 ```
+然后拉去本分支到本地
+```
+git checkout -b feature/2.0 origin/feature/1.0
+```
+
 
 ### 创建网站关键信息文件
 由于涉及到网站的一些隐私信息，所以这个项目有一个文件没有上传到Github中，所以要在克隆项目之后自己创建这个文件。
 在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码：
 ```
 # -*- coding: utf-8 -*-
-# 配置数据库
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'izone',
-        'USER': 'root',
-        'PASSWORD': 'python',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'OPTIONS': {'charset': 'utf8mb4', }
-    }
-}
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '#!kta!9e0)24d@9#<*=ra$r!0k0+p8@w+a%7g1bbof0+ad@4_('
+
+# 自由选择需要开启的功能
+# 是否开始[在线工具]应用
+TOOL_FLAG = True
+# 是否开启[API]应用
+API_FLAG = True
+# DEBUG模式是否开始的选择
+# 值为0：所有平台关闭DEBUG,值为1:所有平台开启DEBUG,值为其他：根据平台类型判断开启（默认设置的Windows下才开启）
+MY_DEBUG = 2
+
 # 邮箱配置
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_HOST_USER = 'your-email@163.com'
@@ -89,14 +95,14 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 ```
 
 ### 在虚拟环境中安装依赖
-本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.seoerzone.com/article/virtualenv-for-python/
+切换到项目根目录，执行如下语句安装依赖
 
-### 创建数据库
+```
+pip install -r requirements.txt
+```
 
-首先在自己的电脑上面创建一个数据库，根据配置信息里面填写的数据库信息去创建。比如数据库的名字为izone,那么我建议你使用下面这段MySQL的语句，注意，创建的数据库的编码格式是utf8mb4，原因是我的博客中支持emoji表情，所以必须使用这个格式才行：
-```
-CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-```
+本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.tendcode.com/article/virtualenv-for-python/
+
 
 ### 在虚拟环境中运行项目
 首先要创建数据库表格，命令是：
@@ -109,7 +115,7 @@ CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ```
 然后运行程序
 ```
-(izone_env) F:\DjangoSpace\izone>python manage.py runserver --settings=izone.settings_dev
+(izone_env) F:\DjangoSpace\izone>python manage.py runserver
 ```
 
 ### 打开浏览器查看项目运行效果
@@ -123,3 +129,5 @@ CREATE DATABASE `izone` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 有任何问题可以去博客的博客留言或者提交issues
 
 PS：请各位使用了我的博客的源码或者直接参考我的博客源码改写成自己的博客的同学能够尊重我的成果，在您的网址上线之后能够给一个链接指向我的Github，写明您的博客主要支持的来源是我的Github博客项目，谢谢！
+
+注：这个分支是我博客项目的基础版，这个版本不需要依赖MySQL和redis，所以开箱即用，主要给那些不想麻烦搭建环境的人使用，今后也不会一直更新这个分支，完毕！
