@@ -14,10 +14,6 @@ import os
 import sys
 import platform
 
-# 更换默认的数据库连接
-import pymysql
-
-pymysql.install_as_MySQLdb()
 # 导入网站个人信息，非通用信息
 from .base_settings import *
 
@@ -29,9 +25,6 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#!kta!9e2)73d@3#=*=ca$r!0a8+p2@w+a%2g9ccof9+ad@4_('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 如果运行环境是Windows就开启DEBUG，否则关闭
@@ -77,6 +70,13 @@ INSTALLED_APPS = [
     'comment',  # 评论
 
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # 自定义用户model
 AUTH_USER_MODEL = 'oauth.Ouser'
@@ -201,14 +201,12 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-# 使用django-redis缓存页面，缓存配置如下：
+
+# 使用默认的缓存，缓存页面，缓存配置如下：
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 
