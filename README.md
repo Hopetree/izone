@@ -54,15 +54,19 @@
 ```
 git clone git@github.com:Hopetree/izone.git
 ```
+然后进入项目中
+```
+cd izone
+```
 然后拉去本分支到本地
 ```
-git checkout -b feature/2.0 origin/feature/1.0
+git checkout -b feature/1.0 origin/feature/1.0
 ```
 
 
 ### 创建网站关键信息文件
 由于涉及到网站的一些隐私信息，所以这个项目有一个文件没有上传到Github中，所以要在克隆项目之后自己创建这个文件。
-在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码：
+在settings.py文件所在的文件夹下创建一个base_settings.py文件，然后在里面写入如下代码(可以根据自己的需求更改配置，不改动也能运行)：
 ```
 # -*- coding: utf-8 -*-
 
@@ -98,7 +102,7 @@ SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
 切换到项目根目录，执行如下语句安装依赖
 
 ```
-pip install -r requirements.txt
+(izone_env) F:\DjangoSpace\izone>pip install -r requirements.txt
 ```
 
 本项目的依赖文件可以在项目根目录看到，如何安装依赖可以查看我博客文章 http://www.tendcode.com/article/virtualenv-for-python/
