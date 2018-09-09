@@ -100,9 +100,10 @@ base_settings.py
 my_settings.py
 db.sqlite3
 whoosh_index/
+db.sqlite3
 # 第一次上传的时候要禁用下面的忽略设置，然后自行删除文件，之后再打开
 migrations/
 !migrations/__init__.py
 media/
-db.sqlite3
+
 
