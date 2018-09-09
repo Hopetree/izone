@@ -104,4 +104,5 @@ whoosh_index/
 migrations/
 !migrations/__init__.py
 media/
+db.sqlite3
 
