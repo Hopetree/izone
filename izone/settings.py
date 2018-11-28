@@ -12,14 +12,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import sys
-import platform
 
 # 更换默认的数据库连接
 import pymysql
 
 pymysql.install_as_MySQLdb()
 # 导入网站个人信息，非通用信息
-from .base_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,19 +28,20 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-if MY_DEBUG == 0:
-    DEBUG = False
-elif MY_DEBUG == 1:
-    DEBUG = True
-else:
-    # 非强制开启DEBUG模式：如果运行环境是Windows就开启DEBUG，否则关闭
-    if platform.system() == 'Windows':
-        DEBUG = True
-    else:
-        DEBUG = False
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('IZONE_SECRET_KEY', '#!kta!9e0)24d@9#=*=ra$r!0k0+p5@w+a%7g1bbof9+ad@4_(')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.tendcode.com']
+# 是否开启[在线工具]应用
+TOOL_FLAG = os.getenv('IZONE_TOOL_FLAG', 'True') == 'True'
+# 是否开启[API]应用
+API_FLAG = os.getenv('IZONE_API_FLAG', 'False') == 'True'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('IZONE_DEBUG', 'False') == 'True'
+
+ADD_ALLOWED_HOST = os.getenv('IZONE_ADD_ALLOWED_HOST', 'web')
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS.append(ADD_ALLOWED_HOST)
 
 # Application definition
 
@@ -203,17 +202,6 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-# 使用django-redis缓存页面，缓存配置如下：
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
 # restframework settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -223,3 +211,50 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+# 配置数据库
+MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
+MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'tendcode')
+MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'root')
+MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', 'python')
+MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
+        'NAME': MYSQL_NAME,  # 数据库的名称
+        'USER': MYSQL_USER,  # 数据库的用户名
+        'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
+        'HOST': MYSQL_HOST,
+        'PORT': MYSQL_PORT,
+        'OPTIONS': {'charset': 'utf8mb4', }
+    }
+}
+
+# 使用django-redis缓存页面，缓存配置如下：
+REDIS_HOST = os.getenv('IZONE_REDIS_HOST', '127.0.0.1')
+REDIS_PORT = os.getenv('IZONE_REDIS_PORT', 6379)
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{}:{}".format(REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# 邮箱配置
+EMAIL_HOST = os.getenv('IZONE_EMAIL_HOST', 'smtp.163.com')
+EMAIL_HOST_USER = os.getenv('IZONE_EMAIL_HOST_USER', 'your-email-address')
+EMAIL_HOST_PASSWORD = os.getenv('IZOEN_EMAIL_HOST_PASSWORD', 'your-email-password')  # 这个不是邮箱密码，而是授权码
+EMAIL_PORT = os.getenv('IZONE_EMAIL_PORT', 465)  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
+# 是否使用了SSL 或者TLS，为了用465端口，要使用这个
+EMAIL_USE_SSL = os.getenv('IZOEN_EMAIL_USE_SSL', 'True') == 'True'
+# 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
+DEFAULT_FROM_EMAIL = os.getenv('IZOEN_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
+
+# 网站默认设置和上下文信息
+SITE_END_TITLE = os.getenv('IZOEN_SITE_END_TITLE', 'izone')
+SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
+SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
