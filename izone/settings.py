@@ -247,14 +247,14 @@ CACHES = {
 # 邮箱配置
 EMAIL_HOST = os.getenv('IZONE_EMAIL_HOST', 'smtp.163.com')
 EMAIL_HOST_USER = os.getenv('IZONE_EMAIL_HOST_USER', 'your-email-address')
-EMAIL_HOST_PASSWORD = os.getenv('IZOEN_EMAIL_HOST_PASSWORD', 'your-email-password')  # 这个不是邮箱密码，而是授权码
+EMAIL_HOST_PASSWORD = os.getenv('IZONE_EMAIL_HOST_PASSWORD', 'your-email-password')  # 这个不是邮箱密码，而是授权码
 EMAIL_PORT = os.getenv('IZONE_EMAIL_PORT', 465)  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
 # 是否使用了SSL 或者TLS，为了用465端口，要使用这个
-EMAIL_USE_SSL = os.getenv('IZOEN_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
+EMAIL_USE_SSL = os.getenv('IZONE_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
 # 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
-DEFAULT_FROM_EMAIL = os.getenv('IZOEN_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
+DEFAULT_FROM_EMAIL = os.getenv('IZONE_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
 
 # 网站默认设置和上下文信息
-SITE_END_TITLE = os.getenv('IZOEN_SITE_END_TITLE', 'izone')
+SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'izone')
 SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
