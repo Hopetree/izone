@@ -96,9 +96,7 @@ ENV/
 .ropeproject
 
 # 忽略网站个人信息，这些信息需要单独设置，不共享
-base_settings.py
 whoosh_index/
-db.sqlite3
 *.env
 # 第一次上传的时候要禁用下面的忽略设置，然后自行删除文件，之后再打开
 migrations/
