@@ -32,12 +32,12 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = os.getenv('IZONE_SECRET_KEY', '#!kta!9e0)24d@9#=*=ra$r!0k0+p5@w+a%7g1bbof9+ad@4_(')
 
 # 是否开启[在线工具]应用
-TOOL_FLAG = os.getenv('IZONE_TOOL_FLAG', 'True') == 'True'
+TOOL_FLAG = os.getenv('IZONE_TOOL_FLAG', 'True').upper() == 'TRUE'
 # 是否开启[API]应用
-API_FLAG = os.getenv('IZONE_API_FLAG', 'False') == 'True'
+API_FLAG = os.getenv('IZONE_API_FLAG', 'False').upper() == 'TRUE'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('IZONE_DEBUG', 'False') == 'True'
+DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
 
 ADD_ALLOWED_HOST = os.getenv('IZONE_ADD_ALLOWED_HOST', 'web')
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -250,7 +250,7 @@ EMAIL_HOST_USER = os.getenv('IZONE_EMAIL_HOST_USER', 'your-email-address')
 EMAIL_HOST_PASSWORD = os.getenv('IZOEN_EMAIL_HOST_PASSWORD', 'your-email-password')  # 这个不是邮箱密码，而是授权码
 EMAIL_PORT = os.getenv('IZONE_EMAIL_PORT', 465)  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
 # 是否使用了SSL 或者TLS，为了用465端口，要使用这个
-EMAIL_USE_SSL = os.getenv('IZOEN_EMAIL_USE_SSL', 'True') == 'True'
+EMAIL_USE_SSL = os.getenv('IZOEN_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
 # 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
 DEFAULT_FROM_EMAIL = os.getenv('IZOEN_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
 
