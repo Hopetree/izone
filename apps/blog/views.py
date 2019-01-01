@@ -137,7 +137,7 @@ class TagView(generic.ListView):
 
 
 def AboutView(request):
-    site_date = datetime.datetime.strptime('2018-04-12','%Y-%m-%d')
+    site_date = datetime.datetime.strptime('2018-03-28','%Y-%m-%d')
     return render(request, 'blog/about.html',context={'site_date':site_date})
 
 
