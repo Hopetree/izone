@@ -260,5 +260,7 @@ SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Dj
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
 
 # 个性化设置，非必要信息
+# 工信部备案信息
+BEIAN = os.getenv('IZONE_BEIAN','网站备案信息')
 # 站长统计（友盟）
 CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL','')

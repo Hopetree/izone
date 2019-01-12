@@ -11,4 +11,5 @@ def settings_info(request):
         'tool_flag':settings.TOOL_FLAG,
         'api_flag':settings.API_FLAG,
         'cnzz_protocol':settings.CNZZ_PROTOCOL,
+        'beian':settings.BEIAN,
     }
