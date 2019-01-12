@@ -10,4 +10,5 @@ def settings_info(request):
         'site_keywords':settings.SITE_KEYWORDS,
         'tool_flag':settings.TOOL_FLAG,
         'api_flag':settings.API_FLAG,
+        'cnzz_protocol':CNZZ_PROTOCOL,
     }
