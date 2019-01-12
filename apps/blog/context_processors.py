@@ -12,4 +12,5 @@ def settings_info(request):
         'api_flag':settings.API_FLAG,
         'cnzz_protocol':settings.CNZZ_PROTOCOL,
         'beian':settings.BEIAN,
+        'my_github':settings.MY_GITHUB,
     }
