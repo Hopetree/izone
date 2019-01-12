@@ -1,6 +1,6 @@
 一个以 Django 作为框架搭建的个人博客。
 
-博客主页 http://www.tendcode.com/
+博客主页 http://tendcode.com/
 
 ## 关于网站
 - 本网站是一个个人博客网站，主要分享博主的编程学习心得
