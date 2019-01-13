@@ -13,4 +13,5 @@ def settings_info(request):
         'cnzz_protocol':settings.CNZZ_PROTOCOL,
         'beian':settings.BEIAN,
         'my_github':settings.MY_GITHUB,
+        'site_verification':settings.MY_SITE_VERIFICATION,
     }

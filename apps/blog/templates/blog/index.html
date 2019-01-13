@@ -8,10 +8,7 @@
     <meta name="description" content="{{ site_description }}">
     <meta name="keywords" content="{{ site_keywords }}">
     <!--站长验证-->
-    <meta name="baidu-site-verification" content="YCoD4WTuGF" />
-    <meta name="360-site-verification" content="5492df7d63c9ceb707eff60d6cf699e1" />
-    <meta name="sogou_site_verification" content="czcxwE2sdj"/>
-    <meta name="shenma-site-verification" content="169f4055c7f0323f020d0d238a2bec48_1523704037">
+    {% if site_verification %}{{ site_verification|safe }}{% endif %}
 {% endblock %}
 
 {% block base_content %}
