@@ -78,6 +78,7 @@ class Article(models.Model):
     update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     views = models.IntegerField('阅览量', default=0)
     slug = models.SlugField(unique=True)
+    is_top = models.BooleanField('置顶', default=False)
 
     category = models.ForeignKey(Category, verbose_name='文章分类')
     tags = models.ManyToManyField(Tag, verbose_name='标签')
@@ -87,7 +88,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = verbose_name
-        ordering = ['-create_date']
+        ordering = ['-is_top', '-create_date']
 
     def __str__(self):
         return self.title[:20]
