@@ -29,7 +29,7 @@ def get_urls(url):
 
 
 if __name__ == '__main__':
-    url = 'http://data.zz.baidu.com/urls?site=www.tendcode.com&token=NpU01TxKEtTQAlBV'
+    url = 'http://data.zz.baidu.com/urls?site=tendcode.com&token=NpU01TxKEtTQAlBV'
     urls = get_urls('http://tendcode.com/sitemap.xml')
     r = push_urls(url,urls)
     print(r)
