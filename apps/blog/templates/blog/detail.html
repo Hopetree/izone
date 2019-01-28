@@ -46,10 +46,6 @@
                     </div>
                     <div class="article-body mt-4 f-17" style="line-height:1.8">
                         {{ article.body|safe }}
-                        <p class="font-weight-bold text-info">
-                            <i class="fa fa-bullhorn mx-1"></i>
-                            原创文章，转载请注明出处：{{ request.build_absolute_uri }}
-                        </p>
                     </div>
                     <div class="tag-cloud my-4">
                         {% for tag in article.tags.all %}
