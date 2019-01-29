@@ -1,6 +1,6 @@
 {% load oauth_tags %}
 {% if user.socialaccount_set.exists and user.avatar.url == '/media/avatar/default.png' %}
-<img class="avatar" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="{{ user }}">
+<img class="avatar" src="{% http_to_https user.socialaccount_set.all.0.get_avatar_url %}" alt="{{ user }}">
 {% else %}
 <img class="avatar" src="{{ user.avatar.url }}" alt="{{ user }}">
 {% endif %}

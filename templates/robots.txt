@@ -6,4 +6,4 @@ Disallow: /feed/
 Disallow: /search/
 Disallow: /silian.xml
 
-Sitemap: http://tendcode.com/sitemap.xml
+Sitemap: https://tendcode.com/sitemap.xml
