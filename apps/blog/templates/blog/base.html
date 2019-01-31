@@ -75,8 +75,8 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
         </p>
         <p class="mb-0">
             <a href="http://www.miibeian.gov.cn/" target="_blank">{{ beian }}</a>
-            {% if cnzz_protocol %}{{ cnzz_protocol|safe }}{% endif %}
             <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
+            {% if cnzz_protocol %}{{ cnzz_protocol|safe }}{% endif %}
         </p>
     </div>
 </footer>
