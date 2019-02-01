@@ -213,7 +213,7 @@ REST_FRAMEWORK = {
 
 # 配置数据库
 MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
-MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'tendcode')
+MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'izone')
 MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', 'python')
 MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)
@@ -226,7 +226,7 @@ DATABASES = {
         'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
         'HOST': MYSQL_HOST,
         'PORT': MYSQL_PORT,
-        'OPTIONS': {'charset': 'utf8mb4', }
+        'OPTIONS': {'charset': 'utf8'}
     }
 }
 
