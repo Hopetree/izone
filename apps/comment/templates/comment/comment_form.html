@@ -1,4 +1,4 @@
-{% load static %}
+{% load static comment_tags %}
 <div class="card border-0 rounded-0 f-16" id="editor-block">
     {% if user.is_authenticated %}
     <div class="card-body p-2 p-md-3">
@@ -14,134 +14,19 @@
             <i class="fa fa-smile-o fa-2x"></i>
         </button>
         <div class="dropdown-menu" id='emoji-list' aria-labelledby="emoji-btns">
-            <div class="editor-btns px-2" id="emojis">
+            {% get_emoji_imgs as emoji_imgs %}
+            {% for emoji_list in emoji_imgs %}
+            <div class="editor-btns px-2">
+                {% for emoji in emoji_list %}
+                {% with emoji.0|emoji_to_url as emoji_url %}
                 <button class="btn p-1"><img
-                        src="{% static 'comment/emoji/stuck_out_tongue_winking_eye.png' %}"
-                        title="stuck_out_tongue_winking_eye" alt="emoji-stuck_out_tongue_winking_eye"
-                        data-emoji=":stuck_out_tongue_winking_eye:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sunglasses.png' %}"
-                                             title="sunglasses" alt="emoji-sunglasses"
-                                             data-emoji=":sunglasses:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sweat.png' %}" title="sweat"
-                                             alt="emoji-sweat" data-emoji=":sweat:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sweat_smile.png' %}"
-                                             title="sweat_smile" alt="emoji-sweat_smile"
-                                             data-emoji=":sweat_smile:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/unamused.png' %}" title="unamused"
-                                             alt="emoji-unamused" data-emoji=":unamused:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/v.png' %}" title="v" alt="emoji-v"
-                                             data-emoji=":v:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/worried.png' %}" title="worried"
-                                             alt="emoji-worried" data-emoji=":worried:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/yum.png' %}" title="yum"
-                                             alt="emoji-yum" data-emoji=":yum:"></button>
+                        src="{% static emoji_url %}"
+                        title="{{ emoji.1 }}" alt="{{ emoji.0 }}"
+                        data-emoji=":{{ emoji.0 }}:"></button>
+                {% endwith %}
+                {% endfor %}
             </div>
-            <div class="editor-btns px-2" id="emojis">
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sleepy.png' %}" title="sleepy"
-                                             alt="emoji-sleepy" data-emoji=":sleepy:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/smile.png' %}" title="smile"
-                                             alt="emoji-smile" data-emoji=":smile:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/smiley.png' %}" title="smiley"
-                                             alt="emoji-smiley" data-emoji=":smiley:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/smirk.png' %}" title="smirk"
-                                             alt="emoji-smirk" data-emoji=":smirk:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sob.png' %}" title="sob"
-                                             alt="emoji-sob" data-emoji=":sob:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/sparkling_heart.png' %}"
-                                             title="sparkling_heart" alt="emoji-sparkling_heart"
-                                             data-emoji=":sparkling_heart:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/stuck_out_tongue.png' %}"
-                                             title="stuck_out_tongue" alt="emoji-stuck_out_tongue"
-                                             data-emoji=":stuck_out_tongue:"></button>
-                <button class="btn p-1"><img
-                        src="{% static 'comment/emoji/stuck_out_tongue_closed_eyes.png' %}"
-                        title="stuck_out_tongue_closed_eyes" alt="emoji-stuck_out_tongue_closed_eyes"
-                        data-emoji=":stuck_out_tongue_closed_eyes:"></button>
-            </div>
-            <div class="editor-btns px-2" id="emojis">
-                <button class="btn p-1"><img src="{% static 'comment/emoji/kissing_heart.png' %}"
-                                             title="kissing_heart" alt="emoji-kissing_heart"
-                                             data-emoji=":kissing_heart:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/mask.png' %}" title="mask"
-                                             alt="emoji-mask" data-emoji=":mask:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/no_mouth.png' %}" title="no_mouth"
-                                             alt="emoji-no_mouth" data-emoji=":no_mouth:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/pensive.png' %}" title="pensive"
-                                             alt="emoji-pensive" data-emoji=":pensive:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/persevere.png' %}" title="persevere"
-                                             alt="emoji-persevere" data-emoji=":persevere:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/pray.png' %}" title="pray"
-                                             alt="emoji-pray" data-emoji=":pray:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/relieved.png' %}" title="relieved"
-                                             alt="emoji-relieved" data-emoji=":relieved:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/scream.png' %}" title="scream"
-                                             alt="emoji-scream" data-emoji=":scream:"></button>
-            </div>
-            <div class="editor-btns px-2" id="emojis">
-                <button class="btn p-1"><img src="{% static 'comment/emoji/grin.png' %}" title="grin"
-                                             alt="emoji-grin" data-emoji=":grin:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/heart.png' %}" title="heart"
-                                             alt="emoji-heart" data-emoji=":heart:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/heartbeat.png' %}" title="heartbeat"
-                                             alt="emoji-heartbeat" data-emoji=":heartbeat:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/heart_eyes.png' %}"
-                                             title="heart_eyes" alt="emoji-heart_eyes"
-                                             data-emoji=":heart_eyes:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/hushed.png' %}" title="hushed"
-                                             alt="emoji-hushed" data-emoji=":hushed:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/innocent.png' %}" title="innocent"
-                                             alt="emoji-innocent" data-emoji=":innocent:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/joy.png' %}" title="joy"
-                                             alt="emoji-joy" data-emoji=":joy:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/kissing_closed_eyes.png' %}"
-                                             title="kissing_closed_eyes" alt="emoji-kissing_closed_eyes"
-                                             data-emoji=":kissing_closed_eyes:"></button>
-
-            </div>
-            <div class="editor-btns px-2" id="emojis">
-                <button class="btn p-1"><img src="{% static 'comment/emoji/cry.png' %}" title="cry"
-                                             alt="emoji-cry" data-emoji=":cry:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/disappointed_relieved.png' %}"
-                                             title="disappointed_relieved" alt="emoji-disappointed_relieved"
-                                             data-emoji=":disappointed_relieved:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/dizzy_face.png' %}"
-                                             title="dizzy_face" alt="emoji-dizzy_face"
-                                             data-emoji=":dizzy_face:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/dog.png' %}" title="dog"
-                                             alt="emoji-dog" data-emoji=":dog:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/fearful.png' %}" title="fearful"
-                                             alt="emoji-fearful" data-emoji=":fearful:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/fist.png' %}" title="fist"
-                                             alt="emoji-fist" data-emoji=":fist:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/flushed.png' %}" title="flushed"
-                                             alt="emoji-flushed" data-emoji=":flushed:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/frowning.png' %}" title="frowning"
-                                             alt="emoji-frowning" data-emoji=":frowning:"></button>
-
-            </div>
-            <div class="editor-btns px-2" id="emojis">
-                <button class="btn p-1"><img src="{% static 'comment/emoji/+1.png' %}" title="+1"
-                                             alt="emoji-+1" data-emoji=":+1:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/angry.png' %}" title="angry"
-                                             alt="emoji-angry" data-emoji=":angry:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/anguished.png' %}" title="anguished"
-                                             alt="emoji-anguished" data-emoji=":anguished:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/blush.png' %}" title="blush"
-                                             alt="emoji-blush" data-emoji=":blush:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/broken_heart.png' %}"
-                                             title="broken_heart" alt="emoji-broken_heart"
-                                             data-emoji=":broken_heart:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/clap.png' %}" title="clap"
-                                             alt="emoji-clap" data-emoji=":clap:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/cold_sweat.png' %}"
-                                             title="cold_sweat" alt="emoji-cold_sweat"
-                                             data-emoji=":cold_sweat:"></button>
-                <button class="btn p-1"><img src="{% static 'comment/emoji/confounded.png' %}"
-                                             title="confounded" alt="emoji-confounded"
-                                             data-emoji=":confounded:"></button>
-
-
-            </div>
+            {% endfor %}
         </div>
     </div>
     {% else %}

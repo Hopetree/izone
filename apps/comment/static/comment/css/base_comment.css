@@ -96,6 +96,13 @@
 .CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
     background: none;
 }
+#comment-list .comment-emoji-img {
+    display: inline;
+    height: 1.1em;
+    margin-right: 2px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
