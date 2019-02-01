@@ -23,18 +23,6 @@ from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import ArticleSitemap, CategorySitemap, TagSitemap
 from blog.feeds import AllArticleRssFeed
 
-from rest_framework.routers import DefaultRouter
-from api import views as api_views
-
-if settings.API_FLAG:
-    router = DefaultRouter()
-    router.register(r'users',api_views.UserListSet)
-    router.register(r'articles',api_views.ArticleListSet)
-    router.register(r'tags',api_views.TagListSet)
-    router.register(r'categorys',api_views.CategoryListSet)
-    router.register(r'timelines',api_views.TimelineListSet)
-    router.register(r'toollinks',api_views.ToolLinkListSet)
-
 # 网站地图
 sitemaps = {
     'articles': ArticleSitemap,
@@ -54,6 +42,7 @@ urlpatterns = [
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 加入这个才能显示media文件
 
 if settings.API_FLAG:
+    from api.urls import router
     urlpatterns.append(url(r'^api/v1/',include(router.urls,namespace='api')))    # restframework
 
 if settings.TOOL_FLAG:
