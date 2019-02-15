@@ -5,6 +5,7 @@ from ..models import emoji_info
 
 register = template.Library()
 
+
 @register.simple_tag
 def get_comment_count(entry):
     '''获取一个文章的评论总数'''
@@ -14,8 +15,8 @@ def get_comment_count(entry):
 
 @register.simple_tag
 def get_parent_comments(entry):
-    '''获取一个文章的父评论列表'''
-    lis = entry.article_comments.filter(parent=None)
+    '''获取一个文章的父评论列表，逆序只选取后面的20个评论'''
+    lis = entry.article_comments.filter(parent=None).order_by("-id")[:20]
     return lis
 
 
@@ -68,6 +69,7 @@ def get_emoji_imgs():
     :return:
     '''
     return emoji_info
+
 
 @register.filter(is_safe=True)
 def emoji_to_url(value):
