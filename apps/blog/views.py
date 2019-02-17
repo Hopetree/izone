@@ -15,10 +15,6 @@ from haystack.query import SearchQuerySet
 
 # Create your views here.
 
-def goview(request):
-    return render(request, 'test_html.html')
-
-
 class ArchiveView(generic.ListView):
     model = Article
     template_name = 'blog/archive.html'

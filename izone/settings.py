@@ -14,35 +14,28 @@ import os
 import sys
 import platform
 
-# 更换默认的数据库连接
-import pymysql
-
-pymysql.install_as_MySQLdb()
-# 导入网站个人信息，非通用信息
-from .base_settings import *
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 添加 apps 目录
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '#!kta!9e0)24d@9#<*=ra$r!0k0+p8@w+a%7g1bbof0+ad@4_('
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-if MY_DEBUG == 0:
-    DEBUG = False
-elif MY_DEBUG == 1:
-    DEBUG = True
-else:
-    # 非强制开启DEBUG模式：如果运行环境是Windows就开启DEBUG，否则关闭
-    if platform.system() == 'Windows':
-        DEBUG = True
-    else:
-        DEBUG = False
+# 自由选择需要开启的功能
+# 是否开始[在线工具]应用
+TOOL_FLAG = True
+# 是否开启[API]应用
+API_FLAG = False
+# DEBUG模式是否开始的选择
+# 值为0：所有平台关闭DEBUG,值为1:所有平台开启DEBUG,值为其他：根据平台类型判断开启（默认设置的Windows下才开启）
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.tendcode.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -79,6 +72,13 @@ INSTALLED_APPS = [
     'comment',  # 评论
 
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # 自定义用户model
 AUTH_USER_MODEL = 'oauth.Ouser'
@@ -203,14 +203,12 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-# 使用django-redis缓存页面，缓存配置如下：
+
+# 使用默认的缓存，缓存页面，缓存配置如下：
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 
@@ -223,3 +221,17 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
+# 邮箱配置
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_HOST_USER = 'your-email@163.com'
+EMAIL_HOST_PASSWORD = 'your-password'  # 这个不是邮箱密码，而是授权码
+EMAIL_PORT = 465  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
+# 是否使用了SSL 或者TLS，为了用465端口，要使用这个
+EMAIL_USE_SSL = True
+# 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
+DEFAULT_FROM_EMAIL = 'your-webname <your-email@163.com>'
+
+# 网站默认设置和上下文信息
+SITE_END_TITLE = '网站的名称，如TendCode'
+SITE_DESCRIPTION = '网站描述'
+SITE_KEYWORDS = '网站关键词，多个词用英文逗号隔开'
