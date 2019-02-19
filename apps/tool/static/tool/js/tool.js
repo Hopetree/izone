@@ -1,3 +1,23 @@
+//get url params
+var getParam = function(name){
+    var search = document.location.search;
+    var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
+    var matcher = pattern.exec(search);
+    var items = null;
+    if(null != matcher){
+            try{
+                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
+            }catch(e){
+                    try{
+                            items = decodeURIComponent(matcher[1]);
+                    }catch(e){
+                            items = matcher[1];
+                    }
+            }
+    }
+    return items;
+};
+
 //baidu links push api
 function push_spider(CSRF, URL) {
 	var url = $('#form-url').val();
@@ -107,7 +127,8 @@ function regex_api(CSRF, URL) {
 		url: URL,
 		data: {
 			'r': r,
-			'texts': texts
+			'texts': texts,
+			'key':getParam('key')
 		},
 		dataType: 'json',
 		success: function(ret) {

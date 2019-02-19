@@ -82,18 +82,24 @@ def regex_api(request):
         data = request.POST
         texts = data.get('texts')
         regex = data.get('r')
+        key = data.get('key')
         try:
             lis = re.findall(r'{}'.format(regex), texts)
         except:
             lis = []
         num = len(lis)
-        info = '\n'.join(lis)
-        result = "匹配到&nbsp;{}&nbsp;个结果：\n".format(num) + "```\n" + info + "\n```"
+        if key == 'url' and num:
+            script_tag = '''<script>$(".re-result p").children("a").attr("target","_blank");</script>'''
+            result = '<br>'.join(['[{}]({})'.format(i,i) for i in lis])
+        else:
+            script_tag = ''
+            info = '\n'.join(lis)
+            result = "匹配到&nbsp;{}&nbsp;个结果：\n".format(num) + "```\n" + info + "\n```"
         result = markdown.markdown(result, extensions=[
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
-        return JsonResponse({'result': mark_safe(result), 'num': num})
+        return JsonResponse({'result': mark_safe(result+script_tag), 'num': num})
     return JsonResponse({'msg': 'miss'})
 
 
