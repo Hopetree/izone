@@ -89,7 +89,7 @@ def regex_api(request):
             lis = []
         num = len(lis)
         if key == 'url' and num:
-            script_tag = '''<script>$(".re-result p").children("a").attr("target","_blank");</script>'''
+            script_tag = '''<script>$(".re-result p").children("a").attr({target:"_blank",rel:"noopener noreferrer"});</script>'''
             result = '<br>'.join(['[{}]({})'.format(i,i) for i in lis])
         else:
             script_tag = ''
