@@ -14,10 +14,11 @@ def profile_view(request):
 def change_profile_view(request):
     if request.method == 'POST':
         old_avatar_file = request.user.avatar.path
+        old_avatar_url = request.user.avatar.url
         # 上传文件需要使用request.FILES
         form = ProfileForm(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
-            if not request.user.avatar.url == '/media/avatar/default.png':
+            if not old_avatar_url == '/media/avatar/default.png':
                 if os.path.exists(old_avatar_file):
                     os.remove(old_avatar_file)
             form.save()
