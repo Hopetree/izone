@@ -29,10 +29,15 @@
                             <span class="font-weight-bold">用户名：</span>
                             <span>{{ user.username }}</span>
                         </li>
-                        <li class="list-group-item ml-5 border-0">
+                        {% for emailaddress in user.emailaddress_set.all %}
+                        {% if emailaddress.primary or user.emailaddress_set.count == 1 %}
+                        <li class="list-group-item ml-5 border-0" title="提示：已验证邮箱的用户有更多特权！">
                             <span class="font-weight-bold">邮&emsp;箱：</span>
-                            <span>{{ user.email }}</span>
+                            <span>{{ emailaddress.email }}</span>
+                            {% if emailaddress.verified %}已验证{% else %}未验证{% endif %}
                         </li>
+                        {% endif %}
+                        {% endfor %}
                         <li class="list-group-item ml-5 border-0">
                             <span class="font-weight-bold">网&emsp;址：</span>
                             <span>{{ user.link }}</span>
@@ -42,8 +47,9 @@
                 <div class="text-center mb-5" id="social-login">
                     <div class="login-title"><span>更多操作</span></div>
                     <div class="more-link mt-3">
-                        <a class="btn btn-info btn-sm rounded-0 mx-3" href="{% url 'oauth:change_profile' %}">修改资料</a>
-                        <a class="btn btn-info btn-sm rounded-0 mx-3" href="{% url 'account_change_password' %}">修改密码</a>
+                        <a class="btn btn-info btn-sm rounded-0 mx-lg-3 mx-sm-2" href="{% url 'oauth:change_profile' %}">修改资料</a>
+                        <a class="btn btn-info btn-sm rounded-0 mx-lg-3 mx-sm-2" href="{% url 'account_change_password' %}">修改密码</a>
+                        <a class="btn btn-info btn-sm rounded-0 mx-lg-3 mx-sm-2" href="{% url 'account_email' %}">邮箱验证</a>
                     </div>
                 </div>
             </div>

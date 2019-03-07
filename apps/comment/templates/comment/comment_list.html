@@ -14,7 +14,24 @@
                     <a class="float-right small mr-2 rep-btn" href="#editor-block"
                        data-repid="{{ comment.id }}" data-repuser="{{ comment.author.username }}">回复</a>
                     <p class="mt-0 mb-1">
-                        <strong>{{ comment.author }}</strong>
+                        {% get_user_link comment.author as user_link_info %}
+                        {% if user_link_info.is_verified and user_link_info.link %}
+                        <strong >
+                            <a href="{{ user_link_info.link }}"
+                               title="前往 {{ comment.author }} 的个人网站"
+                               target="_blank">{{ comment.author }}</a>
+                        </strong>
+                        {% else %}
+                        <strong title="该用户未认证或没有个人站点">{{ comment.author }}</strong>
+                        {% endif %}
+                        {% if user_link_info.provider %}
+                            {% if user_link_info.provider == 'GitHub' %}
+                            <i class="fa fa-github" title="Github 绑定用户"></i>
+                            {% endif %}
+                            {% if user_link_info.provider == 'Weibo' %}
+                            <i class="fa fa-weibo" TITLE="Weibo 绑定用户"></i>
+                            {% endif %}
+                        {% endif %}
                         {% if comment.author.is_superuser %}
                         <small class="text-danger">[博主]</small>
                         {% endif %}
@@ -34,7 +51,25 @@
                     <div class="media-body ml-2">
                         <a class="float-right small mr-2 rep-btn" href="#editor-block"
                            data-repid="{{ each.id }}" data-repuser="{{ each.author.username }}">回复</a>
-                        <p class="mt-0 mb-1"><strong>{{ each.author }}</strong>
+                        <p class="mt-0 mb-1">
+                            {% get_user_link each.author as each_user_link_info %}
+                            {% if each_user_link_info.is_verified and each_user_link_info.link %}
+                            <strong >
+                                <a href="{{ each_user_link_info.link }}"
+                                   title="前往 {{ each.author }} 的个人网站"
+                                   target="_blank">{{ each.author }}</a>
+                            </strong>
+                            {% else %}
+                            <strong title="该用户未认证或没有个人站点">{{ each.author }}</strong>
+                            {% endif %}
+                            {% if each_user_link_info.provider %}
+                                {% if each_user_link_info.provider == 'GitHub' %}
+                                <i class="fa fa-github" title="Github 绑定用户"></i>
+                                {% endif %}
+                                {% if each_user_link_info.provider == 'Weibo' %}
+                                <i class="fa fa-weibo" title="Weibo 绑定用户"></i>
+                                {% endif %}
+                            {% endif %}
                             {% if each.author.is_superuser %}
                             <small class="text-danger">[博主]</small>
                             {% endif %}

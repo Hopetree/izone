@@ -99,9 +99,9 @@ SITE_ID = 2
 LOGIN_REDIRECT_URL = "/"
 
 # Email setting
-# imoprt from base_settings more infos
-# 禁用注册邮箱验证
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+# 注册中邮件验证方法:“强制（mandatory）”,“可选（optional）【默认】”或“否（none）”之一。
+# 开启邮箱验证的话，如果邮箱配置不可用会报错，所以默认关闭，根据需要自行开启
+ACCOUNT_EMAIL_VERIFICATION = os.getenv('IZONE_ACCOUNT_EMAIL_VERIFICATION', 'none')
 # 登录方式，选择用户名或者邮箱都能登录
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 # 设置用户注册的时候必须填写邮箱地址
