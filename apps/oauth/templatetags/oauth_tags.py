@@ -43,10 +43,9 @@ def get_user_link(user):
                 the_link = account_user.get_profile_url()
                 the_provider = account_user.get_provider().name
                 if key == 'github':
-                    if user.link:
-                        info['link'] = user.link
-                    else:
-                        info['link'] = the_link
+                    info['link'] = the_link
+                if user.link:
+                    info['link'] = user.link
                 info['provider'] = the_provider
                 info['is_verified'] = True
     else:
