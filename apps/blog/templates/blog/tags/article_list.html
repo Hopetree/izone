@@ -1,5 +1,5 @@
 {% load blog_tags oauth_tags comment_tags %}
-{% load humanize %}
+{% load humanize static%}
 <div class="summary-list">
     {% for article in articles %}
     <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
@@ -9,8 +9,8 @@
             </a>
         </div>
         <div class="media-body">
+            {% if article.is_top %}<img class="float-right top-article-img" src="{% static 'blog/img/TOP.png' %}">{% endif %}
             <div class="text-muted mb-2 f-12">
-                {% if article.is_top %}<p class="float-right mb-0"><span class="text-danger mx-2">置顶</span></p>{% endif %}
                 {% get_user_avatar_tag article.author %}
                 <span>{{ article.author }}</span>
                 <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ article.create_date|naturaltime }}</span>

@@ -179,6 +179,10 @@ blockquote {
     border-bottom: 2px solid #00AAEE;
 }
 /* article summary --------------------------------------------------*/
+.top-article-img {
+    margin-right: -.5rem;
+    margin-top: -.5rem;
+}
 .choice .active {
     color:#212529;
     border-bottom: 2px solid #646464;
@@ -379,6 +383,10 @@ blockquote {
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
+.top-article-img {
+    margin-right: -1rem;
+    margin-top: -1rem;
+}
 .container {
     max-width: 970px;
     padding-right: 15px;
