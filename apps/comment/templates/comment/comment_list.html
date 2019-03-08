@@ -19,17 +19,19 @@
                         <strong >
                             <a href="{{ user_link_info.link }}"
                                title="前往 {{ comment.author }} 的个人网站"
-                               target="_blank">{{ comment.author }}</a>
+                               target="_blank">{{ comment.author }}
+                            </a>
                         </strong>
                         {% else %}
                         <strong title="该用户未认证或没有个人站点">{{ comment.author }}</strong>
                         {% endif %}
-                        {% if user_link_info.provider %}
+                        {% if user_link_info.is_verified %}
                             {% if user_link_info.provider == 'GitHub' %}
                             <i class="fa fa-github" title="Github 绑定用户"></i>
-                            {% endif %}
-                            {% if user_link_info.provider == 'Weibo' %}
-                            <i class="fa fa-weibo" TITLE="Weibo 绑定用户"></i>
+                            {% elif user_link_info.provider == 'Weibo' %}
+                            <i class="fa fa-weibo" title="Weibo 绑定用户"></i>
+                            {% else %}
+                            <i class="fa fa-universal-access" title="邮箱认证用户"></i>
                             {% endif %}
                         {% endif %}
                         {% if comment.author.is_superuser %}
@@ -57,17 +59,19 @@
                             <strong >
                                 <a href="{{ each_user_link_info.link }}"
                                    title="前往 {{ each.author }} 的个人网站"
-                                   target="_blank">{{ each.author }}</a>
+                                   target="_blank">{{ each.author }}
+                                </a>
                             </strong>
                             {% else %}
                             <strong title="该用户未认证或没有个人站点">{{ each.author }}</strong>
                             {% endif %}
-                            {% if each_user_link_info.provider %}
+                            {% if each_user_link_info.is_verified %}
                                 {% if each_user_link_info.provider == 'GitHub' %}
                                 <i class="fa fa-github" title="Github 绑定用户"></i>
-                                {% endif %}
-                                {% if each_user_link_info.provider == 'Weibo' %}
+                                {% elif each_user_link_info.provider == 'Weibo' %}
                                 <i class="fa fa-weibo" title="Weibo 绑定用户"></i>
+                                {% else %}
+                                <i class="fa fa-universal-access" title="邮箱认证用户"></i>
                                 {% endif %}
                             {% endif %}
                             {% if each.author.is_superuser %}
