@@ -31,7 +31,7 @@
                             {% elif user_link_info.provider == 'Weibo' %}
                             <i class="fa fa-weibo" title="Weibo 绑定用户"></i>
                             {% else %}
-                            <i class="fa fa-registered" title="邮箱认证用户"></i>
+                            <i class="fa fa-diamond" title="邮箱认证用户"></i>
                             {% endif %}
                         {% endif %}
                         {% if comment.author.is_superuser %}
@@ -71,7 +71,7 @@
                                 {% elif each_user_link_info.provider == 'Weibo' %}
                                 <i class="fa fa-weibo" title="Weibo 绑定用户"></i>
                                 {% else %}
-                                <i class="fa fa-registered" title="邮箱认证用户"></i>
+                                <i class="fa fa-diamond" title="邮箱认证用户"></i>
                                 {% endif %}
                             {% endif %}
                             {% if each.author.is_superuser %}
