@@ -146,7 +146,7 @@
 {% block end_f %}
 <script>
 $('#start-push').click(function() {
-	push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_api' %}");
+	push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push' %}");
 })
 
 </script>

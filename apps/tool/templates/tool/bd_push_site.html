@@ -147,7 +147,7 @@
 {% block end_f %}
 <script>
 $('#start-push').click(function() {
-	site_push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_api_site' %}");
+	site_push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push_site' %}");
 })
 
 </script>

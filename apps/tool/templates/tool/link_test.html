@@ -65,7 +65,7 @@
 {% block end_f %}
 <script>
 $('#start-push').click(function() {
-	link_test_spider("{{ csrf_token }}", "{% url 'tool:link_test_api' %}");
+	link_test_spider("{{ csrf_token }}", "{% url 'tool:link_test' %}");
 })
 
 

@@ -18,27 +18,16 @@ def Toolview(request):
 
 # 百度主动推送
 def BD_pushview(request):
-    return render(request, 'tool/bd_push.html')
-
-
-@require_POST
-def bd_api_view(request):
     if request.is_ajax():
         data = request.POST
         url = data.get('url')
         urls = data.get('url_list')
         info = push_urls(url, urls)
         return JsonResponse({'msg': info})
-    return JsonResponse({'msg': 'miss'})
-
+    return render(request, 'tool/bd_push.html')
 
 # 百度主动推送升级版，提取sitemap链接推送
 def BD_pushview_site(request):
-    return render(request, 'tool/bd_push_site.html')
-
-
-@require_POST
-def bd_api_site(request):
     if request.is_ajax():
         data = request.POST
         url = data.get('url')
@@ -51,16 +40,10 @@ def bd_api_site(request):
         else:
             info = push_urls(url, urls)
         return JsonResponse({'msg': info})
-    return JsonResponse({'msg': 'miss'})
-
+    return render(request, 'tool/bd_push_site.html')
 
 # 友链检测
 def Link_testview(request):
-    return render(request, 'tool/link_test.html')
-
-
-@require_POST
-def Link_test_api(request):
     if request.is_ajax():
         data = request.POST
         p = data.get('p')
@@ -68,16 +51,10 @@ def Link_test_api(request):
         c = Check(urls, p)
         info = c.run()
         return JsonResponse(info)
-    return JsonResponse({'msg': 'miss'})
-
+    return render(request, 'tool/link_test.html')
 
 # 在线正则表达式
 def regexview(request):
-    return render(request, 'tool/regex.html')
-
-
-@require_POST
-def regex_api(request):
     if request.is_ajax():
         data = request.POST
         texts = data.get('texts')
@@ -100,16 +77,10 @@ def regex_api(request):
             'markdown.extensions.codehilite',
         ])
         return JsonResponse({'result': mark_safe(result+script_tag), 'num': num})
-    return JsonResponse({'msg': 'miss'})
-
+    return render(request, 'tool/regex.html')
 
 # 生成请求头
 def useragent_view(request):
-    return render(request, 'tool/useragent.html')
-
-
-@require_POST
-def useragent_api(request):
     if request.is_ajax():
         data = request.POST
         d_lis = data.get('d_lis')
@@ -120,8 +91,7 @@ def useragent_api(request):
         n = n_lis.split(',') if len(n_lis) > 0 else None
         result = get_user_agent(os=os, navigator=n, device_type=d)
         return JsonResponse({'result': result})
-    return JsonResponse({'msg': 'miss'})
-
+    return render(request, 'tool/useragent.html')
 
 # HTML特殊字符对照表
 def html_characters(request):
