@@ -96,6 +96,10 @@ $(function() {
             alert("评论内容不能为空！");
             return;
         }
+        if (content.length > 1048) {
+            alert("评论内容字符数超过1048，请精简内容再提交！");
+            return;
+        }
         var base_t = sessionStorage.getItem('base_t');
         var now_t = Date.parse(new Date());
         if (base_t) {

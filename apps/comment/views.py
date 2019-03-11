@@ -22,6 +22,9 @@ def AddcommentView(request):
         article_id = data.get('article_id')
         rep_id = data.get('rep_id')
         the_article = Article.objects.get(id=article_id)
+        if len(new_content) > 1048:
+            return JsonResponse({'msg': '你的评论字数超过1048，无法保存。'})
+
         if not rep_id:
             new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article, parent=None,
                                          rep_to=None)
