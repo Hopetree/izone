@@ -97,7 +97,7 @@ $(function() {
             return;
         }
         if (content.length > 1048) {
-            alert("评论内容字符数超过1048，请精简内容再提交！");
+            alert("评论字数(含空格)为：" + content.length + "，超过1048，请精简后再提交！");
             return;
         }
         var base_t = sessionStorage.getItem('base_t');
