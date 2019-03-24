@@ -35,11 +35,10 @@ class IndexView(generic.ListView):
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
 
     def get_ordering(self):
-        ordering = super(IndexView, self).get_ordering()
         sort = self.kwargs.get('sort')
         if sort == 'v':
             return ('-views', '-update_date', '-id')
-        return ordering
+        return ('-is_top', '-create_date')
 
 
 class DetailView(generic.DetailView):

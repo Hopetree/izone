@@ -87,7 +87,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = verbose_name
-        ordering = ['-is_top', '-create_date']
+        ordering = ['-create_date']
 
     def __str__(self):
         return self.title[:20]
