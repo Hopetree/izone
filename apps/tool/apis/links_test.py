@@ -5,7 +5,7 @@ import threading
 
 class Check(object):
     def __init__(self, urls, p):
-        self.urls = set(urls.split('\n'))
+        self.urls = set([u.strip() for u in urls.split('\n') if u.strip()])
         self.p = p
         self.dic = dict()
         self.headers = {'user-agent': 'Mozilla/5.0 (Windows NT 5.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}

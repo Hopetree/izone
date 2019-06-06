@@ -20,8 +20,8 @@ var getParam = function(name){
 
 //baidu links push api
 function push_spider(CSRF, URL) {
-	var url = $('#form-url').val();
-	var urls = $('#form-urls').val();
+	var url = $.trim($('#form-url').val());
+	var urls = $.trim($('#form-urls').val());
 	if (url.length == 0 | urls.length == 0) {
 		alert('接口地址和网址链接内容都不能为空！');
 		return false
@@ -48,8 +48,8 @@ function push_spider(CSRF, URL) {
 
 //sitemap urls baidu push api
 function site_push_spider(CSRF, URL) {
-	var url = $('#form-url').val();
-	var map_url = $('#form-sitemap').val();
+	var url = $.trim($('#form-url').val());
+	var map_url = $.trim($('#form-sitemap').val());
 	if (url.length == 0 | map_url.length == 0) {
 		alert('接口地址和sitemap地址内容都不能为空！');
 		return false
@@ -76,8 +76,8 @@ function site_push_spider(CSRF, URL) {
 
 //link test api
 function link_test_spider(CSRF, URL) {
-	var p = $('#form-info').val();
-	var urls = $('#form-links').val();
+	var p = $.trim($('#form-info').val());
+	var urls = $.trim($('#form-links').val());
 	if (p.length == 0 | urls.length == 0) {
 		alert('需要检查的信息和友链地址都不能为空！');
 		return false
@@ -110,8 +110,8 @@ function link_test_spider(CSRF, URL) {
 
 //regex api
 function regex_api(CSRF, URL) {
-	var r = $('#form-regex').val();
-	var texts = $('#form-text').val();
+	var r = $.trim($('#form-regex').val());
+	var texts = $.trim($('#form-text').val());
 	if (r.length == 0 | texts.length == 0) {
 		alert('待提取信息和正则表达式都不能为空！');
 		return false
