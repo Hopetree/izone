@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Article, Tag, Category, Timeline, Carousel, Silian, Keyword, FriendLink
+from .models import (Article, Tag, Category, Timeline,
+                     Carousel, Silian, Keyword, FriendLink,
+                     AboutBlog)
 
 
 @admin.register(Article)
@@ -77,3 +79,20 @@ class FriendLinkAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'link', 'create_date', 'is_active', 'is_show')
     date_hierarchy = 'create_date'
     list_filter = ('is_active', 'is_show')
+
+
+@admin.register(AboutBlog)
+class AboutBlogAdmin(admin.ModelAdmin):
+    list_display = ('short_body', 'create_date', 'update_date')
+
+    def short_body(self, obj):
+        return '自由编辑 About 页面的内容，支持 markdown 语法。'
+
+    short_body.short_description = 'AboutBlog'
+
+    # 限制用户权限，只能超管可以编辑
+    def get_queryset(self, request):
+        qs = super(AboutBlogAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return None

@@ -217,3 +217,22 @@ class FriendLink(models.Model):
     def show_to_false(self):
         self.is_show = True
         self.save(update_fields=['is_show'])
+
+class AboutBlog(models.Model):
+    body = models.TextField(verbose_name='About 内容')
+    create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+
+    class Meta:
+        verbose_name = 'About'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return 'About'
+
+    def body_to_markdown(self):
+        return markdown.markdown(self.body, extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+        ])
+

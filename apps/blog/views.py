@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
-from .models import Article, Tag, Category, Timeline, Silian
+from .models import Article, Tag, Category, Timeline, Silian, AboutBlog
 from django.core.cache import cache
 
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
@@ -136,8 +136,20 @@ class TagView(generic.ListView):
 
 
 def AboutView(request):
-    site_date = datetime.datetime.strptime('2018-03-28','%Y-%m-%d')
-    return render(request, 'blog/about.html',context={'site_date':site_date})
+    obj = AboutBlog.objects.first()
+    if obj:
+        ud = obj.update_date.strftime("%Y%m%d%H%M%S")
+        md_key = '{}_md_{}'.format(obj.id, ud)
+        cache_md = cache.get(md_key)
+        if cache_md:
+            body = cache_md
+        else:
+            body = obj.body_to_markdown()
+            cache.set(md_key, body, 3600 * 24 * 15)
+    else:
+        repo_url = 'https://github.com/Hopetree'
+        body = '<li>作者 Github 地址：<a href="{}">{}</a></li>'.format(repo_url, repo_url)
+    return render(request, 'blog/about.html', context={'body': body})
 
 
 class TimelineView(generic.ListView):
@@ -158,5 +170,3 @@ class MySearchView(SearchView):
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
-
-
