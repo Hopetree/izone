@@ -9,7 +9,7 @@ class MySitemap(object):
     protocol = getattr(settings, 'PROTOCOL_HTTPS', 'http')
 
 
-class ArticleSitemap(Sitemap, MySitemap):
+class ArticleSitemap(MySitemap, Sitemap):
     changefreq = 'weekly'
     priority = 1.0
 
@@ -20,7 +20,7 @@ class ArticleSitemap(Sitemap, MySitemap):
         return obj.update_date
 
 
-class CategorySitemap(Sitemap, MySitemap):
+class CategorySitemap(MySitemap, Sitemap):
     changefreq = 'weekly'
     priority = 0.8
 
@@ -31,7 +31,7 @@ class CategorySitemap(Sitemap, MySitemap):
         return obj.article_set.first().create_date
 
 
-class TagSitemap(Sitemap, MySitemap):
+class TagSitemap(MySitemap, Sitemap):
     changefreq = 'weekly'
     priority = 0.8
 
