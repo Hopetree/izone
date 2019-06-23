@@ -270,10 +270,12 @@ SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博�
 
 # 个性化设置，非必要信息
 # 个人 Github 地址
-MY_GITHUB = os.getenv('IZONE_GITHUB','https://github.com/Hopetree')
+MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
 # 工信部备案信息
-BEIAN = os.getenv('IZONE_BEIAN','网站备案信息')
+BEIAN = os.getenv('IZONE_BEIAN', '网站备案信息')
 # 站长统计（友盟）
-CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL','')
+CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
 # 站长推送
-MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION','')
+MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
+# 使用 http 还是 https （sitemap 中的链接可以体现出来）
+PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').upper()
