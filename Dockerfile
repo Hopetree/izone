@@ -21,4 +21,5 @@ RUN cp -a /etc/apk/repositories /etc/apk/repositories.bak \
 RUN mkdir -p ${work_home}
 WORKDIR ${work_home}
 COPY ./* .
+RUN chmod 755 docker-entrypoint.sh
 RUN pip install -r requirements.txt -i ${pip_url} --trusted-host ${pip_host}
