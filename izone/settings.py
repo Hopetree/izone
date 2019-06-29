@@ -39,9 +39,7 @@ API_FLAG = os.getenv('IZONE_API_FLAG', 'False').upper() == 'TRUE'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
 
-ADD_ALLOWED_HOST = os.getenv('IZONE_ADD_ALLOWED_HOST', 'web')
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-ALLOWED_HOSTS.append(ADD_ALLOWED_HOST)
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
