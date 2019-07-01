@@ -5,11 +5,11 @@ from .models import Article, Category, Tag
 from django.db.models.aggregates import Count
 
 
-class MySitemap(object):
+class MySitemap(Sitemap):
     protocol = getattr(settings, 'PROTOCOL_HTTPS', 'http')
 
 
-class ArticleSitemap(MySitemap, Sitemap):
+class ArticleSitemap(MySitemap):
     changefreq = 'weekly'
     priority = 1.0
 
@@ -20,7 +20,7 @@ class ArticleSitemap(MySitemap, Sitemap):
         return obj.update_date
 
 
-class CategorySitemap(MySitemap, Sitemap):
+class CategorySitemap(MySitemap):
     changefreq = 'weekly'
     priority = 0.8
 
@@ -31,7 +31,7 @@ class CategorySitemap(MySitemap, Sitemap):
         return obj.article_set.first().create_date
 
 
-class TagSitemap(MySitemap, Sitemap):
+class TagSitemap(MySitemap):
     changefreq = 'weekly'
     priority = 0.8
 

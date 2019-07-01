@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import ArticleSitemap, CategorySitemap, TagSitemap
@@ -31,6 +31,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/blog/img/favicon.ico')),
     url(r'^adminx/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),  # allauth
     url(r'^accounts/', include('oauth.urls', namespace='oauth')),  # oauth,只展现一个用户登录界面
