@@ -41,7 +41,6 @@ urlpatterns = [
     url(r'^robots\.txt$', robots, name='robots'), # robots
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'), # 网站地图
     url(r'^feed/$', AllArticleRssFeed(), name='rss'),   # rss订阅
-    url(r'^media/avatar/default\.png$', RedirectView.as_view(url='/static/blog/img/default.png')), # 默认用户头像跳转
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 加入这个才能显示media文件
 
 if settings.API_FLAG:
