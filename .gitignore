@@ -102,6 +102,4 @@ whoosh_index/
 migrations/
 !migrations/__init__.py
 media/
-!media/avatar/default.png
-
 
