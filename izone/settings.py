@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 
     'oauth',  # 自定义用户应用
     # allauth需要注册的应用
-    'django.contrib.sites',
+    'django.contrib.sites',  # 这个是自带的，会创建一个sites表，用来存放域名
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

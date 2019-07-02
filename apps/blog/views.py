@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog
+from .utils import site_full_url
 from django.core.cache import cache
 
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
@@ -170,3 +171,8 @@ class MySearchView(SearchView):
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
     queryset = SearchQuerySet().order_by('-views')
+
+
+def robots(request):
+    site_url = site_full_url()
+    return render(request, 'robots.txt', context={'site_url': site_url}, content_type='text/plain')

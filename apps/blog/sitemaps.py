@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.contrib.sitemaps import Sitemap
 from .models import Article, Category, Tag
 from django.db.models.aggregates import Count
+from .utils import site_protocol
 
 
 class MySitemap(Sitemap):
-    protocol = getattr(settings, 'PROTOCOL_HTTPS', 'http')
+    protocol = site_protocol()
 
 
 class ArticleSitemap(MySitemap):
