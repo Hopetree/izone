@@ -15,11 +15,18 @@
 - 缓存系统，遵循缓存原则，加速网站打开速度
 - RESTful API 风格的 API 接口
 
-## 博客主页效果
-![博客主页 PC 效果](https://user-images.githubusercontent.com/30201215/39048724-0ad6e930-44d1-11e8-83f0-661734ddbde4.png)
+## 博客页面效果（响应式）
+- PC 页面效果
 
-## 博客手机端显示效果（响应式）
-![博客手机端效果](https://user-images.githubusercontent.com/30201215/39047823-e7daccb0-44cd-11e8-9851-5aa670a8a690.png)
+![pc](https://user-images.githubusercontent.com/30201215/60588842-93321b80-9dca-11e9-93f2-50e34b2c4b3f.jpg)
+
+- ipad 效果
+
+![ipad](https://user-images.githubusercontent.com/30201215/60588800-7e558800-9dca-11e9-8beb-5d2dcf01b869.jpg)
+
+- 手机效果
+
+![iphone](https://user-images.githubusercontent.com/30201215/60588832-8e6d6780-9dca-11e9-84fa-f1d71510c81e.jpg)
 
 ## 运行指导
 - 由于本项目分为几个不同的分支，每个分支的功能是一样的，但是运行的方式不同，所以需要根据分支查看对应的运行wiki
