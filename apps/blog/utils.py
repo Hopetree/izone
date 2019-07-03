@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.apps import apps as django_apps
+from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 
 
