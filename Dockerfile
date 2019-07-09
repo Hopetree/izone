@@ -19,5 +19,6 @@ RUN cp -a /etc/apk/repositories /etc/apk/repositories.bak \
 
 RUN mkdir -p ${work_home}
 WORKDIR ${work_home}
-COPY . .
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt -i ${pip_url} --trusted-host ${pip_host}
+COPY . .
