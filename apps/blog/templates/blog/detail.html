@@ -13,7 +13,7 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 {% endif %}
-<link href="{% static 'blog/css/detail.css' %}?v=20180102.08" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20190728.05" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
 <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
@@ -79,6 +79,7 @@
                             </li>
                         </ul>
                     </nav>
+                    {% include 'blog/tags/reward.html' %}
                 </div>
             </div>
             <div class="card mt-2 rounded-0 border-0" id="comment-block">
