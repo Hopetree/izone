@@ -74,40 +74,6 @@ function site_push_spider(CSRF, URL) {
 	})
 }
 
-//link test api
-function link_test_spider(CSRF, URL) {
-	var p = $.trim($('#form-info').val());
-	var urls = $.trim($('#form-links').val());
-	if (p.length == 0 | urls.length == 0) {
-		alert('需要检查的信息和友链地址都不能为空！');
-		return false
-	};
-	$.ajaxSetup({
-		data: {
-			csrfmiddlewaretoken: CSRF
-		}
-	});
-	$('.push-result').html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
-	$.ajax({
-		type: 'post',
-		url: URL,
-		data: {
-			'p': p,
-			'urls': urls
-		},
-		dataType: 'json',
-		success: function(ret) {
-		    var tab = '<table class="table"><thead class="thead-light"><tr><th scope="col">友情链接</th>' +
-                '<th scope="col">状态</th></tr></thead><tbody>'
-            for (var i in ret){
-                tab += '<tr><th scope="row">' + i + '</th><td>' + ret[i] + '</td></tr>'
-            }
-            tab += '</tbody></table>'
-			$('.push-result').html(tab);
-		},
-	})
-}
-
 //regex api
 function regex_api(CSRF, URL) {
 	var r = $.trim($('#form-regex').val());

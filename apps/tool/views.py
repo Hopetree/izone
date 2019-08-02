@@ -3,7 +3,6 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
-from .apis.links_test import Check
 from .apis.useragent import get_user_agent
 
 import re
@@ -41,17 +40,6 @@ def BD_pushview_site(request):
             info = push_urls(url, urls)
         return JsonResponse({'msg': info})
     return render(request, 'tool/bd_push_site.html')
-
-# 友链检测
-def Link_testview(request):
-    if request.is_ajax():
-        data = request.POST
-        p = data.get('p')
-        urls = data.get('urls')
-        c = Check(urls, p)
-        info = c.run()
-        return JsonResponse(info)
-    return render(request, 'tool/link_test.html')
 
 # 在线正则表达式
 def regexview(request):
