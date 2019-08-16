@@ -1,8 +1,6 @@
-{% load cache %}
 {% load blog_tags static %}
 
 <!--个人空间-->
-{% cache 1800 'cache_baseright_html_tag' %}
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
     <div class="card-header bg-white px-0">
         <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
@@ -82,4 +80,3 @@
         </div>
     </div>
 </div>
-{% endcache %}
