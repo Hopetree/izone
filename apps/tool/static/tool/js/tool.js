@@ -146,3 +146,43 @@ function useragent_api(CSRF, URL) {
 		},
 	})
 }
+
+//docker search
+function docker_search(CSRF, URL) {
+	var name = $.trim($('#image-name').val());
+	if (name.length == 0) {
+		alert('待查询的镜像名称不能为空！');
+		return false
+	};
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: CSRF
+		}
+	});
+	$('.push-result').html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
+	$.ajax({
+		type: 'post',
+		url: URL,
+		data: {
+			'name': name,
+		},
+		dataType: 'json',
+		success: function(ret) {
+		    var _code = ret['status'];
+		    if (_code != 200) {
+                var newhtml = '<div class="my-2">' + ret['error'] + '</div>';
+                $('.push-result').html(newhtml);
+                return
+		    };
+		    var _results = ret['results'];
+		    var newhtml = '<table class="table table-bordered my-0"><thead class="thead-light"><tr><th scope="col">镜像版本</th>' +
+		        '<th scope="col">镜像大小</th><th scope="col">更新时间</th></tr></thead><tbody>';
+            for (var i=0;i < _results.length; i++) {
+                newhtml += '<tr><th scope="row">' + _results[i]['name'] + '</th><td>' + _results[i]['full_size'] + '</td><td>' +
+                    _results[i]['last_updated'] + '</td></tr>'
+            }
+		    newhtml += '</tbody></table>'
+			$('.push-result').html(newhtml);
+		},
+	})
+}
