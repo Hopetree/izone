@@ -17,6 +17,7 @@ class DockerSearch(object):
         self.max_page = 3
         self.page_num = 1
         self.next_url = None
+        self.code = 200
 
     def get_url(self):
         if '/' not in self.name:
@@ -30,12 +31,14 @@ class DockerSearch(object):
         try:
             req = requests.get(url, verify=False, timeout=5)
         except:
+            self.code = 500
             return
         else:
             res = req.text
             try:
                 data = json.loads(res)
             except:
+                self.code = 403
                 return
             else:
                 results = data.get('results')
@@ -52,10 +55,16 @@ class DockerSearch(object):
     def main(self):
         self.get_items(self.url)
         if not self.results:
-            return {
-                'status': 403,
-                'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(self.name)
-            }
+            if self.code == 403:
+                return {
+                    'status': 403,
+                    'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(self.name)
+                }
+            else:
+                return {
+                    'status': 500,
+                    'error': '哎呀！！！网络拥堵...查询官方接口超时，请稍后重试'
+                }
         return {
             'status': 200,
             'results': self.results,
