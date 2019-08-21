@@ -35,22 +35,20 @@ class DockerSearch(object):
             return
         else:
             res = req.text
-            try:
-                data = json.loads(res)
-            except:
+            if req.status_code != 200:
                 self.code = 403
                 return
-            else:
-                results = data.get('results')
-                if results:
-                    self.results.extend(results)
+            data = json.loads(res)
+            results = data.get('results')
+            if results:
+                self.results.extend(results)
 
-                next_url = data.get('next')
-                self.page_num += 1
-                self.next_url = next_url
+            next_url = data.get('next')
+            self.page_num += 1
+            self.next_url = next_url
 
-                if self.page_num <= self.max_page and next_url:
-                    self.get_items(next_url)
+            if self.page_num <= self.max_page and next_url:
+                self.get_items(next_url)
 
     def main(self):
         self.get_items(self.url)
@@ -73,6 +71,6 @@ class DockerSearch(object):
 
 
 if __name__ == '__main__':
-    ds = DockerSearch('nginx')
+    ds = DockerSearch('nginx4')
     r = ds.main()
     print(r)
