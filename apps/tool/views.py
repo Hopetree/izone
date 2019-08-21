@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.utils.html import mark_safe
 from .apis.bd_push import push_urls, get_urls
 from .apis.useragent import get_user_agent
+from .apis.docker_search import DockerSearch
 
 import re
 import markdown
@@ -84,3 +84,14 @@ def useragent_view(request):
 # HTML特殊字符对照表
 def html_characters(request):
     return render(request, 'tool/characters.html')
+
+# docker镜像查询
+def docker_search_view(request):
+    if request.is_ajax():
+        data = request.POST
+        name = data.get('name')
+        ds = DockerSearch(name)
+        res = ds.main()
+        return JsonResponse(res)
+    return render(request, 'tool/docker_search.html')
+
