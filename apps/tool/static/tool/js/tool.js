@@ -168,21 +168,26 @@ function docker_search(CSRF, URL) {
 		},
 		dataType: 'json',
 		success: function(ret) {
-		    var _code = ret['status'];
-		    if (_code != 200) {
-                var newhtml = '<div class="my-2">' + ret['error'] + '</div>';
-                $('.push-result').html(newhtml);
-                return
-		    };
-		    var _results = ret['results'];
 		    var newhtml = '<table class="table table-bordered my-0"><thead class="thead-light"><tr><th scope="col">镜像版本</th>' +
 		        '<th scope="col">镜像大小</th><th scope="col">更新时间</th></tr></thead><tbody>';
-            for (var i=0;i < _results.length; i++) {
-                newhtml += '<tr><th scope="row">' + _results[i]['name'] + '</th><td>' + _results[i]['full_size'] + '</td><td>' +
-                    _results[i]['last_updated'] + '</td></tr>'
+            for (var i=0;i < ret.results.length; i++) {
+				var item = ret.results[i]
+                newhtml += '<tr><th scope="row">' + item.name + '</th><td>' + item.full_size + '</td><td>' + item.last_updated + '</td></tr>'
             }
 		    newhtml += '</tbody></table>'
 			$('.push-result').html(newhtml);
 		},
+		error: function(XMLHttpRequest) {
+			var _code = XMLHttpRequest.status;
+			if (_code == 404) {
+				var error_text = '镜像仓库没有查询到相关信息，请检查镜像名称后重试！';
+			} else if (_code == 500) {
+				var error_text = '请求超时，请稍后重试！'
+			} else {
+				var error_text = '未知错误...'
+			}
+			var newhtml = '<div class="my-2">' + error_text + '</div>';
+			$('.push-result').html(newhtml);
+		}
 	})
 }

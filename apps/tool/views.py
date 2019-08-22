@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.html import mark_safe
+from django.core.cache import cache
 from .apis.bd_push import push_urls, get_urls
 from .apis.useragent import get_user_agent
 from .apis.docker_search import DockerSearch
+from .utils import IMAGE_LIST
+
 
 import re
 import markdown
@@ -90,8 +93,23 @@ def docker_search_view(request):
     if request.is_ajax():
         data = request.POST
         name = data.get('name')
-        ds = DockerSearch(name)
-        res = ds.main()
-        return JsonResponse(res)
+        if name:
+            # 只有名称在常用镜像列表中的搜索才使用缓存，可以避免对名称的过滤
+            if name in IMAGE_LIST:
+                cache_key = 'tool_docker_search_' + name
+                cache_value = cache.get(cache_key)
+                if cache_value:
+                    res = cache_value
+                else:
+                    ds = DockerSearch(name)
+                    res = ds.main()
+                    total = res.get('total')
+                    if total and total >= 20:
+                        # 将查询到超过20条镜像信息的资源缓存一天
+                        cache.set(cache_key, res, 60*60*24)
+            else:
+                ds = DockerSearch(name)
+                res = ds.main()
+            return JsonResponse(res, status=res['status'])
     return render(request, 'tool/docker_search.html')
 
