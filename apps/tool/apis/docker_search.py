@@ -9,6 +9,8 @@ requests.packages.urllib3.disable_warnings()
 
 class DockerSearch(object):
     base_url = 'https://registry.hub.docker.com/v2/repositories/{repo}/tags/'
+    STATUS_404 = 404
+    STATUS_500 = 500
 
     def __init__(self, name):
         self.name = name
@@ -31,12 +33,12 @@ class DockerSearch(object):
         try:
             req = requests.get(url, verify=False, timeout=5)
         except:
-            self.code = 500
+            self.code = self.STATUS_500
             return
         else:
             res = req.text
             if req.status_code != 200:
-                self.code = 403
+                self.code = self.STATUS_404
                 return
             data = json.loads(res)
             results = data.get('results')
@@ -51,26 +53,31 @@ class DockerSearch(object):
                 self.get_items(next_url)
 
     def main(self):
+        '''
+        总共三种状态，有查询结果返回200，无结果 >（超时返回500，其他都返回404）
+        :return:
+        '''
         self.get_items(self.url)
         if not self.results:
-            if self.code == 403:
+            if self.code == self.STATUS_500:
                 return {
-                    'status': 403,
-                    'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(self.name)
+                    'status': self.code,
+                    'error': '哎呀！！！网络拥堵...查询官方接口超时，请稍后重试'
                 }
             else:
                 return {
-                    'status': 500,
-                    'error': '哎呀！！！网络拥堵...查询官方接口超时，请稍后重试'
+                    'status': self.code,
+                    'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(self.name)
                 }
         return {
             'status': 200,
             'results': self.results,
-            'next_url': self.next_url
+            'next_url': self.next_url,
+            'total': len(self.results)
         }
 
 
 if __name__ == '__main__':
-    ds = DockerSearch('nginx4')
+    ds = DockerSearch('nginx')
     r = ds.main()
     print(r)
