@@ -20,7 +20,7 @@
             {% if tool_flag %}
             <li class="nav-item mr-2">
                 {% url 'tool:total' as tool_url %}
-                <a class="nav-link py-md-3 {% if 'tool' in request.resolver_match.namespaces %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
+                <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
             </li>
             {% endif %}
             {% if api_flag %}
