@@ -103,3 +103,14 @@ def get_request_param(request, param, default=None):
 def get_friends():
     '''获取活跃的友情链接'''
     return FriendLink.objects.filter(is_show=True, is_active=True)
+
+
+@register.simple_tag
+def a_startswith_b(a, b):
+    '''
+    核对两个字符串，a是否以b开头，可以检测URL归属关系
+    :param a:
+    :param b:
+    :return: True|False
+    '''
+    return a.startswith(b)
