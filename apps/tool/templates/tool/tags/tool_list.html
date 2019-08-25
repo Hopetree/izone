@@ -1,7 +1,5 @@
-{% load cache %}
 {% load tool_tags %}
 
-{% cache 3600 'cache_tools_html_tag' %}
 {% get_toolcates as cates %}
 {% for each_cate in cates %}
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 tool-cate">
@@ -22,4 +20,3 @@
     </div>
 </div>
 {% endfor %}
-{% endcache %}
