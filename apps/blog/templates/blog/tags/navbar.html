@@ -39,7 +39,7 @@
             </li>
             <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform" action="{% url 'blog:search_view'%}">
                 <div class="input-group">
-                    <input type="search" name="q" class="form-control rounded-0 f-15" placeholder="搜索" required=True>
+                    <input type="search" name="q" class="form-control rounded-0" placeholder="搜索" autocomplete="off" required=True>
                     <div class="input-group-btn">
                         <button class="btn btn-info rounded-0" type="submit"><i class="fa fa-search"></i></button>
                     </div>
