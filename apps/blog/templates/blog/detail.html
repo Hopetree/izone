@@ -11,7 +11,7 @@
 
 {% block top-file %}
 {% if user.is_authenticated %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
 {% endif %}
 <link href="{% static 'blog/css/detail.css' %}?v=20190728.05" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
@@ -103,7 +103,7 @@
 
 {% block end_file %}
 {% if user.is_authenticated %}
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
 <script src="{% static 'comment/js/editor.js' %}?v=20190311.05908"></script>
 <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
 <script>
