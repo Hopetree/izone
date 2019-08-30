@@ -277,3 +277,5 @@ CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
 # 使用 http 还是 https （sitemap 中的链接可以体现出来）
 PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+# hao.tendcode.com
+HAO_FLAG = os.getenv('IZONE_HAO_FLAG', 'False').upper() == 'TRUE'

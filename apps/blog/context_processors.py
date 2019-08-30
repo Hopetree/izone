@@ -16,5 +16,6 @@ def settings_info(request):
         'beian': settings.BEIAN,
         'my_github': settings.MY_GITHUB,
         'site_verification': settings.MY_SITE_VERIFICATION,
-        'site_url': site_full_url()
+        'site_url': site_full_url(),
+        'hao_flag': settings.HAO_FLAG
     }
