@@ -17,5 +17,5 @@ def settings_info(request):
         'my_github': settings.MY_GITHUB,
         'site_verification': settings.MY_SITE_VERIFICATION,
         'site_url': site_full_url(),
-        'hao_flag': settings.HAO_FLAG
+        'hao_console': settings.HAO_CONSOLE
     }
