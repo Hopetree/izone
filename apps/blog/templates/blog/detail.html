@@ -4,8 +4,8 @@
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
 {% block metas %}
-    <meta name="description" content="{{ article.summary }}">
-    <meta name="keywords" content="{% keywords_to_str article %}">
+<meta name="description" content="{{ article.summary }}">
+<meta name="keywords" content="{% keywords_to_str article %}">
 {% endblock %}
 
 
@@ -13,7 +13,7 @@
 {% if user.is_authenticated %}
 <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
 {% endif %}
-<link href="{% static 'blog/css/detail.css' %}?v=20190728.05" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20190728.056" rel="stylesheet">
 <link href="{% static 'blog/css/github-colorful.css' %}?v=20180102.130" rel="stylesheet">
 <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
@@ -99,6 +99,17 @@
         </div>
     </div>
 </div>
+<!--图片预览-->
+<div class="modal fade" id="img-to-big" tabindex="-1" role="dialog" aria-labelledby="img-to-bigTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 80%">
+        <div class="modal-content">
+            <div class="modal-body" style="padding: .5rem;">
+                <img alt="image" style="max-width: 100%">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block end_file %}
@@ -108,6 +119,7 @@
 <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
 <script>
 var sw=window.screen.width;if(sw>1200){POWERMODE.colorful=true;POWERMODE.shake=false;document.body.addEventListener('input',POWERMODE)};
+
 
 </script>
 {% endif %}
