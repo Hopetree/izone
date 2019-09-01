@@ -56,7 +56,7 @@
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20180429.1"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20180429.15"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};

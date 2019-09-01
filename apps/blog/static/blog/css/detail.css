@@ -11,6 +11,9 @@
     margin-right: auto;
     margin-left: auto;
 }
+.article-body img:hover {
+    cursor:pointer;
+}
 .codehilite pre {
     border: none;
     background-color: #e4eaef;

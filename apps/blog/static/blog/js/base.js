@@ -39,3 +39,10 @@ function TOC_FUN(A) {
 	})
 }
 $(TOC_FUN('.toc a,.to-com'));
+
+//文章內容图片点击放大，使用bootstrp4的modal模块
+$(".article-body img").click(function(){
+    var _src = this.src;
+    $("#img-to-big img")[0].src = _src;
+    $("#img-to-big").modal('show');
+})
