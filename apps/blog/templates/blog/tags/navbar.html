@@ -23,9 +23,9 @@
                 <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
             </li>
             {% endif %}
-            {% if hao_flag %}
+            {% if hao_console.flag %}
             <li class="nav-item mr-2 d-none d-lg-block">
-                <a class="nav-link py-md-3" href="https://hao.tendcode.com" target="_blank"><i class="fa fa-chrome mr-1"></i>轻巧导航</a>
+                <a class="nav-link py-md-3" href="{{ hao_console.url }}" target="_blank"><i class="fa fa-chrome mr-1"></i>{{ hao_console.name }}</a>
             </li>
             {% endif %}
             {% if api_flag %}
