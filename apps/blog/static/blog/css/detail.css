@@ -14,13 +14,6 @@
 .article-body img:hover {
     cursor:pointer;
 }
-.codehilite pre {
-    border: none;
-    background-color: #e4eaef;
-    border-radius: 3px;
-    font-size: 80%;
-    padding: .8rem;
-}
 .article-body h2{
     font-weight:600;
     margin: 10px 0 10px 0;
