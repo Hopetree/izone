@@ -139,7 +139,7 @@ blockquote {
 /*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
 #to-top {
     position: fixed;
-    bottom: 4em;
+    bottom: 6em;
     right: 5%;
     height: 36px;
     width: 36px;
@@ -314,6 +314,14 @@ blockquote {
 .errormsg a:hover {
     background:#ff7150;
     padding:.6em 1em;
+    color:#fff;
+}
+footer {
+    background: #1c1f21;
+    color: #99979c;
+    padding: 1rem 0;
+}
+footer a:hover {
     color:#fff;
 }
 /* Small devices (landscape phones, 576px and up) */
