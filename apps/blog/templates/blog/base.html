@@ -19,7 +19,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js'%}"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20190308.05" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20190908.05" rel="stylesheet">
     {% block top-file %}{% endblock %}
 </head>
 <body>
@@ -64,8 +64,8 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
 </script>
 {% endif %}
 {% block end_file %}{% endblock %}
-<footer class="container-fluid mt-4">
-    <div class="card-body text-center px-0 f-16">
+<footer class="container-fluid mt-4 py-0">
+    <div class="card-body text-center px-0 f-14">
         <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2017-<span id="year-info"></span>
             <script>function getnewYear(){var d = new Date();var x = document.getElementById("year-info");
             x.innerHTML=d.getFullYear();}getnewYear()</script>
