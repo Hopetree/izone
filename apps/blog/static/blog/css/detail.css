@@ -88,6 +88,23 @@ pre {
     line-height: 1.5;
     overflow-:auto;
 }
+/* pre next blog */
+.more-blog {
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    z-index: 88;
+    color: #ccc;
+}
+.more-blog a {
+    padding: 5rem 1rem;
+}
+#icon-pre-blog {
+    left: 2%;
+}
+#icon-next-blog {
+    right: 2%;
+}
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
