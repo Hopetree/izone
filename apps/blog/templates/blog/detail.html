@@ -13,14 +13,14 @@
 {% if user.is_authenticated %}
 <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
 {% endif %}
-<link href="{% static 'blog/css/detail.css' %}?v=20190728.056" rel="stylesheet">
+<link href="{% static 'blog/css/detail.css' %}?v=20190918.02" rel="stylesheet">
 <link href="{% static 'blog/css/monokai.css' %}?v=20190910.2" rel="stylesheet">
 <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-lg-9">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
@@ -92,11 +92,6 @@
                 {% include 'comment/comment_list.html' %}
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="article-toc d-none d-lg-block f-16">
-                {{ article.toc|safe }}
-            </div>
-        </div>
     </div>
 </div>
 <!--图片预览-->
@@ -106,6 +101,21 @@
         <img class="rounded mx-auto d-block" alt="image" style="max-width: 100%">
     </div>
 </div>
+<!--前后文章-->
+{% if article.get_pre %}
+<div class="more-blog" id="icon-pre-blog">
+    <a href="{{ article.get_pre.get_absolute_url }}">
+        <i class="fa fa-angle-left fa-3x"></i>
+    </a>
+</div>
+{% endif %}
+{% if article.get_next %}
+<div class="more-blog" id="icon-next-blog">
+    <a href="{{ article.get_next.get_absolute_url }}">
+        <i class="fa fa-angle-right fa-3x"></i>
+    </a>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block end_file %}
