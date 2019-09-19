@@ -69,16 +69,16 @@ class DetailView(generic.DetailView):
         md_key = '{}_md_{}'.format(obj.id, ud)
         cache_md = cache.get(md_key)
         if cache_md:
-            md = cache_md
+            obj.body, obj.toc = cache_md
         else:
             md = markdown.Markdown(extensions=[
                 'markdown.extensions.extra',
                 'markdown.extensions.codehilite',
                 TocExtension(slugify=slugify),
             ])
-            cache.set(md_key, md, 60 * 60 * 12)
-        obj.body = md.convert(obj.body)
-        obj.toc = md.toc
+            obj.body = md.convert(obj.body)
+            obj.toc = md.toc
+            cache.set(md_key, (obj.body, obj.toc), 60 * 60 * 12)
         return obj
 
 
