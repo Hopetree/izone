@@ -5,16 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% endblock %}</title>
-  <link rel="icon" href="{% static 'blog/img/favicon.ico'%}">
+
   {% block bootstrap_admin_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap_admin/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   {% endblock bootstrap_admin_css %}
 
   <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
-  {% datetime_widget_css_path as datetime_widget_css %}
-  {% if datetime_widget_css %}
-    <link rel="stylesheet" type="text/css" href="{% static datetime_widget_css %}" />
-  {% endif %}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/datetime_widget.css' %}" />
 
 {% block extrastyle %}{% endblock %}
 
@@ -26,13 +23,8 @@
 {% endif %}
 
 {% block jquery %}
-  {% jquery_vendor_path as jquery_path  %}
-  {% if jquery_path %}
-    <script type="text/javascript" src="{% static jquery_path %}"></script>
-  {% else %}
-    <script type="text/javascript" src="{% static "admin/js/jquery.js" %}"></script>
-  {% endif %}
-    <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+  <script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.js" %}"></script>
+  <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
 {% endblock jquery %}
   <script>
     (function ($) {
@@ -72,7 +64,7 @@
         {% if is_displaying_menu %}
           {% block sidebar_menu %}
 
-            <div id="sidebar-menu" class="col-xs-6 col-sm-3 col-md-2 sidebar-menu">
+            <div id="sidebar-menu" class="col-xs-4 col-sm-3 col-md-2 sidebar-menu">
               {% block branding %}
                 <a href="{% url 'admin:index' %}" class="django-admin-logo">
                   <!-- Django Administration -->
@@ -80,14 +72,33 @@
                 </a>
               {% endblock branding %}
               {% block filters %}{% endblock filters %}
-              {% render_menu_app_list %}
+
+              {% if available_apps %}
+              {% for app in available_apps %}
+                <ul class="nav nav-sidebar app-{{ app.app_label }} module{% if app.app_url in current_url %} has-active-menu show-models{% endif %}">
+                  <li {% if app.app_url == current_url %} class="active"{% endif %}>
+                    <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">
+                      {{ app.name }}
+                    </a>
+                  </li>
+                  {% for model in app.models %}
+                    <li {% if model.admin_url in current_url %}class="active"{% endif %}>
+                      <a href="{% firstof model.admin_url model.add_url '#' %}" title="{% if not model.admin_url and not model.add_url %}{% trans "You don't have permission to edit anything." %}{% endif %}">{{ model.name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+            {% else %}
+              <p class="permission-warning">{% trans "You don't have permission to edit anything." %}</p>
+            {% endif %}
+
             </div>
           {% endblock sidebar_menu %}
         {% endif %}
       {% endif %}
 
       {% block content_container %}
-        <div id="content" class="{% if is_displaying_menu %}col-xs-6 col-xs-offset-6 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{% else %}col-sm-12{% endif %} main {% block coltype %}colM{% endblock %}">
+        <div id="content" class="{% if is_displaying_menu %}col-xs-8 col-xs-offset-4 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2{% else %}col-sm-12{% endif %} main {% block coltype %}colM{% endblock %}">
           {% block main_header %}
             <div class="main-header">
               {% if is_displaying_menu %}
@@ -132,7 +143,7 @@
                       </li>
                     {% endif %}
                     <li>
-                      <a href="/">返回主页</a>
+					  <a href="/">返回主页</a>
                       <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
                     </li>
                   </ul>
@@ -176,7 +187,8 @@
   </div>
 
 {% block bootstrap_admin_js %}
-  <script src="{% static 'bootstrap_admin/js/bootstrap.min.js' %}"></script>
+  <script>if (typeof jQuery === 'undefined' && django && django.jQuery) {jQuery = django.jQuery;}</script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="{% static 'bootstrap_admin/js/base.js' %}"></script>
 {% endblock bootstrap_admin_js %}
 
