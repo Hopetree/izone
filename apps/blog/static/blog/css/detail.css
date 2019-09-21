@@ -47,9 +47,6 @@
     background-color:#212529;
     color:#fff;
 }
-.article-body code {
-    background-color:#e4eaef;
-}
 .article-body a {
     color: #ea6f5a;
 }
@@ -77,12 +74,6 @@
 
 blockquote {
     margin: 0 0 .5em;
-}
-code {
-    padding: .1rem .3rem;
-    font-size: 90%;
-    color: #222;
-    border-radius: 3px;
 }
 pre {
     line-height: 1.5;
