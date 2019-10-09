@@ -13,10 +13,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import sys
 
-# 更换默认的数据库连接
-import pymysql
-
-pymysql.install_as_MySQLdb()
 # 导入网站个人信息，非通用信息
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
