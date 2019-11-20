@@ -1,0 +1,164 @@
+/*
+背景色：#22303f
+卡片色：#18222d
+深色卡片色：#001d25
+字体色：#9caec7
+字体暗色：#738292
+字体亮色：#ccc
+*/
+
+/* 通用 */
+blockquote {
+    background: #001d25;
+}
+.fa-github {
+    color: #fff;
+}
+.text-muted {
+	color: #738292!important;
+}
+.text-success {
+	color: #6f42c1!important;
+}
+.text-secondary {
+	color: #738292;
+}
+.card,
+.card-header,
+.list-group-item,
+.card-footer {
+	background-color: #18222d!important;
+}
+.dropdown-menu {
+	background: #18222d;
+}
+.dropdown-item {
+	color: #9caec7;
+}
+.dropdown-item:focus, .dropdown-item:hover {
+	color: #9caec7;
+	background: #001d25;
+}
+.breadcrumb {
+	background-color: #18222d!important;
+}
+.breadcrumb-item.active {
+	color: #738292;
+}
+.form-control {
+	background: #18222d;
+	color: #9caec7;
+	border: 1px solid #738292;
+}
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    color: #9caec7;
+    background-color: #18222d;
+    border-color: #738292 #738292 #18222d;
+}
+.nav-tabs {
+	border-bottom: 1px solid #738292;
+}
+.table {
+	color: #9caec7;
+}
+.table .thead-light th {
+	color: #ccc;
+    background-color: #22303f;
+}
+.codehilite {
+	background: #001d25;
+}
+.description {
+	background: #18222d!important;
+}
+
+#home-card .card-header strong,
+#tag-card .card-header strong,
+#category-card .card-header strong,
+.tool-cate .card-header strong,
+#friends-card .card-header strong {
+    border-bottom: 2px solid #9caec7;
+}
+#home-card .card-header,
+#tag-card .card-header,
+#category-card .card-header,
+#friends-card .card-header {
+    border-bottom: 2px solid #001d25;
+}
+
+body {
+	background: #22303f;
+	color: #9caec7;
+}
+
+/* 导航 */
+.blog-navbar {
+	background: #18222d!important;
+}
+
+.summary-list .media {
+	background-color: #18222d;
+}
+.choice .active {
+	color: #9caec7;
+	border-bottom: 2px solid #9caec7;
+}
+
+.category-item:before {
+    border-color: #18222d #18222d #18222d #9caec7;
+}
+
+/*footer*/
+footer {
+	background: #18222d;
+	color: #9caec7;
+}
+
+/* tool */
+.tool-list a:hover,
+.tool-list .card-title:hover {
+	color: #ccc;
+}
+.tool-cate .card-header {
+    border-bottom: 2px solid #001d25;
+}
+pre {
+    background: #001d25;
+	color: #9caec7;
+}
+#html-cha .table {
+    background: #18222d!important;
+}
+#html-cha .table th {
+    color: #fff;
+}
+
+/* notification */
+.cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel,
+.cbp_tmtimeline>li .cbp_tmlabel {
+    background: #18222d;
+	color: #9caec7;
+}
+#notes-main .active {
+    background-color: #17a2b8!important;
+}
+#notes-main .list-group-item {
+	border: 1px solid #9caec7;
+}
+.cbp_tmtimeline>li .cbp_tmlabel:after,
+.cbp_tmtimeline>li:nth-child(odd) .cbp_tmlabel:after {
+	border-right-color: #18222d;
+}
+
+/* detail */
+.article-body h2 {
+    background: #001d25;
+}
+.editor-btns .btn {
+    background: #18222d;
+}
+.CodeMirror,
+.editor-toolbar a {
+    color: #9caec7!important; */
+}
