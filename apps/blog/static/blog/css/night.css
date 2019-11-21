@@ -158,7 +158,23 @@ pre {
 .editor-btns .btn {
     background: #18222d;
 }
-.CodeMirror,
+.CodeMirror {
+    color: #333;
+}
 .editor-toolbar a {
-    color: #9caec7!important; */
+    color: #9caec7!important;
+}
+
+/* Timeline */
+.timeline-panel {
+    background:#18222d;
+}
+.timeline > li > .timeline-panel:after {
+    border-left: 14px solid #18222d;
+    border-right: 0 solid #18222d;
+}
+.timeline > li > .timeline-panel:before {
+    border-left: 15px solid #fff;
+    border-right: 0 solid #fff;
+
 }
