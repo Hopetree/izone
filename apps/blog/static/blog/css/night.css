@@ -77,11 +77,13 @@ blockquote {
 #tag-card .card-header strong,
 #category-card .card-header strong,
 .tool-cate .card-header strong,
+.description strong,
 #friends-card .card-header strong {
     border-bottom: 2px solid #9caec7;
 }
 #home-card .card-header,
 #tag-card .card-header,
+.description h1,
 #category-card .card-header,
 #friends-card .card-header {
     border-bottom: 2px solid #001d25;
