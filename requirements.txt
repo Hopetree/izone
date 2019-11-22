@@ -11,7 +11,6 @@ django-haystack==2.8.1
 django-imagekit==4.0.2
 django-redis==4.10.0
 djangorestframework==3.10.3
-emoji==0.5.4
 gunicorn==19.9.0
 html5lib==1.0.1
 idna==2.8

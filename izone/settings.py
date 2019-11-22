@@ -258,6 +258,7 @@ EMAIL_USE_SSL = os.getenv('IZONE_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
 DEFAULT_FROM_EMAIL = os.getenv('IZONE_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
 
 # 网站默认设置和上下文信息
+SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'TendCode')
 SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'izone')
 SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
