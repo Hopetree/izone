@@ -20,6 +20,8 @@
 
 ![pc](https://user-images.githubusercontent.com/30201215/60588842-93321b80-9dca-11e9-93f2-50e34b2c4b3f.jpg)
 
+- PC 暗色主题效果
+![tendcode_2019-11-22_23-18-55](https://user-images.githubusercontent.com/30201215/69438380-e576d780-0d7f-11ea-9ea5-c182caa3a2a8.png)
 - ipad 效果
 
 ![ipad](https://user-images.githubusercontent.com/30201215/60588800-7e558800-9dca-11e9-8beb-5d2dcf01b869.jpg)
