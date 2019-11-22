@@ -17,9 +17,6 @@ blockquote {
 .text-muted {
 	color: #738292!important;
 }
-.text-success {
-	color: #6f42c1!important;
-}
 .text-secondary {
 	color: #738292;
 }
@@ -95,6 +92,12 @@ body {
 }
 
 /* 导航 */
+#site-logo-name,
+#site-logo-name:hover,
+#site-logo-name:active {
+    color: #ccc;
+}
+
 .blog-navbar {
 	background: #18222d!important;
 }
@@ -180,3 +183,4 @@ pre {
     border-right: 0 solid #fff;
 
 }
+

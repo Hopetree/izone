@@ -1,7 +1,7 @@
 {% load static oauth_tags comment_tags %}
 <nav class="navbar navbar-expand-md bg-white fixed-top blog-navbar py-md-0">
-    <a class="navbar-brand d-md-none d-lg-block" href="{% url 'blog:index' %}">
-        <img src="{% static 'blog/img/logo.png' %}" alt="{{ site_end_title }}">
+    <a class="navbar-brand d-md-none d-lg-block" id="site-logo-name" href="{% url 'blog:index' %}">
+        <strong class="px-2">{{site_logo_name}}</strong>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
