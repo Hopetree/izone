@@ -101,6 +101,11 @@ blockquote {
     border-color: #f5c6cb;
 }
 /* top navbar-------------------------------------------------*/
+#site-logo-name,
+#site-logo-name:hover,
+#site-logo-name:active {
+    color: #3c3f41;
+}
 .blog-navbar {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
 }
