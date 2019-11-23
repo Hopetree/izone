@@ -74,16 +74,4 @@ $("#theme-img").click(function(){
         addDarkTheme();
     }
 })
-//判断主题策略
-$(function(){
-    var theme_key = "toggleTheme";
-    var theme_value = Cookies.get(theme_key);
-    if (theme_value == "dark"){
-        addDarkTheme();
-        $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
-    } else {
-        removeDarkTheme();
-        $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
-    }
-});
 
