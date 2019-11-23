@@ -209,6 +209,11 @@ blockquote {
 }
 
 /* base right --------------------------------------------------*/
+#theme-img {
+    width: auto;
+    max-height: 14px;
+    cursor: pointer;
+}
 #home-card .card-header,
 #tag-card .card-header,
 #category-card .card-header,

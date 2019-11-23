@@ -46,3 +46,44 @@ $(".article-body img").click(function(){
     $("#img-to-big img")[0].src = _src;
     $("#img-to-big").modal('show');
 })
+//添加暗色主题css
+function addDarkTheme() {
+   var link = document.createElement('link');
+   link.type = 'text/css';
+   link.id = "theme-css-dark";  // 加上id方便后面好查找到进行删除
+   link.rel = 'stylesheet';
+   link.href = '/static/blog/css/night.css?20191123.01';
+   $("head").append(link);
+}
+// 删除暗色主题
+function removeDarkTheme() {
+   $('#theme-css-dark').remove();
+}
+
+//切换主题按钮，根据cookies切换主题
+$("#theme-img").click(function(){
+    var theme_key = "toggleTheme";
+    var theme_value = Cookies.get(theme_key);
+    if (theme_value == "dark"){
+        $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
+        Cookies.set(theme_key, "light", { expires: 180, path: '/' });
+        removeDarkTheme();
+    } else {
+        $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
+        Cookies.set(theme_key, "dark", { expires: 180, path: '/' });
+        addDarkTheme();
+    }
+})
+//判断主题策略
+$(function(){
+    var theme_key = "toggleTheme";
+    var theme_value = Cookies.get(theme_key);
+    if (theme_value == "dark"){
+        addDarkTheme();
+        $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
+    } else {
+        removeDarkTheme();
+        $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
+    }
+});
+

@@ -2,10 +2,11 @@
 {% load blog_tags static %}
 
 <!--个人空间-->
-{% cache 1800 'cache_baseright_html_tag' %}
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
     <div class="card-header bg-white px-0">
         <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+        <img class="float-right" id="theme-img" src="{% static 'blog/img/toggle-light.png' %}"
+             alt="theme-toggle" title="切换主题">
     </div>
     <div class="card-body px-0 pt-3 pb-1">
         <div class="row text-center">
@@ -82,4 +83,3 @@
         </div>
     </div>
 </div>
-{% endcache %}
