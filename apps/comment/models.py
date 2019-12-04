@@ -46,7 +46,10 @@ def get_emoji_imgs(body):
             body = re.sub(':{}:'.format(ii[0]), emoji_url, body)
     tag_info = {
         '<h\d>': '',
-        '</h\d>': '<br>'
+        '</h\d>': '<br>',
+        '<script.*</script>': '',
+        '<meta.*?>': '',
+        '<link.*?>': ''
     }
     for k, v in tag_info.items():
         body = re.sub(k, v, body)
