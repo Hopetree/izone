@@ -112,3 +112,5 @@ def docker_search_view(request):
         return JsonResponse(res, status=res['status'])
     return render(request, 'tool/docker_search.html')
 
+def editor_view(request):
+    return render(request, 'tool/editor.html')

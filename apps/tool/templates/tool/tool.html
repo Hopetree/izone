@@ -20,6 +20,21 @@
         <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
             <div class="card">
                 <div class="card-header p-2 tool-header">
+                    <a href="{% url 'tool:markdown_editor' %}">
+                        <img class="w-25 float-left mr-2" src="{% static 'editor/images/logos/editormd-logo-96x96.png' %}"
+                             alt="Markdown编辑器">
+                        <h2 class="card-title">Markdown编辑器</h2>
+                    </a>
+                    <p class="mb-0">[办公工具]</p>
+                </div>
+                <div class="card-body p-3 tool-des">
+                    <p class="card-text">基于开源项目 Editor.md 的在线 markdown 编辑器，拥有强大的编辑能力和全面的语法支持</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+            <div class="card">
+                <div class="card-header p-2 tool-header">
                     <a href="{% url 'tool:baidu_push' %}">
                         <img class="w-25 float-left mr-2" src="{% static 'blog/img/baidu-2.png' %}"
                              alt="百度主动推送工具">
