@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <!-- TDK and ICO -->
+    <title>Editor.md, Markdown在线编辑器_TendCode</title>
+    <meta name="description" content="markdown 在线编辑器，基于开源项目 editor.md">
+    <meta name="keywords" content="Editor.md,Markdown,Markdown编辑器,Markdown在线编辑器,在线编辑器,开源Markdown编辑器">
+    <link rel="shortcut icon" href="{% static 'editor/images/logos/editormd-favicon-16x16.ico'%}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}" />
+</head>
+<body>
+    <style>
+    body {color: rgb(102, 102, 102);}
+    #layout > header, .btns {
+        padding: 5px 0;
+        width: 90%;
+        margin: 0 auto;
+    }
+    #layout > header > h1 {
+    font-size: 20px;
+}
+    </style>
+    <div id="layout">
+        <header>
+            <h1>Markdown 在线编辑器</h1>
+        </header>
+        <div id="test-editormd">
+            <textarea style="display:none;">
+### Disabled options
+
+- TeX (Based on KaTeX);
+- Emoji;
+- Task lists;
+
+### Code
+
+```python
+from yaml import safe_load
+
+with open(filename, 'r') as f:
+    vars_string = f.read()
+base_vars = safe_load(vars_string)
+```
+
+### Images
+
+![部署博客](https://tendcode.com/cdn/article/180418/bsblog.png "部署博客")</textarea>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'editor/js/editormd.min.js' %}"></script>
+    <script type="text/javascript">
+        var testEditor;
+
+        $(function() {
+            testEditor = editormd("test-editormd", {
+                width   : "90%",
+                height  : 640,
+                syncScrolling : "single",
+                path    : "{% static 'editor/lib/' %}"
+            });
+        });
+    </script>
+</body>
+</html>
