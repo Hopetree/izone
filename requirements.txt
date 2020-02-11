@@ -3,7 +3,7 @@ bootstrap-admin==0.4.3
 certifi==2019.9.11
 chardet==3.0.4
 defusedxml==0.6.0
-Django==2.2.8
+Django==2.2.10
 django-allauth==0.40.0
 django-appconf==1.0.3
 django-crispy-forms==1.7.2
