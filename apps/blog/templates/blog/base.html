@@ -1,5 +1,6 @@
 {% load static %}
 {% load comment_tags %}
+{% load tctip_tags %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +26,7 @@
     {% if request.COOKIES.toggleTheme == "dark" %}
     <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
     {% endif %}
+    {% load_tctip %}
 </head>
 <body>
 <!--导航开始-->
