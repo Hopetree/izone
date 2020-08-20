@@ -15,19 +15,35 @@
 </head>
 <body>
     <style>
-    body {color: rgb(102, 102, 102);}
+    body {
+        color: rgb(102, 102, 102);
+    }
     #layout > header, .btns {
         padding: 5px 0;
         width: 90%;
         margin: 0 auto;
     }
-    #layout > header > h1 {
-    font-size: 20px;
-}
+    #layout > header {
+        margin-bottom: 1rem;
+    }
+    #layout > header > div > a {
+        color: inherit;
+        text-decoration: none;
+    }
+    #layout > header > div > a:hover {
+        color: #ea6f5a;
+    }
+
     </style>
     <div id="layout">
         <header>
-            <h1>Markdown 在线编辑器</h1>
+            <div>
+                <a href="{% url 'blog:index' %}">首页</a>
+                <span>&ensp;&gt;&ensp;</span>
+                <a href="{% url 'tool:total' %}">在线工具</a>
+                <span>&ensp;&gt;&ensp;</span>
+                <span>Markdown 在线编辑器</span>
+            </div>
         </header>
         <div id="test-editormd">
             <textarea style="display:none;">
