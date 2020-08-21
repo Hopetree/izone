@@ -1,0 +1,15 @@
+<div class="col-md-6 col-lg-4 col-xl-3 px-lg-2 mb-3">
+    <div class="card">
+        <div class="card-header p-2 tool-header">
+            <a href="{{ tool_item.url }}">
+                <img class="w-25 float-left mr-2" src="{{ tool_item.img }}"
+                     alt="{{ tool_item.name }}">
+                <h2 class="card-title">{{ tool_item.name }}</h2>
+            </a>
+            <p class="mb-0">[{{ tool_item.tag }}]</p>
+        </div>
+        <div class="card-body p-3 tool-des">
+            <p class="card-text">{{ tool_item.desc }}</p>
+        </div>
+    </div>
+</div>
