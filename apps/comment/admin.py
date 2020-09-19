@@ -10,6 +10,7 @@ class CommentAdmin(admin.ModelAdmin):
     ordering = ('-id',)
     # 设置需要添加a标签的字段
     list_display_links = ('id', 'show_content')
+    search_fields = ('author__username', 'belong__title')
 
     # 使用方法来自定义一个字段，并且给这个字段设置一个名称
     def show_content(self, obj):
@@ -23,3 +24,4 @@ class NotificationAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
     list_display = ('id', 'create_p', 'create_date', 'comment', 'is_read')
     list_filter = ('create_p', 'is_read',)
+    search_fields = ('create_p__username', 'comment__content')

@@ -36,6 +36,8 @@
                         {% endif %}
                         {% if comment.author.is_superuser %}
                         <small class="text-danger">[博主]</small>
+                        {% elif comment.author == article.author %}
+                        <small class="text-info">[作者]</small>
                         {% endif %}
                     </p>
                     <p class="small text-muted">{{ forloop.revcounter }}&nbsp;楼&nbsp;-&nbsp;{{ comment.create_date|naturaltime }}</p>

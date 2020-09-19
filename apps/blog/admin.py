@@ -24,6 +24,8 @@ class ArticleAdmin(admin.ModelAdmin):
 
     filter_horizontal = ('tags', 'keywords')  # 给多选增加一个左右添加的框
 
+    search_fields = ('author__username', 'title')
+
     # 限制用户权限，只能看到自己编辑的文章
     def get_queryset(self, request):
         qs = super(ArticleAdmin, self).get_queryset(request)

@@ -20,7 +20,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js'%}"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20191123.0568" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20200919.02" rel="stylesheet">
     {% block top-file %}{% endblock %}
     <!--根据cookies判断是否启用暗色主题-->
     {% if request.COOKIES.toggleTheme == "dark" %}
@@ -48,9 +48,7 @@
 {% endif %}
 
 <!--回到顶部按钮-->
-<div class="text-center" id="to-top">
-    <i class="fa fa-chevron-up" id="btn-top" title="回到顶部"></i>
-</div>
+<div class="text-center" id="to-top" title="回到顶部"></div>
 
 <!--主要内容块-->
 <main>{% block base_content %}{% endblock %}</main>
