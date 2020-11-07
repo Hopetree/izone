@@ -57,6 +57,7 @@
     position: fixed;
     max-width: 20%;
 }
+/*
 .toc ul {
     padding-left:2em;
 }
@@ -68,6 +69,7 @@
 .toc > ul > li > ul > li {
     list-style-type: decimal;
 }
+*/
 .toc a:hover {
     color: #ff6900;
 }
