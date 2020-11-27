@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.apps import apps
 from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
@@ -32,6 +34,15 @@ class ArticleAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(author=request.user)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        User = apps.get_model(settings.AUTH_USER_MODEL)
+        if db_field.name == 'author':
+            if request.user.is_superuser:
+                kwargs['queryset'] = User.objects.filter(is_staff=True, is_active=True)
+            else:
+                kwargs['queryset'] = User.objects.filter(id=request.user.id)
+        return super(ArticleAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(Tag)
