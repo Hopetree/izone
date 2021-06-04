@@ -1,6 +1,6 @@
 FROM python:3.6
-ARG pip_url=http://pypi.douban.com/simple
-ARG pip_host=pypi.douban.com
+ARG pip_url=https://pypi.tuna.tsinghua.edu.cn/simple
+ARG pip_host=https://pypi.tuna.tsinghua.edu.cn
 ARG work_home=/opt/cloud/izone
 ENV PYTHONUNBUFFERED=1
 
