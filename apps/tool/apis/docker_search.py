@@ -32,7 +32,7 @@ class DockerSearch(object):
     def get_items(self, url):
         try:
             req = requests.get(url, verify=False, timeout=5)
-        except:
+        except requests.exceptions.RequestException:
             self.code = self.STATUS_500
             return
         else:
