@@ -15,6 +15,11 @@ IZONE_TOOLS = {
             'url': 'tool:markdown_editor',
             'img': 'editor/images/logos/editormd-logo-96x96.png',
             'desc': '基于开源项目 Editor.md 的在线 markdown 编辑器，拥有强大的编辑能力和全面的语法支持'
+        }, {
+            'name': '词云图',
+            'url': 'tool:word_cloud',
+            'img': 'blog/img/word-cloud.png',
+            'desc': '支持中英文分词并统计词频生成词云图的工具，支持全屏预览和导出成图片及其他格式'
         }]
     },
     'develop': {
