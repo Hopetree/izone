@@ -1,21 +1,21 @@
 //get url params
-var getParam = function(name){
-    var search = document.location.search;
-    var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
-    var matcher = pattern.exec(search);
-    var items = null;
-    if(null != matcher){
-            try{
-                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
-            }catch(e){
-                    try{
-                            items = decodeURIComponent(matcher[1]);
-                    }catch(e){
-                            items = matcher[1];
-                    }
-            }
-    }
-    return items;
+var getParam = function (name) {
+	var search = document.location.search;
+	var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+	var matcher = pattern.exec(search);
+	var items = null;
+	if (null != matcher) {
+		try {
+			items = decodeURIComponent(decodeURIComponent(matcher[1]));
+		} catch (e) {
+			try {
+				items = decodeURIComponent(matcher[1]);
+			} catch (e) {
+				items = matcher[1];
+			}
+		}
+	}
+	return items;
 };
 
 //baidu links push api
@@ -40,7 +40,7 @@ function push_spider(CSRF, URL) {
 			'url_list': urls
 		},
 		dataType: 'json',
-		success: function(ret) {
+		success: function (ret) {
 			$('.push-result').html(ret.msg);
 		},
 	})
@@ -68,7 +68,7 @@ function site_push_spider(CSRF, URL) {
 			'map_url': map_url
 		},
 		dataType: 'json',
-		success: function(ret) {
+		success: function (ret) {
 			$('.push-result').html(ret.msg);
 		},
 	})
@@ -94,11 +94,11 @@ function regex_api(CSRF, URL) {
 		data: {
 			'r': r,
 			'texts': texts,
-			'key':getParam('key')
+			'key': getParam('key')
 		},
 		dataType: 'json',
-		success: function(ret) {
-		    var newhtml = '<div class="text-left re-result">' + ret.result + "</div>"
+		success: function (ret) {
+			var newhtml = '<div class="text-left re-result">' + ret.result + "</div>"
 			$('.push-result').html(newhtml);
 		},
 	})
@@ -106,27 +106,27 @@ function regex_api(CSRF, URL) {
 
 //user-agent api
 function useragent_api(CSRF, URL) {
-    var d_tags = $("#device_type input:checkbox:checked");
-    var os_tags = $("#os input:checkbox:checked");
-    var n_tags = $("#navigator input:checkbox:checked");
-    var d_lis = new Array();
-    var os_lis = new Array();
-    var n_lis = new Array();
-    if (d_tags.length > 0){
-        for (var i=0;i<d_tags.length;i++){
-            d_lis.push(d_tags[i].value);
-        }
-    };
-    if (os_tags.length > 0){
-        for (var i=0;i<os_tags.length;i++){
-            os_lis.push(os_tags[i].value);
-        }
-    };
-    if (n_tags.length > 0){
-        for (var i=0;i<n_tags.length;i++){
-            n_lis.push(n_tags[i].value);
-        }
-    };
+	var d_tags = $("#device_type input:checkbox:checked");
+	var os_tags = $("#os input:checkbox:checked");
+	var n_tags = $("#navigator input:checkbox:checked");
+	var d_lis = new Array();
+	var os_lis = new Array();
+	var n_lis = new Array();
+	if (d_tags.length > 0) {
+		for (var i = 0; i < d_tags.length; i++) {
+			d_lis.push(d_tags[i].value);
+		}
+	};
+	if (os_tags.length > 0) {
+		for (var i = 0; i < os_tags.length; i++) {
+			os_lis.push(os_tags[i].value);
+		}
+	};
+	if (n_tags.length > 0) {
+		for (var i = 0; i < n_tags.length; i++) {
+			n_lis.push(n_tags[i].value);
+		}
+	};
 	$.ajaxSetup({
 		data: {
 			csrfmiddlewaretoken: CSRF
@@ -136,12 +136,12 @@ function useragent_api(CSRF, URL) {
 		type: 'post',
 		url: URL,
 		data: {
-		    'd_lis': d_lis.join(),
+			'd_lis': d_lis.join(),
 			'os_lis': os_lis.join(),
 			'n_lis': n_lis.join()
 		},
 		dataType: 'json',
-		success: function(ret) {
+		success: function (ret) {
 			$('.push-result').text(ret.result)
 		},
 	})
@@ -167,11 +167,11 @@ function docker_search(CSRF, URL) {
 			'name': name,
 		},
 		dataType: 'json',
-		success: function(ret) {
-			if (!ret.error){
+		success: function (ret) {
+			if (!ret.error) {
 				var newhtml = '<table class="table table-bordered my-0"><thead class="thead-light"><tr><th scope="col">镜像版本</th>' +
 					'<th scope="col">镜像大小</th><th scope="col">更新时间</th></tr></thead><tbody>';
-				for (var i=0;i < ret.results.length; i++) {
+				for (var i = 0; i < ret.results.length; i++) {
 					var item = ret.results[i]
 					newhtml += '<tr><th scope="row">' + item.name + '</th><td>' + item.full_size + '</td><td>' + item.last_updated + '</td></tr>'
 				}
@@ -181,7 +181,7 @@ function docker_search(CSRF, URL) {
 			}
 			$('.push-result').html(newhtml);
 		},
-		error: function(XMLHttpRequest) {
+		error: function (XMLHttpRequest) {
 			var _code = XMLHttpRequest.status;
 			if (_code == 404) {
 				var error_text = '镜像仓库没有查询到相关信息，请检查镜像名称后重试！';
@@ -192,6 +192,53 @@ function docker_search(CSRF, URL) {
 			}
 			var newhtml = '<div class="my-2">' + error_text + '</div>';
 			$('.push-result').html(newhtml);
+		}
+	})
+}
+
+// word cloud
+function word_cloud(CSRF, URL, max_word) {
+	var text = $.trim($('#form-text').val());
+	if (text.length == 0) {
+		alert('待统计文本内容不能为空！');
+		return false
+	};
+	if (text.length > max_word) {
+		alert('文本长度超过限制：' + text.length + '/' + max_word);
+		return false
+	};
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: CSRF
+		}
+	});
+	$('.push-result').html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
+	$.ajax({
+		type: 'post',
+		url: URL,
+		data: {
+			'text': text
+		},
+		dataType: 'json',
+		success: function (ret) {
+			if (ret.code == 200) {
+				Highcharts.chart('show-wc', {
+					series: [{
+						type: 'wordcloud',
+						data: ret.result
+					}],
+					title: {
+						text: '词云图'
+					}
+				});
+			} else {
+				var newhtml = '<div class="p-3">请求错误，未获得词频统计</div>';
+				$('.push-result').html(newhtml);
+			}
+		},
+		error: function (XMLHttpRequest) {
+			var newhtml = '<div class="p-3">请求错误，未获得词频统计</div>';
+			$('.push-result').html(newhtml)
 		}
 	})
 }
