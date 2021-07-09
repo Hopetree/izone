@@ -86,7 +86,7 @@ $("#theme-img").click(function () {
     }
 })
 
-// 默认的主题规则，根据时间来自动切换，到了晚7点后自动切换成黑夜模式
+// 默认的主题规则，根据时间来自动切换，晚上7点到早上5点都是黑夜模式
 function defaultTheme() {
     // Cookies.remove('toggleTheme');
     var theme_key = "toggleTheme";
@@ -96,7 +96,7 @@ function defaultTheme() {
         var myDate = new Date();
         var h = myDate.getHours();
         // console.log('不存主题,时间是' + h)
-        if (h > 18) {
+        if (h > 18 || h < 6) {
             $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
             addDarkTheme();
         }
