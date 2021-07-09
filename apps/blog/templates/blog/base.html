@@ -63,7 +63,7 @@
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20191123.0909890"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20211123.0909890"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
