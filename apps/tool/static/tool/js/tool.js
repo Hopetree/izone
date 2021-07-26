@@ -207,6 +207,7 @@ function word_cloud(CSRF, URL, max_word) {
 		alert('文本长度超过限制：' + text.length + '/' + max_word);
 		return false
 	};
+	var stop_text = $.trim($('#stop-text').val());
 	$.ajaxSetup({
 		data: {
 			csrfmiddlewaretoken: CSRF
@@ -217,7 +218,8 @@ function word_cloud(CSRF, URL, max_word) {
 		type: 'post',
 		url: URL,
 		data: {
-			'text': text
+			'text': text,
+			'stop_text': stop_text
 		},
 		dataType: 'json',
 		success: function (ret) {
