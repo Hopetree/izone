@@ -11,6 +11,7 @@ from .utils import IMAGE_LIST
 import re
 import markdown
 
+
 # Create your views here.
 
 
@@ -132,6 +133,7 @@ def word_cloud(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
         text = data.get('text')
-        res = jieba_word_cloud(text)
+        stop_text = data.get('stop_text')
+        res = jieba_word_cloud(text, stop_text)
         return JsonResponse(res)
     return render(request, 'tool/word_cloud.html')
