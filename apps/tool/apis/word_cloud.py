@@ -1,4 +1,5 @@
 import os
+import re
 from collections import Counter
 
 import jieba
@@ -30,6 +31,11 @@ def get_word_count(text, stop_text):
     new_words = [
         word for word in words if word not in stop_words and word.strip()
     ]
+    # 删除纯数字
+    if r'\d+' in stop_words:
+        new_words = [
+            word for word in new_words if not re.findall(r'^\d+$', word)
+        ]
     c = Counter(new_words).most_common(max_word)
     result = [{'name': k, 'weight': v} for k, v in c]
     return result
