@@ -29,8 +29,9 @@
     <div class="form-group">
         <label>请输入待统计词频的文本：</label>
         <textarea class="form-control rounded-0" id="form-text" rows="8" required></textarea>
-        <label class="mb-2 mt-2">输入停用词（可选，每行一个，输入 \d+ 表示停用所有纯数字）：</label>
-        <textarea class="form-control rounded-0" id="stop-text" rows="4"></textarea>
+        <label class="mb-2 mt-2">输入停用词（选填，每行一个）：</label>
+        <textarea class="form-control rounded-0" id="stop-text" rows="4"
+                  placeholder="特殊约定：num- 表示停用所有纯数字，less- 表示停用长度为1的词"></textarea>
     </div>
 
     <button type="submit" class="btn btn-info btn-sm rounded-0" id="start-wc">生成词云图</button>
