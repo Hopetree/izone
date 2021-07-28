@@ -5,7 +5,9 @@ from collections import Counter
 import jieba
 
 # 只显示前N个词
-max_word = 80
+from .common import OpenApi
+
+MAX_WORD = 80
 
 root_path = os.path.dirname(__file__)
 stopwords_path = os.path.join(root_path, 'stopwords')
@@ -41,19 +43,22 @@ def get_word_count(text, stop_text):
         new_words = [
             word for word in new_words if len(word) > 1
         ]
-    c = Counter(new_words).most_common(max_word)
+    c = Counter(new_words).most_common(MAX_WORD)
     result = [{'name': k, 'weight': v} for k, v in c]
     return result
 
 
 def jieba_word_cloud(text, stop_text=None):
     """成功返回200，失败500，可以将失败的报错输出到console日志"""
+    op = OpenApi()
     try:
         result = get_word_count(text, stop_text)
-        ret = {'result': result, 'code': 200, 'error': ''}
+        op.data = {"list": result, "total": len(result), "max": MAX_WORD}
     except Exception as e:
-        ret = {'code': 500, 'error': e}
-    return ret
+        op.code = op.error_50001
+        op.error = "请求错误，未获得词频统计"
+        op.message = e
+    return op.body
 
 
 if __name__ == "__main__":
