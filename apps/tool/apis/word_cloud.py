@@ -37,7 +37,7 @@ def get_word_count(text, stop_text):
             word for word in new_words if not re.findall(r'^\d+$', word)
         ]
     # 停用长度为1的词
-    if 'less-' in stop_words:
+    if 'single-' in stop_words:
         new_words = [
             word for word in new_words if len(word) > 1
         ]
