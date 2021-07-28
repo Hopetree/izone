@@ -31,11 +31,12 @@ def get_word_count(text, stop_text):
     new_words = [
         word for word in words if word not in stop_words and word.strip()
     ]
-    # 删除纯数字
+    # 停用纯数字
     if 'num-' in stop_words:
         new_words = [
             word for word in new_words if not re.findall(r'^\d+$', word)
         ]
+    # 停用长度为1的词
     if 'less-' in stop_words:
         new_words = [
             word for word in new_words if len(word) > 1
