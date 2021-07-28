@@ -223,23 +223,23 @@ function word_cloud(CSRF, URL, max_word) {
 		},
 		dataType: 'json',
 		success: function (ret) {
-			if (ret.code == 200) {
+			if (ret.code == 0) {
 				Highcharts.chart('show-wc', {
 					series: [{
 						type: 'wordcloud',
-						data: ret.result
+						data: ret.data.list
 					}],
 					title: {
 						text: '词云图'
 					}
 				});
 			} else {
-				var newhtml = '<div class="p-3">请求错误，未获得词频统计</div>';
+				var newhtml = '<div class="p-3">' + ret.error + '</div>';
 				$('.push-result').html(newhtml);
 			}
 		},
 		error: function (XMLHttpRequest) {
-			var newhtml = '<div class="p-3">请求错误，未获得词频统计</div>';
+			var newhtml = '<div class="p-3">服务器异常，未知错误</div>';
 			$('.push-result').html(newhtml)
 		}
 	})
