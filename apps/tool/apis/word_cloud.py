@@ -32,9 +32,13 @@ def get_word_count(text, stop_text):
         word for word in words if word not in stop_words and word.strip()
     ]
     # 删除纯数字
-    if r'\d+' in stop_words:
+    if 'num-' in stop_words:
         new_words = [
             word for word in new_words if not re.findall(r'^\d+$', word)
+        ]
+    if 'less-' in stop_words:
+        new_words = [
+            word for word in new_words if len(word) > 1
         ]
     c = Counter(new_words).most_common(max_word)
     result = [{'name': k, 'weight': v} for k, v in c]
@@ -55,4 +59,4 @@ if __name__ == "__main__":
     fp = '/tmp/test.txt'
     with open(fp, 'r', encoding='utf-8') as f:
         text = f.read().strip()
-    print(jieba_word_cloud(text, stop_text='\n词\n'))
+    print(jieba_word_cloud(text, stop_text='\n词\nless-'))
