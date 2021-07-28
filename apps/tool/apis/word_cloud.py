@@ -12,9 +12,9 @@ stopwords_path = os.path.join(root_path, 'stopwords')
 
 
 def get_stop_words(stop_text, filename='ChineseStopWords.txt'):
-    '''读取指定停用词文件'''
-    fp = os.path.join(stopwords_path, filename)
-    with open(fp, 'r', encoding='utf-8') as f:
+    """读取指定停用词文件"""
+    _fp = os.path.join(stopwords_path, filename)
+    with open(_fp, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     stop_words = [word.strip() for word in lines]
     if stop_text:
@@ -25,7 +25,7 @@ def get_stop_words(stop_text, filename='ChineseStopWords.txt'):
 
 
 def get_word_count(text, stop_text):
-    '''精确分词'''
+    """精确分词"""
     words = jieba.lcut(text)
     stop_words = get_stop_words(stop_text)
     new_words = [
@@ -46,7 +46,7 @@ def get_word_count(text, stop_text):
 
 
 def jieba_word_cloud(text, stop_text=None):
-    '''成功返回200，失败500，可以将失败的报错输出到console日志'''
+    """成功返回200，失败500，可以将失败的报错输出到console日志"""
     try:
         result = get_word_count(text, stop_text)
         ret = {'result': result, 'code': 200, 'error': ''}
@@ -58,5 +58,5 @@ def jieba_word_cloud(text, stop_text=None):
 if __name__ == "__main__":
     fp = '/tmp/test.txt'
     with open(fp, 'r', encoding='utf-8') as f:
-        text = f.read().strip()
-    print(jieba_word_cloud(text, stop_text='\n词\nless-'))
+        tex = f.read().strip()
+    print(jieba_word_cloud(tex, stop_text='\n词\nless-'))
