@@ -85,21 +85,3 @@ $("#theme-img").click(function () {
         addDarkTheme();
     }
 })
-
-// 默认的主题规则，根据时间来自动切换，晚上7点到早上5点都是黑夜模式
-function defaultTheme() {
-    // Cookies.remove('toggleTheme');
-    var theme_key = "toggleTheme";
-    var theme_value = Cookies.get(theme_key);
-    // 当toggleTheme不存在的时候才触发判断
-    if (!theme_value) {
-        var myDate = new Date();
-        var h = myDate.getHours();
-        // console.log('不存主题,时间是' + h)
-        if (h > 18 || h < 6) {
-            $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
-            addDarkTheme();
-        }
-    }
-}
-defaultTheme();

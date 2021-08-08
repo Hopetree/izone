@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_tags %}
 {% load comment_tags %}
 {% load tctip_tags %}
 <!doctype html>
@@ -23,7 +24,12 @@
     <link href="{% static 'blog/css/base.css' %}?v=20200919.03" rel="stylesheet">
     {% block top-file %}{% endblock %}
     <!--根据cookies判断是否启用暗色主题-->
-    {% if request.COOKIES.toggleTheme == "dark" %}
+    {% if not request.COOKIES.toggleTheme %}
+        {% now_hour as hour %}
+        {% if hour < 6 or hour > 18 %}
+    <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+        {% endif %}
+    {% elif request.COOKIES.toggleTheme == "dark" %}
     <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
     {% endif %}
     {% load_tctip %}
@@ -62,7 +68,7 @@
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20210710.1"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20210808.1"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};
