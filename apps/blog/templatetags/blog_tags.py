@@ -1,4 +1,5 @@
 # 创建了新的tags标签文件后必须重启服务器
+from datetime import datetime
 
 from django import template
 from ..models import Article, Category, Tag, Carousel, FriendLink
@@ -103,3 +104,9 @@ def get_request_param(request, param, default=None):
 def get_friends():
     '''获取活跃的友情链接'''
     return FriendLink.objects.filter(is_show=True, is_active=True)
+
+
+@register.simple_tag
+def now_hour():
+    """返回当前时间的小时数"""
+    return datetime.now().hour
