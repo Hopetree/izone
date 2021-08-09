@@ -27,10 +27,12 @@
     {% if not request.COOKIES.toggleTheme %}
         {% now_hour as hour %}
         {% if hour < 6 or hour > 18 %}
-    <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+        <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
         {% endif %}
-    {% elif request.COOKIES.toggleTheme == "dark" %}
-    <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+    {% else %}
+        {% if request.COOKIES.toggleTheme == "dark" %}
+        <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+        {% endif %}
     {% endif %}
     {% load_tctip %}
 </head>

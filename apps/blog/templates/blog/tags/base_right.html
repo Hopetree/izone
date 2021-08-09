@@ -9,13 +9,17 @@
         {% if not request.COOKIES.toggleTheme %}
             {% now_hour as hour %}
             {% if hour < 6 or hour > 18 %}
-            src="{% static 'blog/img/toggle-dark.png' %}"
-            {% endif %}
-        {% elif request.COOKIES.toggleTheme == "dark" %}
              src="{% static 'blog/img/toggle-dark.png' %}"
-        {% else %}
+            {% else %}
              src="{% static 'blog/img/toggle-light.png' %}"
-         {% endif %}
+            {% endif %}
+        {% else %}
+            {% if request.COOKIES.toggleTheme == "dark" %}
+             src="{% static 'blog/img/toggle-dark.png' %}"
+            {% else %}
+             src="{% static 'blog/img/toggle-light.png' %}"
+            {% endif %}
+        {% endif %}
              alt="theme-toggle" title="切换主题">
     </div>
     <div class="card-body px-0 pt-3 pb-1">
