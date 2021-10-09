@@ -269,7 +269,7 @@ SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博�
 
 # 个性化设置，非必要信息
 # 个人 Github 地址
-MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/moyueheng')
+MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
 # 工信部备案信息
 BEIAN = os.getenv('IZONE_BEIAN', '网站备案信息')
 # 站长统计（友盟）
