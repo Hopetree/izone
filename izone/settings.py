@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 
     'rest_framework',
-    'mdeditor' # 添加markdown预览
 
     'crispy_forms',  # bootstrap表单样式
     'imagekit',  # 上传图片的应用
@@ -71,8 +70,10 @@ INSTALLED_APPS = [
     'blog',  # 博客应用
     'tool',  # 工具
     'comment',  # 评论
+
     'django_tctip',
 
+    'mdeditor' # 添加markdown预览,必须放在下面
 
 ]
 
