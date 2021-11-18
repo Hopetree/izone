@@ -1,3 +1,5 @@
+uwsgi_server
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -97,14 +99,14 @@ ENV/
 
 # 忽略网站个人信息，这些信息需要单独设置，不共享
 .idea
-whoosh_index/
-*.env
+#whoosh_index/
+#*.env
 # 第一次上传的时候要禁用下面的忽略设置，然后自行删除文件，之后再打开
-migrations/
-!migrations/__init__.py
-media/
-!media/avatar/default.png
-static/
+#migrations/
+#!migrations/__init__.py
+#media/
+#!media/avatar/default.png
+#static/
 
 # jieba
 .DS_Store

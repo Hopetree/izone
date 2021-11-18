@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     'blog',  # 博客应用
     'tool',  # 工具
     'comment',  # 评论
+
     'django_tctip',
+
+    'mdeditor' # 添加markdown预览,必须放在下面
 
 ]
 
@@ -221,18 +224,21 @@ DATABASES = {
         'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
         'HOST': MYSQL_HOST,
         'PORT': MYSQL_PORT,
-        'OPTIONS': {'charset': 'utf8'}
+        'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 
 # 使用django-redis缓存页面，缓存配置如下：
 REDIS_HOST = os.getenv('IZONE_REDIS_HOST', '127.0.0.1')
+REDIS_PASSWORD = os.getenv('IZONE_REDIS_PASSWORD', '')
 REDIS_PORT = os.getenv('IZONE_REDIS_PORT', 6379)
+REDIS_DB = os.getenv('IZONE_REDIS_DB', 0)
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://{}:{}".format(REDIS_HOST, REDIS_PORT),
+        # "LOCATION": "redis://{}:{}".format(REDIS_HOST, REDIS_PORT),redis://:Connext2020@106.14.245.253:6379/8
+        "LOCATION": "redis://:{}@{}:{}/{}".format(REDIS_PASSWORD,REDIS_HOST,REDIS_PORT, REDIS_DB),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
