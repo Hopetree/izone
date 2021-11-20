@@ -18,7 +18,7 @@ RUN sed -i s@/security.debian.org/@/mirrors.aliyun.com/@g /etc/apt/sources.list 
 
 RUN mkdir -p ${work_home}
 WORKDIR ${work_home}
-RUN git clone https://hub.fastgit.org/LoganJinDev/izone.git ${work_home} \
+RUN git clone https://github.com/LoganJinDev/izone.git ${work_home} \
 && cd ${work_home} && pip install -r requirements.txt \
 && pip install uwsgi
 
