@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.9
 ARG work_home=/opt/cloud/izone
 ENV PYTHONUNBUFFERED=1
 
