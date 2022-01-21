@@ -46,7 +46,7 @@
 {% block end_f %}
 <script>
     $('#start-wc').click(function () {
-        word_cloud("{{ csrf_token }}", "{% url 'tool:word_cloud' %}", 50000);
+        word_cloud("{{ csrf_token }}", "{% url 'tool:word_cloud' %}", 500000);
     })
 </script>
 {% endblock %}
