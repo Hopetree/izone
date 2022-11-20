@@ -15,7 +15,7 @@
         <div class="col-md-8 col-lg-9">
             {% get_notifications user is_read as notifications %}
             <ul class="cbp_tmtimeline f-16">
-                {% for each in notifications %}
+                {% for each in notifications|slice:":30" %}
                 <li>
                     <time class="cbp_tmtime" datetime="{{ each.create_date }}">
                         <span>{{ each.create_date|date:"Y/m/d"}}</span>
