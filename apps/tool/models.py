@@ -6,6 +6,7 @@ from django.db import models
 class ToolCategory(models.Model):
     name = models.CharField('网站分类名称', max_length=20)
     order_num = models.IntegerField('序号', default=99, help_text='序号可以用来调整顺序，越小越靠前')
+    icon = models.CharField('图标', max_length=50, blank=True, null=True, default='fa fa-link')
 
     class Meta:
         verbose_name = '工具分类'
@@ -21,7 +22,8 @@ class ToolLink(models.Model):
     description = models.CharField('网站描述', max_length=100)
     link = models.URLField('网站链接')
     order_num = models.IntegerField('序号', default=99, help_text='序号可以用来调整顺序，越小越靠前')
-    category = models.ForeignKey(ToolCategory, verbose_name='网站分类', blank=True, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(ToolCategory, verbose_name='网站分类', blank=True, null=True,
+                                 on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = '推荐工具'
