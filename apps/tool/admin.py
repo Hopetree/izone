@@ -10,7 +10,11 @@ if settings.TOOL_FLAG:
 
         list_filter = ('category',)
 
+        search_fields = ('name', 'link')
+
 
     @admin.register(ToolCategory)
     class ToolCategoryAdmin(admin.ModelAdmin):
         list_display = ('name', 'order_num', 'icon')
+
+        search_fields = ('name',)
