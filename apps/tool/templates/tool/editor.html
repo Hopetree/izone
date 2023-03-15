@@ -1,4 +1,4 @@
-{% load static %}
+{% load static tool_tags%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,5 +82,6 @@ base_vars = safe_load(vars_string)
             });
         });
     </script>
+    {% load_github_corners "red" "https://github.com/pandao/editor.md" %}
 </body>
 </html>
