@@ -102,7 +102,6 @@ whoosh_index/
 # 第一次上传的时候要禁用下面的忽略设置，然后自行删除文件，之后再打开
 media/
 !media/avatar/default.png
-static/
 
 # jieba
 .DS_Store
