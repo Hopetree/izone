@@ -8,8 +8,7 @@ IMAGE_LIST = [
 
 IZONE_TOOLS = {
     'office': {
-        'tag':
-        '办公工具',
+        'tag': '办公工具',
         'tools': [{
             'name': 'Markdown编辑器',
             'url': 'tool:markdown_editor',
@@ -23,9 +22,13 @@ IZONE_TOOLS = {
         }]
     },
     'develop': {
-        'tag':
-        '开发工具',
+        'tag': '开发工具',
         'tools': [{
+            'name': 'JSON转Go工具',
+            'url': 'tool:json2go',
+            'img': 'tool/img/golang.png',
+            'desc': '基于开源项目 json-to-go 的在线JSON转Go结构体工具，可以快速创建JSON结构的类型'
+        }, {
             'name': 'Docker镜像查询',
             'url': 'tool:docker_search',
             'img': 'blog/img/docker.png',
@@ -48,8 +51,7 @@ IZONE_TOOLS = {
         }]
     },
     'web': {
-        'tag':
-        '站长工具',
+        'tag': '站长工具',
         'tools': [{
             'name': '百度主动推送',
             'url': 'tool:baidu_push',

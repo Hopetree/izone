@@ -1,0 +1,95 @@
+{% load static tool_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <!-- TDK and ICO -->
+    <title>Convert JSON to Go struct，将JSON转换为Go结构_TendCode</title>
+    <meta name="description" content="在线工具，将JSON转换为Go结构">
+    <meta name="keywords" content="json,go,struct">
+    <link rel="shortcut icon" href="{% static 'tool/img/go.ico' %}" type="image/x-icon"/>
+    <link href="{% static 'tool/css/json2go/tomorrow.highlight.css' %}?v=20230316.001" rel="stylesheet">
+    <link href="{% static 'tool/css/json2go/common.css' %}?v=20230316.001" rel="stylesheet">
+</head>
+<body>
+<style>
+    body {
+        color: rgb(102, 102, 102);
+    }
+
+    #layout > header, .btns {
+        padding: 5px 0;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    #layout > header {
+        margin-bottom: .5rem;
+    }
+
+    #layout > header > div > a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    #layout > header > div > a:hover {
+        color: #ea6f5a;
+    }
+
+</style>
+<div id="layout">
+    <header>
+        <div>
+            <a href="{% url 'blog:index' %}">首页</a>
+            <span>&ensp;&gt;&ensp;</span>
+            <a href="{% url 'tool:total' %}">在线工具</a>
+            <span>&ensp;&gt;&ensp;</span>
+            <span>JSON转Go 在线工具</span>
+        </div>
+        <div class="intro">
+            <div class="title">
+                <h2>Convert JSON to Go struct</h2>
+
+            </div>
+            <div>
+                <p>
+                    举个例子，可以将下面两个 JSON 转化成 Go 结构体：<a href="javascript:" id="sample1">SmartyStreets
+                    API</a> 或 <a href="javascript:" id="sample2">GitHub API</a>.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <table>
+        <tr>
+            <th style="width: 45%;">JSON</th>
+            <th style="width: 10%; font-size: 22px;">&#8594;</th>
+            <th style="width: 45%;">Go <label><input type="checkbox" id="inline" checked>内联类型定义</label>
+                <label><input type="checkbox" id="omitempty">添加 omitempty</label> <span class="copy"
+                                                                                        id="copy-btn">复制代码</span>
+            </th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td style="width: 50%;">
+                <div id="input" contenteditable></div>
+            </td>
+            <td style="width: 50%;">
+                <div id="output"></div>
+            </td>
+        </tr>
+    </table>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'tool/js/json2go/highlight.min.js' %}"></script>
+    <script src="{% static 'tool/js/json2go/json-to-go.js' %}"></script>
+    <script src="{% static 'tool/js/json2go/common.js' %}"></script>
+    <script src="{% static 'tool/js/json2go/gofmt.js' %}"></script>
+    {% load_github_corners "blue" "https://github.com/mholt/json-to-go" %}
+</body>
+</html>

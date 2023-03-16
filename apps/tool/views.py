@@ -137,3 +137,7 @@ def word_cloud(request):
         res = jieba_word_cloud(text, stop_text)
         return JsonResponse(res)
     return render(request, 'tool/word_cloud.html')
+
+
+def json2go(request):
+    return render(request, 'tool/json2go.html')
