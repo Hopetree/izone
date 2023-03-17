@@ -1,0 +1,55 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}个人所得税，综合所得年度汇算_在线工具{% endblock %}
+{% block metas %}
+    <meta name="description" content="个人所得税，综合所得年度汇算，在线计算，对比年终奖单独计税和并入综合所得税按年计算两种方式退税差异">
+    <meta name="keywords" content="个人所得税,综合所得年度汇算,年终奖单独计税,并入综合所得税按年计算">
+{% endblock %}
+
+{% block tool_name %}综合所得年度汇算{% endblock %}
+{% block left_content %}
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">参数来源说明：</h3>
+        <ul>
+            <li>收入合计：<span class="text-muted">个税App年度"收入纳税明细查询"中可见，此合计是包含年终奖的</span></li>
+            <li>已申报税额合计：<span class="text-muted">个税App年度"收入纳税明细查询"中可见</span></li>
+            <li>专项扣除合计：<span
+                    class="text-muted">个税App年度"收入纳税明细查询"中每个月的明细中"本期专项扣除"的全年总和，也就是全年五险一金总和，每个月的稍微不同，需要自行累加起来</span></li>
+            <li>专项附加扣除合计：<span class="text-muted">子女教育、住房租金、赡养老人等合计，可以参考往年，比如只有住房租金，深圳的标准是一年18000</span></li>
+            <li>全年一次性奖金收入：<span class="text-muted">如果有年终奖，则个税App年度"收入纳税明细查询"中可见（某个月的收入），否则填写0或不填写</span></li>
+        </ul>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">收入合计</span></div>
+        <input type="number" step="0.01" class="form-control" id="income">
+        <div class="input-group-append"><span class="input-group-text">.00</span></div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">已申报税额合计</span></div>
+        <input type="number" step="0.01" class="form-control" id="old_tax">
+        <div class="input-group-append"><span class="input-group-text">.00</span></div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">专项扣除合计</span></div>
+        <input type="number" step="0.01" class="form-control" id="special_deduction">
+        <div class="input-group-append"><span class="input-group-text">.00</span></div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">专项附加扣除合计</span></div>
+        <input type="number" step="0.01" class="form-control" id="special_add_deduction">
+        <div class="input-group-append"><span class="input-group-text">.00</span></div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text">全年一次性奖金收入</span></div>
+        <input type="number" step="0.01" class="form-control" id="annual_bonus">
+        <div class="input-group-append"><span class="input-group-text">.00</span></div>
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-info btn-sm rounded-0" id="start-tax">开始计算</button>
+    </div>
+{% endblock %}
+
+{% block end_f %}
+    <script src="{% static 'tool/js/tax/tax.js' %}?v=20230317.002"></script>
+{% endblock %}

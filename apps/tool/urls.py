@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (Toolview, BD_pushview, BD_pushview_site,
                     regexview, useragent_view, html_characters,
                     docker_search_view, editor_view, word_cloud,
-                    json2go
+                    json2go, tax
                     )
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     path('markdown-editor/', editor_view, name='markdown_editor'),  # editor.md 工具
     path('word-cloud/', word_cloud, name='word_cloud'),  # 词云图 工具
     path('json2go/', json2go, name='json2go'),  # json转go
+    path('tax/', tax, name='tax'),  # 个人所得税年度汇算
 ]
