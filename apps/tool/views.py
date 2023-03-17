@@ -141,3 +141,8 @@ def word_cloud(request):
 
 def json2go(request):
     return render(request, 'tool/json2go.html')
+
+
+# 个人所得税年度汇算
+def tax(request):
+    return render(request, 'tool/tax.html')
