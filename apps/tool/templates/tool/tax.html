@@ -21,12 +21,12 @@
         </ul>
     </div>
     <div class="input-group mb-3">
-        <div class="input-group-prepend"><span class="input-group-text  f-16">收入合计</span></div>
+        <div class="input-group-prepend"><span class="input-group-text f-16">收入合计</span></div>
         <input type="number" step="0.01" class="form-control" id="income">
         <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
     </div>
     <div class="input-group mb-3">
-        <div class="input-group-prepend"><span class="input-group-text  f-16">已申报税额合计</span></div>
+        <div class="input-group-prepend"><span class="input-group-text f-16">已申报税额合计</span></div>
         <input type="number" step="0.01" class="form-control" id="old_tax">
         <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
     </div>
@@ -46,10 +46,10 @@
         <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
     </div>
     <div class="mb-3">
-        <button type="submit" class="btn btn-info btn-sm rounded-0  f-16" id="start-tax">开始计算</button>
+        <button type="submit" class="btn btn-info btn-sm rounded-0 f-16" id="start-tax">开始计算</button>
     </div>
 {% endblock %}
 
 {% block end_f %}
-    <script src="{% static 'tool/js/tax/tax.js' %}?v=20230317.002"></script>
+    <script src="{% static 'tool/js/tax/tax.js' %}?v=20230322.001"></script>
 {% endblock %}

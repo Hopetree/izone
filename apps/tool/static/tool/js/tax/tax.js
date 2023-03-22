@@ -48,7 +48,8 @@ class PersonalIncomeTaxSettlement {
         console.log('并入综合所得计税计算计税额：' + amount);
         const tax = this.get_accumulative_tax(amount);
         console.log('并入综合所得计税计算应缴税为：' + tax);
-        return tax.toFixed(2)
+        const _tax = (tax < 0) ? 0 : tax;
+        return _tax.toFixed(2)
     }
 
     planB() {
@@ -61,7 +62,8 @@ class PersonalIncomeTaxSettlement {
         console.log('年终奖单独计算计税额：' + amount);
         const tax = this.get_accumulative_tax(amount) + this.get_accumulative_tax(this.annual_bonus);
         console.log('年终奖单独计算应缴税：' + tax.toFixed(2));
-        return tax.toFixed(2)
+        const _tax = (tax < 0) ? 0 : tax;
+        return _tax.toFixed(2)
     }
 }
 
