@@ -2,7 +2,8 @@
 {% load humanize static%}
 <div class="summary-list">
     {% for article in articles %}
-    <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
+    <div class="article-block">
+        <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
         <div class="align-self-center mr-2 mr-lg-3 w-25 modal-open">
             <a href="{{ article.get_absolute_url }}" target="_blank">
                 <img class="w-100 article-img" src="{{ article.img_link }}" alt="{{ article.title }}">
@@ -28,6 +29,7 @@
                     <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
             </div>
         </div>
+    </div>
     </div>
     {% empty %}
     <div class="p-3 mt-3 bg-white"><p>暂时没有文章!</p></div>
