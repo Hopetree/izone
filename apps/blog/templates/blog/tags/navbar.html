@@ -1,7 +1,7 @@
 {% load static oauth_tags comment_tags %}
 <nav class="navbar navbar-expand-md bg-white fixed-top blog-navbar py-md-0">
     <a class="navbar-brand d-md-none d-lg-block" id="site-logo-name" href="{% url 'blog:index' %}">
-        <strong class="px-2">{{site_logo_name}}</strong>
+        <strong class="px-2">{{ site_logo_name }}</strong>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,35 +11,60 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item mr-2">
                 {% url 'blog:index' as index_url %}
-                <a class="nav-link py-md-3 {% if request.path == index_url %}active{% endif %}" href="{{ index_url }}"><i class="fa fa-home mr-1"></i>首页<span class="sr-only">(current)</span></a>
+                <a class="nav-link py-md-3 {% if request.path == index_url %}active{% endif %}"
+                   href="{{ index_url }}"><i class="fa fa-home mr-1"></i>首页<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item mr-2">
                 {% url 'blog:archive' as archive_url %}
-                <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}" href="{{ archive_url }}"><i class="fa fa-sitemap mr-1"></i>归档</a>
+                <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}"
+                   href="{{ archive_url }}"><i class="fa fa-sitemap mr-1"></i>归档</a>
             </li>
             {% if tool_flag %}
-            <li class="nav-item mr-2">
-                {% url 'tool:total' as tool_url %}
-                <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}" href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
-            </li>
+                <li class="nav-item mr-2">
+                    {% url 'tool:total' as tool_url %}
+                    <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}"
+                       href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
+                </li>
             {% endif %}
             {% if hao_console.flag %}
-            <li class="nav-item mr-2 d-none d-lg-block">
-                <a class="nav-link py-md-3" href="{{ hao_console.url }}" target="_blank"><i class="fa fa-chrome mr-1"></i>{{ hao_console.name }}</a>
-            </li>
+                <li class="nav-item mr-2 d-none d-lg-block">
+                    <a class="nav-link py-md-3" href="{{ hao_console.url }}" target="_blank"><i
+                            class="fa fa-chrome mr-1"></i>{{ hao_console.name }}</a>
+                </li>
             {% endif %}
             {% if api_flag %}
-            <li class="nav-item mr-2">
-                <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank"><i class="fa fa-key mr-1"></i>API</a>
-            </li>
+                <li class="nav-item mr-2">
+                    <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank"><i
+                            class="fa fa-key mr-1"></i>API</a>
+                </li>
             {% endif %}
+
+            <!-- 个人外链 -->
+            <li class="nav-item dropdown mr-2">
+                <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                ><i class="fa fa-paper-plane mr-1"></i>个人外链
+                </a>
+                <div class="dropdown-menu dropdown-menu-left mt-0 rounded-0 border-0"
+                     aria-labelledby="navbarDropdown">
+                    {% for link_item in private_links %}
+                        <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank">
+                            <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
             <li class="nav-item mr-2 ">
                 {% url 'blog:about' as about_url %}
-                <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}" href="{{ about_url }}"><i class="fa fa-anchor mr-1"></i>关于</a>
+                <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}"
+                   href="{{ about_url }}"><i class="fa fa-anchor mr-1"></i>关于</a>
             </li>
-            <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform" action="{% url 'blog:search_view'%}">
+            <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform"
+                  action="{% url 'blog:search_view' %}">
                 <div class="input-group">
-                    <input type="search" name="q" class="form-control rounded-0" placeholder="站内搜索" autocomplete="off" required=True>
+                    <input type="search" name="q" class="form-control rounded-0" placeholder="站内搜索" autocomplete="off"
+                           required=True>
                     <div class="input-group-btn">
                         <button class="btn btn-info rounded-0" type="submit"><i class="fa fa-search"></i></button>
                     </div>
@@ -48,37 +73,41 @@
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            {% get_notifications_count user 'false' as msgnum %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
-                    {% if msgnum > 0%}
-                    <span class="get-msg text-center">{{ msgnum }}</span>
-                    {% endif %}
-                    {% get_user_avatar_tag user %}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item pl-3" href="{% url 'oauth:profile' %}"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
-                    {% if user.is_staff %}
-                    <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
-                            class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
-                    {% endif %}
-                    <a class="dropdown-item pl-3" href="{% url 'comment:notification' %}"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
-                        {% if msgnum > 0%}
-                        <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>
+                {% get_notifications_count user 'false' as msgnum %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" title="{{ user.username }}，欢迎回来！">
+                        {% if msgnum > 0 %}
+                            <span class="get-msg text-center">{{ msgnum }}</span>
                         {% endif %}
+                        {% get_user_avatar_tag user %}
                     </a>
-                    <a class="dropdown-item pl-3" href="{% url 'account_logout' %}"><i
-                            class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
-                </div>
-            </li>
+                    <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0"
+                         aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item pl-3" href="{% url 'oauth:profile' %}"><i
+                                class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
+                        {% if user.is_staff %}
+                            <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
+                                    class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
+                        {% endif %}
+                        <a class="dropdown-item pl-3" href="{% url 'comment:notification' %}"><i
+                                class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                            {% if msgnum > 0 %}
+                                <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>
+                            {% endif %}
+                        </a>
+                        <a class="dropdown-item pl-3" href="{% url 'account_logout' %}"><i
+                                class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
+                    </div>
+                </li>
             {% else %}
-            <li class="nav-item mr-2">
-                <a class="nav-link py-md-3" href="{% url 'account_login' %}?next={{ request.path }}">登录</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link py-md-3" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a>
-            </li>
+                <li class="nav-item mr-2">
+                    <a class="nav-link py-md-3" href="{% url 'account_login' %}?next={{ request.path }}">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-md-3" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a>
+                </li>
             {% endif %}
         </ul>
     </div>
