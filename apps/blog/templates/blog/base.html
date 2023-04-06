@@ -80,14 +80,14 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
 {% block end_file %}{% endblock %}
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
-        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info"></span>
-            <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
-        </p>
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>&nbsp;|
             <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
             {% if cnzz_protocol %}|&nbsp;{{ cnzz_protocol|safe }}{% endif %}
             <span id="web-day"></span>
+        </p>
+        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2018-<span id="year-info"></span>
+            <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
         </p>
         <script>function getnewYear(){var d = new Date();var old = new Date('2018/03/28');
             var x = document.getElementById("year-info");
