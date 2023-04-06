@@ -250,7 +250,8 @@ if admin_email_user:
 # 邮箱配置
 EMAIL_HOST = os.getenv('IZONE_EMAIL_HOST', 'smtp.163.com')
 EMAIL_HOST_USER = os.getenv('IZONE_EMAIL_HOST_USER', 'your-email-address')
-EMAIL_HOST_PASSWORD = os.getenv('IZONE_EMAIL_HOST_PASSWORD', 'your-email-password')  # 这个不是邮箱密码，而是授权码
+EMAIL_HOST_PASSWORD = os.getenv('IZONE_EMAIL_HOST_PASSWORD',
+                                'your-email-password')  # 这个不是邮箱密码，而是授权码
 EMAIL_PORT = os.getenv('IZONE_EMAIL_PORT', 465)  # 由于阿里云的25端口打不开，所以必须使用SSL然后改用465端口
 EMAIL_TIMEOUT = 5
 # 是否使用了SSL 或者TLS，为了用465端口，要使用这个
@@ -281,3 +282,9 @@ HAO_CONSOLE = {
     'name': os.getenv('IZONE_HAO_NAME', '微草导航'),
     'url': os.getenv('IZONE_HAO_URL', 'https://hao.tendcode.com')
 }
+
+# 个人外链信息（导航栏下拉中显示）
+PRIVATE_LINKS = [
+    {'name': 'Github', 'icon': 'fa-github', 'link': 'https://github.com/Hopetree'},
+    {'name': '个人文档', 'icon': 'fa-book', 'link': 'https://hopetree.github.io'},
+]
