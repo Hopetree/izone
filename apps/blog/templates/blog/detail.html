@@ -4,130 +4,146 @@
 
 {% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
 {% block metas %}
-<meta name="description" content="{{ article.summary }}">
-<meta name="keywords" content="{% keywords_to_str article %}">
+    <meta name="description" content="{{ article.summary }}">
+    <meta name="keywords" content="{% keywords_to_str article %}">
 {% endblock %}
 
 
 {% block top-file %}
-{% if user.is_authenticated %}
-<link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
-{% endif %}
-<link href="{% static 'blog/css/detail.css' %}?v=20201107.01" rel="stylesheet">
-<link href="{% static 'blog/css/monokai.css' %}?v=20190910.2" rel="stylesheet">
-<link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
+    {% if user.is_authenticated %}
+        <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
+    {% endif %}
+    <link href="{% static 'blog/css/detail.css' %}?v=20230419.10" rel="stylesheet">
+    <link href="{% static 'blog/css/monokai.css' %}?v=20190910.2" rel="stylesheet">
+    <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-9 col-xl-10">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
-                    <li class="breadcrumb-item">
-                        <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ article.category.get_absolute_url }}">{{ article.category}}</a>
-                    </li>
-                    <li class="breadcrumb-item active d-none d-md-block" aria-current="page">{{ article.title }}</li>
-                    <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
-                </ol>
-            </nav>
-            <div class="card rounded-0 border-0" id="article">
-                <div class="card-body px-2 px-md-3 pb-0">
-                    <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
-                    <hr>
-                    <div class="text-center f-13">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-10">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
+                        <li class="breadcrumb-item">
+                            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a>
+                        </li>
+                        <li class="breadcrumb-item active d-none d-md-block"
+                            aria-current="page">{{ article.title }}</li>
+                        <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
+                    </ol>
+                </nav>
+                <div class="card rounded-0 border-0" id="article">
+                    <div class="card-body px-2 px-md-3 pb-0">
+                        <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
+                        <hr>
+                        <div class="text-center f-13">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
                               title="最后编辑于{{ article.update_date|date:'Y年m月d日' }}">{{ article.create_date }}</span>
-                        <span class="mx-2">阅读 {{ article.views }}</span>
-                        <a class="mx-2 to-com" href="#comment-block">评论 {% get_comment_count article %}</a>
+                            <span class="mx-2">阅读 {{ article.views }}</span>
+                            <a class="mx-2 to-com" href="#comment-block">评论 {% get_comment_count article %}</a>
+                        </div>
+                        <div class="article-body mt-4 f-17" style="line-height:1.8">
+                            {{ article.body|safe }}
+                            <blockquote class="p-1 f-14" style="border-left: 4px solid #dc3545;">
+                                <p class="m-1"><strong>版权声明：</strong>如无特殊说明，文章均为本站原创，转载请注明出处</p>
+                                <p class="m-1"><strong>本文链接：</strong>{{ site_url }}{{ article.get_absolute_url }}</p>
+                                <p class="m-1"><strong>许可协议：</strong><a
+                                        href="https://creativecommons.org/licenses/by-nc/4.0/">署名-非商业性使用 4.0 国际许可协议</a>
+                                </p>
+                            </blockquote>
+                        </div>
+                        <div class="tag-cloud my-4">
+                            {% for tag in article.tags.all %}
+                                <a class="tags f-16" href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <nav class="more-page f-16">
+                            <ul class="pagination justify-content-between">
+                                <li class="page-item">
+                                    {% if article.get_pre %}
+                                        <a class="d-none d-md-block" href="{{ article.get_pre.get_absolute_url }}"
+                                           title="上一篇：{{ article.get_pre.title }}">
+                                            <i class="fa fa-chevron-left mr-1"></i>
+                                            {{ article.get_pre.title|truncatechars:18 }}
+                                        </a>
+                                        <a class="d-md-none" href="{{ article.get_pre.get_absolute_url }}">
+                                            <i class="fa fa-chevron-left mr-1"></i>上一篇</a>
+                                    {% endif %}
+                                </li>
+                                <li class="page-item">
+                                    {% if article.get_next %}
+                                        <a class="d-none d-md-block" href="{{ article.get_next.get_absolute_url }}"
+                                           title="下一篇：{{ article.get_next.title }}">
+                                            {{ article.get_next.title|truncatechars:18 }}
+                                            <i class="fa fa-chevron-right ml-1"></i>
+                                        </a>
+                                        <a class="d-md-none" href="{{ article.get_next.get_absolute_url }}">
+                                            下一篇<i class="fa fa-chevron-right ml-1"></i>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </nav>
+                        {% include 'blog/tags/reward.html' %}
                     </div>
-                    <div class="article-body mt-4 f-17" style="line-height:1.8">
-                        {{ article.body|safe }}
-                        <blockquote class="p-1 f-14" style="border-left: 4px solid #dc3545;">
-                            <p class="m-1"><strong>版权声明：</strong>如无特殊说明，文章均为本站原创，转载请注明出处</p>
-                            <p class="m-1"><strong>本文链接：</strong>{{ site_url }}{{ article.get_absolute_url }}</p>
-                            <p class="m-1"><strong>许可协议：</strong><a href="https://creativecommons.org/licenses/by-nc/4.0/">署名-非商业性使用 4.0 国际许可协议</a></p>
-                        </blockquote>
-                    </div>
-                    <div class="tag-cloud my-4">
-                        {% for tag in article.tags.all %}
-                        <a class="tags f-16" href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
-                        {% endfor %}
-                    </div>
-                    <nav class="more-page f-16">
-                        <ul class="pagination justify-content-between">
-                            <li class="page-item">
-                                {% if article.get_pre %}
-                                <a class="d-none d-md-block" href="{{ article.get_pre.get_absolute_url }}"
-                                   title="上一篇：{{ article.get_pre.title }}">
-                                    <i class="fa fa-chevron-left mr-1"></i>
-                                    {{ article.get_pre.title|truncatechars:18 }}
-                                </a>
-                                <a class="d-md-none" href="{{ article.get_pre.get_absolute_url }}">
-                                    <i class="fa fa-chevron-left mr-1"></i>上一篇</a>
-                                {% endif %}
-                            </li>
-                            <li class="page-item">
-                                {% if article.get_next %}
-                                <a class="d-none d-md-block" href="{{ article.get_next.get_absolute_url }}"
-                                   title="下一篇：{{ article.get_next.title }}">
-                                    {{ article.get_next.title|truncatechars:18 }}
-                                    <i class="fa fa-chevron-right ml-1"></i>
-                                </a>
-                                <a class="d-md-none" href="{{ article.get_next.get_absolute_url }}">
-                                    下一篇<i class="fa fa-chevron-right ml-1"></i>
-                                </a>
-                                {% endif %}
-                            </li>
-                        </ul>
-                    </nav>
-                    {% include 'blog/tags/reward.html' %}
+                </div>
+                <div class="card mt-2 rounded-0 border-0" id="comment-block">
+                    {% include 'comment/comment_form.html' %}
+                    {% get_parent_comments article as comment_list %}
+                    {% include 'comment/comment_list.html' %}
                 </div>
             </div>
-            <div class="card mt-2 rounded-0 border-0" id="comment-block">
-                {% include 'comment/comment_form.html' %}
-                {% get_parent_comments article as comment_list %}
-                {% include 'comment/comment_list.html' %}
+            <div class="col-lg-2 toc-block">
+                <div class="article-toc d-none d-lg-block f-13">
+                    <div class="toc-title">文章导航</div>
+                    {{ article.toc|safe }}
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--图片预览-->
-<div class="modal fade" id="img-to-big" tabindex="-1" role="dialog" aria-labelledby="img-to-bigTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%">
-        <img class="rounded mx-auto d-block" alt="image" style="max-width: 100%">
     </div>
-</div>
-<!--前后文章-->
-{% if article.get_pre %}
-<div class="more-blog" id="icon-pre-blog">
-    <a href="{{ article.get_pre.get_absolute_url }}">
-        <i class="fa fa-angle-left fa-3x"></i>
-    </a>
-</div>
-{% endif %}
-{% if article.get_next %}
-<div class="more-blog" id="icon-next-blog">
-    <a href="{{ article.get_next.get_absolute_url }}">
-        <i class="fa fa-angle-right fa-3x"></i>
-    </a>
-</div>
-{% endif %}
+    <!--图片预览-->
+    <div class="modal fade" id="img-to-big" tabindex="-1" role="dialog" aria-labelledby="img-to-bigTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%">
+            <img class="rounded mx-auto d-block" alt="image" style="max-width: 100%">
+        </div>
+    </div>
+    <!--前后文章-->
+    {% if article.get_pre %}
+        <div class="more-blog" id="icon-pre-blog">
+            <a href="{{ article.get_pre.get_absolute_url }}">
+                <i class="fa fa-angle-left fa-3x"></i>
+            </a>
+        </div>
+    {% endif %}
+    {% if article.get_next %}
+        <div class="more-blog" id="icon-next-blog">
+            <a href="{{ article.get_next.get_absolute_url }}">
+                <i class="fa fa-angle-right fa-3x"></i>
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block end_file %}
-{% if user.is_authenticated %}
-<script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
-<script src="{% static 'comment/js/editor.js' %}?v=20190311.05908"></script>
-<script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
-<script>
-var sw=window.screen.width;if(sw>1200){POWERMODE.colorful=true;POWERMODE.shake=false;document.body.addEventListener('input',POWERMODE)};
+    {% if user.is_authenticated %}
+        <script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
+        <script src="{% static 'comment/js/editor.js' %}?v=20190311.05908"></script>
+        <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
+        <script>
+            var sw = window.screen.width;
+            if (sw > 1200) {
+                POWERMODE.colorful = true;
+                POWERMODE.shake = false;
+                document.body.addEventListener('input', POWERMODE)
+            }
+            ;
 
 
-</script>
-{% endif %}
+        </script>
+    {% endif %}
 {% endblock %}
