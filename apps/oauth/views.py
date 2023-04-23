@@ -18,9 +18,9 @@ def change_profile_view(request):
         # 上传文件需要使用request.FILES
         form = ProfileForm(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
-            if not old_avatar_url == '/media/avatar/default.png':
-                if os.path.exists(old_avatar_file):
-                    os.remove(old_avatar_file)
+            # if not old_avatar_url == '/media/avatar/default.png':
+            #     if os.path.exists(old_avatar_file):
+            #         os.remove(old_avatar_file)
             form.save()
             # 添加一条信息,表单验证成功就重定向到个人信息页面
             messages.add_message(request,messages.SUCCESS,'个人信息更新成功！')
