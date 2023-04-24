@@ -13,10 +13,17 @@ function copyToClipboard(text) {
 }
 
 $('.codehilite').each(function () {
+    // 读取代码块语言
+    const langClass = $(this).find('pre code').attr('class');
+    const language = langClass.replace(/^.*\blanguage-([^ ]+).*$/, '$1') || 'unknown';
+    // console.log(language);
     const codeText = $(this).find('pre').text();
     const copyElm = $('<div>').addClass('code-wrapper');
-    const copyButton = $('<div>').html('<button><svg class="m-2" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button>');
+    const copyButton = $('<button>').html('<svg class="m-2" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1.2em" width="1.2em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code');
+    copyElm.append($('<span class="code-lang">').text(language));
     copyElm.append(copyButton);
+    // 添加一个元素取消浮动
+    copyElm.append('<div style="clear: both;"></div>');
     $(this).prepend(copyElm);
 
     const copyBtn = $(this).find('button');
