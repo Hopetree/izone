@@ -9,7 +9,7 @@ function copyToClipboard(text) {
     textarea.select();
     // console.log(textarea.val())
     document.execCommand('copy');
-    textarea.remove();
+    temp.remove();
 }
 
 $('.codehilite').each(function () {
