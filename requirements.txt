@@ -1,6 +1,6 @@
 bleach==3.3.0
 bootstrap-admin==0.4.3
-certifi==2019.9.11
+certifi==2022.12.7
 chardet==3.0.4
 defusedxml==0.6.0
 Django==2.2.28
@@ -20,8 +20,8 @@ mysqlclient==1.4.4
 oauthlib==3.1.0
 olefile==0.46
 pilkit==2.0
-Pillow==9.0.1
 Pygments==2.15.1
+Pillow==9.3.0
 PyMySQL==0.9.3
 python3-openid==3.1.0
 pytz==2019.2
