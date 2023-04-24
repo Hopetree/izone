@@ -114,7 +114,14 @@ pre {
 .code-wrapper {
     border-radius: 8px 8px 0 0;
     background-color: #3c3f41;
-    padding-left: 68%;
+    text-align: justify;
+}
+
+.code-wrapper .code-lang {
+    float: left;
+    padding-left: 1.1rem;
+    padding-top: .1rem;
+    font-size: .9rem;
 }
 
 .code-wrapper button {
@@ -124,6 +131,8 @@ pre {
     font-size: .8rem;
     cursor: pointer; /* 改变光标样式 */
     outline: none; /* 去掉聚焦时的虚线 */
+    float: right;
+    padding-right: 1.1rem;
 }
 
 
@@ -157,10 +166,6 @@ pre {
     .f-17 {
         font-size: 15px;
     }
-
-    .code-wrapper {
-        padding-left: 82%;
-    }
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -169,24 +174,14 @@ pre {
     .f-17 {
         font-size: 16px;
     }
-
-    .code-wrapper {
-        padding-left: 83%;
-    }
 }
 
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
-    .code-wrapper {
-        padding-left: 82%;
-    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
-    .code-wrapper {
-        padding-left: 87%;
-    }
 }
