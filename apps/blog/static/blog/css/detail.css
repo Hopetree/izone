@@ -70,6 +70,7 @@
 .toc-block {
     padding-top: 3rem;
 }
+
 .article-toc {
     position: fixed;
     max-width: 18%;
@@ -96,7 +97,7 @@
 }
 
 .toc a:hover {
-    color: #ff6900!important;
+    color: #ff6900 !important;
 }
 
 
@@ -108,6 +109,26 @@ pre {
     line-height: 1.5;
     overflow-: auto;
 }
+
+/*复制代码*/
+.code-wrapper {
+    border-radius: 8px 8px 0 0;
+    background-color: #343540;
+    padding-left: 68%;
+}
+
+.code-wrapper button {
+    background-color: transparent;
+    border: none;
+    color: whitesmoke;
+    font-size: .8rem;
+    cursor: pointer; /* 改变光标样式 */
+    outline: none; /* 去掉聚焦时的虚线 */
+}
+
+
+/*复制代码*/
+
 
 /* pre next blog */
 .more-blog {
@@ -136,6 +157,10 @@ pre {
     .f-17 {
         font-size: 15px;
     }
+
+    .code-wrapper {
+        padding-left: 82%;
+    }
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -144,15 +169,24 @@ pre {
     .f-17 {
         font-size: 16px;
     }
+
+    .code-wrapper {
+        padding-left: 83%;
+    }
 }
 
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
-
+    .code-wrapper {
+        padding-left: 82%;
+    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
+    .code-wrapper {
+        padding-left: 87%;
+    }
 }
