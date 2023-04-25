@@ -64,7 +64,8 @@ blockquote {
     background-color: #22303f;
 }
 .codehilite {
-	background: #001d25;
+	background: #2b2b2b;
+    border-radius: 8px;
 }
 .description {
 	background: #18222d!important;
@@ -129,8 +130,9 @@ footer {
     border-bottom: 2px solid #001d25;
 }
 pre {
-    background: #001d25;
+    background: #2b2b2b;
 	color: #9caec7;
+    border-radius: 8px;
 }
 #html-cha .table {
     background: #18222d!important;
