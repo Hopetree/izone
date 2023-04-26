@@ -4,7 +4,7 @@
 <!--个人空间-->
 <div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
     <div class="card-header bg-white px-0">
-        <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+        <strong><i class="fa fa-paper-plane mr-2 f-17"></i>博客空间</strong>
         <img class="float-right" id="theme-img"
         {% if not request.COOKIES.toggleTheme %}
             {% now_hour as hour %}
@@ -25,9 +25,9 @@
     <div class="card-body px-0 pt-3 pb-1">
         <div class="row text-center">
             <div class="col">
-                <a href="{{ my_github }}" target="_blank" title="进入博主的Github查看博客源码">
-                    <img style="max-width:40px" alt="博主的github" src="{% static 'blog/img/github.png' %}">
-                    <p class="mt-2">Github</p>
+                <a href="https://github.com/Hopetree/izone" target="_blank" title="查看博客源码">
+                    <img style="max-width:40px" alt="博客源代码" src="{% static 'blog/img/github.png' %}">
+                    <p class="mt-2">博客源码</p>
                 </a>
             </div>
             <div class="col">
