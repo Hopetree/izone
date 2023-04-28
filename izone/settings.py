@@ -221,7 +221,7 @@ DATABASES = {
         'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
         'HOST': MYSQL_HOST,
         'PORT': MYSQL_PORT,
-        'OPTIONS': {'charset': 'utf8mb4'}
+        'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True}
     }
 }
 
