@@ -1,0 +1,50 @@
+{% extends 'resume/base.html' %}
+{% load static %}
+
+{% block head_title %}个人简历{% endblock %}
+
+{% block top-file %}
+    <link href="{% static 'resume/css/detail.css' %}?v=20230505.02" rel="stylesheet">
+    <!-- 加载主题css -->
+    <style>{{ resume.template.content }}</style>
+    <style>
+        /* 打印样式 */
+        @media print {
+            .page {
+                page-break-inside: avoid; /* 尝试在元素内部不进行分页 */
+                page-break-after: always; /* 在元素之后添加分页符 */
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-10">
+                <div class="page">{{ resume.body|safe }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block end_file %}
+    <script>
+        window.onload = function () {
+            // 获取页面高度
+            var pageHeight = window.innerHeight;
+
+            // 获取内容高度
+            var pageElements = document.getElementsByClassName('page');
+            for (var i = 0; i < pageElements.length; i++) {
+                var pageElement = pageElements[i];
+                var pageContentHeight = pageElement.offsetHeight;
+
+                // 如果内容高度大于页面高度，则插入分页符
+                if (pageContentHeight > pageHeight) {
+                    pageElement.style.pageBreakAfter = 'always';
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'tool',  # 工具
     'comment',  # 评论
     'django_tctip',
+    'resume',  # 个人简历
 
 ]
 
