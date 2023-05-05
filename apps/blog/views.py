@@ -67,7 +67,7 @@ class DetailView(generic.DetailView):
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
         ses = self.request.session
-        the_key = 'is_read_{}'.format(obj.id)
+        the_key = self.context_object_name + ':read:{}'.format(obj.id)
         is_read_time = ses.get(the_key)
         if u != obj.author:
             if not is_read_time:
@@ -81,9 +81,9 @@ class DetailView(generic.DetailView):
                     ses[the_key] = time.time()
         # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
-        md_key = '{}_md_{}'.format(obj.id, ud)
+        md_key = self.context_object_name + ':markdown:{}:{}'.format(obj.id, ud)
         cache_md = cache.get(md_key)
-        if cache_md:
+        if cache_md and settings.DEBUG is False:
             obj.body, obj.toc = cache_md
         else:
             md = markdown.Markdown(extensions=[
@@ -94,7 +94,7 @@ class DetailView(generic.DetailView):
             ])
             obj.body = md.convert(obj.body)
             obj.toc = md.toc
-            cache.set(md_key, (obj.body, obj.toc), 60 * 60 * 12)
+            cache.set(md_key, (obj.body, obj.toc), 3600 * 24 * 7)
         return obj
 
 
@@ -156,9 +156,9 @@ def AboutView(request):
     obj = AboutBlog.objects.first()
     if obj:
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
-        md_key = '{}_md_{}'.format(obj.id, ud)
+        md_key = 'about:markdown:{}:{}'.format(obj.id, ud)
         cache_md = cache.get(md_key)
-        if cache_md:
+        if cache_md and settings.DEBUG is False:
             body = cache_md
         else:
             body = obj.body_to_markdown()
