@@ -29,7 +29,7 @@ class ResumeAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
 
     # 在查看修改的时候显示的属性，第一个字段带有<a>标签，所以最好放标题
-    list_display = ('id', 'title', 'author', 'create_date', 'update_date', 'is_open')
+    list_display = ('id', 'title', 'author', 'is_open', 'slug', 'create_date', 'update_date')
 
     # 设置需要添加<a>标签的字段
     list_display_links = ('title',)
