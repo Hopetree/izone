@@ -62,7 +62,7 @@ class DetailView(generic.DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'article'
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         obj = super(DetailView, self).get_object()
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
