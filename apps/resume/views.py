@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.core.exceptions import PermissionDenied
 from django.views import generic
 from django.core.cache import cache
 from django.conf import settings
@@ -15,7 +15,7 @@ class ResumeDetailView(generic.DetailView):
     template_name = 'resume/detail.html'
     context_object_name = 'resume'
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         obj = super(ResumeDetailView, self).get_object()
         # 获取文章更新的时间，判断是否从缓存中取markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
@@ -35,6 +35,13 @@ class ResumeDetailView(generic.DetailView):
             cache.set(md_key, obj.body, 3600 * 24 * 30)
         return obj
 
-    def get_queryset(self, **kwargs):
-        queryset = super(ResumeDetailView, self).get_queryset()
-        return queryset.filter(is_open=True)
+    def dispatch(self, request, *args, **kwargs):
+        """
+        检查当前登录的用户是否与模型实例中的用户匹配。如果匹配，说明当前用户是该模型实例的所有者，可以访问页面。
+        否则，抛出一个PermissionDenied异常，返回403 Forbidden错误。
+        """
+        obj = self.get_object()
+        # 当简历不公开的时候，非所有者访问直接拒绝，公开的就不需要校验直接返回
+        if obj.is_open is False and obj.author != request.user:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
