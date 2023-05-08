@@ -23,7 +23,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-9 col-xl-10">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-white border-0 rounded-0 mb-2 py-2 f-15">
+                    <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
                         <li class="breadcrumb-item">
                             <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
                         </li>
@@ -35,7 +35,7 @@
                         <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
                     </ol>
                 </nav>
-                <div class="card rounded-0 border-0" id="article">
+                <div class="card rounded-6 border-0" id="article">
                     <div class="card-body px-2 px-md-3 pb-0">
                         <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
                         <hr>
@@ -90,7 +90,7 @@
                         {% include 'blog/tags/reward.html' %}
                     </div>
                 </div>
-                <div class="card mt-2 rounded-0 border-0" id="comment-block">
+                <div class="card mt-2 rounded-6 border-0" id="comment-block">
                     {% include 'comment/comment_form.html' %}
                     {% get_parent_comments article as comment_list %}
                     {% include 'comment/comment_list.html' %}

@@ -18,7 +18,7 @@
                 <h1 class="f-17"><strong>{{ search_tag }}：{{ search_instance.name }}</strong></h1>
                 <p class="f-16">{{ search_instance.description }}</p>
             </div>
-            <div class="text-secondary font-weight-bold py-2 f-15 choice">
+            <div class="text-secondary font-weight-bold py-3 f-15 choice">
                 {% url 'blog:category' search_instance.slug as base_category %}
                 {% url 'blog:category_hot' search_instance.slug as hot_category %}
                 <a class="pb-2 {% if request.path == base_category %}active{% endif %}" href="{{ base_category }}">

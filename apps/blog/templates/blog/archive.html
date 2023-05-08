@@ -21,9 +21,9 @@
 {% block base_content %}
 <div class="container">
     <div class="row">
-        {% cache 3600 'cache_archive_html_tag' %}
+        {% cache 3600 'cache_archive_html_tag_new' %}
         <div class="col-lg-8">
-            <div class="card border-0 rounded-0 mb-3">
+            <div class="card border-0 rounded-6 mb-3">
                 <div class="card-body f-16 archive">
                     {% regroup articles by create_date.year as year_list %}
                     <ul class="pl-4">
