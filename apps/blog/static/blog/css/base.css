@@ -177,6 +177,15 @@ blockquote {
     color: #ea6f5a;
 }
 
+
+#searchform .form-control {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+#searchform button {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
 /*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
 #to-top {
     position: fixed;
@@ -198,12 +207,20 @@ blockquote {
 }
 
 /*carousel---------------------------------------------*/
+.carousel-inner {
+    border-radius: .5rem !important;
+}
+
 .carousel-indicators li {
     width: 10px;
     height: 10px;
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid #fff;
     border-radius: 10px;
+}
+
+.description {
+    border-radius: .5rem;
 }
 
 .description h1 {
@@ -236,7 +253,7 @@ blockquote {
 
 
 .summary-list .media {
-    background: linear-gradient(to right, #EC695C, #61C454) no-repeat right bottom;
+    /*background: linear-gradient(to right, #EC695C, #61C454) no-repeat right bottom;*/
     background-size: 0 2px;
     transition: background-size 500ms;
 }
@@ -248,6 +265,7 @@ blockquote {
 
 .summary-list .article-block {
     background-color: #fff;
+    border-radius: .5rem;
 }
 
 .summary-list .cate {
@@ -259,6 +277,10 @@ blockquote {
 }
 
 /* base right --------------------------------------------------*/
+.rounded-6 {
+    border-radius: .5rem !important;
+}
+
 #theme-img {
     width: auto;
     max-height: 14px;
@@ -541,8 +563,8 @@ footer a:hover {
         transform: scale(1.1);
     }
 
-    .summary-list .media:hover {
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.275)
+    .summary-list .article-block:hover {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.275)
     }
 
     .summary-list .avatar {

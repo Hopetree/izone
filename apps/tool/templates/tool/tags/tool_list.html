@@ -2,7 +2,7 @@
 
 {% if not request.user.is_superuser %}
 {% get_toollist_by_key as tool_list %}
-<div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 tool-cate">
+<div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
     <div class="card-header bg-white px-0">
         <strong><i class="fa fa-trophy mr-2 f-17"></i>自定义工具</strong>
     </div>
@@ -22,7 +22,7 @@
 
 {% get_toolcates as cates %}
 {% for each_cate in cates %}
-<div class="card border-0 rounded-0 px-3 mb-2 mb-md-3 tool-cate">
+<div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
     <div class="card-header bg-white px-0">
         <strong><i class="{{ each_cate.icon }} mr-2 f-17"></i>{{ each_cate.name }}</strong>
     </div>

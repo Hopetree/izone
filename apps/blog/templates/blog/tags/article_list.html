@@ -1,37 +1,39 @@
 {% load blog_tags oauth_tags comment_tags %}
-{% load humanize static%}
+{% load humanize static %}
 <div class="summary-list">
     {% for article in articles %}
-    <div class="article-block">
-        <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
-        <div class="align-self-center mr-2 mr-lg-3 w-25 modal-open">
-            <a href="{{ article.get_absolute_url }}" target="_blank">
-                <img class="w-100 article-img" src="{{ article.img_link }}" alt="{{ article.title }}">
-            </a>
-        </div>
-        <div class="media-body">
-            {% if article.is_top %}<img class="float-right top-article-img" src="{% static 'blog/img/TOP.png' %}">{% endif %}
-            <div class="text-muted mb-2 f-12">
-                {% get_user_avatar_tag article.author %}
-                <span>{{ article.author }}</span>
-                <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ article.create_date|naturaltime }}</span>
+        <div class="article-block">
+            <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
+                <div class="align-self-center rounded-6 mr-2 mr-lg-3 w-25 modal-open">
+                    <a href="{{ article.get_absolute_url }}" target="_blank">
+                        <img class="w-100 article-img" src="{{ article.img_link }}" alt="{{ article.title }}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    {% if article.is_top %}
+                        <img class="float-right top-article-img" src="{% static 'blog/img/TOP.png' %}">{% endif %}
+                    <div class="text-muted mb-2 f-12">
+                        {% get_user_avatar_tag article.author %}
+                        <span>{{ article.author }}</span>
+                        <span><i
+                                class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ article.create_date|naturaltime }}</span>
+                    </div>
+                    <h2 class="mt-0 font-weight-bold text-info f-17">
+                        <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title }}</a>
+                    </h2>
+                    <p class="d-none d-sm-block mb-2 f-15">{{ article.summary|truncatechars:130 }}</p>
+                    <p class="d-block d-sm-none mb-2 f-15">{{ article.summary|truncatechars:64 }}</p>
+                    <div class="text-muted mb-0 f-12">
+                        <a class="cate" href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
+                            <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
+                        <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
+                        <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
+                            <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
+                    </div>
+                </div>
             </div>
-            <h2 class="mt-0 font-weight-bold text-info f-17">
-                <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title}}</a>
-            </h2>
-            <p class="d-none d-sm-block mb-2 f-15">{{ article.summary|truncatechars:130 }}</p>
-            <p class="d-block d-sm-none mb-2 f-15">{{ article.summary|truncatechars:64 }}</p>
-            <div class="text-muted mb-0 f-12">
-                <a class="cate" href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
-                    <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
-                <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
-                <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
-                    <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
-            </div>
         </div>
-    </div>
-    </div>
     {% empty %}
-    <div class="p-3 mt-3 bg-white"><p>暂时没有文章!</p></div>
+        <div class="p-3 mt-3 bg-white"><p>暂时没有文章!</p></div>
     {% endfor %}
 </div>
