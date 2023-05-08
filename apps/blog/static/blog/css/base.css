@@ -139,6 +139,10 @@ blockquote {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
+.blog-navbar .dropdown-menu {
+    border-radius: 0 0 0.5rem 0.5rem !important;
+}
+
 #navbarDropdown .avatar {
     border-radius: 50%;
     width: 40px;
@@ -287,6 +291,26 @@ blockquote {
     cursor: pointer;
 }
 
+#home-card {
+    background-image: linear-gradient(180deg, #47b9f5eb 0%, #FFFFFF 50%);
+}
+
+#category-card {
+    background-image: linear-gradient(180deg, #7890f7eb 0%, #FFFFFF 20%);
+}
+
+#tag-card {
+    background-image: linear-gradient(180deg, #f1a887eb 0%, #FFFFFF 20%);
+}
+
+#friends-card {
+    background-image: linear-gradient(180deg, #e3b759eb 0%, #FFFFFF 50%);
+}
+
+#category-card .list-group-item {
+    background-color: transparent;
+}
+
 #home-card .card-header,
 #tag-card .card-header,
 #category-card .card-header,
@@ -299,13 +323,13 @@ blockquote {
 #tag-card .card-header strong,
 #category-card .card-header strong,
 #friends-card .card-header strong {
-    padding-bottom: 12px;
+    padding-bottom: 12.5px;
     border-bottom: 2px solid #00AAEE;
 }
 
 #category-card .badge {
     width: 2.2rem;
-    background-color: #17a2b8;
+    background-color: #7087ffed;
     color: #fff;
     font-weight: 700;
     border-radius: .2rem;
@@ -318,7 +342,7 @@ blockquote {
     width: 0;
     height: 0;
     border-style: solid;
-    border-color: #fff #fff #fff #4285f4;
+    border-color: transparent transparent transparent #4285f4;
     -webkit-transform-origin: 25% center;
     transform-origin: 25% center;
     border-width: 4px;
@@ -428,6 +452,10 @@ footer {
 
 footer a:hover {
     color: #fff;
+}
+
+.bg-none {
+    background-color: transparent !important;
 }
 
 /* Small devices (landscape phones, 576px and up) */
