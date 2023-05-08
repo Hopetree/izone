@@ -47,7 +47,7 @@
                    aria-expanded="false"
                 ><i class="fa fa-paper-plane mr-1"></i>个人外链
                 </a>
-                <div class="dropdown-menu dropdown-menu-left mt-0 rounded-0 border-0"
+                <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
                      aria-labelledby="navbarDropdown">
                     {% for link_item in private_links %}
                         <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank">
@@ -83,7 +83,7 @@
                         {% endif %}
                         {% get_user_avatar_tag user %}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0"
+                    <div class="dropdown-menu dropdown-menu-right mt-0 border-0"
                          aria-labelledby="navbarDropdown">
                         <a class="dropdown-item pl-3" href="{% url 'oauth:profile' %}"><i
                                 class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
