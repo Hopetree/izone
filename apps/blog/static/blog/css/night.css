@@ -86,6 +86,7 @@ blockquote {
 .description {
     background: #18222d !important;
 }
+
 #home-card,
 #category-card,
 #tag-card,
@@ -149,6 +150,10 @@ footer {
 .tool-list a:hover,
 .tool-list .card-title:hover {
     color: #ccc;
+}
+
+.tool-list .card-header {
+    color: #FFFFFF;
 }
 
 .tool-cate .card-header {

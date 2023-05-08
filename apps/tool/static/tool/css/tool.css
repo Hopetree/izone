@@ -2,22 +2,28 @@
     padding-bottom: 12px;
     border-bottom: 2px solid #00AAEE;
 }
+
 .tool-cate .card-header {
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 10px;
 }
+
 .tool-header img {
     max-width: 5rem;
 }
+
 .tool-des {
     height: 8rem;
 }
+
 .tool-des p {
     line-height: 2;
 }
+
 .title-info {
     border-left: 4px solid #17a2b8;
 }
+
 pre {
     border: none;
     background-color: #e4eaef;
@@ -25,25 +31,81 @@ pre {
     font-size: 85%;
     padding: .5rem;
 }
+
 .re-result pre {
     margin-bottom: 0;
 }
+
 .re-result p {
-    margin-bottom:5px;
+    margin-bottom: 5px;
 }
+
 .tool-list a:hover {
-    color:#222;
+    color: #222;
 }
+
 .tool-link-text {
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
 .card ul {
-    line-height:2
+    line-height: 2
 }
+
+
+.tool-list > div:nth-of-type(5n+1) .tool-header {
+    background: linear-gradient(220.55deg, #7CF7FFC9 0%, #4B73FFC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+2) .tool-header {
+    background: linear-gradient(220.55deg, #FFED46C9 0%, #FF7EC7C9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+3) .tool-header {
+    background: linear-gradient(220.55deg, #8FFF85C9 0%, #39A0FFC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+4) .tool-header {
+    background: linear-gradient(220.55deg, #8A88FBC9 0%, #D079EEC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+5) .tool-header {
+    background: linear-gradient(220.55deg, #FFEB3AC9 0%, #4DEF8EC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+6) .tool-header {
+    background: linear-gradient(220.55deg, #FFF500C9 0%, #FFB800C9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+7) .tool-header {
+    background: linear-gradient(220.55deg, #FFEAF6C9 0%, #FF9DE4C9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+8) .tool-header {
+    background: linear-gradient(220.55deg, #FFE6A4C9 0%, #AD8211C9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+9) .tool-header {
+    background: linear-gradient(220.55deg, #C5EDF5C9 0%, #4A879AC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+10) .tool-header {
+    background: linear-gradient(220.55deg, #FFF6EBC9 0%, #DFD1C5C9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+11) .tool-header {
+    background: linear-gradient(220.55deg, #97E8B5C9 0%, #5CB67FC9 100%);
+}
+
+.tool-list > div:nth-of-type(12n+12) .tool-header {
+    background: linear-gradient(220.55deg, #FF8570C9 0%, #418CB7C9 100%);
+}
+
+
 @media (min-width: 1200px) {
-.tool-list .card:hover {
-    box-shadow:0 3px 9px rgba(0, 0, 0, 0.275)
-}
+    .tool-list .card:hover {
+        box-shadow: 0 3px 9px rgba(0, 0, 0, 0.275)
+    }
 }
