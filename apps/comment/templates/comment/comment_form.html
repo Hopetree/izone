@@ -1,8 +1,8 @@
 {% load static comment_tags %}
-<div class="card border-0 rounded-0 f-16" id="editor-block">
+<div class="card border-0 f-16" id="editor-block">
     {% if user.is_authenticated %}
     <div class="card-body p-2 p-md-3">
-        <textarea class="form-control rounded-0" id="comment-form" name="text"
+        <textarea class="form-control" id="comment-form" name="text"
                   placeholder="评论请使用 markdown 语法" rows="5" required></textarea>
     </div>
     <div class="card-footer border-0 bg-white py-0 px-2 px-md-3" id="editor-footer">

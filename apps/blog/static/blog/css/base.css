@@ -364,6 +364,7 @@ blockquote {
     text-align: center;
     margin: .3rem;
     transition: all .5s;
+    border-radius: .35rem;
 }
 
 /*云标签颜色*/
