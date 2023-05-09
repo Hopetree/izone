@@ -32,13 +32,13 @@
                         <p>{{ each.comment.content|truncatechars:130 }}</p>
                         {% if not each.is_read %}
                         <div class="to_read pb-1">
-                            <button class="btn btn-success float-right rounded-0 f-16" data-id="{{ each.id }}"
+                            <button class="btn btn-success float-right f-16" data-id="{{ each.id }}"
                                     data-csrf="{{ csrf_token }}" data-url="{% url 'comment:mark_to_read' %}">标为已读
                             </button>
                         </div>
                         {% else %}
                         <div class="to_delete pb-1">
-                            <button class="btn btn-danger float-right rounded-0 f-16" data-id="{{ each.id }}"
+                            <button class="btn btn-danger float-right f-16" data-id="{{ each.id }}"
                                     data-csrf="{{ csrf_token }}" data-url="{% url 'comment:mark_to_delete' %}">删除信息
                             </button>
                         </div>
@@ -60,7 +60,7 @@
             </ul>
         </div>
         <div class="col-md-4 col-lg-3">
-            <div class="card rounded-0 border-0" id="notes-main">
+            <div class="card border-0" id="notes-main">
                 <div class="card-header bg-white border-0">
                     <h4><strong><i class="fa fa-bell-o mr-1"></i>&nbsp;提示信息</strong></h4>
                 </div>
@@ -68,11 +68,11 @@
                     <ul class="list-group">
                         {% url 'comment:notification' as all_url %}
                         {% url 'comment:notification_no_read' as no_read_url %}
-                        <a class="list-group-item rounded-0 {% if request.path == all_url %}active{% endif %}"
+                        <a class="list-group-item {% if request.path == all_url %}active{% endif %}"
                            href="{{ all_url }}">全部信息
                             <span class="badge float-right">{% get_notifications_count user %}</span>
                         </a>
-                        <a class="list-group-item rounded-0 {% if request.path == no_read_url %}active{% endif %}"
+                        <a class="list-group-item {% if request.path == no_read_url %}active{% endif %}"
                            href="{{ no_read_url }}">未读信息
                             <span class="badge float-right">{% get_notifications_count user 'false' %}</span>
                         </a>

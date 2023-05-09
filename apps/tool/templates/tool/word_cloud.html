@@ -28,15 +28,15 @@
 <div class="mb-3">
     <div class="form-group">
         <label>请输入待统计词频的文本：</label>
-        <textarea class="form-control rounded-0" id="form-text" rows="8" required></textarea>
+        <textarea class="form-control" id="form-text" rows="8" required></textarea>
         <label class="mb-2 mt-2">输入停用词（选填，每行一个）：</label>
-        <textarea class="form-control rounded-0" id="stop-text" rows="4"
+        <textarea class="form-control" id="stop-text" rows="4"
                   placeholder="特殊约定：num- 表示停用所有纯数字，single- 表示停用长度为1的词"></textarea>
     </div>
 
-    <button type="submit" class="btn btn-info btn-sm rounded-0" id="start-wc">生成词云图</button>
+    <button type="submit" class="btn btn-info btn-sm" id="start-wc">生成词云图</button>
 </div>
-<div class="card mb-3 rounded-0">
+<div class="card mb-3">
     <div class="card-body table-responsive push-result text-center p-0" id="show-wc">
         <div class="p-3">词云图显示区</div>
     </div>
