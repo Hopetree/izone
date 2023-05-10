@@ -128,6 +128,19 @@ blockquote {
     border-color: #f5c6cb;
 }
 
+.edit-category-tag {
+    position: relative;
+    margin-bottom: 2rem;
+    color: #8f9ff2;
+}
+
+.edit-category-tag > a {
+    position: absolute;
+    bottom: -1rem;
+    right: 0;
+    margin-bottom: .5rem
+}
+
 /* top navbar-------------------------------------------------*/
 #site-logo-name,
 #site-logo-name:hover,
@@ -180,6 +193,7 @@ blockquote {
 .edit-blog {
     color: #8f9ff2;
 }
+
 .nav-item a.active {
     color: #ea6f5a;
 }
