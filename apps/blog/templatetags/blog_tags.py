@@ -43,9 +43,9 @@ def get_category_list():
 
 
 @register.inclusion_tag('blog/tags/article_list.html')
-def load_article_summary(articles):
+def load_article_summary(articles, user):
     '''返回文章列表模板'''
-    return {'articles': articles}
+    return {'articles': articles, 'user': user}
 
 
 @register.inclusion_tag('blog/tags/pagecut.html', takes_context=True)

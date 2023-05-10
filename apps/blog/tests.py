@@ -3,6 +3,11 @@ import datetime
 
 # Create your tests here.
 
-if __name__ == '__main__':
-    site_date = datetime.datetime.strptime('2018-04-12', '%Y-%m-%d')
-    print(site_date)
+from django.urls import reverse
+
+
+class ArticleAdminUrlTestCase(TestCase):
+
+    def test_edit_blog_url(self):
+        change_url = reverse('admin:blog_article_change', args=[61])
+        self.assertEqual('/adminx/blog/article/61/change/', change_url)
