@@ -286,6 +286,10 @@ HAO_CONSOLE = {
 
 # 个人外链信息（导航栏下拉中显示）
 PRIVATE_LINKS = [
-    {'name': 'Github', 'icon': 'fa-github', 'link': 'https://github.com/Hopetree'},
-    {'name': '个人文档', 'icon': 'fa-book', 'link': 'https://hopetree.github.io'},
+    {'name': 'Github', 'icon': 'fa-github', 'link': 'https://github.com/Hopetree',
+     'title': '我的Github，专注写Bug'},
+    {'name': '微草导航', 'icon': 'fa-search', 'link': 'https://hao.tendcode.com',
+     'title': '我的导航网站，使用Vue搭建'},
+    {'name': '个人文档', 'icon': 'fa-book', 'link': 'https://hopetree.github.io',
+     'title': '我的个人文档，使用Vitepress搭建'},
 ]

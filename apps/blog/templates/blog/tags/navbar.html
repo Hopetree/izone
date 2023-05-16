@@ -50,7 +50,7 @@
                 <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
                      aria-labelledby="navbarDropdown">
                     {% for link_item in private_links %}
-                        <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank">
+                        <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank" title="{{ link_item.title }}">
                             <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
                     {% endfor %}
                 </div>
