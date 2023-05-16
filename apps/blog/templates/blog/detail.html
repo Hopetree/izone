@@ -30,9 +30,27 @@
                         <li class="breadcrumb-item">
                             <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a>
                         </li>
-                        <li class="breadcrumb-item active d-none d-md-block"
-                            aria-current="page">{{ article.title }}</li>
-                        <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
+                        <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser or user == article.author %}
+                                    <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
+                                       target="_blank" title="后台编辑文章">{{ article.title }}</a>
+                                {% endif %}
+                            {% else %}
+                                {{ article.title }}
+                            {% endif %}
+
+                        </li>
+                        <li class="breadcrumb-item active d-md-none" aria-current="page">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser or user == article.author %}
+                                    <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
+                                       target="_blank" title="后台编辑文章">当前文章</a>
+                                {% endif %}
+                            {% else %}
+                                当前文章
+                            {% endif %}
+                        </li>
                     </ol>
                 </nav>
                 <div class="card rounded-6 border-0" id="article">
