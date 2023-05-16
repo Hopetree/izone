@@ -30,9 +30,27 @@
                         <li class="breadcrumb-item">
                             <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a>
                         </li>
-                        <li class="breadcrumb-item active d-none d-md-block"
-                            aria-current="page">{{ article.title }}</li>
-                        <li class="breadcrumb-item active d-md-none" aria-current="page">当前位置</li>
+                        <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser or user == article.author %}
+                                    <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
+                                       target="_blank" title="后台编辑文章">{{ article.title }}</a>
+                                {% endif %}
+                            {% else %}
+                                {{ article.title }}
+                            {% endif %}
+
+                        </li>
+                        <li class="breadcrumb-item active d-md-none" aria-current="page">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser or user == article.author %}
+                                    <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
+                                       target="_blank" title="后台编辑文章">当前文章</a>
+                                {% endif %}
+                            {% else %}
+                                当前文章
+                            {% endif %}
+                        </li>
                     </ol>
                 </nav>
                 <div class="card rounded-6 border-0" id="article">
@@ -133,7 +151,7 @@
     <script src="{% static 'blog/js/code.js' %}?v=20230510.9"></script>
     {% if user.is_authenticated %}
         <script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
-        <script src="{% static 'comment/js/editor.js' %}?v=20190311.05908"></script>
+        <script src="{% static 'comment/js/editor.js' %}?v=20230516.1"></script>
         <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
         <script>
             var sw = window.screen.width;
