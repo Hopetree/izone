@@ -44,11 +44,6 @@ $(function() {
 			title: "插入图片",
 			"default": !0
 		}, {
-			name: "table",
-			action: SimpleMDE.drawTable,
-			className: "fa fa-table",
-			title: "插入表格"
-		}, {
 			name: "preview",
 			action: SimpleMDE.togglePreview,
 			className: "fa fa-eye no-disable",
