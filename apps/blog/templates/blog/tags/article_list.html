@@ -29,15 +29,6 @@
                         <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
                         <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
                             <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
-                        {#当登录用户为超级用户或者为博客的作者的时候，会显示编辑按钮，点击直接进入后台编辑文章#}
-                        {% if user.is_authenticated %}
-                            {% if user.is_superuser or user == article.author %}
-                                <a class="float-right edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
-                                   target="_blank"
-                                   title="后台编辑文章">
-                                    <i class="fa fa-edit ml-2 mr-1"></i>编辑文章</a>
-                            {% endif %}
-                        {% endif %}
                     </div>
                 </div>
             </div>
