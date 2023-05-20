@@ -34,7 +34,11 @@
                         <li class="list-group-item ml-5 border-0" title="提示：已验证邮箱的用户有更多特权！">
                             <span class="font-weight-bold">邮&emsp;箱：</span>
                             <span>{{ emailaddress.email }}</span>
-                            {% if emailaddress.verified %}已验证{% else %}未验证{% endif %}
+                            {% if emailaddress.verified %}
+                                <span class="badge badge-primary">已验证</span>
+                            {% else %}
+                                <span class="badge badge-danger">未验证</span>
+                            {% endif %}
                         </li>
                         {% endif %}
                         {% endfor %}
