@@ -79,6 +79,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'oauth.Ouser'
 
 # allauth配置
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
