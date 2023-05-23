@@ -80,10 +80,14 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
 {% block end_file %}{% endblock %}
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
+    {% if 51la %}
+        {{ 51la|safe }}
+    {% if user.is_superuser %}<a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
+    {% endif %}
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>&nbsp;|
             <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
-            {% if cnzz_protocol %}{% if '51.la' not in cnzz_protocol %}|&nbsp;{% endif %}{{ cnzz_protocol|safe }}{% endif %}
+            {% if cnzz_protocol %}|&nbsp;{{ cnzz_protocol|safe }}{% endif %}
             <span id="web-day"></span>
         </p>
         <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2018-<span id="year-info"></span>
