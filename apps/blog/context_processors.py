@@ -14,6 +14,7 @@ def settings_info(request):
         'tool_flag': settings.TOOL_FLAG,
         'api_flag': settings.API_FLAG,
         'cnzz_protocol': settings.CNZZ_PROTOCOL,
+        '51la': settings.LA51_PROTOCOL,
         'beian': settings.BEIAN,
         'my_github': settings.MY_GITHUB,
         'site_verification': settings.MY_SITE_VERIFICATION,

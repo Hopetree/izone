@@ -273,6 +273,8 @@ MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
 BEIAN = os.getenv('IZONE_BEIAN', '网站备案信息')
 # 站长统计（友盟）
 CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
+# 站长统计（51.la）
+LA51_PROTOCOL = os.getenv('IZONE_LA51_PROTOCOL', '')
 # 站长推送
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
 # 使用 http 还是 https （sitemap 中的链接可以体现出来）
