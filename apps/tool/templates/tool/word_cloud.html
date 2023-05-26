@@ -3,50 +3,55 @@
 
 {% block head_title %}词云图生成器_在线工具{% endblock %}
 {% block metas %}
-<meta name="description" content="正则表达式在线测试工具，在线使用正则表达式(Regular Expression)，Python正则表达式的用法，提供常用正则表达式规则。">
-<meta name="keywords" content="正则表达式,Python正则表达式,Regular Expression,在线工具">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<script src="https://code.hcharts.cn/10.3.2/highcharts.js"></script>
-<script src="https://code.hcharts.cn/10.3.2/modules/exporting.js"></script>
-<script src="https://code.hcharts.cn/10.3.2/modules/wordcloud.js"></script>
-<script src="https://code.hcharts.cn/10.3.2/modules/oldie.js"></script>
-<script src="https://code.hcharts.cn/10.3.2/themes/dark-unica.js"></script>
+    <meta name="description" content="正则表达式在线测试工具，在线使用正则表达式(Regular Expression)，Python正则表达式的用法，提供常用正则表达式规则。">
+    <meta name="keywords" content="正则表达式,Python正则表达式,Regular Expression,在线工具">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <script src="https://code.hcharts.cn/10.3.2/highcharts.js"></script>
+    <script src="https://code.hcharts.cn/10.3.2/modules/exporting.js"></script>
+    <script src="https://code.hcharts.cn/10.3.2/modules/wordcloud.js"></script>
+    <script src="https://code.hcharts.cn/10.3.2/modules/oldie.js"></script>
+    <script src="https://code.hcharts.cn/10.3.2/themes/dark-unica.js"></script>
+    <style>
+        .highcharts-credits {
+            display: none;
+        }
+    </style>
 {% endblock %}
 
 {% block tool_name %}词云图生成器{% endblock %}
 {% block left_content %}
-<div class="card-body p-0">
-    <h3 class="card-title pl-2 title-info">工具说明：</h3>
-    <ul>
-        <li>本工具会读取文本框中文字，然后进行分词，将词频统计结果生成词云图</li>
-        <li>生成的词云图右上角可以全屏显示，也可以导出到图片及其他文件格式</li>
-        <li>工具依赖：jieba 分词提供的中文词分词能力，highcharts 的词云图生成 js</li>
-        <li>TODO: 目前的<a href="https://github.com/goto456/stopwords" class="text-info">停用词</a>为默认设置，后续考虑增加表单按需设置停用词
-        </li>
-    </ul>
-</div>
-<div class="mb-3">
-    <div class="form-group">
-        <label>请输入待统计词频的文本：</label>
-        <textarea class="form-control" id="form-text" rows="8" required></textarea>
-        <label class="mb-2 mt-2">输入停用词（选填，每行一个）：</label>
-        <textarea class="form-control" id="stop-text" rows="4"
-                  placeholder="特殊约定：num- 表示停用所有纯数字，single- 表示停用长度为1的词"></textarea>
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">工具说明：</h3>
+        <ul>
+            <li>本工具会读取文本框中文字，然后进行分词，将词频统计结果生成词云图</li>
+            <li>生成的词云图右上角可以全屏显示，也可以导出到图片及其他文件格式</li>
+            <li>工具依赖：jieba 分词提供的中文词分词能力，highcharts 的词云图生成 js</li>
+            <li>TODO: 目前的<a href="https://github.com/goto456/stopwords" class="text-info">停用词</a>为默认设置，后续考虑增加表单按需设置停用词
+            </li>
+        </ul>
     </div>
+    <div class="mb-3">
+        <div class="form-group">
+            <label>请输入待统计词频的文本：</label>
+            <textarea class="form-control" id="form-text" rows="8" required></textarea>
+            <label class="mb-2 mt-2">输入停用词（选填，每行一个）：</label>
+            <textarea class="form-control" id="stop-text" rows="4"
+                      placeholder="特殊约定：num- 表示停用所有纯数字，single- 表示停用长度为1的词"></textarea>
+        </div>
 
-    <button type="submit" class="btn btn-info btn-sm" id="start-wc">生成词云图</button>
-</div>
-<div class="card mb-3">
-    <div class="card-body table-responsive push-result text-center p-0" id="show-wc">
-        <div class="p-3">词云图显示区</div>
+        <button type="submit" class="btn btn-info btn-sm" id="start-wc">生成词云图</button>
     </div>
-</div>
+    <div class="card mb-3">
+        <div class="card-body table-responsive push-result text-center p-0" id="show-wc">
+            <div class="p-3">词云图显示区</div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block end_f %}
-<script>
-    $('#start-wc').click(function () {
-        word_cloud("{{ csrf_token }}", "{% url 'tool:word_cloud' %}", 500000);
-    })
-</script>
+    <script>
+        $('#start-wc').click(function () {
+            word_cloud("{{ csrf_token }}", "{% url 'tool:word_cloud' %}", 500000);
+        })
+    </script>
 {% endblock %}
