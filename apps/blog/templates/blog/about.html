@@ -3,21 +3,28 @@
 
 {% block head_title %}关于网站，网站及博主介绍{% endblock %}
 {% block metas %}
-<meta name="description"
-      content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
-<meta name="keywords" content="网站About页面,关于网站,关于博主,关于站长">
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="网站About页面,关于网站,关于博主,关于站长">
+{% endblock %}
+{% block top-file %}
+    <style>
+        .card img {
+            max-width: 100%;
+        }
+    </style>
 {% endblock %}
 
 
 {% block base_content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8" style="line-height:2">
-            <div class="card rounded-6 border-0 p-3 f-16">{{ body|safe }}</div>
-        </div>
-        <div class="col-lg-4">
-            {% include 'blog/tags/base_right.html' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8" style="line-height:2">
+                <div class="card rounded-6 border-0 p-3 f-16">{{ body|safe }}</div>
+            </div>
+            <div class="col-lg-4">
+                {% include 'blog/tags/base_right.html' %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
