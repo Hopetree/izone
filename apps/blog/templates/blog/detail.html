@@ -34,10 +34,10 @@
                             {% if user.is_authenticated %}
                                 {% if user.is_superuser or user == article.author %}
                                     <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
-                                       target="_blank" title="后台编辑文章">{{ article.title }}</a>
+                                       target="_blank" title="后台编辑文章">{{ article.title|slice:":50" }}{% if article.title|length > 50 %}...{% endif %}</a>
                                 {% endif %}
                             {% else %}
-                                {{ article.title }}
+                                {{ article.title|slice:":50" }}{% if article.title|length > 50 %}...{% endif %}
                             {% endif %}
 
                         </li>
