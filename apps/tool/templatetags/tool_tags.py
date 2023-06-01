@@ -32,15 +32,21 @@ def get_toollist_by_key(key=None):
             _tag = IZONE_TOOLS[_k]['tag']
             _tools = IZONE_TOOLS[_k]['tools']
             for each in _tools:
-                item = {'tag': _tag, 'name': each['name'], 'url': reverse(each['url']),
-                        'img': static(each['img']), 'desc': each['desc']}
+                item = {'tag': _tag,
+                        'name': each['name'],
+                        'url': reverse(each['url']),
+                        'img': static(each['img']),
+                        'desc': each['desc']}
                 tools.append(item)
     else:
         _tag = IZONE_TOOLS[key]['tag']
         _tools = IZONE_TOOLS[key]['tools']
         for each in _tools:
-            item = {'tag': _tag, 'name': each['name'], 'url': reverse(each['url']),
-                    'img': static(each['img']), 'desc': each['desc']}
+            item = {'tag': _tag,
+                    'name': each['name'],
+                    'url': reverse(each['url']),
+                    'img': static(each['img']),
+                    'desc': each['desc']}
             tools.append(item)
     return tools
 

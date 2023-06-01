@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-我的IP：{{ ip }}
-</body>
-</html>
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}IP地址查询_本机IP_我的IP_IP查询详细信息_辅助工具{% endblock %}
+{% block metas %}
+    <meta name="description" content="IP地址查询是一个在线工具，访问本页面可以获取我当前的IP地址和本机IP，输入IP还可以查询对应的归属地信息，地理位置信息可以精确到运营商和国家、省市级别。">
+    <meta name="keywords" content="IP地址查询,本机IP,我的IP,IP查询详细信息,在线工具">
+{% endblock %}
+
+{% block tool_name %}IP地址查询工具{% endblock %}
+{% block left_content %}
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">工具说明：</h3>
+        <ul>
+            <li>工具自动显示访问IP，也就是用户本机IP地址，并显示IP地址详细信息，包括归属地、运营商、地理位置等</li>
+            <li>用户也可以手动输入IP地址查询详情</li>
+            <li>IP信息查询结果由百度提供，本站只做展示，如有疑问可联系站长</li>
+        </ul>
+    </div>
+    <div class="mb-3">
+        <div class="form-group">
+            <label>IP地址查询：</label>
+            <input type="text" class="form-control" id="query-ip" value="{{ ip }}" required>
+            <small class="form-text text-muted">提示：如果你使用了代理，想要查看代理IP信息，请先临时将本站设置到代理访问名单中</small>
+        </div>
+        <button type="submit" class="btn btn-info btn-sm" id="start-post">开始查询</button>
+    </div>
+    <div class="card mb-0">
+        <div class="card-header text-center text-info font-weight-bold py-2">查询结果</div>
+        <div class="card-body table-responsive push-result text-center p-2" id="result"></div>
+    </div>
+{% endblock %}
+
+{% block end_f %}
+    <script>
+        query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
+        $('#start-post').click(function () {
+            query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
+        })
+    </script>
+{% endblock %}

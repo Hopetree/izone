@@ -6,6 +6,7 @@ from .apis.bd_push import push_urls, get_urls
 from .apis.useragent import get_user_agent
 from .apis.docker_search import DockerSearch
 from .apis.word_cloud import jieba_word_cloud
+from .apis.query_ip import QueryIPApi
 from .utils import IMAGE_LIST
 
 import re
@@ -150,8 +151,14 @@ def tax(request):
 
 # ip地址查询
 def query_ip(request):
-    if request.META.get('HTTP_X_FORWARDED_FOR'):
-        ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    if request.is_ajax() and request.method == "POST":
+        data = request.POST
+        ip = data.get('ip')
+        info = QueryIPApi(ip).baidu_api()
+        return JsonResponse(info)
     else:
-        ip = ''
-    return render(request, 'tool/query_ip.html', context={'ip': ip})
+        if request.META.get('HTTP_X_FORWARDED_FOR'):
+            ip = request.META.get('HTTP_X_FORWARDED_FOR')
+        else:
+            ip = ''
+        return render(request, 'tool/query_ip.html', context={'ip': ip})
