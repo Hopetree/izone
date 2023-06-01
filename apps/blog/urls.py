@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.urls import path
-# from .views import goview
+from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView)
 
 urlpatterns = [
-    # path('go/', goview, name='go'),  # 测试用页面
+    path('go/', test_page_view, name='go'),  # 测试用页面
 
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
     path('hot/', IndexView.as_view(), {'sort': 'v'}, name='index_hot'),  # 主页，按照浏览量排序
