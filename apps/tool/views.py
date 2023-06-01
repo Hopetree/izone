@@ -146,3 +146,12 @@ def json2go(request):
 # 个人所得税年度汇算
 def tax(request):
     return render(request, 'tool/tax.html')
+
+
+# ip地址查询
+def query_ip(request):
+    if request.META.get('HTTP_X_FORWARDED_FOR'):
+        ip = request.META.get('HTTP_X_FORWARDED_FOR')
+    else:
+        ip = ''
+    return render(request, 'tool/query_ip.html', context={'ip': ip})

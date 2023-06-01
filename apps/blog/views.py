@@ -32,7 +32,6 @@ class CustomHtmlFormatter(HtmlFormatter):
 # Create your views here.
 
 def test_page_view(request):
-    print(request.META)
     return render(request, 'test_html.html')
 
 
