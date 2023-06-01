@@ -28,6 +28,11 @@ IZONE_TOOLS = {
             'url': 'tool:tax',
             'img': 'tool/img/tax128.png',
             'desc': '个人所得税综合所得年度汇算，在线计算，提前预知个人退税情况，对比两种方案退税差异'
+        }, {
+            'name': 'IP地址查询',
+            'url': 'tool:ip',
+            'img': 'tool/img/query_ip.png',
+            'desc': '访问本页面可以获取我当前的IP地址和本机IP，输入IP还可以查询对应的归属地信息'
         }]
     },
     'develop': {
