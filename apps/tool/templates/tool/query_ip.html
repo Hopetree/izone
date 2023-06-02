@@ -23,7 +23,25 @@
             <input type="text" class="form-control" id="query-ip" value="{{ ip }}" required>
             <small class="form-text text-muted">提示：如果你使用了代理，想要查看代理IP信息，请先临时将本站设置到代理访问名单中</small>
         </div>
-        <button type="submit" class="btn btn-info btn-sm" id="start-post">开始查询</button>
+        {#超管无限制查询，登录用户限制查询频率，非登录用户不可查询#}
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+                <button type="submit" class="btn btn-info btn-sm" id="start-post">开始查询</button>
+            {% else %}
+                {% if request.COOKIES.queryIP == "disabled" %}
+                    <button type="submit" class="btn btn-info btn-sm" id="start-post"
+                            title="查询不可用，两次查询时间需间隔10分钟" disabled>开始查询
+                    </button>
+                {% else %}
+                    <button type="submit" class="btn btn-info btn-sm" id="start-post">开始查询</button>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <button type="submit" class="btn btn-secondary btn-sm"
+                    id="start-post" title="非登录用户无法自由查询IP" disabled>开始查询
+            </button>
+        {% endif %}
+
     </div>
     <div class="card mb-0">
         <div class="card-header text-center text-info font-weight-bold py-2">查询结果</div>
@@ -36,6 +54,9 @@
         query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
         $('#start-post').click(function () {
             query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
+            {% if not request.user.is_superuser %}
+                disable_query_ip();
+            {% endif %}
         })
     </script>
 {% endblock %}
