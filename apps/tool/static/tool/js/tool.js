@@ -319,4 +319,5 @@ function disable_query_ip() {
     // 将请求按钮设置成不可用
     const send_btn = $('#start-post');
     send_btn.prop("disabled", true);
+    send_btn.attr('title', '查询不可用，两次查询时间需间隔10分钟')
 }
