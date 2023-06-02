@@ -291,6 +291,10 @@ function query_ip_info(CSRF, URL) {
                     new_html += '<p>' + '<strong>经纬度：</strong>' + ret.data.lng + ',' + ret.data.lat + '</p>';
                     // 邮编
                     new_html += '<p>' + '<strong>邮&emsp;编：</strong>' + ret.data.zipcode + '</p>';
+                } else if (ret.resource_id === '00') {
+                    new_html += '<p>' + '<strong>归属地：</strong>' + ret.address + '</p>';
+                    new_html += '<p>' + '<strong>经营商：</strong>' + ret.isp + '</p>';
+                    new_html += '<p>' + '<strong>经纬度：</strong>' + ret.loc + '</p>';
                 } else if (ret.resource_id === '1') {
                     const lst = [ret.continent, ret.country, ret.subdivision, ret.city];
                     const new_lst = [...new Set(lst)];
