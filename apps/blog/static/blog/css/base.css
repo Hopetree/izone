@@ -476,6 +476,20 @@ footer a:hover {
     background-color: transparent !important;
 }
 
+
+@media (max-width: 420px) {
+    .row {
+        margin-right: -5px;
+        margin-left: -5px;
+    }
+
+    .col-lg-8, .col-lg-4 {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+}
+
+
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
