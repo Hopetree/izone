@@ -107,7 +107,7 @@ def docker_search_view(request):
         name = data.get('name')
         # 只有名称在常用镜像列表中的搜索才使用缓存，可以避免对名称的过滤
         if name in IMAGE_LIST:
-            cache_key = 'tool_docker_search_' + name
+            cache_key = 'tool:docker_search:' + name
             cache_value = cache.get(cache_key)
             if cache_value:
                 res = cache_value
@@ -154,7 +154,17 @@ def query_ip(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
         ip = data.get('ip')
-        info = QueryIPApi(ip).baidu_api()
+        if not ip.strip():
+            info = {'code': 'MissingParameter', 'charge': False, 'msg': 'IP地址为空'}
+        else:
+            cache_key = 'tool:query_ip:' + ip
+            cache_value = cache.get(cache_key)
+            if cache_value:
+                info = cache_value
+                info['cache'] = True  # 从redis读取的则设置一个标识
+            else:
+                info = QueryIPApi(ip).baidu_api()
+                cache.set(cache_key, info, 60 * 60 * 24 * 7)
         return JsonResponse(info)
     else:
         if request.META.get('HTTP_X_FORWARDED_FOR'):

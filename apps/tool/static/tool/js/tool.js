@@ -256,14 +256,15 @@ function word_cloud(CSRF, URL, max_word) {
 
 // IP查询
 function query_ip_info(CSRF, URL) {
-    $('.push-result').addClass('text-center');
+    let result_div = $('#result');
+    result_div.addClass('text-center');
     const ip = $.trim($('#query-ip').val());
     $.ajaxSetup({
         data: {
             csrfmiddlewaretoken: CSRF
         }
     });
-    $('#result').html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
+    result_div.html('<i class="fa fa-spinner fa-pulse fa-3x my-3"></i>');
     $.ajax({
         type: 'post',
         url: URL,
@@ -274,24 +275,24 @@ function query_ip_info(CSRF, URL) {
         success: function (ret) {
             let new_html = '<div class="my-2">';
             if (ret.code === 'Success') {
-                $('.push-result').removeClass('text-center');
+                result_div.removeClass('text-center');
                 console.log(ret)
                 // 得到归属地，国家到区，去重显示
-                const lst = [ret.data.country,ret.data.prov,ret.data.city,ret.data.district];
+                const lst = [ret.data.country, ret.data.prov, ret.data.city, ret.data.district];
                 const new_lst = [...new Set(lst)];
                 const address = new_lst.join(' ')
-                new_html += '<p>' + '<strong>归属地：</strong>'+ address +'</p>';
-                // 经纬度
-                new_html += '<p>' + '<strong>经纬度：</strong>'+ ret.data.lng + ',' + ret.data.lat +'</p>';
+                new_html += '<p>' + '<strong>归属地：</strong>' + address + '</p>';
                 // 经营商
-                new_html += '<p>' + '<strong>经营商：</strong>'+ ret.data.isp +'</p>';
+                new_html += '<p>' + '<strong>经营商：</strong>' + ret.data.isp + '</p>';
+                // 经纬度
+                new_html += '<p>' + '<strong>经纬度：</strong>' + ret.data.lng + ',' + ret.data.lat + '</p>';
                 // 邮编
-                new_html += '<p>' + '<strong>邮&emsp;编：</strong>'+ ret.data.zipcode +'</p>';
+                new_html += '<p>' + '<strong>邮&emsp;编：</strong>' + ret.data.zipcode + '</p>';
             } else {
                 new_html += ret.msg
             }
             new_html += '</div>';
-            $('.push-result').html(new_html);
+            result_div.html(new_html);
         },
         error: function (XMLHttpRequest) {
             let error_text;
@@ -302,7 +303,20 @@ function query_ip_info(CSRF, URL) {
                 error_text = '未知错误...';
             }
             const new_html = '<div class="my-2">' + error_text + '</div>';
-            $('.push-result').html(new_html);
+            result_div.html(new_html);
         }
     })
+}
+
+function disable_query_ip() {
+    // 请求成功则添加cookie，同时禁用请求按钮
+    const query_ip_key = 'queryIP';
+    // 获取当前时间
+    const currentDate = new Date();
+    // 设置cookie过期时间为10分钟后
+    const expirationDate = new Date(currentDate.getTime() + 60 * 10 * 1000);
+    Cookies.set(query_ip_key, "disabled", {expires: expirationDate, path: '/'});
+    // 将请求按钮设置成不可用
+    const send_btn = $('#start-post');
+    send_btn.prop("disabled", true);
 }
