@@ -72,33 +72,6 @@ class QueryIPApi:
         except json.decoder.JSONDecodeError:
             return self.bad_request
 
-    def ip138(self):
-        self.bad_request['resource_id'] = '00'
-        url = 'https://www.ipshudi.com/%s.htm' % self.ip
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
-                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
-            'Referer': 'https://baidu.com/'}
-        response = requests.get(url, headers=headers)
-        html = response.text
-        ip_address = re.findall(r'<td class="th">归属地</td>\n<td>\n<span>(.*?)</span>', html)
-        isp = re.findall(r'<td class="th">运营商</td><td><span>(.*?)</span>', html)
-        if ip_address:
-            result = {'address': ip_address[0].strip(),
-                      'isp': isp[0].strip() if isp else '',
-                      'code': 'Success', 'resource_id': '00',
-                      }
-            result_ip_locate = self.ip_locate_api()
-            if result_ip_locate.get('code') == 'Success' and result_ip_locate.get('longitude'):
-                result['loc'] = '{},{}'.format(result_ip_locate.get('longitude'),
-                                               result_ip_locate.get('latitude'))
-            else:
-                result_ip_info = self.ip_info_api()
-                if result_ip_info.get('code') == 'Success' and result_ip_info.get('loc'):
-                    result['loc'] = result_ip_info.get('loc')
-            return result
-        return self.bad_request
-
     def get_ip_info(self):
         if not self.ip.strip():
             return self.none_ip_result
@@ -106,8 +79,6 @@ class QueryIPApi:
         # 百度请求错误或者IP被封，则使用其他接口
         result = self.baidu_api()
         if result['code'] in ['Throttling', 'BadRequest']:
-            result = self.ip138()
-        if result['code'] in ['BadRequest']:
             result = self.ip_locate_api()
         if result['code'] in ['BadRequest']:
             result = self.ip_info_api()
@@ -117,10 +88,9 @@ class QueryIPApi:
 if __name__ == '__main__':
     from pprint import pprint
 
-    api = QueryIPApi('116.1.32.85')
+    api = QueryIPApi('86.31.232.85')
     # api = QueryIPApi('66.90.98.178')
     # pprint(api.baidu_api())
     # pprint(api.ip_locate_api())
     # pprint(api.ip_info_api())
-    # pprint(api.ip138())
     pprint(api.get_ip_info())

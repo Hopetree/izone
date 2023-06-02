@@ -164,9 +164,11 @@ def query_ip(request):
                 info['cache'] = True  # 从redis读取的则设置一个标识
             else:
                 info = QueryIPApi(ip).get_ip_info()
-                # 将百度查询的结果放到缓存
-                if info.get('resource_id') == '0' and info.get('code') == 'Success':
+                # 将百度查询的结果放到缓存，时间设置1周，其他查询结果设置半天
+                if info.get('code') == 'Success' and info.get('resource_id'):
                     cache.set(cache_key, info, 60 * 60 * 24 * 7)
+                elif info.get('code') == 'Success':
+                    cache.set(cache_key, info, 60 * 60 * 12)
         return JsonResponse(info)
     else:
         if request.META.get('HTTP_X_FORWARDED_FOR'):
