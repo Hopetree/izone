@@ -277,17 +277,38 @@ function query_ip_info(CSRF, URL) {
             if (ret.code === 'Success') {
                 result_div.removeClass('text-center');
                 console.log(ret)
-                // 得到归属地，国家到区，去重显示
-                const lst = [ret.data.country, ret.data.prov, ret.data.city, ret.data.district];
-                const new_lst = [...new Set(lst)];
-                const address = new_lst.join(' ')
-                new_html += '<p>' + '<strong>归属地：</strong>' + address + '</p>';
-                // 经营商
-                new_html += '<p>' + '<strong>经营商：</strong>' + ret.data.isp + '</p>';
-                // 经纬度
-                new_html += '<p>' + '<strong>经纬度：</strong>' + ret.data.lng + ',' + ret.data.lat + '</p>';
-                // 邮编
-                new_html += '<p>' + '<strong>邮&emsp;编：</strong>' + ret.data.zipcode + '</p>';
+
+                // 百度
+                if (ret.resource_id === '0') {
+                    // 得到归属地，国家到区，去重显示
+                    const lst = [ret.data.continent, ret.data.country, ret.data.prov, ret.data.city, ret.data.district];
+                    const new_lst = [...new Set(lst)];
+                    const address = new_lst.join(' ')
+                    new_html += '<p>' + '<strong>归属地：</strong>' + address + '</p>';
+                    // 经营商
+                    new_html += '<p>' + '<strong>经营商：</strong>' + ret.data.isp + '</p>';
+                    // 经纬度
+                    new_html += '<p>' + '<strong>经纬度：</strong>' + ret.data.lng + ',' + ret.data.lat + '</p>';
+                    // 邮编
+                    new_html += '<p>' + '<strong>邮&emsp;编：</strong>' + ret.data.zipcode + '</p>';
+                } else if (ret.resource_id === '1') {
+                    const lst = [ret.continent, ret.country, ret.subdivision, ret.city];
+                    const new_lst = [...new Set(lst)];
+                    const address = new_lst.join(' ')
+                    new_html += '<p>' + '<strong>归属地：</strong>' + address + '</p>';
+                    new_html += '<p>' + '<strong>经营商：</strong>' + ret.org + '</p>';
+                    new_html += '<p>' + '<strong>经纬度：</strong>' + ret.longitude + ',' + ret.latitude + '</p>';
+                } else if (ret.resource_id === '2') {
+                    const lst = [ret.data.country, ret.data.region, ret.data.city];
+                    const new_lst = [...new Set(lst)];
+                    const address = new_lst.join(' ')
+                    new_html += '<p>' + '<strong>归属地：</strong>' + address + '</p>';
+                    new_html += '<p>' + '<strong>经营商：</strong>' + ret.data.org + '</p>';
+                    new_html += '<p>' + '<strong>经纬度：</strong>' + ret.data.loc + '</p>';
+                } else {
+                    new_html += '<p>' + '查询结果无法显示' + '</p>';
+                }
+
             } else {
                 new_html += ret.msg
             }

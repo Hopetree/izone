@@ -155,7 +155,7 @@ def query_ip(request):
         data = request.POST
         ip = data.get('ip')
         if not ip.strip():
-            info = {'code': 'MissingParameter', 'charge': False, 'msg': 'IP地址为空'}
+            info = {'code': 'MissingIP', 'msg': 'IP地址为空'}
         else:
             cache_key = 'tool:query_ip:' + ip
             cache_value = cache.get(cache_key)
@@ -163,8 +163,10 @@ def query_ip(request):
                 info = cache_value
                 info['cache'] = True  # 从redis读取的则设置一个标识
             else:
-                info = QueryIPApi(ip).baidu_api()
-                cache.set(cache_key, info, 60 * 60 * 24 * 7)
+                info = QueryIPApi(ip).get_ip_info()
+                # 将百度查询的结果放到缓存
+                if info.get('resource_id') == '0' and info.get('code') == 'Success':
+                    cache.set(cache_key, info, 60 * 60 * 24 * 7)
         return JsonResponse(info)
     else:
         if request.META.get('HTTP_X_FORWARDED_FOR'):
