@@ -6,7 +6,6 @@ from .apis.bd_push import push_urls, get_urls
 from .apis.useragent import get_user_agent
 from .apis.docker_search import DockerSearch
 from .apis.word_cloud import jieba_word_cloud
-from .apis.query_ip import QueryIPApi
 from .utils import IMAGE_LIST
 
 import re
@@ -55,10 +54,7 @@ def regexview(request):
         texts = data.get('texts')
         regex = data.get('r')
         key = data.get('key')
-        try:
-            lis = re.findall(r'{}'.format(regex), texts)
-        except Exception:
-            lis = []
+        lis = re.findall(r'{}'.format(regex), texts)
         num = len(lis)
         if key == 'url' and num:
             script_tag = '''<script>$(".re-result p").children("a").attr({target:"_blank",rel:"noopener noreferrer"});</script>'''
@@ -151,28 +147,8 @@ def tax(request):
 
 # ip地址查询
 def query_ip(request):
-    if request.is_ajax() and request.method == "POST":
-        data = request.POST
-        ip = data.get('ip')
-        if not ip.strip():
-            info = {'code': 'MissingIP', 'msg': 'IP地址为空'}
-        else:
-            cache_key = 'tool:query_ip:' + ip
-            cache_value = cache.get(cache_key)
-            if cache_value:
-                info = cache_value
-                info['cache'] = True  # 从redis读取的则设置一个标识
-            else:
-                info = QueryIPApi(ip).get_ip_info()
-                # 将百度查询的结果放到缓存，时间设置1周，其他查询结果设置半天
-                if info.get('code') == 'Success' and info.get('resource_id'):
-                    cache.set(cache_key, info, 60 * 60 * 24 * 7)
-                elif info.get('code') == 'Success':
-                    cache.set(cache_key, info, 60 * 60 * 12)
-        return JsonResponse(info)
+    if request.META.get('HTTP_X_FORWARDED_FOR'):
+        ip = request.META.get('HTTP_X_FORWARDED_FOR')
     else:
-        if request.META.get('HTTP_X_FORWARDED_FOR'):
-            ip = request.META.get('HTTP_X_FORWARDED_FOR')
-        else:
-            ip = ''
-        return render(request, 'tool/query_ip.html', context={'ip': ip})
+        ip = ''
+    return render(request, 'tool/query_ip.html', context={'ip': ip})

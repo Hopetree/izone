@@ -14,7 +14,7 @@
         <ul>
             <li>工具自动显示访问IP，也就是用户本机IP地址，并显示IP地址详细信息，包括归属地、运营商、地理位置等</li>
             <li>用户也可以手动输入IP地址查询详情</li>
-            <li>IP信息查询结果来自互联网，本站只做展示不保证准确性，如有疑问可联系站长</li>
+            <li>IP信息查询结果来自互联网，如有疑问可联系站长</li>
         </ul>
     </div>
     <div class="mb-3">
@@ -30,7 +30,7 @@
             {% else %}
                 {% if request.COOKIES.queryIP == "disabled" %}
                     <button type="submit" class="btn btn-info btn-sm" id="start-post"
-                            title="查询不可用，两次查询时间需间隔10分钟" disabled>开始查询
+                            title="查询不可用，两次查询时间需间隔1分钟" disabled>开始查询
                     </button>
                 {% else %}
                     <button type="submit" class="btn btn-info btn-sm" id="start-post">开始查询</button>
@@ -38,7 +38,7 @@
             {% endif %}
         {% else %}
             <button type="submit" class="btn btn-secondary btn-sm"
-                    id="start-post" title="非登录用户无法自由查询IP" disabled>开始查询
+                    id="start-post" title="非登录用户无法手动查询IP" disabled>开始查询
             </button>
         {% endif %}
 
@@ -51,9 +51,9 @@
 
 {% block end_f %}
     <script>
-        query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
+        query_ip_from_baidu();
         $('#start-post').click(function () {
-            query_ip_info("{{ csrf_token }}", "{% url 'tool:ip' %}");
+            query_ip_from_baidu();
             {% if not request.user.is_superuser %}
                 disable_query_ip();
             {% endif %}
