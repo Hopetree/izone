@@ -216,8 +216,7 @@ function docker_search_from_hub() {
     } else {
         repo_name = 'library/' + name;
     }
-    // 在nginx中需要配置映射关系https://registry.hub.docker.com/
-    const url = '/docker-hub/v2/repositories/' + repo_name + '/tags/';
+    const url = 'https://registry.hub.docker.com/v2/repositories/' + repo_name + '/tags/';
     $.ajax({
         url: url,
         type: 'get',
@@ -332,8 +331,7 @@ function query_ip_from_baidu() {
         new_html += '</div>';
         result_div.html(new_html);
     } else {
-        // 在nginx中需要配置映射关系https://qifu-api.baidubce.com/
-        const url = '/baidu-ip/ip/geo/v1/district?ip=' + encodeURIComponent(ip)
+        const url = 'https://qifu-api.baidubce.com/ip/geo/v1/district?ip=' + encodeURIComponent(ip)
         $.ajax({
             url: url,
             type: 'get',

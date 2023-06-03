@@ -41,8 +41,8 @@
 {% block end_f %}
     <script>
         $('#start-push').click(function () {
-            {#docker_search("{{ csrf_token }}", "{% url 'tool:docker_search' %}");#}
-            docker_search_from_hub();
+            docker_search("{{ csrf_token }}", "{% url 'tool:docker_search' %}");
+            {#docker_search_from_hub();#}
         })
 
     </script>
