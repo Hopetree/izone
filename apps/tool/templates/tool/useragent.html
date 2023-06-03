@@ -68,6 +68,7 @@
 
 {% block end_f %}
 <script>
+useragent_api("{{ csrf_token }}","{% url 'tool:useragent' %}");
 $("#get_useragent").click(function(){
     useragent_api("{{ csrf_token }}","{% url 'tool:useragent' %}")
 })
