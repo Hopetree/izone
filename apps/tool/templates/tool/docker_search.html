@@ -9,36 +9,41 @@
 
 {% block tool_name %}Docker镜像查询工具{% endblock %}
 {% block left_content %}
-<div class="card-body p-0">
-    <h3 class="card-title pl-2 title-info">工具说明：</h3>
-    <ul>
-        <li>本工具调用docker镜像仓库官方接口，查询官方镜像仓库中指定镜像的版本信息</li>
-        <li>解决痛点：经常需要从官方镜像仓库拉取镜像的开发者都知道，镜像千千万，版本天天变，对于不熟悉的镜像，如何准确地选择正确的镜像版本成了一个问题，而这个工具就可以实时查询官方仓库中镜像的版本信息，方便开发人员选择镜像</li>
-        <li>使用须知：官方镜像仓库中的镜像也分官方维护的镜像和第三方维护的镜像，当第三方是软件本身的维护者的时候，选择第三方维护的镜像是更优的选择</li>
-        <li>由于官方镜像仓库是外网，所以查询可能出现超时的现象，如果超时请重试，本工具对常用镜像的查询结果会缓存24小时</li>
-    </ul>
-</div>
-<div class="mb-3">
-    <div class="form-group">
-        <label>输入镜像名称：</label>
-        <input type="url" class="form-control" id="image-name"
-               placeholder="例：nginx 或者 hopetree/izone"
-               required>
-        <small class="form-text text-muted">注：nginx 为官方维护的镜像；jenkins/jenkins 是 Jenkins 维护的镜像，比官方维护的更好</small>
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">工具说明：</h3>
+        <ul>
+            <li>本工具调用docker镜像仓库官方接口，查询官方镜像仓库中指定镜像的版本信息</li>
+            <li>
+                解决痛点：经常需要从官方镜像仓库拉取镜像的开发者都知道，镜像千千万，版本天天变，对于不熟悉的镜像，如何准确地选择正确的镜像版本成了一个问题，而这个工具就可以实时查询官方仓库中镜像的版本信息，方便开发人员选择镜像
+            </li>
+            <li>使用须知：官方镜像仓库中的镜像也分官方维护的镜像和第三方维护的镜像，当第三方是软件本身的维护者的时候，选择第三方维护的镜像是更优的选择</li>
+            <li>由于官方镜像仓库是外网，所以查询可能出现超时的现象，如果超时请重试，本工具对常用镜像的查询结果会缓存24小时</li>
+        </ul>
     </div>
-    <button type="submit" class="btn btn-info btn-sm" id="start-push">开始查询</button>
-</div>
-<div class="card mb-0">
-    <div class="card-header text-center text-info font-weight-bold py-2">查询结果</div>
-    <div class="card-body table-responsive push-result text-center p-2"><div class="py-2">结果显示区</div></div>
-</div>
+    <div class="mb-3">
+        <div class="form-group">
+            <label>输入镜像名称：</label>
+            <input type="url" class="form-control" id="image-name"
+                   placeholder="例：nginx 或者 hopetree/izone"
+                   required>
+            <small class="form-text text-muted">注：nginx 为官方维护的镜像；jenkins/jenkins 是 Jenkins 维护的镜像，比官方维护的更好</small>
+        </div>
+        <button type="submit" class="btn btn-info btn-sm" id="start-push">开始查询</button>
+    </div>
+    <div class="card mb-0">
+        <div class="card-header text-center text-info font-weight-bold py-2">查询结果</div>
+        <div class="card-body table-responsive push-result text-center p-2">
+            <div class="py-2">结果显示区</div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block end_f %}
-<script>
-$('#start-push').click(function() {
-	docker_search("{{ csrf_token }}", "{% url 'tool:docker_search' %}");
-})
+    <script>
+        $('#start-push').click(function () {
+            {#docker_search("{{ csrf_token }}", "{% url 'tool:docker_search' %}");#}
+            docker_search_from_hub();
+        })
 
-</script>
+    </script>
 {% endblock %}
