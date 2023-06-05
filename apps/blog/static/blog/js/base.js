@@ -7,7 +7,8 @@ $(window).scroll(function () {
     $('#to-top').hide();
     if ($(window).scrollTop() >= 600) {
         $('#to-top').show();
-    };
+    }
+    ;
 });
 $("#to-top").click(function () {
     var speed = 400; //滑动的速度
@@ -29,17 +30,22 @@ $(function () {
         $(this).children('div.dropdown-menu').removeClass('show')
     })
 });
+
 //锚点平滑移动到指定位置
 function TOC_FUN(A) {
     $(A).click(function () {
-        $(A).css("color", "#0099ff");
-        $(this).css("color", "red");
+        const href = $(this).attr('href');
+        // $(A).css("color", "#0099ff");
+        // $(this).css("color", "#10b981");
+        // $(this).addClass('active');
         $('html, body').animate({
             scrollTop: $($.attr(this, 'href')).offset().top - 55
         }, 500);
+        history.pushState(null, null, href); // 更新URL，显示 #
         return false
     })
 }
+
 $(TOC_FUN('.toc a,.to-com'));
 
 //文章內容图片点击放大，使用bootstrp4的modal模块
@@ -48,6 +54,7 @@ $(".article-body img").click(function () {
     $("#img-to-big img")[0].src = _src;
     $("#img-to-big").modal('show');
 })
+
 //添加暗色主题css
 function addDarkTheme() {
     _link = document.getElementById("theme-css-dark")
@@ -60,6 +67,7 @@ function addDarkTheme() {
         $("head").append(link);
     }
 }
+
 // 删除暗色主题
 function removeDarkTheme() {
     $('#theme-css-dark').remove();
@@ -85,3 +93,22 @@ $("#theme-img").click(function () {
         addDarkTheme();
     }
 })
+
+// 页面到某个标题则将标题高亮
+$(document).ready(function () {
+    $(window).scroll(function () {
+        const scrollPos = $(document).scrollTop();
+        // 遍历每个导航链接
+        $('.toc ul li a').each(function () {
+            const target = $(this).attr('href');
+
+            // 检查滚动位置与目标节的位置关系
+            if ($(target).length && $(target).offset().top <= scrollPos + 56) {
+                // 移除所有导航链接的激活状态
+                $('.toc ul li a').removeClass('active');
+                // 为当前可见的目标节的导航链接添加激活状态
+                $(this).addClass('active');
+            }
+        });
+    });
+});
