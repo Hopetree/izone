@@ -93,15 +93,17 @@
 }
 
 .toc a {
-    color: rgb(0, 153, 255);
+    color: rgba(60, 60, 67, .8);
+}
+
+.toc a:hover {
+    color: rgba(33, 37, 41, 1);
 }
 
 .toc a.active {
     color: #10b981;
 }
-.toc a:hover {
-    color: #10b981;
-}
+
 
 .toc a::before {
     content: "";
