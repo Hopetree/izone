@@ -475,8 +475,6 @@ footer a:hover {
 .bg-none {
     background-color: transparent !important;
 }
-
-
 @media (max-width: 420px) {
     .row {
         margin-right: -5px;

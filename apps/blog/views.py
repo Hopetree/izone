@@ -183,6 +183,7 @@ class SilianView(generic.ListView):
 
 # 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
 class MySearchView(SearchView):
+    template_name = 'search/blog/search.html'
     context_object_name = 'search_list'
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
