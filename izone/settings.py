@@ -294,4 +294,6 @@ PRIVATE_LINKS = [
      'title': '我的导航网站，使用Vue搭建'},
     {'name': '个人文档', 'icon': 'fa-book', 'link': 'https://hopetree.github.io',
      'title': '我的个人文档，使用Vitepress搭建'},
+    {'name': '命令速查', 'icon': 'fa-code', 'link': 'https://cmd.tendcode.com',
+     'title': '备忘清单【速查表】'},
 ]
