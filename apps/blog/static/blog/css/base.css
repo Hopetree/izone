@@ -565,11 +565,19 @@ footer a:hover {
         top: 3px;
         left: 36px;
     }
+
+    .tags {
+        font-size: .8rem;
+    }
 }
 
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
+    .col-lg-4 {
+        flex: 0 0 30%;
+    }
+
     .top-article-img {
         margin-right: -1rem;
         margin-top: -1rem;
@@ -579,6 +587,10 @@ footer a:hover {
         max-width: 100%;
         padding-right: 15px;
         padding-left: 15px;
+    }
+
+    .tags {
+        font-size: .8rem;
     }
 }
 
@@ -611,6 +623,10 @@ footer a:hover {
 
     .f-12 {
         font-size: 12px;
+    }
+
+    .tags {
+        font-size: .8rem;
     }
 
     .article-img {

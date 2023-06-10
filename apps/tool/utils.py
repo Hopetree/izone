@@ -48,10 +48,10 @@ IZONE_TOOLS = {
             'img': 'blog/img/docker.png',
             'desc': '查询官方镜像仓库中指定镜像的版本信息，帮助开发人员更准确的选择合适的镜像'
         }, {
-            'name': 'HTML特殊字符',
+            'name': 'HTML查询表',
             'url': 'tool:html_characters',
             'img': 'blog/img/html.png',
-            'desc': 'HTML常用字符查询表，HTML特殊字符对照表'
+            'desc': 'HTTP状态码对照表，HTML常用字符查询表，HTML特殊字符对照表'
         }, {
             'name': 'User-Agent生成器',
             'url': 'tool:useragent',
