@@ -21,7 +21,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js'%}"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20230611.1" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20230611.4" rel="stylesheet">
     {% block top-file %}{% endblock %}
     <!--根据cookies判断是否启用暗色主题-->
     {% if not request.COOKIES.toggleTheme %}
@@ -55,6 +55,23 @@
 </div>
 {% endif %}
 
+<!--切换主题按钮-->
+<div class="text-center" id="change-theme" title="切换主题">
+    {% if not request.COOKIES.toggleTheme %}
+        {% now_hour as hour %}
+        {% if hour < 6 or hour > 18 %}
+            <i class="fa fa-sun-o"></i>
+        {% else %}
+            <i class="fa fa-moon-o"></i>
+        {% endif %}
+    {% else %}
+        {% if request.COOKIES.toggleTheme == "dark" %}
+            <i class="fa fa-sun-o"></i>
+        {% else %}
+            <i class="fa fa-moon-o"></i>
+        {% endif %}
+    {% endif %}
+</div>
 <!--回到顶部按钮-->
 <div class="text-center" id="to-top" title="回到顶部"><i class="fa fa-arrow-up"></i></div>
 
@@ -70,7 +87,7 @@
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20230611.16"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20230611.20"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};

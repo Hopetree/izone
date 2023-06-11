@@ -6,11 +6,14 @@ $(function () {
 $(window).scroll(function () {
     const toTop = $('#to-top');
     const toCom = $('#go-to-com');
+    const changeTheme = $('#change-theme');
     toTop.hide();
     toCom.hide();
+    changeTheme.hide();
     if ($(window).scrollTop() >= 600) {
         toTop.show();
         toCom.show();
+        changeTheme.show();
     }
 });
 $("#to-top").click(function () {
@@ -68,26 +71,30 @@ function addDarkTheme() {
         link.href = '/static/blog/css/night.css?20230508.03';
         $("head").append(link);
     }
+    const changeThemeI = $('#change-theme i');
+    changeThemeI.removeClass('fa-moon-o');
+    changeThemeI.addClass('fa-sun-o');
 }
 
 // 删除暗色主题
 function removeDarkTheme() {
     $('#theme-css-dark').remove();
+    const changeThemeI = $('#change-theme i');
+    changeThemeI.removeClass('fa-sun-o');
+    changeThemeI.addClass('fa-moon-o');
 }
 
 //切换主题按钮，根据cookies切换主题
-$("#theme-img").click(function () {
+$("#change-theme").click(function () {
     const theme_key = "toggleTheme";
     const theme_value = Cookies.get(theme_key);
     if (theme_value === "dark") {
-        $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
         Cookies.set(theme_key, "light", {
             expires: 180,
             path: '/'
         });
         removeDarkTheme();
     } else {
-        $("#theme-img").attr("src", "/static/blog/img/toggle-dark.png");
         Cookies.set(theme_key, "dark", {
             expires: 180,
             path: '/'
