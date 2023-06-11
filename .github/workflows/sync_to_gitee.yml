@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Mirror the Github organization repos to Gitee.
-        uses: Yikun/hub-mirror-action@1.2
+        uses: Yikun/hub-mirror-action@master
         with:
           src: github/Hopetree
           dst: gitee/hopetree-gitee
