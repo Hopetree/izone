@@ -26,21 +26,15 @@
                        href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
                 </li>
             {% endif %}
-            {% if hao_console.flag %}
-                <li class="nav-item mr-2 d-none d-lg-block">
-                    <a class="nav-link py-md-3" href="{{ hao_console.url }}" target="_blank"><i
-                            class="fa fa-chrome mr-1"></i>{{ hao_console.name }}</a>
-                </li>
-            {% endif %}
             {% if api_flag %}
-                <li class="nav-item mr-2">
+                <li class="nav-item mr-2 d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank"><i
                             class="fa fa-key mr-1"></i>API</a>
                 </li>
             {% endif %}
 
             <!-- 个人外链 -->
-            <li class="nav-item dropdown mr-2 d-none d-lg-block">
+            <li class="nav-item dropdown mr-2 d-xs-block d-sm-none d-lg-block">
                 <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
                    data-toggle="dropdown"
                    aria-haspopup="true"

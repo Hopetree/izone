@@ -2,16 +2,19 @@
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
-//回到顶部
+//回到顶部和评论
 $(window).scroll(function () {
-    $('#to-top').hide();
+    const toTop = $('#to-top');
+    const toCom = $('#go-to-com');
+    toTop.hide();
+    toCom.hide();
     if ($(window).scrollTop() >= 600) {
-        $('#to-top').show();
+        toTop.show();
+        toCom.show();
     }
-    ;
 });
 $("#to-top").click(function () {
-    var speed = 400; //滑动的速度
+    const speed = 400; //滑动的速度
     $('body,html').animate({
         scrollTop: 0
     }, speed);
@@ -19,7 +22,7 @@ $("#to-top").click(function () {
 });
 //标题栏鼠标滑过显示下拉
 $(function () {
-    var $dropdownLi = $('ul.navbar-nav > li.dropdown');
+    const $dropdownLi = $('ul.navbar-nav > li.dropdown');
     $dropdownLi.mouseover(function () {
         $(this).addClass('show');
         $(this).children('a.dropdown-toggle').attr('aria-expanded', 'true');
@@ -42,24 +45,23 @@ function TOC_FUN(A) {
             scrollTop: $($.attr(this, 'href')).offset().top - 55
         }, 500);
         history.pushState(null, null, href); // 更新URL，显示 #
-        return false
     })
+    return true
 }
 
-$(TOC_FUN('.toc a,.to-com'));
+$(TOC_FUN('.toc a,.to-com,#go-to-com'));
 
-//文章內容图片点击放大，使用bootstrp4的modal模块
+//文章內容图片点击放大，使用bootstrap4的modal模块
 $(".article-body img").click(function () {
-    var _src = this.src;
-    $("#img-to-big img")[0].src = _src;
+    $("#img-to-big img")[0].src = this.src;
     $("#img-to-big").modal('show');
 })
 
 //添加暗色主题css
 function addDarkTheme() {
-    _link = document.getElementById("theme-css-dark")
+    let _link = document.getElementById("theme-css-dark")
     if (!_link) {
-        var link = document.createElement('link');
+        const link = document.createElement('link');
         link.type = 'text/css';
         link.id = "theme-css-dark"; // 加上id方便后面好查找到进行删除
         link.rel = 'stylesheet';
@@ -75,9 +77,9 @@ function removeDarkTheme() {
 
 //切换主题按钮，根据cookies切换主题
 $("#theme-img").click(function () {
-    var theme_key = "toggleTheme";
-    var theme_value = Cookies.get(theme_key);
-    if (theme_value == "dark") {
+    const theme_key = "toggleTheme";
+    const theme_value = Cookies.get(theme_key);
+    if (theme_value === "dark") {
         $("#theme-img").attr("src", "/static/blog/img/toggle-light.png");
         Cookies.set(theme_key, "light", {
             expires: 180,

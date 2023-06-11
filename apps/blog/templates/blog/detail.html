@@ -34,7 +34,9 @@
                             {% if user.is_authenticated %}
                                 {% if user.is_superuser or user == article.author %}
                                     <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
-                                       target="_blank" title="后台编辑文章">{{ article.title|slice:":50" }}{% if article.title|length > 50 %}...{% endif %}</a>
+                                       target="_blank" title="后台编辑文章">
+                                        {{ article.title|slice:":50" }}{% if article.title|length > 50 %}
+                                            ...{% endif %}</a>
                                 {% endif %}
                             {% else %}
                                 {{ article.title|slice:":50" }}{% if article.title|length > 50 %}...{% endif %}
@@ -145,6 +147,8 @@
             </a>
         </div>
     {% endif %}
+    <!--跳转到评论按钮-->
+    <div class="text-center" id="go-to-com" title="查看评论" href="#comment-block"><i class="fa fa-commenting"></i></div>
 {% endblock %}
 
 {% block end_file %}
