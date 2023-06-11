@@ -1,0 +1,23 @@
+name: Github sync to Gitee
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    if: github.repository == 'Hopetree/izone'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror the Github organization repos to Gitee.
+        uses: Yikun/hub-mirror-action@1.2
+        with:
+          src: github/Hopetree
+          dst: gitee/hopetree-gitee
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token: ${{ secrets.GITEE_TOKEN }}
+          force_update: true
