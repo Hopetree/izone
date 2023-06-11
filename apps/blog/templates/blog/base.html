@@ -27,11 +27,11 @@
     {% if not request.COOKIES.toggleTheme %}
         {% now_hour as hour %}
         {% if hour < 6 or hour > 18 %}
-        <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+        <link id="theme-css-dark" href="/static/blog/css/night.css?20230611.03" rel="stylesheet">
         {% endif %}
     {% else %}
         {% if request.COOKIES.toggleTheme == "dark" %}
-        <link id="theme-css-dark" href="/static/blog/css/night.css?20191123.01" rel="stylesheet">
+        <link id="theme-css-dark" href="/static/blog/css/night.css?20230611.03" rel="stylesheet">
         {% endif %}
     {% endif %}
     {% load_tctip %}
@@ -87,7 +87,7 @@
 <script>
 $(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20230611.20"></script>
+<script src="{% static 'blog/js/base.js'%}?v=20230611.21"></script>
 {% if user.is_authenticated %}
 <script>
 var msgs = {% get_notifications_count user 'false' %};

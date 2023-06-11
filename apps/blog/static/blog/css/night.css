@@ -224,6 +224,9 @@ pre {
 .timeline > li > .timeline-panel:before {
     border-left: 15px solid #fff;
     border-right: 0 solid #fff;
+}
 
+.toc a {
+    color: #9caec7;
 }
 
