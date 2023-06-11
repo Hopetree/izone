@@ -5,22 +5,6 @@
 <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
     <div class="card-header bg-none px-0">
         <strong><i class="fa fa-flag mr-2 f-17"></i>博客空间</strong>
-        <img class="float-right" id="theme-img"
-        {% if not request.COOKIES.toggleTheme %}
-            {% now_hour as hour %}
-            {% if hour < 6 or hour > 18 %}
-             src="{% static 'blog/img/toggle-dark.png' %}"
-            {% else %}
-             src="{% static 'blog/img/toggle-light.png' %}"
-            {% endif %}
-        {% else %}
-            {% if request.COOKIES.toggleTheme == "dark" %}
-             src="{% static 'blog/img/toggle-dark.png' %}"
-            {% else %}
-             src="{% static 'blog/img/toggle-light.png' %}"
-            {% endif %}
-        {% endif %}
-             alt="theme-toggle" title="切换主题">
     </div>
     <div class="card-body px-0 pt-3 pb-1">
         <div class="row text-center">

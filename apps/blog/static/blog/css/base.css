@@ -235,9 +235,11 @@ blockquote {
     text-align: center;
     display: block;
 }
+
+/*跳到评论*/
 #go-to-com {
     position: fixed;
-    bottom: 10rem;
+    bottom: 13rem;
     right: 5%;
     height: 36px;
     width: 36px;
@@ -257,6 +259,35 @@ blockquote {
 }
 
 #go-to-com i {
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+}
+
+/*切换主题*/
+#change-theme {
+    position: fixed;
+    bottom: 10rem;
+    right: 5%;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #34495e;
+    top: auto;
+    display: none;
+    cursor: pointer;
+    color: #fff;
+    opacity: .6;
+    z-index: 9999;
+}
+
+#change-theme:hover {
+    opacity: 1;
+}
+
+#change-theme i {
     font-size: 18px;
     line-height: 30px;
     text-align: center;
@@ -336,12 +367,6 @@ blockquote {
 /* base right --------------------------------------------------*/
 .rounded-6 {
     border-radius: .5rem !important;
-}
-
-#theme-img {
-    width: auto;
-    max-height: 14px;
-    cursor: pointer;
 }
 
 #home-card {
