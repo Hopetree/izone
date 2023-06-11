@@ -112,5 +112,11 @@ $(document).ready(function () {
                 $(this).addClass('active');
             }
         });
+        // 获取评论区的位置，如果到了评论区则取消所有导航的active
+        const commentBlock = $('#comment-block');
+        if ($(commentBlock).length && $(commentBlock).offset().top <= scrollPos + 200) {
+            // 移除所有导航链接的激活状态
+            $('.toc ul li a').removeClass('active');
+        }
     });
 });
