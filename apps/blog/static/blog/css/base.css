@@ -537,6 +537,12 @@ footer a:hover {
     background-color: transparent !important;
 }
 
+.tool-link-text {
+    overflow: hidden; /* 隐藏溢出的文本 */
+    text-overflow: ellipsis; /* 在被裁剪文本末尾添加省略号 */
+    white-space: nowrap;
+}
+
 @media (max-width: 420px) {
     .row {
         margin-right: -5px;
