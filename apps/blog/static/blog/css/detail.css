@@ -127,31 +127,60 @@ blockquote {
 pre {
     line-height: 1.5;
     overflow-: auto;
+    position: relative;
+}
+
+.codehilite {
+    position: relative;
 }
 
 /*复制代码*/
 .code-wrapper {
     border-radius: 8px 8px 0 0;
     background-color: #3c3f41;
-    text-align: justify;
+    display: flex;
+    justify-content: space-between;
+    height: 1.6rem;
+}
+
+.code-wrapper:before {
+    margin-top: .5rem;
+    margin-left: 1rem;
+    content: " ";
+    -webkit-border-radius: 50%;
+    background: #fc625d;
+    width: .7rem;
+    height: .7rem;
+    -webkit-box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
 }
 
 .code-wrapper .code-lang {
-    float: left;
-    padding-left: 1.1rem;
-    padding-top: .1rem;
+    display: block;
     font-size: .9rem;
+    margin-right: 1rem;
 }
 
-.code-wrapper button {
+.codehilite button {
+    display: none;
     background-color: transparent;
     border: none;
     color: whitesmoke;
-    font-size: .8rem;
+    font-size: .9rem;
     cursor: pointer; /* 改变光标样式 */
     outline: none; /* 去掉聚焦时的虚线 */
-    float: right;
-    padding-right: 1.1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 1rem;
+    z-index: 999;
+}
+
+.codehilite:hover button {
+    display: block;
+}
+
+.codehilite:hover .code-lang {
+    display: none;
 }
 
 

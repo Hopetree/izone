@@ -18,24 +18,21 @@ $('.codehilite').each(function () {
     const language = langClass.replace(/^.*\blanguage-([^ ]+).*$/, '$1') || 'unknown';
     // console.log(language);
     const codeText = $(this).find('pre').text();
-    const copyElm = $('<div>').addClass('code-wrapper');
+    const headElm = $('<div>').addClass('code-wrapper');
     const copyButton = $('<button>').html('<i class="fa fa-copy mr-2"></i>Copy code');
     const codeShowElm = $('<div class="code-lang">');
     const codeIconElm = $('<i class="fa fa-code mr-2">');
     codeShowElm.append(codeIconElm);
     codeShowElm.append(language);
-    copyElm.append(codeShowElm);
-    copyElm.append(copyButton);
-    // 添加一个元素取消浮动
-    copyElm.append('<div style="clear: both;"></div>');
-    $(this).prepend(copyElm);
+    headElm.append(codeShowElm);
+    $(this).prepend(copyButton);
+    $(this).prepend(headElm);
 
-    const copyBtn = $(this).find('button');
-    copyBtn.click(function () {
+    copyButton.click(function () {
         copyToClipboard(codeText);
-        copyBtn.html('<i class="fa fa-clipboard mr-2"></i>Copied!')
+        copyButton.html('<i class="fa fa-clipboard mr-2"></i>Copied!')
         setTimeout(function () {
-            copyBtn.html('<i class="fa fa-copy mr-2"></i>Copy code');
+            copyButton.html('<i class="fa fa-copy mr-2"></i>Copy code');
         }, 1500);
     });
 
