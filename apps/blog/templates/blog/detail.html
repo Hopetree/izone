@@ -13,8 +13,8 @@
     {% if user.is_authenticated %}
         <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
     {% endif %}
-    <link href="{% static 'blog/css/detail.css' %}?v=20230611.40" rel="stylesheet">
-    <link href="{% static 'blog/css/monokai.css' %}?v=20230423.591" rel="stylesheet">
+    <link href="{% static 'blog/css/detail.css' %}?v=20230611.42" rel="stylesheet">
+    <link href="{% static 'blog/css/monokai.css' %}?v=20230611.41" rel="stylesheet">
     <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
 
@@ -152,7 +152,7 @@
 {% endblock %}
 
 {% block end_file %}
-    <script src="{% static 'blog/js/code.js' %}?v=20230614.3"></script>
+    <script src="{% static 'blog/js/code.js' %}?v=20230614.4"></script>
     {% if user.is_authenticated %}
         <script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
         <script src="{% static 'comment/js/editor.js' %}?v=20230516.1"></script>

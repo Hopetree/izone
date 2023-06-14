@@ -68,7 +68,7 @@ function addDarkTheme() {
         link.type = 'text/css';
         link.id = "theme-css-dark"; // 加上id方便后面好查找到进行删除
         link.rel = 'stylesheet';
-        link.href = '/static/blog/css/night.css?20230611.03';
+        link.href = '/static/blog/css/night.css?20230614.03';
         $("head").append(link);
     }
     const changeThemeI = $('#change-theme i');

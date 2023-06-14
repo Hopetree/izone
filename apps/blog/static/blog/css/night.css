@@ -79,7 +79,7 @@ blockquote {
 }
 
 .codehilite {
-    background: #2b2b2b;
+    background: #292b30;
     border-radius: 8px;
 }
 
@@ -161,7 +161,7 @@ footer {
 }
 
 pre {
-    background: #2b2b2b;
+    background: #292b30;
     color: #9caec7;
     border-radius: 8px;
 }
