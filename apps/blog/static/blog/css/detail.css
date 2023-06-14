@@ -164,7 +164,7 @@ pre {
     display: none;
     background-color: transparent;
     border: none;
-    color: whitesmoke;
+    color: #A6ACCD;
     font-size: .9rem;
     cursor: pointer; /* 改变光标样式 */
     outline: none; /* 去掉聚焦时的虚线 */
