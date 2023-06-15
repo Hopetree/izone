@@ -171,7 +171,7 @@ pre {
     position: absolute;
     top: 0;
     right: 0;
-    margin-right: 1rem;
+    margin-right: .6rem;
     z-index: 999;
 }
 
