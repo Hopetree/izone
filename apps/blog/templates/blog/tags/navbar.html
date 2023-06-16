@@ -17,7 +17,7 @@
             <li class="nav-item mr-2">
                 {% url 'blog:archive' as archive_url %}
                 <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}"
-                   href="{{ archive_url }}"><i class="fa fa-sitemap mr-1"></i>归档</a>
+                   href="{{ archive_url }}"><i class="fa fa-archive mr-1"></i>归档</a>
             </li>
             {% if tool_flag %}
                 <li class="nav-item mr-2">
