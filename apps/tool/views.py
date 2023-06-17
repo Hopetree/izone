@@ -147,6 +147,9 @@ def tax(request):
 
 # ip地址查询
 def query_ip(request):
+    """
+    备用接口https://ip-api.com/docs/api:json
+    """
     if request.META.get('HTTP_X_FORWARDED_FOR'):
         ip = request.META.get('HTTP_X_FORWARDED_FOR')
     else:
