@@ -88,6 +88,7 @@
                                            title="上一篇：{{ article.get_pre.title }}">
                                             <i class="fa fa-chevron-left mr-1"></i>
                                             {{ article.get_pre.title|truncatechars:18 }}
+                                            {% if article.get_pre.title|length > 18 %}...{% endif %}
                                         </a>
                                         <a class="d-md-none" href="{{ article.get_pre.get_absolute_url }}">
                                             <i class="fa fa-chevron-left mr-1"></i>上一篇</a>
@@ -98,6 +99,7 @@
                                         <a class="d-none d-md-block" href="{{ article.get_next.get_absolute_url }}"
                                            title="下一篇：{{ article.get_next.title }}">
                                             {{ article.get_next.title|truncatechars:18 }}
+                                            {% if article.get_next.title|length > 18 %}...{% endif %}
                                             <i class="fa fa-chevron-right ml-1"></i>
                                         </a>
                                         <a class="d-md-none" href="{{ article.get_next.get_absolute_url }}">
