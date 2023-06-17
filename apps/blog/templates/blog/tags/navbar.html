@@ -23,7 +23,7 @@
                 <li class="nav-item mr-2">
                     {% url 'tool:total' as tool_url %}
                     <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}"
-                       href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
+                       href="{{ tool_url }}"><i class="fa fa-trophy mr-1"></i>在线工具</a>
                 </li>
             {% endif %}
             {% if api_flag %}
@@ -39,7 +39,7 @@
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false"
-                ><i class="fa fa-paper-plane mr-1"></i>个人外链
+                ><i class="fa fa-share-alt mr-1"></i>个人外链
                 </a>
                 <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
                      aria-labelledby="navbarDropdown">
@@ -52,7 +52,7 @@
             <li class="nav-item mr-2 ">
                 {% url 'blog:about' as about_url %}
                 <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}"
-                   href="{{ about_url }}"><i class="fa fa-anchor mr-1"></i>关于</a>
+                   href="{{ about_url }}"><i class="fa fa-user-secret mr-1"></i>关于</a>
             </li>
             <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform"
                   action="{% url 'blog:search_view' %}">
