@@ -136,7 +136,7 @@ class TagView(generic.ListView):
         ordering = super(TagView, self).get_ordering()
         sort = self.kwargs.get('sort')
         if sort == 'v':
-            return ('-views', '-update_date', '-id')
+            return '-views', '-update_date', '-id'
         return ordering
 
     def get_queryset(self, **kwargs):
@@ -173,6 +173,9 @@ class TimelineView(generic.ListView):
     model = Timeline
     template_name = 'blog/timeline.html'
     context_object_name = 'timeline_list'
+
+    def get_ordering(self):
+        return '-update_date',
 
 
 class SilianView(generic.ListView):
