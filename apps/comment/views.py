@@ -7,7 +7,6 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.shortcuts import get_object_or_404
-from . import handlers
 
 user_model = settings.AUTH_USER_MODEL
 
@@ -26,12 +25,14 @@ def AddcommentView(request):
             return JsonResponse({'msg': '你的评论字数超过1048，无法保存。'})
 
         if not rep_id:
-            new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article, parent=None,
+            new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article,
+                                         parent=None,
                                          rep_to=None)
         else:
             new_rep_to = ArticleComment.objects.get(id=rep_id)
             new_parent = new_rep_to.parent if new_rep_to.parent else new_rep_to
-            new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article, parent=new_parent,
+            new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article,
+                                         parent=new_parent,
                                          rep_to=new_rep_to)
         new_comment.save()
         new_point = '#com-' + str(new_comment.id)
@@ -43,7 +44,8 @@ def AddcommentView(request):
 def NotificationView(request, is_read=None):
     '''展示提示消息列表'''
     now_date = datetime.now()
-    return render(request, 'comment/notification.html', context={'is_read': is_read, 'now_date': now_date})
+    return render(request, 'comment/notification.html',
+                  context={'is_read': is_read, 'now_date': now_date})
 
 
 @login_required

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from django.dispatch import receiver
 from django.db.models.signals import post_save
 from .models import ArticleComment, Notification
 
 
+@receiver(post_save, sender=ArticleComment)
 def notify_handler(sender, instance, created, **kwargs):
     the_article = instance.belong
     create_p = instance.author
@@ -30,5 +32,3 @@ def notify_handler(sender, instance, created, **kwargs):
             if create_p != get_p:
                 new_notify = Notification(create_p=create_p, get_p=get_p, comment=instance)
                 new_notify.save()
-
-post_save.connect(notify_handler, sender=ArticleComment)
