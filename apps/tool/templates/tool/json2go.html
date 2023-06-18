@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="{% static 'tool/img/go.ico' %}" type="image/x-icon"/>
     <link href="{% static 'tool/css/json2go/tomorrow.highlight.css' %}?v=20230316.001" rel="stylesheet">
     <link href="{% static 'tool/css/json2go/common.css' %}?v=20230316.001" rel="stylesheet">
+    {% load_github_corners "right" "#4994ec" "https://github.com/mholt/json-to-go" %}
 </head>
 <body>
 <style>
@@ -85,11 +86,10 @@
     </table>
 
 </div>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{% static 'tool/js/json2go/highlight.min.js' %}"></script>
-    <script src="{% static 'tool/js/json2go/json-to-go.js' %}"></script>
-    <script src="{% static 'tool/js/json2go/common.js' %}"></script>
-    <script src="{% static 'tool/js/json2go/gofmt.js' %}"></script>
-    {% load_github_corners "blue" "https://github.com/mholt/json-to-go" %}
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'tool/js/json2go/highlight.min.js' %}"></script>
+<script src="{% static 'tool/js/json2go/json-to-go.js' %}"></script>
+<script src="{% static 'tool/js/json2go/common.js' %}"></script>
+<script src="{% static 'tool/js/json2go/gofmt.js' %}"></script>
 </body>
 </html>

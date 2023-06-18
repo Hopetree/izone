@@ -12,6 +12,7 @@
     <meta name="keywords" content="Editor.md,Markdown,Markdown编辑器,Markdown在线编辑器,在线编辑器,开源Markdown编辑器">
     <link rel="shortcut icon" href="{% static 'editor/images/logos/editormd-favicon-16x16.ico'%}" type="image/x-icon"/>
     <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}" />
+    {% load_github_corners "right" "#eb7571" "https://github.com/pandao/editor.md" %}
 </head>
 <body>
     <style>
@@ -82,6 +83,5 @@ base_vars = safe_load(vars_string)
             });
         });
     </script>
-    {% load_github_corners "red" "https://github.com/pandao/editor.md" %}
 </body>
 </html>

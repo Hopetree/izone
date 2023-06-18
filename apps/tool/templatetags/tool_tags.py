@@ -58,8 +58,8 @@ def load_tool_item(item):
 
 
 @register.inclusion_tag('tool/tags/github_corners.html')
-def load_github_corners(color, url):
+def load_github_corners(position, color, url):
     """
     加载github项目跳转，根据颜色返回
     """
-    return {'color': color, 'url': url}
+    return {'position': position, 'color': color, 'url': url}
