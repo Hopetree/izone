@@ -30,7 +30,7 @@
                         {% for article in year_list %}
                         <li>{{ article.grouper }} 年
                             {% regroup article.list by create_date.month as month_list %}
-                            <ul class="pl-4">
+                            <ul class="pl-2">
                                 {% for each in month_list %}
                                 <li>{{ each.grouper }} 月 (共 {{ each.list|length }} 篇)
                                     <ul class="pl-4">
