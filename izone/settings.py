@@ -267,6 +267,8 @@ SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Dj
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
 
 # 个性化设置，非必要信息
+# 网站部署日期
+SITE_CREATE_DATE = os.getenv('IZONE_SITE_CREATE_DATE', '2023/01/01')
 # 个人 Github 地址
 MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
 # 工信部备案信息
@@ -279,21 +281,5 @@ LA51_PROTOCOL = os.getenv('IZONE_LA51_PROTOCOL', '')
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
 # 使用 http 还是 https （sitemap 中的链接可以体现出来）
 PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
-# hao.tendcode.com
-HAO_CONSOLE = {
-    'flag': os.getenv('IZONE_HAO_FLAG', 'False').upper() == 'TRUE',
-    'name': os.getenv('IZONE_HAO_NAME', '微草导航'),
-    'url': os.getenv('IZONE_HAO_URL', 'https://hao.tendcode.com')
-}
-
 # 个人外链信息（导航栏下拉中显示）
-PRIVATE_LINKS = [
-    {'name': 'Github', 'icon': 'fa-github', 'link': 'https://github.com/Hopetree',
-     'title': '我的Github，专注写Bug'},
-    {'name': '微草导航', 'icon': 'fa-search', 'link': 'https://hao.tendcode.com',
-     'title': '我的导航网站，使用Vue搭建'},
-    {'name': '个人文档', 'icon': 'fa-book', 'link': 'https://hopetree.github.io',
-     'title': '我的个人文档，使用Vitepress搭建'},
-    {'name': '命令速查', 'icon': 'fa-code', 'link': 'https://cmd.tendcode.com',
-     'title': '备忘清单【速查表】'},
-]
+PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')

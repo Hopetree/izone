@@ -34,21 +34,24 @@
             {% endif %}
 
             <!-- 个人外链 -->
-            <li class="nav-item dropdown mr-2 d-xs-block d-sm-none d-lg-block">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
-                   data-toggle="dropdown"
-                   aria-haspopup="true"
-                   aria-expanded="false"
-                ><i class="fa fa-share-alt mr-1"></i>个人外链
-                </a>
-                <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
-                     aria-labelledby="navbarDropdown">
-                    {% for link_item in private_links %}
-                        <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank" title="{{ link_item.title }}">
-                            <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
-                    {% endfor %}
-                </div>
-            </li>
+            {% if private_links %}
+                <li class="nav-item dropdown mr-2 d-xs-block d-sm-none d-lg-block">
+                    <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    ><i class="fa fa-share-alt mr-1"></i>个人外链
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
+                         aria-labelledby="navbarDropdown">
+                        {% for link_item in private_links %}
+                            <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank"
+                               title="{{ link_item.title }}">
+                                <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endif %}
             <li class="nav-item mr-2 ">
                 {% url 'blog:about' as about_url %}
                 <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}"
@@ -58,7 +61,7 @@
                   action="{% url 'blog:search_view' %}">
                 <div class="input-group">
                     <input type="search" name="q" class="form-control" placeholder="站内搜索" autocomplete="off"
-                           required=True>
+                           required>
                     <div class="input-group-btn">
                         <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
                     </div>

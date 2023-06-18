@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import json
 from django.conf import settings
 from .utils import site_full_url
 
@@ -7,6 +7,7 @@ from .utils import site_full_url
 # 自定义上下文管理器
 def settings_info(request):
     return {
+        'site_create_date': settings.SITE_CREATE_DATE,
         'site_logo_name': settings.SITE_LOGO_NAME,
         'site_end_title': settings.SITE_END_TITLE,
         'site_description': settings.SITE_DESCRIPTION,
@@ -19,6 +20,5 @@ def settings_info(request):
         'my_github': settings.MY_GITHUB,
         'site_verification': settings.MY_SITE_VERIFICATION,
         'site_url': site_full_url(),
-        'hao_console': settings.HAO_CONSOLE,
-        'private_links': settings.PRIVATE_LINKS
+        'private_links': json.loads(settings.PRIVATE_LINKS),
     }

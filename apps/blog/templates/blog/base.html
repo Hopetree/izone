@@ -12,14 +12,14 @@
     <!-- TDK and ICO -->
     <title>{% block head_title %}{% endblock %}_{{ site_end_title }}</title>
     {% block metas %}
-    <meta name="description" content="{{ site_description }}">
-    <meta name="keywords" content="{{ site_keywords }}">
+        <meta name="description" content="{{ site_description }}">
+        <meta name="keywords" content="{{ site_keywords }}">
     {% endblock %}
-     <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico'%}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico' %}" type="image/x-icon"/>
     <!-- Bootstrap and font-awesome CSS -->
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="{% static 'blog/js/headroom.min.js'%}"></script>
+    <script src="{% static 'blog/js/headroom.min.js' %}"></script>
     <!-- blog CSS -->
     <link href="{% static 'blog/css/base.css' %}?v=20230619.5" rel="stylesheet">
     {% block top-file %}{% endblock %}
@@ -27,11 +27,11 @@
     {% if not request.COOKIES.toggleTheme %}
         {% now_hour as hour %}
         {% if hour < 6 or hour > 18 %}
-        <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
+            <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
         {% endif %}
     {% else %}
         {% if request.COOKIES.toggleTheme == "dark" %}
-        <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
+            <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
         {% endif %}
     {% endif %}
     {% load_tctip %}
@@ -43,16 +43,18 @@
 
 <!--消息块-->
 {% if messages %}
-<div class="container">
-    {% for message in messages %}
-    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show" role="alert">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-
+                {{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show"
+                 role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% endif %}
 
 <!--切换主题按钮-->
@@ -81,26 +83,43 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <!--js cookie 插件-->
-<script src="{% static 'blog/js/js.cookie.min.js'%}?v=20191123.12"></script>
+<script src="{% static 'blog/js/js.cookie.min.js' %}?v=20191123.12"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-$(function(){var myElement=document.querySelector(".blog-navbar");var headroom=new Headroom(myElement);headroom.init()});
+    $(function () {
+        var myElement = document.querySelector(".blog-navbar");
+        var headroom = new Headroom(myElement);
+        headroom.init()
+    });
 </script>
-<script src="{% static 'blog/js/base.js'%}?v=20230614.1"></script>
+<script src="{% static 'blog/js/base.js' %}?v=20230614.1"></script>
 {% if user.is_authenticated %}
-<script>
-var msgs = {% get_notifications_count user 'false' %};
-if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_record++;if(_record%2){document.title='【 】'+myTitle}else{document.title='【新消息】'+myTitle};setTimeout("titleBlink()",500)};titleBlink()}
-</script>
+    <script>
+        var msgs = {% get_notifications_count user 'false' %};
+        if (msgs > 0) {
+            var _record = 0;
+            var myTitle = document.title;
+
+            function titleBlink() {
+                _record++;
+                if (_record % 2) {
+                    document.title = '【 】' + myTitle
+                } else {
+                    document.title = '【新消息】' + myTitle
+                }
+                ;setTimeout("titleBlink()", 500)
+            };titleBlink()
+        }
+    </script>
 {% endif %}
 {% block end_file %}{% endblock %}
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
-    {% if 51la %}
-        {{ 51la|safe }}
-    {% if user.is_superuser %}<a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
-    {% endif %}
+        {% if 51la %}
+            {{ 51la|safe }}
+            {% if user.is_superuser %}<a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
+        {% endif %}
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>&nbsp;|
             <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
@@ -110,11 +129,17 @@ if(msgs>0){var _record=0;var myTitle=document.title;function titleBlink(){_recor
         <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2018-<span id="year-info"></span>
             <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
         </p>
-        <script>function getnewYear(){var d = new Date();var old = new Date('2018/03/28');
-            var x = document.getElementById("year-info");
-            x.innerHTML=d.getFullYear();var y=document.getElementById("web-day");
-            var dd=Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
-            var d_str="| 网站已续航 "+dd+" 天";y.innerHTML=d_str;}getnewYear()</script>
+        <script>function getterYear() {
+            const d = new Date();
+            const old = new Date('{{ site_create_date }}');
+            const x = document.getElementById("year-info");
+            x.innerHTML = '' + d.getFullYear();
+            const y = document.getElementById("web-day");
+            const dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+            y.innerHTML = "| 网站已续航 " + dd + " 天";
+        }
+
+        getterYear()</script>
     </div>
 </footer>
 </body>
