@@ -118,7 +118,7 @@
     <div class="card-body text-center px-0 f-14">
         {% if 51la %}
             {{ 51la|safe }}
-            {% if user.is_superuser %}<a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
+            {% if user.is_superuser %}<i class="fa fa-line-chart mx-1"></i><a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
         {% endif %}
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>
