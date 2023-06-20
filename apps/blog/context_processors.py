@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
+import datetime
 import json
 from django.conf import settings
-from .utils import site_full_url
+from .utils import (site_full_url, get_site_create_day)
 
 
 # 自定义上下文管理器
 def settings_info(request):
     return {
-        'site_create_date': settings.SITE_CREATE_DATE,
+        'this_year': datetime.datetime.now().year,
+        'site_create_date': get_site_create_day(settings.SITE_CREATE_DATE),
         'site_logo_name': settings.SITE_LOGO_NAME,
         'site_end_title': settings.SITE_END_TITLE,
         'site_description': settings.SITE_DESCRIPTION,

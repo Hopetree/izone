@@ -268,7 +268,7 @@ SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博�
 
 # 个性化设置，非必要信息
 # 网站部署日期
-SITE_CREATE_DATE = os.getenv('IZONE_SITE_CREATE_DATE', '2023/01/01')
+SITE_CREATE_DATE = os.getenv('IZONE_SITE_CREATE_DATE', '2023-01-01')
 # 个人 Github 地址
 MY_GITHUB = os.getenv('IZONE_GITHUB', 'https://github.com/Hopetree')
 # 工信部备案信息

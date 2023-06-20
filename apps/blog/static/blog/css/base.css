@@ -533,6 +533,28 @@ footer a:hover {
     color: #fff;
 }
 
+@keyframes iconAnimate {
+    0%, 100% {
+        transform: scale(1);
+    }
+    10%, 30% {
+        transform: scale(0.9);
+    }
+    20%, 40%, 60%, 80% {
+        transform: scale(1.1);
+    }
+    50%, 70% {
+        transform: scale(1.1);
+    }
+}
+
+.with-love i {
+    color: #ff2152;
+    display: inline-block;
+    margin: 0 .2rem;
+    animation: iconAnimate 1.33s ease-in-out infinite;
+}
+
 .bg-none {
     background-color: transparent !important;
 }
@@ -581,6 +603,7 @@ div.archive > ul > li > ul {
 }
 
 /*归档页面end*/
+
 
 @media (max-width: 420px) {
     .row {

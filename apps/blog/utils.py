@@ -1,7 +1,45 @@
 # -*- coding:utf-8 -*-
+from datetime import datetime
 from django.apps import apps as django_apps
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+
+
+class DateCalculator:
+    @staticmethod
+    def calculate_date_diff(start_date, end_date):
+        start = datetime.strptime(start_date, "%Y-%m-%d")
+        end = datetime.strptime(end_date, "%Y-%m-%d")
+        diff = end - start
+
+        days = diff.days
+        years = 0
+
+        if start.year == end.year:
+            remaining_days = days
+        else:
+            if (start.month > end.month) or (start.month == end.month and start.day > end.day):
+                years = end.year - start.year - 1
+                last_start = start.replace(year=end.year - 1)
+                remaining_days = (end - last_start).days
+            else:
+                years = end.year - start.year
+                last_start = start.replace(year=end.year)
+                remaining_days = (end - last_start).days
+        if years > 0:
+            result = f"{years}年{remaining_days}天"
+        else:
+            result = f"{remaining_days}天"
+
+        return result
+
+
+def get_site_create_day(create_day):
+    """
+    返回给的时间到当前日期的年天，create_day格式%Y-%m-%d
+    """
+    now_day = datetime.now().strftime("%Y-%m-%d")
+    return DateCalculator.calculate_date_diff(create_day, now_day)
 
 
 def site_protocol():

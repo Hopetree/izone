@@ -21,17 +21,17 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js' %}"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20230619.5" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20230620.4" rel="stylesheet">
     {% block top-file %}{% endblock %}
     <!--根据cookies判断是否启用暗色主题-->
     {% if not request.COOKIES.toggleTheme %}
         {% now_hour as hour %}
         {% if hour < 6 or hour > 18 %}
-            <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
+            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230614.03" rel="stylesheet">
         {% endif %}
     {% else %}
         {% if request.COOKIES.toggleTheme == "dark" %}
-            <link id="theme-css-dark" href="/static/blog/css/night.css?20230614.03" rel="stylesheet">
+            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230614.03" rel="stylesheet">
         {% endif %}
     {% endif %}
     {% load_tctip %}
@@ -88,18 +88,18 @@
 <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
     $(function () {
-        var myElement = document.querySelector(".blog-navbar");
-        var headroom = new Headroom(myElement);
+        const myElement = document.querySelector(".blog-navbar");
+        const headroom = new Headroom(myElement);
         headroom.init()
     });
 </script>
 <script src="{% static 'blog/js/base.js' %}?v=20230614.1"></script>
 {% if user.is_authenticated %}
     <script>
-        var msgs = {% get_notifications_count user 'false' %};
+        const msgs = {% get_notifications_count user 'false' %};
         if (msgs > 0) {
-            var _record = 0;
-            var myTitle = document.title;
+            let _record = 0;
+            const myTitle = document.title;
 
             function titleBlink() {
                 _record++;
@@ -108,8 +108,8 @@
                 } else {
                     document.title = '【新消息】' + myTitle
                 }
-                ;setTimeout("titleBlink()", 500)
-            };titleBlink()
+                setTimeout("titleBlink()", 500)
+            }titleBlink()
         }
     </script>
 {% endif %}
@@ -121,25 +121,15 @@
             {% if user.is_superuser %}<a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
         {% endif %}
         <p class="mb-0">
-            <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>&nbsp;|
-            <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
+            <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>
             {% if cnzz_protocol %}|&nbsp;{{ cnzz_protocol|safe }}{% endif %}
-            <span id="web-day"></span>
+            <span class="with-love"><i class="fa fa-heart"></i></span>
+            <span id="web-day">网站已续航&nbsp;{{ site_create_date }}</span>
         </p>
-        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;2018-<span id="year-info"></span>
+        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info">{{ this_year }}</span>
             <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+            <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">网站地图</a>
         </p>
-        <script>function getterYear() {
-            const d = new Date();
-            const old = new Date('{{ site_create_date }}');
-            const x = document.getElementById("year-info");
-            x.innerHTML = '' + d.getFullYear();
-            const y = document.getElementById("web-day");
-            const dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
-            y.innerHTML = "| 网站已续航 " + dd + " 天";
-        }
-
-        getterYear()</script>
     </div>
 </footer>
 </body>
