@@ -45,8 +45,7 @@
 {% if messages %}
     <div class="container">
         {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-
-                {{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show"
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show"
                  role="alert">
                 {{ message }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -118,7 +117,10 @@
     <div class="card-body text-center px-0 f-14">
         {% if 51la %}
             {{ 51la|safe }}
-            {% if user.is_superuser %}<i class="fa fa-line-chart mx-1"></i><a href="https://v6.51.la/user/application" target="_blank">站长统计</a>{% endif %}
+            {% if user.is_superuser %}
+                <i class="fa fa-line-chart mx-1"></i>
+                <a href="https://v6.51.la/user/application" target="_blank">站长统计</a>
+            {% endif %}
         {% endif %}
         <p class="mb-0">
             <a href="http://beian.miit.gov.cn/" target="_blank">{{ beian }}</a>
