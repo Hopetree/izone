@@ -74,7 +74,6 @@
 .article-toc {
     position: fixed;
     max-width: 18%;
-    border-left: .1rem solid #d1d7dd;
     max-height: 33rem;
     overflow: auto;
 }
@@ -87,6 +86,15 @@
 .article-toc ul {
     padding-left: 1rem;
     list-style-type: none;
+}
+
+.article-toc ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: .12rem;
+    height: 1.7rem;
+    background-color: #d1d7dd;
 }
 
 .article-toc li {
@@ -109,11 +117,11 @@
 
 .toc a::before {
     content: "";
-    position: absolute; /* 设置绝对定位 */
-    left: -.1rem; /* 用于调整伪元素与链接文本之间的间距 */
-    width: .1rem; /* 伪元素宽度 */
-    height: 1rem; /* 伪元素高度与 <a> 标签保持一致 */
-    background-color: var(--color-border-default);
+    position: absolute;
+    left: 0;
+    width: .12rem;
+    height: 1rem;
+    background-color: transparent;
 }
 
 .toc a.active::before {
