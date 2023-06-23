@@ -69,7 +69,9 @@ class DetailView(generic.DetailView):
         ses = self.request.session
         the_key = self.context_object_name + ':read:{}'.format(obj.id)
         is_read_time = ses.get(the_key)
-        if u != obj.author:
+        if u == obj.author or u.is_superuser:
+            pass
+        else:
             if not is_read_time:
                 obj.update_views()
                 ses[the_key] = time.time()
