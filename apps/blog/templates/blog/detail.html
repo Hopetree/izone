@@ -151,10 +151,18 @@
 {% block end_file %}
     <script src="{% static 'blog/js/code.js' %}?v=20230614.4"></script>
     <script>
-      const links = document.querySelectorAll('#article a');
-      links.forEach(link => {
-        link.setAttribute('target', '_blank');
-      });
+        {#文章里面的外链单独打开#}
+        const links = document.querySelectorAll('#article a');
+        links.forEach(link => {
+            link.setAttribute('target', '_blank');
+        });
+        {#第一个标题自动激活#}
+        document.addEventListener('DOMContentLoaded', function () {
+            const firstLi = document.querySelector('div.article-toc div.toc > ul > li > a:first-child');
+            if (firstLi) {
+                firstLi.classList.add('active');
+            }
+        });
     </script>
     {% if user.is_authenticated %}
         <script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
