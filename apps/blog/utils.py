@@ -11,6 +11,7 @@ class DateCalculator:
         start = datetime.strptime(start_date, "%Y-%m-%d")
         end = datetime.strptime(end_date, "%Y-%m-%d")
         diff = end - start
+        start_year = start.year
 
         days = diff.days
         years = 0
@@ -31,7 +32,7 @@ class DateCalculator:
         else:
             result = f"{remaining_days}天"
 
-        return result
+        return result, start_year
 
 
 def get_site_create_day(create_day):

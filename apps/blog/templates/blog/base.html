@@ -128,9 +128,9 @@
             <span class="with-love"><i class="fa fa-heart"></i></span>
             <span id="web-day">网站已续航&nbsp;{{ site_create_date }}</span>
         </p>
-        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info">{{ this_year }}</span>
+        <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info">{{ site_create_year }}-{{ this_year }}</span>
             <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
-            <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">网站地图</a>
+            <a href="{% url 'django.contrib.sitemaps.views.sitemap' %}" target="_blank">Sitemap</a>
         </p>
     </div>
 </footer>
