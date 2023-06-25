@@ -9,3 +9,5 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt --index-url $pip_index_url --trusted-host $pip_trusted_host
 COPY . .
+
+CMD ["supervisord", "-n", "-c", "supervisord.conf"]
