@@ -178,6 +178,11 @@ USE_L10N = True
 
 USE_TZ = False  # 关闭国际时间，不然数据库报错
 
+# 统一分页设置
+BASE_PAGE_BY = 10
+BASE_ORPHANS = 5
+
+# *************************************** 静态文件配置开始 ***************************************
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -188,11 +193,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # 媒体文件收集
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# *************************************** 静态文件配置结束 ***************************************
 
-# 统一分页设置
-BASE_PAGE_BY = 10
-BASE_ORPHANS = 5
 
+# *************************************** 全文配置开始 ***************************************
 # 全文搜索应用配置
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -201,7 +205,10 @@ HAYSTACK_CONNECTIONS = {
     }
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# *************************************** 全文配置结束 ***************************************
 
+
+# ************************************* restframework配置开始 **********************************
 # restframework settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -210,49 +217,64 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20
 }
+# ********************************** restframework配置开始 ************************************
 
+
+# *************************************** 数据库配置开始 ***************************************
 # 配置数据库
-MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
-MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'izone')
-MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'root')
-MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', 'python')
-MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)
+izone_mysql_host = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
+izone_mysql_name = os.getenv('IZONE_MYSQL_NAME', 'izone')
+izone_mysql_user = os.getenv('IZONE_MYSQL_USER', 'root')
+izone_mysql_pwd = os.getenv('IZONE_MYSQL_PASSWORD', 'python')
+izone_mysql_port = os.getenv('IZONE_MYSQL_PORT', 3306)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': MYSQL_NAME,  # 数据库的名称
-        'USER': MYSQL_USER,  # 数据库的用户名
-        'PASSWORD': MYSQL_PASSWORD,  # 数据库的密码
-        'HOST': MYSQL_HOST,
-        'PORT': MYSQL_PORT,
+        'NAME': izone_mysql_name,  # 数据库的名称
+        'USER': izone_mysql_user,  # 数据库的用户名
+        'PASSWORD': izone_mysql_pwd,  # 数据库的密码
+        'HOST': izone_mysql_host,
+        'PORT': izone_mysql_port,
         'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True}
     }
 }
+# *************************************** 数据库配置结束 **************************************
 
+
+# *************************************** 缓存配置开始 ***************************************
 # 使用django-redis缓存页面，缓存配置如下：
-REDIS_HOST = os.getenv('IZONE_REDIS_HOST', '127.0.0.1')
-REDIS_PORT = os.getenv('IZONE_REDIS_PORT', 6379)
+izone_redis_host = os.getenv('IZONE_REDIS_HOST', '127.0.0.1')
+izone_redis_port = os.getenv('IZONE_REDIS_PORT', 6379)
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://{}:{}/0".format(REDIS_HOST, REDIS_PORT),
+        "LOCATION": "redis://{}:{}/0".format(izone_redis_host, izone_redis_port),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
+# *************************************** 缓存配置结束 ***************************************
+
 
 # *************************************** celery 配置开始 ***************************************
-CELERY_BROKER_URL = "redis://{}:{}/1".format(REDIS_HOST, REDIS_PORT)
+# 跟缓存的redis配置类似，使用不同的库就行
+CELERY_BROKER_URL = "redis://{}:{}/1".format(izone_redis_host, izone_redis_port)
+# 时区跟Django的一致
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_ENABLE_UTC = False  # 不使用utc，这就意味着时间会比上海慢8小时
-DJANGO_CELERY_BEAT_TZ_AWARE = False  # 应对django在使用mysql的时候设置USE_TZ = False导致的报错
-CELERY_RESULT_BACKEND = "django-db"  # 支持数据库django-db和缓存django-cache存储任务状态及结果
+# 不使用utc，所以在定时任务里面的时间应该比上海时间少8小时，比如要设置本地16:00执行，那么应该在定时里面设置成8:00
+CELERY_ENABLE_UTC = False
+# 应对django在使用mysql的时候设置USE_TZ = False导致的报错
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+# 支持数据库django-db和缓存django-cache存储任务状态及结果
+CELERY_RESULT_BACKEND = "django-db"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 # *************************************** celery 配置结束 ***************************************
 
+
+# ****************************************** 邮箱配置开始 ****************************************
 # 配置管理邮箱，服务出现故障会收到到邮件，环境变量值的格式：name|test@test.com 多组用户用英文逗号隔开
 ADMINS = []
 admin_email_user = os.getenv('IZONE_ADMIN_EMAIL_USER')
@@ -272,13 +294,19 @@ EMAIL_TIMEOUT = 5
 EMAIL_USE_SSL = os.getenv('IZONE_EMAIL_USE_SSL', 'True').upper() == 'TRUE'
 # 默认发件人，不设置的话django默认使用的webmaster@localhost，所以要设置成自己可用的邮箱
 DEFAULT_FROM_EMAIL = os.getenv('IZONE_DEFAULT_FROM_EMAIL', 'TendCode博客 <your-email-address>')
+# *************************************** 邮箱配置结束 *******************************************
 
+
+# ***************************************** 网站配置开始 ****************************************
 # 网站默认设置和上下文信息
-SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'TendCode')
+SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'IzoneBlog')
 SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'izone')
 SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
+# ***************************************** 网站配置结束 *****************************************
 
+
+# ***************************************** 个性化配置开始 ****************************************
 # 个性化设置，非必要信息
 # 网站部署日期
 SITE_CREATE_DATE = os.getenv('IZONE_SITE_CREATE_DATE', '2023-01-01')
@@ -296,3 +324,4 @@ MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
 PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
 # 个人外链信息（导航栏下拉中显示）
 PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')
+# ***************************************** 个性化配置结束 ****************************************
