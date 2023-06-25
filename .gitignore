@@ -105,3 +105,6 @@ media/
 
 # jieba
 .DS_Store
+
+# celery
+*.pid

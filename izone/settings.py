@@ -73,6 +73,10 @@ INSTALLED_APPS = [
     'django_tctip',
     'resume',  # 个人简历
 
+    'easytask',  # 专门存放celery任务
+    'django_celery_results',  # celery结果
+    'django_celery_beat',  # celery定时任务
+
 ]
 
 # 自定义用户model
@@ -233,12 +237,21 @@ REDIS_PORT = os.getenv('IZONE_REDIS_PORT', 6379)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://{}:{}".format(REDIS_HOST, REDIS_PORT),
+        "LOCATION": "redis://{}:{}/0".format(REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
+
+# *************************************** celery 配置开始 ***************************************
+CELERY_BROKER_URL = "redis://{}:{}/1".format(REDIS_HOST, REDIS_PORT)
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC = False  # 不使用utc，这就意味着时间会比上海慢8小时
+DJANGO_CELERY_BEAT_TZ_AWARE = False  # 应对django在使用mysql的时候设置USE_TZ = False导致的报错
+CELERY_RESULT_BACKEND = "django-db"  # 支持数据库django-db和缓存django-cache存储任务状态及结果
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# *************************************** celery 配置结束 ***************************************
 
 # 配置管理邮箱，服务出现故障会收到到邮件，环境变量值的格式：name|test@test.com 多组用户用英文逗号隔开
 ADMINS = []
