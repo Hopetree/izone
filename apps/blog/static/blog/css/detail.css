@@ -67,14 +67,10 @@
 }
 
 /*设置文章导航*/
-.toc-block {
-    padding-top: 3rem;
-}
-
 .article-toc {
     position: fixed;
     max-width: 18%;
-    max-height: 33rem;
+    max-height: 38rem;
     overflow: auto;
 }
 
