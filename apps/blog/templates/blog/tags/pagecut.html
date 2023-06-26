@@ -1,13 +1,16 @@
+{% load blog_tags %}
 <div class="text-center mt-2 mt-sm-1 mt-md-0 mb-3 f-16">
     {% if page_obj.has_previous %}
-    <a class="text-success" href="?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% deal_with_full_path request.get_full_path 'page' page_obj.previous_page_number as new_pre_page_path %}
+        <a class="text-success" href="{{ new_pre_page_path }}">上一页</a>
     {% else %}
-    <span class="text-secondary" title="当前页已经是首页">上一页</span>
+        <span class="text-secondary" title="当前页已经是首页">上一页</span>
     {% endif %}
     <span class="mx-2">第&nbsp;{{ page_obj.number }}&nbsp;/&nbsp;{{ paginator.num_pages }}&nbsp;页</span>
     {% if page_obj.has_next %}
-    <a class="text-success" href="?page={{ page_obj.next_page_number }}">下一页</a>
+        {% deal_with_full_path request.get_full_path 'page' page_obj.next_page_number as new_next_page_path %}
+        <a class="text-success" href="{{ new_next_page_path }}">下一页</a>
     {% else %}
-    <span class="text-secondary" title="当前页已经是末页">下一页</span>
+        <span class="text-secondary" title="当前页已经是末页">下一页</span>
     {% endif %}
 </div>

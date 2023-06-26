@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, render
 from django.utils.text import slugify
 from django.views import generic
@@ -51,10 +52,19 @@ class IndexView(generic.ListView):
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
 
     def get_ordering(self):
-        sort = self.kwargs.get('sort')
-        if sort == 'v':
-            return ('-views', '-update_date', '-id')
-        return ('-is_top', '-create_date')
+        # url参数中可以传排序参数
+        sort = self.request.GET.get('sort')
+        if sort == 'views':
+            return '-views', '-update_date', '-id'
+        return '-is_top', '-create_date'
+
+    def get_queryset(self, **kwargs):
+        queryset = super(IndexView, self).get_queryset()
+        sort = self.request.GET.get('sort')
+        if sort == 'comment':
+            queryset = Article.objects.annotate(com=Count('article_comments')).order_by('-com',
+                                                                                        '-views')
+        return queryset
 
 
 class DetailView(generic.DetailView):
@@ -109,9 +119,10 @@ class CategoryView(generic.ListView):
 
     def get_ordering(self):
         ordering = super(CategoryView, self).get_ordering()
-        sort = self.kwargs.get('sort')
-        if sort == 'v':
-            return ('-views', '-update_date', '-id')
+        # url参数中可以传排序参数
+        sort = self.request.GET.get('sort')
+        if sort == 'views':
+            return '-views', '-update_date', '-id'
         return ordering
 
     def get_queryset(self, **kwargs):
@@ -136,8 +147,9 @@ class TagView(generic.ListView):
 
     def get_ordering(self):
         ordering = super(TagView, self).get_ordering()
-        sort = self.kwargs.get('sort')
-        if sort == 'v':
+        # url参数中可以传排序参数
+        sort = self.request.GET.get('sort')
+        if sort == 'views':
             return '-views', '-update_date', '-id'
         return ordering
 

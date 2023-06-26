@@ -1,5 +1,6 @@
 # 创建了新的tags标签文件后必须重启服务器
 from datetime import datetime
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 from django import template
 from ..models import Article, Category, Tag, Carousel, FriendLink
@@ -13,7 +14,7 @@ register = template.Library()
 # 文章相关标签函数
 @register.simple_tag
 def get_article_list(sort=None, num=None):
-    '''获取指定排序方式和指定数量的文章'''
+    """获取指定排序方式和指定数量的文章"""
     if sort:
         if num:
             return Article.objects.order_by(sort)[:num]
@@ -25,52 +26,52 @@ def get_article_list(sort=None, num=None):
 
 @register.simple_tag
 def keywords_to_str(art):
-    '''将文章关键词变成字符串'''
+    """将文章关键词变成字符串"""
     keys = art.keywords.all()
     return ','.join([key.name for key in keys])
 
 
 @register.simple_tag
 def get_tag_list():
-    '''返回标签列表'''
+    """返回标签列表"""
     return Tag.objects.annotate(total_num=Count('article')).filter(total_num__gt=0)
 
 
 @register.simple_tag
 def get_category_list():
-    '''返回分类列表'''
+    """返回分类列表"""
     return Category.objects.annotate(total_num=Count('article')).filter(total_num__gt=0)
 
 
 @register.inclusion_tag('blog/tags/article_list.html')
 def load_article_summary(articles, user):
-    '''返回文章列表模板'''
+    """返回文章列表模板"""
     return {'articles': articles, 'user': user}
 
 
 @register.inclusion_tag('blog/tags/pagecut.html', takes_context=True)
 def load_pages(context):
-    '''分页标签模板，不需要传递参数，直接继承参数'''
+    """分页标签模板，不需要传递参数，直接继承参数"""
     return context
 
 
 # 其他函数
 @register.simple_tag
 def get_carousel_list():
-    '''获取轮播图片列表'''
+    """获取轮播图片列表"""
     return Carousel.objects.all()
 
 
 @register.simple_tag
 def get_star(num):
-    '''得到一排星星'''
+    """得到一排星星"""
     tag_i = '<i class="fa fa-star"></i>'
     return mark_safe(tag_i * num)
 
 
 @register.simple_tag
 def get_star_title(num):
-    '''得到星星个数的说明'''
+    """得到星星个数的说明"""
     the_dict = {
         1: '【1颗星】：微更新，涉及轻微调整或者后期规划了内容',
         2: '【2颗星】：小更新，小幅度调整，一般不会迁移表格',
@@ -83,7 +84,7 @@ def get_star_title(num):
 
 @register.simple_tag
 def my_highlight(text, q):
-    '''自定义标题搜索词高亮函数，忽略大小写'''
+    """自定义标题搜索词高亮函数，忽略大小写"""
     if len(q) > 1:
         try:
             text = re.sub(q, lambda a: '<span class="highlighted">{}</span>'.format(a.group()),
@@ -96,13 +97,13 @@ def my_highlight(text, q):
 
 @register.simple_tag
 def get_request_param(request, param, default=None):
-    '''获取请求的参数'''
+    """获取请求的参数"""
     return request.POST.get(param) or request.GET.get(param, default)
 
 
 @register.simple_tag
 def get_friends():
-    '''获取活跃的友情链接'''
+    """获取活跃的友情链接"""
     return FriendLink.objects.filter(is_show=True, is_active=True)
 
 
@@ -110,3 +111,22 @@ def get_friends():
 def now_hour():
     """返回当前时间的小时数"""
     return datetime.now().hour
+
+
+@register.simple_tag
+def deal_with_full_path(full_path, key, value):
+    """
+    处理当前路径，包含参数的
+    @param value: 参数值
+    @param key: 要修改的参数，也可以新增
+    @param full_path: /search/?q=python&page=2
+    @return: 得到新的路径
+    """
+    parsed_url = urlparse(full_path)
+    query_params = parse_qs(parsed_url.query)
+    # 去除参数key
+    query_params[key] = value
+    # 重新生成URL
+    updated_query_string = urlencode(query_params, doseq=True)
+    updated_url = urlunparse(parsed_url._replace(query=updated_query_string))
+    return updated_url

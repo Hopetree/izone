@@ -39,7 +39,7 @@ class Tag(models.Model):
         return reverse('blog:tag', kwargs={'slug': self.slug})
 
     def get_article_list(self):
-        '''返回当前标签下所有发表的文章列表'''
+        """返回当前标签下所有发表的文章列表"""
         return Article.objects.filter(tags=self)
 
 
@@ -68,7 +68,8 @@ class Category(models.Model):
 # 文章
 class Article(models.Model):
     IMG_LINK = '/static/blog/img/summary.png'
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者', on_delete=models.PROTECT)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者',
+                               on_delete=models.PROTECT)
     title = models.CharField(max_length=150, verbose_name='文章标题')
     summary = models.TextField('文章摘要', max_length=230, default='文章摘要等同于网页description内容，请务必填写...')
     body = models.TextField(verbose_name='文章内容')
@@ -218,6 +219,7 @@ class FriendLink(models.Model):
         self.is_show = True
         self.save(update_fields=['is_show'])
 
+
 class AboutBlog(models.Model):
     body = models.TextField(verbose_name='About 内容')
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
@@ -235,4 +237,3 @@ class AboutBlog(models.Model):
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
-

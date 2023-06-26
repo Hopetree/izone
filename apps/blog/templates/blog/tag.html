@@ -27,11 +27,11 @@
                     {% endif %}
                 </div>
                 <div class="text-secondary font-weight-bold py-3 f-15 choice">
-                    {% url 'blog:tag' search_instance.slug as base_tag %}
-                    {% url 'blog:tag_hot' search_instance.slug as hot_tag %}
-                    <a class="pb-2 {% if request.path == base_tag %}active{% endif %}" href="{{ base_tag }}">
+                    <a class="pb-2 {% if not request.GET.sort %}active{% endif %}"
+                       href="{% url 'blog:tag' search_instance.slug %}">
                         <i class="fa fa-bars mr-1"></i>时间排序</a>
-                    <a class="pb-2 ml-4 {% if request.path == hot_tag %}active{% endif %}" href="{{ hot_tag }}">
+                    <a class="pb-2 ml-4 {% if request.GET.sort == 'views' %}active{% endif %}"
+                       href="{% url 'blog:tag' search_instance.slug %}?sort=views">
                         <i class="fa fa-fire mr-1"></i>热度排序</a>
                 </div>
                 {% load_article_summary articles user %}
