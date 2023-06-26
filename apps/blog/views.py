@@ -62,8 +62,7 @@ class IndexView(generic.ListView):
         queryset = super(IndexView, self).get_queryset()
         sort = self.request.GET.get('sort')
         if sort == 'comment':
-            queryset = Article.objects.annotate(com=Count('article_comments')).order_by('-com',
-                                                                                        '-views')
+            queryset = queryset.annotate(com=Count('article_comments')).order_by('-com', '-views')
         return queryset
 
 
