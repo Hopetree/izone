@@ -271,6 +271,8 @@ DJANGO_CELERY_BEAT_TZ_AWARE = False
 # 支持数据库django-db和缓存django-cache存储任务状态及结果
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# 每个 worker 最多执行3个任务就会被销毁，可防止内存泄露
+CELERYD_MAX_TASKS_PER_CHILD = 3
 # *************************************** celery 配置结束 ***************************************
 
 
