@@ -33,8 +33,8 @@
                         </li>
                         <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
                             {% if user.is_superuser or user == article.author %}
-                                <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
-                                   target="_blank" title="后台编辑文章">
+                                <a class="edit-blog" href="{% url 'blog:article_edit' article.slug %}"
+                                   target="_blank" title="编辑文章">
                                     {{ article.title|slice:":50" }}{% if article.title|length > 50 %}
                                         ...{% endif %}</a>
                             {% else %}
@@ -44,8 +44,8 @@
                         </li>
                         <li class="breadcrumb-item active d-md-none" aria-current="page">
                             {% if user.is_superuser or user == article.author %}
-                                <a class="edit-blog" href="{% url 'admin:blog_article_change' article.pk %}"
-                                   target="_blank" title="后台编辑文章">当前文章</a>
+                                <a class="edit-blog" href="{% url 'blog:article_edit' article.slug %}"
+                                   target="_blank" title="编辑文章">当前文章</a>
                             {% else %}
                                 当前文章
                             {% endif %}

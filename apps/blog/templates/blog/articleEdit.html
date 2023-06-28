@@ -1,0 +1,71 @@
+{% extends 'blog/base.html' %}
+{% load static tool_tags %}
+{% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
+{% block metas %}
+    <meta name="robots" content="noindex">
+    <meta name="description" content="{{ article.summary }}">
+{% endblock %}
+{% block top-file %}
+    <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}"/>
+    <style>
+        #layout > header {
+            margin: 0 auto;
+            padding: 5px 0;
+            width: 90%;
+        }
+
+        #layout > header {
+            margin-bottom: 1rem;
+        }
+
+        #layout > header > div > a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        #layout > header > div > a:hover {
+            color: #ea6f5a;
+        }
+
+    </style>
+{% endblock %}
+{% block base_content %}
+    <div id="layout">
+        <header class="my-2">
+            <button type="button" class="btn btn-success btn-sm mr-2" id="save-article">保存修改</button>
+            <button type="button" class="btn btn-warning btn-sm mr-2" id="back-article">放弃编辑</button>
+            <button type="button" class="btn btn-info btn-sm mr-2" id="more-edit-article">后台编辑</button>
+        </header>
+        <div id="test-editormd">
+            <textarea style="display:none;">{{ article.body }}</textarea>
+        </div>
+    </div>
+{% endblock %}
+{% block end_file %}
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'editor/js/editormd.min.js' %}"></script>
+    <script type="text/javascript">
+        let testEditor;
+
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "90%",
+                height: "1000",
+                syncScrolling: "single",
+                path: "{% static 'editor/lib/' %}"
+            });
+        });
+    </script>
+    <script src="{% static 'blog/js/article.js' %}?v20230628.1"></script>
+    <script>
+        $('#save-article').click(function () {
+            article_update_save("{{ csrf_token }}", "{% url 'blog:article_update' %}", "{{ article.slug }}")
+        });
+        $('#back-article').click(function () {
+            window.location.href = "{% url 'blog:detail' article.slug %}";
+        });
+        $('#more-edit-article').click(function () {
+            window.location.href = "{% url 'admin:blog_article_change' article.pk %}";
+        });
+    </script>
+{% endblock %}

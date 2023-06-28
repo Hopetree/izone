@@ -1,8 +1,11 @@
 from django.db.models import Count
-from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponseForbidden, JsonResponse, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, render, reverse
 from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
+from django.views.decorators.http import require_http_methods
+
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog
 from .utils import site_full_url
 from django.core.cache import cache
@@ -33,7 +36,7 @@ class CustomHtmlFormatter(HtmlFormatter):
 # Create your views here.
 
 def test_page_view(request):
-    return render(request, 'test_html.html')
+    return render(request, '403.html')
 
 
 class ArchiveView(generic.ListView):
@@ -209,3 +212,44 @@ class MySearchView(SearchView):
 def robots(request):
     site_url = site_full_url()
     return render(request, 'robots.txt', context={'site_url': site_url}, content_type='text/plain')
+
+
+class DetailEditView(generic.DetailView):
+    """
+    文章编辑视图
+    """
+    model = Article
+    template_name = 'blog/articleEdit.html'
+    context_object_name = 'article'
+
+    def get_object(self, queryset=None):
+        obj = super(DetailEditView, self).get_object()
+        # 非作者及超管无权访问
+        if not self.request.user.is_superuser and obj.author != self.request.user:
+            raise Http404('Invalid request.')
+        return obj
+
+
+@require_http_methods(["POST"])
+def update_article(request):
+    """更新文章，仅管理员和作者可以更新"""
+    if request.method == 'POST' and request.is_ajax():
+        article_slug = request.POST.get('article_slug')
+        article_body = request.POST.get('article_body')
+
+        try:
+            article = Article.objects.get(slug=article_slug)
+            # 检查当前用户是否是作者
+            if not request.user.is_superuser and article.author != request.user:
+                return HttpResponseForbidden("You don't have permission to update this article.")
+
+            # 更新article模型的数据
+            article.body = article_body
+            article.save()
+
+            callback = reverse('blog:detail', kwargs={'slug': article_slug})
+            response_data = {'message': 'Success', 'data': {'callback': callback}, 'code': 0}
+            return JsonResponse(response_data)
+        except Article.DoesNotExist:
+            return HttpResponseBadRequest("Article not found.")
+    return HttpResponseBadRequest("Invalid request.")

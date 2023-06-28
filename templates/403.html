@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block head_title %}403{% endblock %}
+{% block metas %}
+    <meta name="description" content="403,无权限访问">
+    <meta name="keywords" content="403页面">
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row errorpage">
+            <div class="col align-self-center error-img text-center">
+                <h1 style="font-size: 12rem;color: #ee795a">403</h1>
+                <div class="errormsg">
+                    <h3>你没有权限造访本星球，请返回地球...</h3>
+                    <a href="javascript:history.go(-1);">返回地球</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

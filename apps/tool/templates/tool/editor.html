@@ -1,4 +1,4 @@
-{% load static tool_tags%}
+{% load static tool_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,43 +10,48 @@
     <title>Editor.md, Markdown在线编辑器_TendCode</title>
     <meta name="description" content="markdown 在线编辑器，基于开源项目 editor.md">
     <meta name="keywords" content="Editor.md,Markdown,Markdown编辑器,Markdown在线编辑器,在线编辑器,开源Markdown编辑器">
-    <link rel="shortcut icon" href="{% static 'editor/images/logos/editormd-favicon-16x16.ico'%}" type="image/x-icon"/>
-    <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}" />
+    <link rel="shortcut icon" href="{% static 'editor/images/logos/editormd-favicon-16x16.ico' %}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{% static 'editor/css/editormd.min.css' %}"/>
+    <style>
+        body {
+            color: rgb(102, 102, 102);
+        }
+
+        #layout > header, .btns {
+            padding: 5px 0;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #layout > header {
+            margin-bottom: 1rem;
+        }
+
+        #layout > header > div > a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        #layout > header > div > a:hover {
+            color: #ea6f5a;
+        }
+
+    </style>
     {% load_github_corners "right" "#eb7571" "https://github.com/pandao/editor.md" %}
 </head>
 <body>
-    <style>
-    body {
-        color: rgb(102, 102, 102);
-    }
-    #layout > header, .btns {
-        padding: 5px 0;
-        width: 90%;
-        margin: 0 auto;
-    }
-    #layout > header {
-        margin-bottom: 1rem;
-    }
-    #layout > header > div > a {
-        color: inherit;
-        text-decoration: none;
-    }
-    #layout > header > div > a:hover {
-        color: #ea6f5a;
-    }
 
-    </style>
-    <div id="layout">
-        <header>
-            <div>
-                <a href="{% url 'blog:index' %}">首页</a>
-                <span>&ensp;&gt;&ensp;</span>
-                <a href="{% url 'tool:total' %}">在线工具</a>
-                <span>&ensp;&gt;&ensp;</span>
-                <span>Markdown 在线编辑器</span>
-            </div>
-        </header>
-        <div id="test-editormd">
+<div id="layout">
+    <header>
+        <div>
+            <a href="{% url 'blog:index' %}">首页</a>
+            <span>&ensp;&gt;&ensp;</span>
+            <a href="{% url 'tool:total' %}">在线工具</a>
+            <span>&ensp;&gt;&ensp;</span>
+            <span>Markdown 在线编辑器</span>
+        </div>
+    </header>
+    <div id="test-editormd">
             <textarea style="display:none;">
 ### Disabled options
 
@@ -67,21 +72,21 @@ base_vars = safe_load(vars_string)
 ### Images
 
 ![部署博客](https://tendcode.com/cdn/article/180418/bsblog.png "部署博客")</textarea>
-        </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{% static 'editor/js/editormd.min.js' %}"></script>
-    <script type="text/javascript">
-        var testEditor;
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'editor/js/editormd.min.js' %}"></script>
+<script type="text/javascript">
+    let testEditor;
 
-        $(function() {
-            testEditor = editormd("test-editormd", {
-                width   : "90%",
-                height  : 720,
-                syncScrolling : "single",
-                path    : "{% static 'editor/lib/' %}"
-            });
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "90%",
+            height: 720,
+            syncScrolling: "single",
+            path: "{% static 'editor/lib/' %}"
         });
-    </script>
+    });
+</script>
 </body>
 </html>
