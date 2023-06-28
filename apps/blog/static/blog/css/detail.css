@@ -98,7 +98,11 @@
 }
 
 .toc a {
+    display: block;
     color: rgba(60, 60, 67, .8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .toc a:hover {
