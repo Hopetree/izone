@@ -7,30 +7,16 @@ from django.conf import settings
 from django.views.decorators.http import require_http_methods
 
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog
-from .utils import site_full_url
+from .utils import site_full_url, CustomHtmlFormatter
 from django.core.cache import cache
 
 import markdown
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
-from pygments.formatters import HtmlFormatter
 from markdown.extensions.codehilite import CodeHiliteExtension
 import time
 
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
-
-
-class CustomHtmlFormatter(HtmlFormatter):
-    def __init__(self, lang_str='', **options):
-        super().__init__(**options)
-        # lang_str has the value {lang_prefix}{lang}
-        # specified by the CodeHilite's options
-        self.lang_str = lang_str
-
-    def _wrap_code(self, source):
-        yield 0, f'<code class="{self.lang_str}">'
-        yield from source
-        yield 0, '</code>'
 
 
 # Create your views here.
