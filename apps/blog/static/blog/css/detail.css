@@ -73,27 +73,27 @@
 /*设置文章导航*/
 .article-toc {
     position: fixed;
-    max-width: 18%;
+    width: 19%;
     max-height: 38rem;
     overflow: auto;
+    background: white;
+    padding: 1rem 1rem .2rem 0;
 }
 
 .article-toc .toc-title {
-    margin-left: 1rem;
+    margin-left: 1.2rem;
+    padding-bottom: .6rem;
+    margin-bottom: .8rem;
+    border-bottom: 1px solid #e4e6eb;
 }
 
 .article-toc ul {
-    padding-left: 1rem;
+    padding-left: 1.2rem;
     list-style-type: none;
 }
 
-.article-toc ul > li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: .12rem;
-    height: 1.7rem;
-    background-color: #d1d7dd;
+.article-toc ul > li > ul li {
+    font-size: 94%;
 }
 
 .article-toc li {
@@ -122,8 +122,9 @@
     content: "";
     position: absolute;
     left: 0;
-    width: .12rem;
+    width: 3px;
     height: 1rem;
+    border-radius: 2px;
     background-color: transparent;
 }
 

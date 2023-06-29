@@ -14,7 +14,7 @@
     {% if user.is_authenticated %}
         <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
     {% endif %}
-    <link href="{% static 'blog/css/detail.css' %}?v=20230629.1" rel="stylesheet">
+    <link href="{% static 'blog/css/detail.css' %}?v=20230629.3" rel="stylesheet">
     <link href="{% static 'blog/css/monokai.css' %}?v=20230611.42" rel="stylesheet">
     <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
 {% endblock %}
@@ -115,9 +115,9 @@
                     {% include 'comment/comment_list.html' %}
                 </div>
             </div>
-            <div class="col-lg-2 toc-block">
-                <div class="article-toc d-none d-lg-block f-13">
-                    <div class="toc-title"><strong>大纲</strong></div>
+            <div class="col-lg-3 toc-block">
+                <div class="article-toc d-none d-lg-block f-14 rounded-6">
+                    <div class="toc-title f-15"><strong>大纲</strong></div>
                     {{ article.toc|safe }}
                 </div>
             </div>
