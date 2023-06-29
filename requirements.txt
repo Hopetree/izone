@@ -25,6 +25,7 @@ importlib-metadata==6.6.0
 jieba==0.39
 kombu==4.6.11
 Markdown==3.4.3
+markdown-checklist==0.4.4
 mysqlclient==2.0.3
 oauthlib==3.1.0
 olefile==0.46

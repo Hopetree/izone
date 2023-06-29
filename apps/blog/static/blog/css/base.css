@@ -141,6 +141,14 @@ blockquote {
     margin-bottom: .5rem
 }
 
+ul.checklist {
+    padding-left: 1.2em;
+}
+
+ul.checklist li {
+    list-style: none;
+}
+
 /* top navbar-------------------------------------------------*/
 #site-logo-name,
 #site-logo-name:hover,

@@ -88,7 +88,7 @@ class DetailView(generic.DetailView):
         else:
             md = markdown.Markdown(extensions=[
                 'markdown.extensions.extra',
-                # 'markdown.extensions.codehilite',
+                'markdown_checklist.extension',
                 CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter),
                 TocExtension(slugify=slugify),
             ])

@@ -25,6 +25,7 @@ def update_article_cache():
         if md_key not in keys:
             md = Markdown(extensions=[
                 'markdown.extensions.extra',
+                'markdown_checklist.extension',
                 CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter),
                 TocExtension(slugify=slugify),
             ])
