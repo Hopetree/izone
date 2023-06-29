@@ -40,6 +40,10 @@
     padding-left: 2.2em;
 }
 
+.article-body ul.checklist {
+    padding-left: 1.2em;
+}
+
 .article-body table {
     width: 100%;
     max-width: 100%;
