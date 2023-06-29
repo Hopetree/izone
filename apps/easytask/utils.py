@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 
 
 class TaskResponse(object):
@@ -9,14 +8,20 @@ class TaskResponse(object):
         self.message = message
         self.error = error
 
-    def __str__(self):
-        return json.dumps(self.__dict__)
-
     def __getitem__(self, key):
         return getattr(self, key)
 
     def __setitem__(self, key, value):
         setattr(self, key, value)
+
+    def as_dict(self):
+        data = {
+            'code': self.code,
+            'data': self.data,
+            'message': self.message,
+            'error': self.error
+        }
+        return data
 
 
 class ErrorTaskResponse(TaskResponse):

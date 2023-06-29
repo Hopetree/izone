@@ -22,4 +22,4 @@ def update_cache():
     response = TaskResponse()
     article_result = update_article_cache()
     response.data['article'] = article_result
-    return response
+    return response.as_dict()
