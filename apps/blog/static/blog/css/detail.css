@@ -80,6 +80,21 @@
     padding: 1rem 1rem .2rem 0;
 }
 
+.article-toc::-webkit-scrollbar {
+    width: 6px;
+}
+
+.article-toc::-webkit-scrollbar-track {
+    box-shadow: none;
+    border-radius: 2px
+}
+
+.article-toc::-webkit-scrollbar-thumb {
+    background-color: #e4e6eb;
+    outline: none;
+    border-radius: 2px
+}
+
 .article-toc .toc-title {
     margin-left: 1.2rem;
     padding-bottom: .6rem;
