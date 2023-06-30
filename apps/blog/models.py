@@ -79,6 +79,7 @@ class Article(models.Model):
     views = models.IntegerField('阅览量', default=0)
     slug = models.SlugField(unique=True)
     is_top = models.BooleanField('置顶', default=False)
+    is_publish = models.BooleanField('是否发布', default=True)
 
     category = models.ForeignKey(Category, verbose_name='文章分类', on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, verbose_name='标签')
@@ -91,7 +92,7 @@ class Article(models.Model):
         ordering = ['-create_date']
 
     def __str__(self):
-        return self.title[:20]
+        return f'{self.title[:30]}...' if len(self.title) > 30 else self.title
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})

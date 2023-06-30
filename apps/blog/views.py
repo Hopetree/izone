@@ -52,6 +52,7 @@ class IndexView(generic.ListView):
         sort = self.request.GET.get('sort')
         if sort == 'comment':
             queryset = queryset.annotate(com=Count('article_comments')).order_by('-com', '-views')
+        queryset = queryset.filter(is_publish=True)
         return queryset
 
 
@@ -60,8 +61,17 @@ class DetailView(generic.DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'article'
 
+    def get_queryset(self):
+        # 普通用户只能看发布的文章，作者和管理员可以看到未发布的
+        queryset = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            return queryset.filter(is_publish=True)
+        if self.request.user.is_superuser:
+            return queryset
+        return queryset.filter(author=self.request.user)
+
     def get_object(self, queryset=None):
-        obj = super(DetailView, self).get_object()
+        obj = super().get_object()
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
         ses = self.request.session
@@ -116,7 +126,7 @@ class CategoryView(generic.ListView):
     def get_queryset(self, **kwargs):
         queryset = super(CategoryView, self).get_queryset()
         cate = get_object_or_404(Category, slug=self.kwargs.get('slug'))
-        return queryset.filter(category=cate)
+        return queryset.filter(category=cate, is_publish=True)
 
     def get_context_data(self, **kwargs):
         context_data = super(CategoryView, self).get_context_data()
@@ -144,7 +154,7 @@ class TagView(generic.ListView):
     def get_queryset(self, **kwargs):
         queryset = super(TagView, self).get_queryset()
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        return queryset.filter(tags=tag)
+        return queryset.filter(tags=tag, is_publish=True)
 
     def get_context_data(self, **kwargs):
         context_data = super(TagView, self).get_context_data()
@@ -192,7 +202,7 @@ class MySearchView(SearchView):
     context_object_name = 'search_list'
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
-    queryset = SearchQuerySet().order_by('-views')
+    queryset = SearchQuerySet().order_by('-views').filter(is_publish=True)
 
 
 def robots(request):
