@@ -16,6 +16,9 @@ class ArticleAdmin(admin.ModelAdmin):
     # 在查看修改的时候显示的属性，第一个字段带有<a>标签，所以最好放标题
     list_display = ('id', 'title', 'author', 'create_date', 'update_date', 'is_top', 'is_publish')
 
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('is_top', 'is_publish')
+
     # 设置需要添加<a>标签的字段
     list_display_links = ('title',)
 
@@ -92,6 +95,9 @@ class FriendLinkAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'link', 'create_date', 'is_active', 'is_show')
     date_hierarchy = 'create_date'
     list_filter = ('is_active', 'is_show')
+
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('is_active', 'is_show')
 
 
 @admin.register(AboutBlog)
