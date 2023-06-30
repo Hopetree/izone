@@ -230,3 +230,11 @@ pre {
     color: #9caec7;
 }
 
+.toc a:hover {
+    color: rgba(60, 60, 67, 1);
+}
+
+.article-toc {
+    background: #18222d;
+}
+
