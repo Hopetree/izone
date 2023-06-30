@@ -14,7 +14,7 @@ class ArticleSitemap(MySitemap):
     priority = 1.0
 
     def items(self):
-        return Article.objects.all()
+        return Article.objects.filter(is_publish=True)
 
     def lastmod(self, obj):
         return obj.update_date
@@ -25,7 +25,8 @@ class CategorySitemap(MySitemap):
     priority = 0.8
 
     def items(self):
-        return Category.objects.annotate(total_num=Count('article')).filter(total_num__gt=0)
+        return Category.objects.filter(article__is_publish=True).annotate(
+            total_num=Count('article')).filter(total_num__gt=0)
 
     def lastmod(self, obj):
         return obj.article_set.first().create_date
@@ -36,7 +37,8 @@ class TagSitemap(MySitemap):
     priority = 0.8
 
     def items(self):
-        return Tag.objects.annotate(total_num=Count('article')).filter(total_num__gt=0)
+        return Tag.objects.filter(article__is_publish=True).annotate(
+            total_num=Count('article')).filter(total_num__gt=0)
 
     def lastmod(self, obj):
         return obj.article_set.first().create_date

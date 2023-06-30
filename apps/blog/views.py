@@ -32,6 +32,10 @@ class ArchiveView(generic.ListView):
     paginate_by = 200
     paginate_orphans = 50
 
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset()
+        return queryset.filter(is_publish=True)
+
 
 class IndexView(generic.ListView):
     model = Article
@@ -48,11 +52,10 @@ class IndexView(generic.ListView):
         return '-is_top', '-create_date'
 
     def get_queryset(self, **kwargs):
-        queryset = super(IndexView, self).get_queryset()
+        queryset = super(IndexView, self).get_queryset().filter(is_publish=True)
         sort = self.request.GET.get('sort')
         if sort == 'comment':
             queryset = queryset.annotate(com=Count('article_comments')).order_by('-com', '-views')
-        queryset = queryset.filter(is_publish=True)
         return queryset
 
 

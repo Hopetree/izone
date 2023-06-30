@@ -73,6 +73,8 @@ class TimelineAdmin(admin.ModelAdmin):
     )
     date_hierarchy = 'update_date'
     list_filter = ('star_num', 'update_date')
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('side', 'icon', 'icon_color')
 
 
 @admin.register(Carousel)

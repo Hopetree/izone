@@ -40,7 +40,7 @@ class Tag(models.Model):
 
     def get_article_list(self):
         """返回当前标签下所有发表的文章列表"""
-        return Article.objects.filter(tags=self)
+        return Article.objects.filter(tags=self, is_publish=True)
 
 
 # 文章分类
@@ -62,7 +62,7 @@ class Category(models.Model):
         return reverse('blog:category', kwargs={'slug': self.slug})
 
     def get_article_list(self):
-        return Article.objects.filter(category=self)
+        return Article.objects.filter(category=self, is_publish=True)
 
 
 # 文章
@@ -108,10 +108,10 @@ class Article(models.Model):
         self.save(update_fields=['views'])
 
     def get_pre(self):
-        return Article.objects.filter(id__lt=self.id).order_by('-id').first()
+        return Article.objects.filter(id__lt=self.id, is_publish=True).order_by('-id').first()
 
     def get_next(self):
-        return Article.objects.filter(id__gt=self.id).order_by('id').first()
+        return Article.objects.filter(id__gt=self.id, is_publish=True).order_by('id').first()
 
 
 # 时间线
