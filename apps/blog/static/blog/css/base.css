@@ -372,6 +372,26 @@ ul.checklist li {
     color: #17a2b8;
 }
 
+.meta-container {
+    color: var(--izone-font-3);
+}
+
+.media-date {
+    margin: 0 .5rem;
+    padding: 0 .5rem;
+    border-left: 1px solid var(--izone-gray-1-1);
+    border-right: 1px solid var(--izone-gray-1-1);
+}
+
+.media-tag-list {
+    display: none;
+}
+
+.media-tag-i {
+    color: var(--izone-font-2);
+}
+
+
 /* base right --------------------------------------------------*/
 .rounded-6 {
     border-radius: .5rem !important;
@@ -993,5 +1013,9 @@ div.archive > ul > li > ul {
         -moz-transform: rotate(360deg);
         -o-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
+    }
+
+    .media-tag-list {
+        display: inline;
     }
 }
