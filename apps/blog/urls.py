@@ -3,7 +3,7 @@ from django.urls import path
 from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
-                    update_article)
+                    update_article, FriendLinkView)
 
 urlpatterns = [
     path('go/', test_page_view, name='go'),  # 测试用页面
@@ -19,5 +19,5 @@ urlpatterns = [
     path('archive/', ArchiveView.as_view(), name='archive'),  # 归档页面
     path('silian.xml', SilianView.as_view(content_type='application/xml'), name='silian'),  # 死链页面
     path('search/', MySearchView.as_view(), name='search_view'),  # 全文搜索
-
+    path('friend/', FriendLinkView.as_view(), name='friend'),  # 友情链接
 ]

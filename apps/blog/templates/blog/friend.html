@@ -1,0 +1,34 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block head_title %}友情链接，申请友联{% endblock %}
+
+{% block metas %}
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="friend页面,友情链接,申请友联">
+{% endblock %}
+
+{% block top-file %}
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" style="line-height:2">
+                <div class="friend-list">
+                    {% for friend in friend_list %}
+                        <a href="{{ friend.link }}">
+                            <div class="friend-container" style='background-image: url("{{ friend.logo }}");'>
+                                <div class="friend-img">
+                                    <img src="{{ friend.logo }}" alt="{{ friend.description }}">
+                                </div>
+                                <div class="friend-title"><span>{{ friend.name }}</span></div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

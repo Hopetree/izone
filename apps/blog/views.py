@@ -6,7 +6,7 @@ from django.views import generic
 from django.conf import settings
 from django.views.decorators.http import require_http_methods
 
-from .models import Article, Tag, Category, Timeline, Silian, AboutBlog
+from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink
 from .utils import site_full_url, CustomHtmlFormatter
 from django.core.cache import cache
 
@@ -197,6 +197,16 @@ class SilianView(generic.ListView):
     model = Silian
     template_name = 'blog/silian.xml'
     context_object_name = 'badurls'
+
+
+class FriendLinkView(generic.ListView):
+    model = FriendLink
+    template_name = 'blog/friend.html'
+    context_object_name = 'friend_list'
+
+    def get_queryset(self):
+        queryset = super(FriendLinkView, self).get_queryset()
+        return queryset.filter(is_show=True, is_active=True)
 
 
 # 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
