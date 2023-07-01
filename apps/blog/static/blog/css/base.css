@@ -557,6 +557,7 @@ ul.checklist li {
 
 .friend-img img {
     width: 60%;
+    height: 60%;
     border-radius: 50%;
     transition: all 2s ease;
     position: absolute;

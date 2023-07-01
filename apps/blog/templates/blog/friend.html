@@ -19,9 +19,9 @@
                 <div class="friend-list">
                     {% for friend in friend_list %}
                         <a href="{{ friend.link }}">
-                            <div class="friend-container" style='background-image: url("{{ friend.logo }}");'>
+                            <div class="friend-container" style='background-image: url("{{ friend.logo|default:'/static/blog/img/summary.png' }}");'>
                                 <div class="friend-img">
-                                    <img src="{{ friend.logo }}" alt="{{ friend.description }}">
+                                    <img src="{{ friend.logo|default:'/static/blog/img/summary.png' }}" alt="{{ friend.description }}">
                                 </div>
                                 <div class="friend-title"><span>{{ friend.name }}</span></div>
                             </div>
