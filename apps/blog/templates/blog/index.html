@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load blog_tags %}
+{% load tctip_tags %}
 
 {% block head_title %}Tend to Code_一个使用django和bootstrap搭建的个人博客{% endblock %}
 {% block metas %}
@@ -10,6 +11,8 @@
     <!--站长验证-->
     {% if site_verification %}{{ site_verification|safe }}{% endif %}
 {% endblock %}
+
+{% block top-file %}{% load_tctip %}{% endblock %}
 
 {% block base_content %}
     <div class="container">
