@@ -18,7 +18,7 @@
             <div class="col-lg-10" style="line-height:2">
                 <div class="friend-list">
                     {% for friend in friend_list %}
-                        <a href="{{ friend.link }}" target="_blank">
+                        <a href="{{ friend.get_home_url }}" target="_blank">
                             <div class="friend-container"
                                  style='background-image: url("{{ friend.logo.url }}");'>
                                 <div class="friend-img">

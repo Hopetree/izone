@@ -94,7 +94,7 @@ class KeywordAdmin(admin.ModelAdmin):
 
 @admin.register(FriendLink)
 class FriendLinkAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'link', 'create_date', 'is_active', 'is_show')
+    list_display = ('name', 'description', 'link', 'is_active', 'is_show', 'not_show_reason')
     date_hierarchy = 'create_date'
     list_filter = ('is_active', 'is_show')
 

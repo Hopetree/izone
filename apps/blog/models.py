@@ -204,7 +204,8 @@ class FriendLink(models.Model):
                                )
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
     is_active = models.BooleanField('是否有效', default=True)
-    is_show = models.BooleanField('是否首页展示', default=False)
+    is_show = models.BooleanField('是否展示', default=False)
+    not_show_reason = models.CharField('禁用原因', max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name = '友情链接'
@@ -215,7 +216,7 @@ class FriendLink(models.Model):
         return self.name
 
     def get_home_url(self):
-        '''提取友链的主页'''
+        """提取友链的主页"""
         u = re.findall(r'(http|https://.*?)/.*?', self.link)
         home_url = u[0] if u else self.link
         return home_url

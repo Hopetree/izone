@@ -26,12 +26,12 @@ def update_cache():
 
 
 @shared_task
-def check_friend():
+def check_friend(site_link=None):
     """
     检查友链
     @return:
     """
     response = TaskResponse()
-    check_result = check_friend_links()
+    check_result = check_friend_links(site_link=site_link)
     response.data = check_result
     return response.as_dict()

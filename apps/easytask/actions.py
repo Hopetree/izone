@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 import requests
 from markdown import Markdown
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
@@ -37,20 +39,21 @@ def update_article_cache():
     return data
 
 
-def check_friend_links():
+def check_friend_links(site_link=None):
     """
     检查友链:
-        1、检查当前显示的友链，请求友链，将非200的友链标记为不显示
-        2、检查当前不显示的友链，请求友链，将200返回的标记为显示
+        1、检查当前显示的友链，请求友链，将非200的友链标记为不显示，并记录禁用原因
+        2、检查当前不显示的友链，请求友链，将200返回的标记为显示，并删除禁用原因
+        3、新增补充校验：可以添加参数site_link，则不仅仅校验网页是否打开200，还会校验网站中是否有site_link外链
     @return:
     """
 
     def get_link_status(url):
         try:
-            status_code = requests.get(url, timeout=5, verify=False).status_code
+            resp = requests.get(url, timeout=5, verify=False)
         except Exception:
-            status_code = 500
-        return status_code
+            return 500, ''
+        return resp.status_code, resp.text
 
     active_num = 0
     to_not_show = 0
@@ -59,16 +62,35 @@ def check_friend_links():
     for active_friend in active_friend_list:
         active_num += 1
         if active_friend.is_show is True:
-            code = get_link_status(active_friend.link)
+            code, text = get_link_status(active_friend.link)
             if code != 200:
                 active_friend.is_show = False
-                active_friend.save(update_fields=['is_show'])
+                active_friend.not_show_reason = f'网页请求状态{code}不等于200'
+                active_friend.save(update_fields=['is_show', 'not_show_reason'])
                 to_not_show += 1
+            else:
+                # 设置了网站参数则校验友链中是否包含本站外链
+                if site_link:
+                    site_check_result = re.findall(site_link, text)
+                    if not site_check_result:
+                        active_friend.is_show = False
+                        active_friend.not_show_reason = f'网站未找到本站外链'
+                        active_friend.save(update_fields=['is_show', 'not_show_reason'])
+                        to_not_show += 1
         else:
-            code = get_link_status(active_friend.link)
+            code, text = get_link_status(active_friend.link)
             if code == 200:
-                active_friend.is_show = True
-                active_friend.save(update_fields=['is_show'])
-                to_show += 1
+                if not site_link:
+                    active_friend.is_show = True
+                    active_friend.not_show_reason = ''
+                    active_friend.save(update_fields=['is_show', 'not_show_reason'])
+                    to_show += 1
+                else:
+                    site_check_result = re.findall(site_link, text)
+                    if site_check_result:
+                        active_friend.is_show = True
+                        active_friend.not_show_reason = ''
+                        active_friend.save(update_fields=['is_show', 'not_show_reason'])
+                        to_show += 1
     data = {'active_num': active_num, 'to_not_show': to_not_show, 'to_show': to_show}
     return data
