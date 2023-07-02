@@ -380,7 +380,6 @@ ul.checklist li {
     margin: 0 .5rem;
     padding: 0 .5rem;
     border-left: 1px solid var(--izone-gray-1-1);
-    border-right: 1px solid var(--izone-gray-1-1);
 }
 
 .media-tag-list {
@@ -1077,5 +1076,9 @@ div.archive > ul > li > ul {
 
     .media-tag-list {
         display: inline;
+    }
+
+    .media-date {
+        border-right: 1px solid var(--izone-gray-1-1);
     }
 }
