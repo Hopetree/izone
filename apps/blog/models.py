@@ -195,11 +195,12 @@ class FriendLink(models.Model):
     name = models.CharField('网站名称', max_length=50)
     description = models.CharField('网站描述', max_length=100, blank=True)
     link = models.URLField('友链地址', help_text='请填写http或https开头的完整形式地址')
-    logo = ProcessedImageField(upload_to='friend/%Y/%m/%d',
+    logo = ProcessedImageField(upload_to='friend/%Y',
                                default='friend/default.png',
                                verbose_name='网站LOGO',
-                               processors=[ResizeToFill(90, 90)],
-                               blank=True
+                               processors=[ResizeToFill(120, 120)],
+                               blank=True,
+                               help_text='上传图片大小建议120x120以上，使用友联域名命名，如tendcode.com.png'
                                )
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
     is_active = models.BooleanField('是否有效', default=True)
