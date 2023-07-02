@@ -39,7 +39,7 @@ def update_article_cache():
     return data
 
 
-def check_friend_links(site_link=None):
+def check_friend_links(site_link=None, white_list=None):
     """
     检查友链:
         1、检查当前显示的友链，请求友链，将非200的友链标记为不显示，并记录禁用原因
@@ -55,12 +55,15 @@ def check_friend_links(site_link=None):
             return 500, ''
         return resp.status_code, resp.text
 
+    white_list = white_list or []  # 设置白名单，不校验
     active_num = 0
     to_not_show = 0
     to_show = 0
     active_friend_list = FriendLink.objects.filter(is_active=True)
     for active_friend in active_friend_list:
         active_num += 1
+        if active_friend.name in white_list:
+            continue
         if active_friend.is_show is True:
             code, text = get_link_status(active_friend.link)
             if code != 200:
