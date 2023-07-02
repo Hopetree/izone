@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 import markdown
 import re
 
@@ -193,7 +195,12 @@ class FriendLink(models.Model):
     name = models.CharField('网站名称', max_length=50)
     description = models.CharField('网站描述', max_length=100, blank=True)
     link = models.URLField('友链地址', help_text='请填写http或https开头的完整形式地址')
-    logo = models.URLField('网站LOGO', help_text='请填写http或https开头的完整形式地址', blank=True)
+    logo = ProcessedImageField(upload_to='friend/%Y/%m/%d',
+                               default='friend/default.png',
+                               verbose_name='网站LOGO',
+                               processors=[ResizeToFill(90, 90)],
+                               blank=True
+                               )
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
     is_active = models.BooleanField('是否有效', default=True)
     is_show = models.BooleanField('是否首页展示', default=False)
