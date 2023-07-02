@@ -109,3 +109,6 @@ media/
 
 # celery
 *.pid
+
+# templates test html
+templates/test*.html

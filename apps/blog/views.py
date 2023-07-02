@@ -22,7 +22,7 @@ from haystack.query import SearchQuerySet
 # Create your views here.
 
 def test_page_view(request):
-    return render(request, '403.html')
+    return render(request, 'test_html.html')
 
 
 class ArchiveView(generic.ListView):

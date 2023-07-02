@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.urls import path
+from django.conf import settings
 from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
                     update_article, FriendLinkView)
 
 urlpatterns = [
-    path('go/', test_page_view, name='go'),  # 测试用页面
-
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
     path('article/<slug:slug>/', DetailView.as_view(), name='detail'),  # 文章内容页
     path('article-edit/<slug:slug>/', DetailEditView.as_view(), name='article_edit'),  # 文章编辑
@@ -21,3 +20,6 @@ urlpatterns = [
     path('search/', MySearchView.as_view(), name='search_view'),  # 全文搜索
     path('friend/', FriendLinkView.as_view(), name='friend'),  # 友情链接
 ]
+
+if settings.DEBUG:
+    urlpatterns.append(path('test/', test_page_view, name='test'))
