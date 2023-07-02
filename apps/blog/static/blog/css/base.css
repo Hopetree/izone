@@ -535,8 +535,8 @@ ul.checklist li {
     overflow: hidden;
     border-radius: 10px;
     user-select: none;
-    height: 150px;
-    width: 150px;
+    height: 120px;
+    width: 120px;
     background-size: auto 150%;;
     background-position: center;
     background-repeat: no-repeat;
@@ -547,6 +547,11 @@ ul.checklist li {
     box-shadow: 0 0 20px 0 rgba(44, 101, 144, 0.1);
 }
 
+.friend-list a:hover {
+    text-decoration: none; /* 去掉链接的下划线 */
+    color: inherit; /* 使用继承的颜色 */
+}
+
 .friend-img {
     width: 100%;
     height: 100%;
@@ -555,25 +560,35 @@ ul.checklist li {
 }
 
 .friend-img img {
-    width: 60%;
-    height: 60%;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    transition: all 2s ease;
     position: absolute;
-    top: 10%;
-    left: calc(50% - 45px);
+    top: 9px;
+    left: 24px;
+    transition: All 1s ease-in-out;
+}
+
+.friend-img img:hover {
+    -webkit-transition: All 1s ease-in-out;
+    -moz-transition: All 1s ease-in-out;
+    -o-transition: All 1s ease-in-out;
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
 }
 
 .friend-container .friend-title {
     width: 100%;
     height: 30px;
     background: #ffffff;
-    opacity: 0.5;
-    font-size: 14px;
+    opacity: 0.7;
+    font-size: 13px;
     font-weight: 700;
     position: absolute;
     bottom: 0;
-    line-height: 30px;
     text-align: center;
 }
 
