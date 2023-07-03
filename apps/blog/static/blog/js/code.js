@@ -19,10 +19,8 @@ $('.codehilite').each(function () {
     // console.log(language);
     const codeText = $(this).find('pre').text();
     const headElm = $('<div>').addClass('code-wrapper');
-    const copyButton = $('<button>').html('<i class="fa fa-copy mr-2"></i>Copy code');
+    const copyButton = $('<button>').html('Copy');
     const codeShowElm = $('<div class="code-lang">');
-    const codeIconElm = $('<i class="fa fa-code mr-2">');
-    codeShowElm.append(codeIconElm);
     codeShowElm.append(language);
     headElm.append(codeShowElm);
     $(this).prepend(copyButton);
@@ -30,9 +28,9 @@ $('.codehilite').each(function () {
 
     copyButton.click(function () {
         copyToClipboard(codeText);
-        copyButton.html('<i class="fa fa-clipboard mr-2"></i>Copied!')
+        copyButton.html('Copied')
         setTimeout(function () {
-            copyButton.html('<i class="fa fa-copy mr-2"></i>Copy code');
+            copyButton.html('Copy');
         }, 1500);
     });
 
