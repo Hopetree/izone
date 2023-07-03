@@ -270,9 +270,17 @@ CELERY_ENABLE_UTC = False
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 # 支持数据库django-db和缓存django-cache存储任务状态及结果
 CELERY_RESULT_BACKEND = "django-db"
+CELERY_CACHE_BACKEND = 'django-cache'
+# 将任务调度器设为DatabaseScheduler
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-# 每个 worker 最多执行3个任务就会被销毁，可防止内存泄露
-CELERYD_MAX_TASKS_PER_CHILD = 3
+# celery内容等消息的格式设置，默认json
+CELERY_ACCEPT_CONTENT = ['application/json', ]
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+# 每个 worker 最多执行n个任务就会被销毁，可防止内存泄露
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
+# 为存储结果设置过期日期，默认1天过期。如果beat开启，Celery每天会自动清除，0表示永不清理，可以自行设置定时任务清理
+CELERY_RESULT_EXPIRES = 0
 # *************************************** celery 配置结束 ***************************************
 
 
