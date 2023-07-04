@@ -280,8 +280,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 # 每个 worker 最多执行n个任务就会被销毁，可防止内存泄露
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
 # 为存储结果设置过期日期，默认1天过期。如果beat开启，Celery每天会自动清除，0表示永不清理
-# 可以填写0然后自己手动添加清理策略，任务为celery.backend_cleanup
-CELERY_RESULT_EXPIRES = 0
+CELERY_RESULT_EXPIRES = 5
 # *************************************** celery 配置结束 ***************************************
 
 
