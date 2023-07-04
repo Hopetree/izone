@@ -58,7 +58,7 @@ def get_notifications(user, f=None):
 
     # 按照 create_date 字段进行汇总后重新排序
     lis = sorted(lis, key=lambda x: x.create_date, reverse=True)
-    return lis
+    return lis[:50]
 
 
 @register.simple_tag

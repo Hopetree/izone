@@ -33,9 +33,9 @@
                                     <p>{{ each.comment.content|truncatechars:130 }}</p>
                                 {% elif each.tag == "system" %}
                                     <h2>
-                                        <span>系统通知：{{ each.title }}</span>
+                                        <span class="text-primary">【系统通知】</span>{{ each.title }}
                                     </h2>
-                                    <p>{{ each.content|truncatechars:130 }}</p>
+                                    <div>{{ each.content|safe }}</div>
                                 {% endif %}
                                 {% if not each.is_read %}
                                     <div class="to_read pb-1">
