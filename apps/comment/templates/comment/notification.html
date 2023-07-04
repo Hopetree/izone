@@ -6,86 +6,95 @@
 {% block head_title %}个人信息推送{% endblock %}
 
 {% block top-file %}
-<link href="{% static 'comment/css/notification.css' %}?v=20190704" rel="stylesheet">
+    <link href="{% static 'comment/css/notification.css' %}?v=20190704" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-lg-9">
-            {% get_notifications user is_read as notifications %}
-            <ul class="cbp_tmtimeline f-16">
-                {% for each in notifications|slice:":30" %}
-                <li>
-                    <time class="cbp_tmtime" datetime="{{ each.create_date }}">
-                        <span>{{ each.create_date|date:"Y/m/d"}}</span>
-                        <span>{{ each.create_date|date:"H:i"}}</span>
-                    </time>
-                    <div class="cbp_tmicon"><i class="fa fa-envelope"></i></div>
-                    <div class="cbp_tmlabel">
-                        <h2>
-                            <strong>{{ each.create_p }}</strong>&nbsp;在&nbsp;
-                            <a class="text-info" title="查看评论详情"
-                               href="{{ each.comment.belong.get_absolute_url }}#com-{{ each.comment.id }}">
-                                {{ each.comment.belong.title }}</a>&nbsp;中@了你，并评论道：
-                        </h2>
-                        <p>{{ each.comment.content|truncatechars:130 }}</p>
-                        {% if not each.is_read %}
-                        <div class="to_read pb-1">
-                            <button class="btn btn-success float-right f-16" data-id="{{ each.id }}"
-                                    data-csrf="{{ csrf_token }}" data-url="{% url 'comment:mark_to_read' %}">标为已读
-                            </button>
-                        </div>
-                        {% else %}
-                        <div class="to_delete pb-1">
-                            <button class="btn btn-danger float-right f-16" data-id="{{ each.id }}"
-                                    data-csrf="{{ csrf_token }}" data-url="{% url 'comment:mark_to_delete' %}">删除信息
-                            </button>
-                        </div>
-                        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-lg-9">
+                {% get_notifications user is_read as notifications %}
+                <ul class="cbp_tmtimeline f-16">
+                    {% for each in notifications|slice:":30" %}
+                        <li>
+                            <time class="cbp_tmtime" datetime="{{ each.create_date }}">
+                                <span>{{ each.create_date|date:"Y/m/d" }}</span>
+                                <span>{{ each.create_date|date:"H:i" }}</span>
+                            </time>
+                            <div class="cbp_tmicon"><i class="fa fa-envelope"></i></div>
+                            <div class="cbp_tmlabel">
+                                {% if each.tag == "comment" %}
+                                    <h2>
+                                        <strong>{{ each.create_p }}</strong>&nbsp;在&nbsp;
+                                        <a class="text-info" title="查看评论详情"
+                                           href="{{ each.comment.belong.get_absolute_url }}#com-{{ each.comment.id }}">
+                                            {{ each.comment.belong.title }}</a>&nbsp;中@了你，并评论道：
+                                    </h2>
+                                    <p>{{ each.comment.content|truncatechars:130 }}</p>
+                                {% elif each.tag == "system" %}
+                                    <h2>
+                                        <span>系统通知：{{ each.title }}</span>
+                                    </h2>
+                                    <p>{{ each.content|truncatechars:130 }}</p>
+                                {% endif %}
+                                {% if not each.is_read %}
+                                    <div class="to_read pb-1">
+                                        <button class="btn btn-success float-right f-16" data-id="{{ each.id }}"
+                                                data-csrf="{{ csrf_token }}" data-tag="{{ each.tag }}"
+                                                data-url="{% url 'comment:mark_to_read' %}">标为已读
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <div class="to_delete pb-1">
+                                        <button class="btn btn-danger float-right f-16" data-id="{{ each.id }}"
+                                                data-csrf="{{ csrf_token }}" data-tag="{{ each.tag }}"
+                                                data-url="{% url 'comment:mark_to_delete' %}">删除信息
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li>
+                            <time class="cbp_tmtime" datetime="{{ now_date }}">
+                                <span>{{ now_date|date:"Y/m/d" }}</span>
+                                <span>{{ now_date|date:"H:i" }}</span>
+                            </time>
+                            <div class="cbp_tmicon"><i class="fa fa-envelope"></i></div>
+                            <div class="cbp_tmlabel">
+                                <h2>你暂时没有任何推送消息！</h2>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="card border-0" id="notes-main">
+                    <div class="card-header bg-white border-0">
+                        <h4><strong><i class="fa fa-bell-o mr-1"></i>&nbsp;提示信息</strong></h4>
                     </div>
-                </li>
-                {% empty %}
-                <li>
-                    <time class="cbp_tmtime" datetime="{{ now_date }}">
-                        <span>{{ now_date|date:"Y/m/d"}}</span>
-                        <span>{{ now_date|date:"H:i"}}</span>
-                    </time>
-                    <div class="cbp_tmicon"><i class="fa fa-envelope"></i></div>
-                    <div class="cbp_tmlabel">
-                        <h2>你暂时没有任何推送消息！</h2>
+                    <div class="card-body pt-0 url-menu">
+                        <ul class="list-group">
+                            {% url 'comment:notification' as all_url %}
+                            {% url 'comment:notification_no_read' as no_read_url %}
+                            <a class="list-group-item {% if request.path == all_url %}active{% endif %}"
+                               href="{{ all_url }}">全部信息
+                                <span class="badge float-right">{% get_notifications_count user %}</span>
+                            </a>
+                            <a class="list-group-item {% if request.path == no_read_url %}active{% endif %}"
+                               href="{{ no_read_url }}">未读信息
+                                <span class="badge float-right">{% get_notifications_count user 'false' %}</span>
+                            </a>
+                        </ul>
                     </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-md-4 col-lg-3">
-            <div class="card border-0" id="notes-main">
-                <div class="card-header bg-white border-0">
-                    <h4><strong><i class="fa fa-bell-o mr-1"></i>&nbsp;提示信息</strong></h4>
-                </div>
-                <div class="card-body pt-0 url-menu">
-                    <ul class="list-group">
-                        {% url 'comment:notification' as all_url %}
-                        {% url 'comment:notification_no_read' as no_read_url %}
-                        <a class="list-group-item {% if request.path == all_url %}active{% endif %}"
-                           href="{{ all_url }}">全部信息
-                            <span class="badge float-right">{% get_notifications_count user %}</span>
-                        </a>
-                        <a class="list-group-item {% if request.path == no_read_url %}active{% endif %}"
-                           href="{{ no_read_url }}">未读信息
-                            <span class="badge float-right">{% get_notifications_count user 'false' %}</span>
-                        </a>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block end_file %}
-<script src="{% static 'comment/js/notification.js' %}?v=23"></script>
+    <script src="{% static 'comment/js/notification.js' %}?v=20230704.1"></script>
 {% endblock %}
 
 

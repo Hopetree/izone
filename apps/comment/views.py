@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from blog.models import Article
-from .models import ArticleComment, Notification
+from .models import ArticleComment, Notification, SystemNotification
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -13,7 +13,7 @@ user_model = settings.AUTH_USER_MODEL
 
 @login_required
 @require_POST
-def AddcommentView(request):
+def AddCommentView(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
         new_user = request.user
@@ -42,7 +42,7 @@ def AddcommentView(request):
 
 @login_required
 def NotificationView(request, is_read=None):
-    '''展示提示消息列表'''
+    """展示提示消息列表"""
     now_date = datetime.now()
     return render(request, 'comment/notification.html',
                   context={'is_read': is_read, 'now_date': now_date})
@@ -51,26 +51,38 @@ def NotificationView(request, is_read=None):
 @login_required
 @require_POST
 def mark_to_read(request):
-    '''将一个消息标记为已读'''
+    """将一个消息标记为已读"""
     if request.is_ajax() and request.method == "POST":
         data = request.POST
         user = request.user
-        id = data.get('id')
-        info = get_object_or_404(Notification, get_p=user, id=id)
+        _id = data.get('id')
+        _tag = data.get('tag')
+        if _tag == 'comment':
+            info = get_object_or_404(Notification, get_p=user, id=_id)
+        elif _tag == 'system':
+            info = get_object_or_404(SystemNotification, get_p=user, id=_id)
+        else:
+            return JsonResponse({'msg': 'bad tag', 'code': 1})
         info.mark_to_read()
-        return JsonResponse({'msg': 'mark success'})
-    return JsonResponse({'msg': 'miss'})
+        return JsonResponse({'msg': 'mark success', 'code': 0})
+    return JsonResponse({'msg': 'miss', 'code': 1})
 
 
 @login_required
 @require_POST
 def mark_to_delete(request):
-    '''将一个消息删除'''
+    """将一个消息删除"""
     if request.is_ajax() and request.method == "POST":
         data = request.POST
         user = request.user
-        id = data.get('id')
-        info = get_object_or_404(Notification, get_p=user, id=id)
+        _id = data.get('id')
+        _tag = data.get('tag')
+        if _tag == 'comment':
+            info = get_object_or_404(Notification, get_p=user, id=_id)
+        elif _tag == 'system':
+            info = get_object_or_404(SystemNotification, get_p=user, id=_id)
+        else:
+            return JsonResponse({'msg': 'bad tag', 'code': 1})
         info.delete()
-        return JsonResponse({'msg': 'delete success'})
-    return JsonResponse({'msg': 'miss'})
+        return JsonResponse({'msg': 'delete success', 'code': 0})
+    return JsonResponse({'msg': 'miss', 'code': 1})

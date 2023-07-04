@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ArticleComment, Notification
+from .models import (ArticleComment, Notification, SystemNotification)
 
 
 @admin.register(ArticleComment)
@@ -14,7 +14,7 @@ class CommentAdmin(admin.ModelAdmin):
 
     # 使用方法来自定义一个字段，并且给这个字段设置一个名称
     def show_content(self, obj):
-        return obj.content[:30]
+        return obj.content if len(obj.content) < 30 else f'{obj.content[:30]}...'
 
     show_content.short_description = '评论内容'
 
@@ -25,3 +25,23 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'create_p', 'create_date', 'comment', 'is_read')
     list_filter = ('create_p', 'is_read',)
     search_fields = ('create_p__username', 'comment__content')
+
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('is_read',)
+
+
+@admin.register(SystemNotification)
+class SystemNotificationAdmin(admin.ModelAdmin):
+    date_hierarchy = 'create_date'
+    list_display = ('title', 'get_p', 'create_date', 'show_content', 'is_read')
+    list_filter = ('get_p', 'is_read',)
+    search_fields = ('title',)
+
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('is_read',)
+
+    # 使用方法来自定义一个字段，并且给这个字段设置一个名称
+    def show_content(self, obj):
+        return obj.content if len(obj.content) < 30 else f'{obj.content[:30]}...'
+
+    show_content.short_description = '推送内容'

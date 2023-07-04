@@ -91,7 +91,7 @@
                             <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
                                     class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
                         {% endif %}
-                        <a class="dropdown-item pl-3" href="{% url 'comment:notification' %}"><i
+                        <a class="dropdown-item pl-3" href="{% url 'comment:notification_no_read' %}"><i
                                 class="fa fa-fw fa-bell text-info mr-2"></i>消息
                             {% if msgnum > 0 %}
                                 <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>

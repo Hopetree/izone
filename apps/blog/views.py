@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import Http404, HttpResponseForbidden, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render, reverse
 from django.utils.text import slugify
@@ -67,11 +67,14 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         # 普通用户只能看发布的文章，作者和管理员可以看到未发布的
         queryset = super().get_queryset()
+        # 非登录用户可以访问全部发布的文章
         if not self.request.user.is_authenticated:
             return queryset.filter(is_publish=True)
+        # 超级管理员访问所有
         if self.request.user.is_superuser:
             return queryset
-        return queryset.filter(author=self.request.user)
+        # 登录用户访问所有发布和自己的未发布
+        return queryset.filter(Q(author=self.request.user) | Q(is_publish=True))
 
     def get_object(self, queryset=None):
         obj = super().get_object()
