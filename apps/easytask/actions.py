@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-import re
-
-import requests
-from markdown import Markdown
-from markdown.extensions.toc import TocExtension  # 锚点的拓展
-from markdown.extensions.codehilite import CodeHiliteExtension
-from django.core.cache import cache
-from django.utils.text import slugify
-
-from blog.models import Article, FriendLink
-from blog.utils import CustomHtmlFormatter
+"""
+    定义一些任务的执行操作，将具体的操作从tasks.py里面抽离出来
+    每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
+"""
 
 
-def update_article_cache():
+def action_update_article_cache():
     """
     更新所有文章的缓存，缓存格式跟文章视图保持一致
     @return:
     """
+    from markdown import Markdown
+    from markdown.extensions.toc import TocExtension  # 锚点的拓展
+    from markdown.extensions.codehilite import CodeHiliteExtension
+    from django.core.cache import cache
+    from django.utils.text import slugify
+    from blog.utils import CustomHtmlFormatter
+    from blog.models import Article
+
     total_num, done_num = 0, 0
     # 查询到所有缓存的key
     keys = cache.keys('article:markdown:*')
@@ -39,7 +40,7 @@ def update_article_cache():
     return data
 
 
-def check_friend_links(site_link=None, white_list=None):
+def action_check_friend_links(site_link=None, white_list=None):
     """
     检查友链:
         1、检查当前显示的友链，请求友链，将非200的友链标记为不显示，并记录禁用原因
@@ -47,6 +48,9 @@ def check_friend_links(site_link=None, white_list=None):
         3、新增补充校验：可以添加参数site_link，则不仅仅校验网页是否打开200，还会校验网站中是否有site_link外链
     @return:
     """
+    import re
+    import requests
+    from blog.models import FriendLink
 
     def get_link_status(url):
         try:
@@ -97,3 +101,37 @@ def check_friend_links(site_link=None, white_list=None):
                         to_show += 1
     data = {'active_num': active_num, 'to_not_show': to_not_show, 'to_show': to_show}
     return data
+
+
+def action_clear_notification(day=200):
+    """
+    清理消息推送
+    @param day: 清理day天前的信息
+    @return:
+    """
+    from datetime import datetime, timedelta
+    from django.db.models import Q
+    from comment.models import Notification, SystemNotification
+
+    current_date = datetime.now()
+    delta = timedelta(days=day)
+    past_date = current_date - delta
+    query = Q(create_date__lte=past_date)
+
+    comment_notification_objects = Notification.objects.filter(query)
+    system_notification_objects = SystemNotification.objects.filter(query)
+    comment_num = comment_notification_objects.count()
+    system_num = system_notification_objects.count()
+    comment_notification_objects.delete()
+    system_notification_objects.delete()
+    return {'comment_num': comment_num, 'system_num': system_num}
+
+
+if __name__ == '__main__':
+    import os
+    import django
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'izone.settings')
+    django.setup()
+
+    print(action_clear_notification(100))
