@@ -42,13 +42,14 @@ def check_friend(site_link=None, white_list=None):
 
 
 @shared_task
-def clear_notification(day=200):
+def clear_notification(day=200, is_read=True):
     """
     清理过期通知信息
+    @param is_read:
     @param day:
     @return:
     """
     response = TaskResponse()
-    result = action_clear_notification(day=day)
+    result = action_clear_notification(day=day, is_read=is_read)
     response.data = result
     return response.as_dict()

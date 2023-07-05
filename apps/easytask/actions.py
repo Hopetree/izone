@@ -103,9 +103,10 @@ def action_check_friend_links(site_link=None, white_list=None):
     return data
 
 
-def action_clear_notification(day=200):
+def action_clear_notification(day=200, is_read=True):
     """
     清理消息推送
+    @param is_read: False表示清理所有，True表示只清理已读，默认清理已读
     @param day: 清理day天前的信息
     @return:
     """
@@ -116,7 +117,10 @@ def action_clear_notification(day=200):
     current_date = datetime.now()
     delta = timedelta(days=day)
     past_date = current_date - delta
-    query = Q(create_date__lte=past_date)
+    if is_read is True:
+        query = Q(create_date__lte=past_date, is_read=True)
+    else:
+        query = Q(create_date__lte=past_date)
 
     comment_notification_objects = Notification.objects.filter(query)
     system_notification_objects = SystemNotification.objects.filter(query)
