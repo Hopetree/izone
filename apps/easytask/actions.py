@@ -131,6 +131,26 @@ def action_clear_notification(day=200, is_read=True):
     return {'comment_num': comment_num, 'system_num': system_num}
 
 
+def action_cleanup_task_result(day=3):
+    """
+    清理任务结果
+    清理day天前成功或结束的，其他状态的一概不清理
+    @return:
+    """
+    from datetime import datetime, timedelta
+    from django.db.models import Q
+    from django_celery_results.models import TaskResult
+
+    current_date = datetime.now()
+    delta = timedelta(days=day)
+    past_date = current_date - delta
+    query = Q(date_done__lte=past_date)
+    task_result_objects = TaskResult.objects.filter(query)
+    task_result_count = task_result_objects.count()
+    task_result_objects.delete()
+    return {'task_result_count': task_result_count}
+
+
 if __name__ == '__main__':
     import os
     import django
@@ -138,4 +158,5 @@ if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'izone.settings')
     django.setup()
 
-    print(action_clear_notification(100))
+    # print(action_clear_notification(100))
+    print(action_cleanup_task_result(7))

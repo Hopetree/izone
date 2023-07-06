@@ -8,6 +8,7 @@ from .actions import (
     action_update_article_cache,
     action_check_friend_links,
     action_clear_notification,
+    action_cleanup_task_result,
 )
 
 
@@ -51,5 +52,19 @@ def clear_notification(day=200, is_read=True):
     """
     response = TaskResponse()
     result = action_clear_notification(day=day, is_read=is_read)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def cleanup_task_result(day=3):
+    """
+    清理任务结果
+    清理day天前成功或结束的，其他状态的一概不清理
+    @param day:
+    @return:
+    """
+    response = TaskResponse()
+    result = action_cleanup_task_result(day=day)
     response.data = result
     return response.as_dict()
