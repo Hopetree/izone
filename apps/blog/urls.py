@@ -4,7 +4,7 @@ from django.conf import settings
 from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
-                    update_article, FriendLinkView)
+                    update_article, FriendLinkView, friend_add)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
@@ -19,6 +19,7 @@ urlpatterns = [
     path('silian.xml', SilianView.as_view(content_type='application/xml'), name='silian'),  # 死链页面
     path('search/', MySearchView.as_view(), name='search_view'),  # 全文搜索
     path('friend/', FriendLinkView.as_view(), name='friend'),  # 友情链接
+    path('friend/add/', friend_add, name='friend_add'),  # 友情链接申请
 ]
 
 if settings.DEBUG:

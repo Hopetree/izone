@@ -265,3 +265,14 @@ def update_article(request):
         except Article.DoesNotExist:
             return HttpResponseBadRequest("Article not found.")
     return HttpResponseBadRequest("Invalid request.")
+
+
+def friend_add(request):
+    """
+    申请友链
+    @param request:
+    @return:
+    """
+    if request.method == "POST" and request.is_ajax():
+        pass
+    return render(request, 'blog/friendAdd.html')

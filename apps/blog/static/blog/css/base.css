@@ -633,6 +633,22 @@ ul.checklist li {
     text-align: center;
 }
 
+.friend-request,
+.friend-add {
+    text-align: center;
+}
+
+.friend-request a {
+    color: #e0dada !important;
+    background-color: #617397;
+    padding: 0.4rem 1.5rem;
+    border-radius: 999px;
+}
+
+.friend-request a:hover {
+    color: #FFFFFF !important;
+}
+
 /*友情链接结束*/
 
 /*404页面+++++++++++++++++++++++*/
@@ -901,7 +917,7 @@ div.archive > ul > li > ul {
     --izone-font-warning: #ff8541;
     --izone-font-danger: #c62633;
     --izone-font-white-disable: hsla(0, 0%, 100%, 0.6);
-    --izone-font-white: #fff;
+    --izone-font-white: #b4b3b3;
     --izone-success-1-normal: #40c17b;
     --izone-success-2-deep: #008445;
     --izone-success-3-light: rgba(64, 193, 123, 0.2);
