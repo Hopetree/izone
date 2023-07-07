@@ -529,7 +529,7 @@ ul.checklist li {
     border-bottom: var(--izone-gray-1-1) dashed .1rem;
     padding-bottom: 1rem;
     color: var(--izone-font-3);
-    letter-spacing: .2rem;
+    letter-spacing: .5rem;
 }
 
 .friend-block .friend-list {
@@ -636,6 +636,7 @@ ul.checklist li {
 .friend-request,
 .friend-add {
     text-align: center;
+    margin-top: 6rem;
 }
 
 .friend-request a {
