@@ -72,7 +72,7 @@ def action_check_friend_links(site_link=None, white_list=None):
             code, text = get_link_status(active_friend.link)
             if code != 200:
                 active_friend.is_show = False
-                active_friend.not_show_reason = f'网页请求状态{code}不等于200'
+                active_friend.not_show_reason = f'网页请求返回{code}'
                 active_friend.save(update_fields=['is_show', 'not_show_reason'])
                 to_not_show += 1
             else:
@@ -81,7 +81,7 @@ def action_check_friend_links(site_link=None, white_list=None):
                     site_check_result = re.findall(site_link, text)
                     if not site_check_result:
                         active_friend.is_show = False
-                        active_friend.not_show_reason = f'网站未找到本站外链'
+                        active_friend.not_show_reason = f'网站未设置本站外链'
                         active_friend.save(update_fields=['is_show', 'not_show_reason'])
                         to_not_show += 1
         else:

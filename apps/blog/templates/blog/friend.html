@@ -1,5 +1,5 @@
 {% extends 'blog/base.html' %}
-{% load static %}
+{% load static blog_tags %}
 
 {% block head_title %}友情链接，申请友联{% endblock %}
 
@@ -15,20 +15,41 @@
 {% block base_content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10" style="line-height:2">
-                <div class="friend-list">
-                    {% for friend in friend_list %}
-                        <a href="{{ friend.get_home_url }}" target="_blank">
-                            <div class="friend-container"
-                                 style='background-image: url("{{ friend.logo.url }}");'>
-                                <div class="friend-img">
-                                    <img src="{{ friend.logo.url }}" alt="{{ friend.description }}">
-                                    <div class="friend-description">{{ friend.description }}</div>
+            <div class="col-lg-10">
+                <div class="friend-block">
+                    <h2>活跃友链</h2>
+                    <div class="friend-list">
+                        {% for friend in friend_list %}
+                            <a href="{{ friend.get_home_url }}" target="_blank">
+                                <div class="friend-container"
+                                     style='background-image: url("{{ friend.logo.url }}");'>
+                                    <div class="friend-img">
+                                        <img src="{{ friend.logo.url }}" alt="{{ friend.description }}">
+                                        <div class="friend-description">{{ friend.description }}</div>
+                                    </div>
+                                    <div class="friend-title"><span>{{ friend.name }}</span></div>
                                 </div>
-                                <div class="friend-title"><span>{{ friend.name }}</span></div>
-                            </div>
-                        </a>
-                    {% endfor %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                    {% get_friends False True as not_show_friends %}
+                    {% if not_show_friends %}
+                        <h2>失联友链</h2>
+                        <div class="friend-list not-show-friend">
+                            {% for friend in not_show_friends %}
+                                <a>
+                                    <div class="friend-container"
+                                         style='background-image: url("{{ friend.logo.url }}");'>
+                                        <div class="friend-img">
+                                            <img src="{{ friend.logo.url }}" alt="{{ friend.description }}">
+                                            <div class="friend-description">{{ friend.not_show_reason }}</div>
+                                        </div>
+                                        <div class="friend-title"><span>{{ friend.name }}</span></div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

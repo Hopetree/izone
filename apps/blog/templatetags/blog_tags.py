@@ -3,7 +3,13 @@ from datetime import datetime
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 
 from django import template
-from ..models import Article, Category, Tag, Carousel, FriendLink
+from ..models import (
+    Article,
+    Category,
+    Tag,
+    Carousel,
+    FriendLink
+)
 from django.db.models.aggregates import Count
 from django.utils.html import mark_safe
 import re
@@ -104,9 +110,9 @@ def get_request_param(request, param, default=None):
 
 
 @register.simple_tag
-def get_friends():
-    """获取活跃的友情链接"""
-    return FriendLink.objects.filter(is_show=True, is_active=True)
+def get_friends(is_show=True, is_active=True):
+    """获取友情链接"""
+    return FriendLink.objects.filter(is_show=is_show, is_active=is_active)
 
 
 @register.simple_tag

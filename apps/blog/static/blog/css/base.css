@@ -520,6 +520,20 @@ ul.checklist li {
 }
 
 /*友情链接开始*/
+.friend-block {
+    line-height: 2;
+}
+
+.friend-block h2 {
+    text-align: center;
+    border-bottom: var(--izone-gray-1-1) dashed .1rem;
+    padding-bottom: 1rem;
+}
+
+.friend-block .friend-list {
+    margin-bottom: 3rem;
+}
+
 .friend-list {
     display: flex;
     justify-content: space-evenly;
@@ -558,6 +572,10 @@ ul.checklist li {
 
 .friend-list a:hover .friend-description {
     display: initial;
+}
+
+.not-show-friend {
+    filter: grayscale(100%);
 }
 
 .friend-img {
