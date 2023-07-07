@@ -528,6 +528,8 @@ ul.checklist li {
     text-align: center;
     border-bottom: var(--izone-gray-1-1) dashed .1rem;
     padding-bottom: 1rem;
+    color: var(--izone-font-3);
+    letter-spacing: .2rem;
 }
 
 .friend-block .friend-list {
