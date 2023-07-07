@@ -147,7 +147,7 @@ class Timeline(models.Model):
     class Meta:
         verbose_name = '时间线'
         verbose_name_plural = verbose_name
-        ordering = ['update_date']
+        ordering = ['-update_date']
 
     def __str__(self):
         return self.title[:20]

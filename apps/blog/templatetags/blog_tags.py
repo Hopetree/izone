@@ -8,7 +8,8 @@ from ..models import (
     Category,
     Tag,
     Carousel,
-    FriendLink
+    FriendLink,
+    Timeline
 )
 from django.db.models.aggregates import Count
 from django.utils.html import mark_safe
@@ -68,6 +69,18 @@ def load_pages(context):
 def get_carousel_list():
     """获取轮播图片列表"""
     return Carousel.objects.all()
+
+
+@register.simple_tag
+def get_new_timeline_id():
+    """得到最后一个timeline的id，用来设置到缓存里面，实现动态缓存"""
+    return Timeline.objects.order_by('-pk').first().pk
+
+
+@register.simple_tag
+def get_new_article_id():
+    """得到最后一个article的id，用来设置到缓存里面，实现动态缓存"""
+    return Article.objects.order_by('-pk').first().pk
 
 
 @register.simple_tag
