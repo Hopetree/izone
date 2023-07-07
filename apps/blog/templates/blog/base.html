@@ -20,7 +20,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="{% static 'blog/js/headroom.min.js' %}"></script>
     <!-- blog CSS -->
-    <link href="{% static 'blog/css/base.css' %}?v=20230707.6" rel="stylesheet">
+    <link href="{% static 'blog/css/base.css' %}?v=20230708.6" rel="stylesheet">
     {#设置默认的全局变量stop_headroom，默认会自动隐藏导航，如果要固定导航可以在top-file里面重新设置这个变量为true#}
     <script>var stop_headroom = false;</script>
     {% block top-file %}{% endblock %}
@@ -28,11 +28,11 @@
     {% if not request.COOKIES.toggleTheme %}
         {% now_hour as hour %}
         {% if hour < 6 or hour > 18 %}
-            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230630.03" rel="stylesheet">
+            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230708.03" rel="stylesheet">
         {% endif %}
     {% else %}
         {% if request.COOKIES.toggleTheme == "dark" %}
-            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230630.03" rel="stylesheet">
+            <link id="theme-css-dark" href="{% static 'blog/css/night.css' %}?20230708.03" rel="stylesheet">
         {% endif %}
     {% endif %}
 </head>
@@ -94,7 +94,7 @@
         }
     });
 </script>
-<script src="{% static 'blog/js/base.js' %}?v=20230614.1"></script>
+<script src="{% static 'blog/js/base.js' %}?v=20230708.1"></script>
 {% if user.is_authenticated %}
     <script>
         const msgs = {% get_notifications_count user 'false' %};

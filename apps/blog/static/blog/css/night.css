@@ -111,10 +111,6 @@ blockquote {
     border-bottom: 2px solid #001d25;
 }
 
-body {
-    background: #22303f;
-    color: #9caec7;
-}
 
 /* 导航 */
 #site-logo-name,
@@ -237,4 +233,103 @@ pre {
 .article-toc {
     background: #18222d;
 }
+
+/*全局样式参数start*/
+.dark-theme, body {
+    --izone-layer-golden-1: rgba(209, 171, 97, 0.23);
+    --izone-layer-golden-2: rgba(237, 211, 167, 0.4);
+    --izone-component-hover: hsla(0, 0%, 100%, 0.2);
+    --izone-gradientgold_normal_start: #fde8c3;
+    --izone-gradientgold_normal_end: #edd3a7;
+    --izone-gradientgold_hover_start: #f1dfc0;
+    --izone-gradientgold_hover_end: #e6c99b;
+    --izone-gradientgold_click_start: #e9d5b3;
+    --izone-gradientgold_click_end: #dac29a;
+    --izone-layer_loading_start: hsla(0, 0%, 100%, 0);
+    --izone-layer_loading_end: hsla(0, 0%, 100%, 0.2);
+    --izone-layer_golden_2: rgba(209, 171, 97, 0.12);
+    --izone-font_golden_4: #7e5d25;
+    --izone-font-golden-1: #edd3a7;
+    --izone-font-golden-2: #bea985;
+    --izone-font-golden-3: #8e7f64;
+    --izone-gray-0: #000;
+    --izone-gray-1-1: hsla(0, 0%, 100%, 0.2);
+    --izone-gray-1-2: hsla(0, 0%, 100%, 0.1);
+    --izone-gray-1-3: #464646;
+    --izone-gray-2: hsla(0, 0%, 100%, 0.12);
+    --izone-gray-3: hsla(0, 0%, 100%, 0.08);
+    --izone-background: #22303f;
+    --izone-layer-1: #181818;
+    --izone-layer-2-1: hsla(0, 0%, 100%, 0.08);
+    --izone-layer-2-2: hsla(0, 0%, 100%, 0.08);
+    --izone-layer-3-fill: hsla(0, 0%, 100%, 0.08);
+    --izone-layer-3-border: hsla(0, 0%, 100%, 0.2);
+    --izone-layer-4-dropdown: #2f2f2f;
+    --izone-layer-5: hsla(0, 0%, 100%, 0.12);
+    --izone-brand-1-normal: #1b73e5;
+    --izone-brand-2-hover: #0f66d6;
+    --izone-brand-3-click: #0056c7;
+    --izone-brand-4-disable: rgba(41, 134, 255, 0.4);
+    --izone-brand-5-light: rgba(30, 128, 255, 0.2);
+    --izone-mask-1: hsla(0, 0%, 100%, 0.4);
+    --izone-mask-2: #282828;
+    --izone-mask-3: rgba(0, 0, 0, 0.05);
+    --izone-brand-fill1-normal: rgba(41, 134, 255, 0.15);
+    --izone-brand-fill2-hover: rgba(20, 115, 237, 0.25);
+    --izone-brand-fill3-click: rgba(5, 99, 221, 0.35);
+    --izone-brand-stroke1-normal: rgba(41, 134, 255, 0.4);
+    --izone-brand-stroke2-hover: rgba(20, 115, 237, 0.6);
+    --izone-brand-stroke3-click: rgba(5, 99, 221, 0.6);
+    --izone-font_danger: #f85959;
+    --izone-font-default: hsla(0, 0%, 100%, 0.7);
+    --izone-font-1: hsla(0, 0%, 100%, 0.8);
+    --izone-font-2: hsla(0, 0%, 100%, 0.7);
+    --izone-font-3: hsla(0, 0%, 100%, 0.46);
+    --izone-font-4: hsla(0, 0%, 100%, 0.45);
+    --izone-font-brand1-normal: #4495ff;
+    --izone-font-brand2-hover: #2b88ff;
+    --izone-font-brand3-click: #1371ec;
+    --izone-font-brand4-disable: rgba(19, 113, 236, 0.4);
+    --izone-font-success: #40c17b;
+    --izone-font-warning: #ff8541;
+    --izone-font-danger: #c62633;
+    --izone-font-white-disable: hsla(0, 0%, 100%, 0.6);
+    --izone-font-white: #b4b3b3;
+    --izone-success-1-normal: #40c17b;
+    --izone-success-2-deep: #008445;
+    --izone-success-3-light: rgba(64, 193, 123, 0.2);
+    --izone-warning-1-normal: #ff8541;
+    --izone-warning-2-deep: #d85c02;
+    --izone-warning-3-light: rgba(255, 133, 65, 0.2);
+    --izone-danger-1-normal: #f85959;
+    --izone-danger-2-deep: #c62633;
+    --izone-danger-3-light: rgba(248, 89, 89, 0.2);
+    --izone-sub-1-purple: #a965ff;
+    --izone-sub-2-blue: #68a9ff;
+    --izone-sub-3-cyan: #74f4ed;
+    --izone-sub-4-green: #50e68c;
+    --izone-sub-5-yellow: #ffd748;
+    --izone-sub-6-orange: #ff8f60;
+    --izone-sub-7-red: #ff6e65;
+    --izone-coupon_1_button: rgba(251, 86, 83, 0.8);
+    --izone-coupon_1_button_disable: #782928;
+    --izone-coupon_2_card: rgba(255, 176, 176, 0.08);
+    --izone-coupon_3_stroke: rgba(246, 66, 66, 0.18);
+    --izone-navigation: #181818;
+    --izone-shade-1: rgba(0, 0, 0, 0.6);
+    --izone-shade-2: rgba(0, 0, 0, 0.7);
+    --izone-popup: #282828;
+    --izone-popover: #424242;
+    --izone-sheets: #222;
+    --izone-coupon-button: rgba(251, 86, 83, 0.8);
+    --izone-coupon-button-disable: #782928;
+    --izone-coupon-card: rgba(255, 176, 176, 0.08);
+    --izone-layer-loading-start: hsla(0, 0%, 100%, 0);
+    --izone-layer-loading-end: hsla(0, 0%, 100%, 0.2);
+    --izone-font-priv-hint: #916be1;
+    --izone-background-jscore-radar: #232323;
+    --izone-background-container: #18222d;
+}
+
+/*全局样式参数end*/
 
