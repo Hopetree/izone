@@ -126,9 +126,8 @@ class Notification(models.Model):
 
 class BaseNotification(models.Model):
     """推送基类"""
-    get_p = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='收信人',
-                              related_name='%(class)s_recipient',
-                              on_delete=models.CASCADE)
+    get_p = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='收信人',
+                                   related_name='%(class)s_recipient', blank=False)
     create_date = models.DateTimeField('推送时间', auto_now_add=True)
     is_read = models.BooleanField('是否已读', default=False)
 

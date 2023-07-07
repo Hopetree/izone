@@ -275,4 +275,13 @@ def friend_add(request):
     """
     if request.method == "POST" and request.is_ajax():
         pass
+
+    name = '测试网站001'
+    description = '描述1'
+    link = 'https://kkk.com'
+
+    friend = FriendLink(name=name, description=description, link=link, is_show=True,
+                        is_active=False)
+    friend.save()
+
     return render(request, 'blog/friendAdd.html')
