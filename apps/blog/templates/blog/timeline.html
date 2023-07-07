@@ -20,7 +20,7 @@
         <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
     </div>
     {% get_new_timeline_id as new_timeline_id %}
-    {% cache 2592000 'template:timeline' new_timeline_id %}
+    {% cache 86400 'template:timeline' new_timeline_id %}
     <ul class="timeline" id="timeline">
         {% for timeline in timeline_list %}
         {% if timeline.side == 'L' %}
