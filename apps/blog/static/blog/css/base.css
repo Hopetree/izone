@@ -150,6 +150,11 @@ ul.checklist li {
     list-style: none;
 }
 
+.izone-container {
+    background-color: var(--izone-background-container);
+}
+
+
 /* top navbar-------------------------------------------------*/
 #site-logo-name,
 #site-logo-name:hover,
