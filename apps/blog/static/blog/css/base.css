@@ -635,6 +635,7 @@ ul.checklist li {
     position: absolute;
     bottom: 0;
     text-align: center;
+    color: #252933;
 }
 
 .friend-request {
