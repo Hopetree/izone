@@ -181,6 +181,8 @@ def action_baidu_push(baidu_url, months):
     previous_date = current_date - relativedelta(months=months)
     article_list = Article.objects.filter(create_date__gte=previous_date)
     article_count = article_list.count()
+    if not article_count:
+        return {'article_count': article_count, 'status': True, 'result': 'ignore'}
     url_list = [f'{site_full_url()}{each.get_absolute_url()}' for each in article_list]
     status, result = baidu_push('\n'.join(url_list))
     return {'article_count': article_count, 'status': status, 'result': result}
