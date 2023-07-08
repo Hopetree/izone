@@ -151,6 +151,41 @@ def action_cleanup_task_result(day=3):
     return {'task_result_count': task_result_count}
 
 
+def action_baidu_push(baidu_url, months):
+    """
+    主动推送文章地址到百度，指定推送最近months月的文章链接
+    @param baidu_url: 百度接口调用地址，包含token
+    @param months: 几个月内的文章
+    @return:
+    """
+    import requests
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta
+    from blog.models import Article
+    from blog.utils import site_full_url
+
+    def baidu_push(urls):
+        headers = {
+            'User-Agent': 'curl/7.12.1',
+            'Host': 'data.zz.baidu.com',
+            'Content-Type': 'text/plain',
+            'Content-Length': '83'
+        }
+        try:
+            response = requests.post(baidu_url, headers=headers, data=urls, timeout=5)
+            return True, response.json()
+        except Exception as e:
+            return False, e
+
+    current_date = datetime.now()
+    previous_date = current_date - relativedelta(months=months)
+    article_list = Article.objects.filter(create_date__gte=previous_date)
+    article_count = article_list.count()
+    url_list = [f'{site_full_url()}{each.get_absolute_url()}' for each in article_list]
+    status, result = baidu_push('\n'.join(url_list))
+    return {'article_count': article_count, 'status': status, 'result': result}
+
+
 if __name__ == '__main__':
     import os
     import django
@@ -159,4 +194,4 @@ if __name__ == '__main__':
     django.setup()
 
     # print(action_clear_notification(100))
-    print(action_cleanup_task_result(7))
+    # print(action_cleanup_task_result(7))

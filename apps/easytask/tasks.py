@@ -9,6 +9,7 @@ from .actions import (
     action_check_friend_links,
     action_clear_notification,
     action_cleanup_task_result,
+    action_baidu_push,
 )
 
 
@@ -66,5 +67,19 @@ def cleanup_task_result(day=3):
     """
     response = TaskResponse()
     result = action_cleanup_task_result(day=day)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def baidu_push(baidu_url, months=3):
+    """
+    百度推送
+    @param baidu_url:
+    @param months:
+    @return:
+    """
+    response = TaskResponse()
+    result = action_baidu_push(baidu_url=baidu_url, months=months)
     response.data = result
     return response.as_dict()
