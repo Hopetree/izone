@@ -558,8 +558,6 @@ ul.checklist li {
     background-position: center;
     background-repeat: no-repeat;
 
-    animation-duration: 1s;
-    animation-delay: 0.1s;
     visibility: visible;
     box-shadow: 0 0 20px 0 rgba(44, 101, 144, 0.1);
 }
@@ -634,13 +632,13 @@ ul.checklist li {
     text-align: center;
 }
 
-.friend-request,
-.friend-add {
+.friend-request {
     text-align: center;
     margin-top: 6.6rem;
 }
 
-.friend-request a {
+.friend-request a,
+.friend-post a {
     color: #e0dada !important;
     background-color: #617397;
     padding: 0.4rem 1.5rem;
@@ -649,6 +647,28 @@ ul.checklist li {
 
 .friend-request a:hover {
     color: #FFFFFF !important;
+}
+
+.friend-add {
+    margin-bottom: 3rem;
+    color: var(--izone-font-2);
+}
+
+.friend-add p,
+.friend-post p {
+    margin-bottom: 0;
+}
+
+.friend-post {
+    text-align: center;
+}
+
+.friend-post-btn {
+    margin-top: 2rem;
+}
+
+.friend-post-btn #friendModal {
+    text-align: left;
 }
 
 /*友情链接结束*/

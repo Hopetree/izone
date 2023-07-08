@@ -5,10 +5,10 @@ from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
 from django.views.decorators.http import require_http_methods
+from django.core.cache import cache
 
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink
-from .utils import site_full_url, CustomHtmlFormatter
-from django.core.cache import cache
+from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse
 
 import markdown
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
@@ -274,14 +274,24 @@ def friend_add(request):
     @return:
     """
     if request.method == "POST" and request.is_ajax():
-        pass
+        data = request.POST
+        name = data.get('name')
+        description = data.get('description')
+        link = data.get('link')
 
-    name = '测试网站001'
-    description = '描述1'
-    link = 'https://kkk.com'
-
-    friend = FriendLink(name=name, description=description, link=link, is_show=True,
-                        is_active=False)
-    friend.save()
+        try:
+            friend = FriendLink.objects.create(name=name,
+                                               description=description,
+                                               link=link,
+                                               is_active=False,
+                                               is_show=True,
+                                               )
+            resp = ApiResponse()
+            resp.data = {'id': friend.id}
+            return resp.as_json_response()
+        except Exception as e:
+            resp = ErrorApiResponse()
+            resp.error = str(e)
+            return resp.as_json_response()
 
     return render(request, 'blog/friendAdd.html')

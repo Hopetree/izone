@@ -15,14 +15,99 @@
 {% block base_content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-lg-9">
                 <div class="friend-block">
+                    <h2>先友后链</h2>
                     <div class="friend-add">
-                        功能开发中，敬请期待...
+                        <p><strong>本站名称：</strong>{{ site_logo_name }}</p>
+                        <p><strong>本站地址：</strong>{{ site_url }}</p>
+                        <p><strong>本站描述：</strong>Django自建博客，热爱Python</p>
+                        <p><strong>本站图标：</strong>{{ site_url }}{% static 'blog/img/favicon.ico' %}</p>
                     </div>
+                    <h2>申请要求</h2>
+                    <div class="friend-add">
+                        <p>贵站是独立博客，且已添加本站为友链</p>
+                        <p>贵站已经开通HTTPS安全认证</p>
+                        <p>贵站建站超过半年，且最少有10篇以上文章</p>
+                        <p>贵站是技术分享为主的博客，且不涉及敏感话题</p>
+                    </div>
+                    <h2>提交友链</h2>
+                    <div class="friend-post">
+                        <p class="text-muted small">提交友链后会给管理员发通知，等待管理员审核，审核通过后会显示在友链页面</p>
+                        <p class="text-muted small">成为友链后，本站定时任务会定期检查友链有效性，异常的友链会被标记为失效，一旦网站恢复，定时任务会自动恢复友链状态</p>
+                        <div class="friend-post-btn">
+                            <a class="my-2"
+                               href
+                               data-toggle="modal"
+                               data-target="#friendModal"
+                               data-whatever="@mdo">符合以上条件</a>
+                            <div class="modal fade" id="friendModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="friendModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="friendModalLabel">提交友链</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="recipient-name"
+                                                           class="col-form-label">网站名称(8字内):</label>
+                                                    <input type="text"
+                                                           maxlength="8"
+                                                           class="form-control"
+                                                           placeholder="如：TendCode"
+                                                           id="link-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text"
+                                                           class="col-form-label">网站地址(https开头):</label>
+                                                    <input type="text"
+                                                           maxlength="50"
+                                                           placeholder="如：https://tendcode.com"
+                                                           class="form-control"
+                                                           id="link-link">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text"
+                                                           class="col-form-label">网站描述(30字内):</label>
+                                                    <input type="text"
+                                                           maxlength="30"
+                                                           placeholder="如：Django自建博客，热爱Python"
+                                                           class="form-control"
+                                                           id="link-description">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                    data-csrf="{{ csrf_token }}"
+                                                    data-api-url="{% url 'blog:friend_add' %}"
+                                                    class="btn btn-info"
+                                                    id="friend-send">提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block end_file %}
+    <script src="{% static 'blog/js/article.js' %}?v20230708.13"></script>
+    <script>
+        $('#friend-send').click(function () {
+            friend_post()
+        })
+    </script>
 {% endblock %}

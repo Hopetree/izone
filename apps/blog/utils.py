@@ -3,6 +3,7 @@ from datetime import datetime
 from django.apps import apps as django_apps
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+from django.http import JsonResponse
 from pygments.formatters.html import HtmlFormatter
 
 
@@ -90,3 +91,34 @@ def site_full_url():
     protocol = site_protocol()
     domain = site_domain()
     return '{}://{}'.format(protocol, domain)
+
+
+class ApiResponse(object):
+    def __init__(self, code=0, data=None, message="", error=""):
+        self.code = code
+        self.data = data or {}
+        self.message = message
+        self.error = error
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
+    def as_dict(self):
+        data = {
+            'code': self.code,
+            'data': self.data,
+            'message': self.message,
+            'error': self.error
+        }
+        return data
+
+    def as_json_response(self):
+        return JsonResponse(self.as_dict())
+
+
+class ErrorApiResponse(ApiResponse):
+    def __init__(self, code=1, data=None, message="", error=""):
+        super().__init__(code, data, message, error)
