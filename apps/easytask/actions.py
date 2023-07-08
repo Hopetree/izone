@@ -179,7 +179,7 @@ def action_baidu_push(baidu_url, months):
 
     current_date = datetime.now()
     previous_date = current_date - relativedelta(months=months)
-    article_list = Article.objects.filter(create_date__gte=previous_date)
+    article_list = Article.objects.filter(create_date__gte=previous_date, is_publish=True)
     article_count = article_list.count()
     if not article_count:
         return {'article_count': article_count, 'status': True, 'result': 'ignore'}
