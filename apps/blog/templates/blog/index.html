@@ -30,7 +30,10 @@
                         <i class="fa fa-comments mr-1"></i>评论排序</a>
                 </div>
                 {% load_article_summary articles user %}
-                {% if is_paginated %}{% load_pages %}{% endif %}
+                {% if is_paginated %}
+                    <div class="d-none d-md-block">{% load_pages 10 %}</div>
+                    <div class="d-md-none">{% load_pages 4 %}</div>
+                {% endif %}
             </div>
             <div class="col-lg-4">
                 {% include 'blog/tags/base_right.html' %}

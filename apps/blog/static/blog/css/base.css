@@ -679,6 +679,41 @@ ul.checklist li {
 
 /*友情链接结束*/
 
+
+/*分页*/
+.page-inner {
+    margin-top: .8rem;
+    margin-bottom: 1rem;
+}
+
+.page-inner span {
+    background-color: var(--izone-background-container);
+    color: var(--izone-font-default);
+    display: inline-block;
+    text-align: center;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin: 0 .25rem;
+    border-radius: .4rem;
+
+}
+
+.page-inner a > span:hover {
+    background: #4e6ef2;
+    color: #FFFFFF;
+}
+
+.page-inner span.page-active {
+    background: #4e6ef2;
+    color: #FFFFFF;
+}
+
+.page-inner span.n {
+    width: 5rem;
+}
+
+/*分页*/
 /*404页面+++++++++++++++++++++++*/
 .errorpage {
     margin: 30px 15px;

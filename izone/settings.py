@@ -180,7 +180,7 @@ USE_TZ = False  # 关闭国际时间，不然数据库报错
 
 # 统一分页设置
 BASE_PAGE_BY = 10
-BASE_ORPHANS = 5
+BASE_ORPHANS = 3
 
 # *************************************** 静态文件配置开始 ***************************************
 # Static files (CSS, JavaScript, Images)

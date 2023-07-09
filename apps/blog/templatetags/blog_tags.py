@@ -59,8 +59,27 @@ def load_article_summary(articles, user):
 
 
 @register.inclusion_tag('blog/tags/pagecut.html', takes_context=True)
-def load_pages(context):
-    """分页标签模板，不需要传递参数，直接继承参数"""
+def load_pages(context, max_length=10):
+    """
+    自定义分页
+    @param context: 上下文对象
+    @param max_length: 最多显示的页面按钮数量
+    @return:
+    """
+    paginator = context['paginator']
+    page_obj = context['page_obj']
+    # 分页总数不大于最大显示数，则直接显示所有页码
+    if paginator.num_pages <= max_length:
+        page_range = range(1, paginator.num_pages + 1)
+    # 总页码大于总显示的时候，保证当前页码在中间
+    else:
+        left_num = max(page_obj.number - int(max_length / 2), 1)
+        right_num = min(left_num + max_length - 1, paginator.num_pages)
+        # 当前页面接近末尾的时候，也要保证能显示max_length个数
+        if right_num - left_num < max_length - 1:
+            left_num = right_num - max_length + 1
+        page_range = range(left_num, right_num + 1)
+    context['page_range'] = page_range
     return context
 
 
