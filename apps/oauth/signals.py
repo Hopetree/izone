@@ -9,5 +9,5 @@ from .models import Ouser
 def generate_avatar(sender, instance, **kwargs):
     if instance._state.adding:
         # 随机选择一个头像地址
-        random_avatar = 'avatar/default{}.png'.format(random.randint(1, 10))
+        random_avatar = 'avatar/default/default{}.png'.format(random.randint(1, 10))
         instance.avatar = random_avatar

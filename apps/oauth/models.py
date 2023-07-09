@@ -10,8 +10,8 @@ from django.conf import settings
 
 class Ouser(AbstractUser):
     link = models.URLField('个人网址', blank=True, help_text='提示：网址必须填写以http开头的完整形式')
-    avatar = ProcessedImageField(upload_to='avatar/%Y/%m/%d/%H-%M-%S',
-                                 default='avatar/default.png',
+    avatar = ProcessedImageField(upload_to='avatar/upload/%Y/%m/%d/%H-%M-%S',
+                                 default='avatar/default/default.png',
                                  verbose_name='头像',
                                  processors=[ResizeToFill(80, 80)]
                                  )

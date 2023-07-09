@@ -195,8 +195,8 @@ class FriendLink(models.Model):
     name = models.CharField('网站名称', max_length=50)
     description = models.CharField('网站描述', max_length=100, blank=True)
     link = models.URLField('友链地址', help_text='请填写http或https开头的完整形式地址')
-    logo = ProcessedImageField(upload_to='friend/%Y',
-                               default='friend/default.png',
+    logo = ProcessedImageField(upload_to='friend/upload/%Y',
+                               default='friend/default/default.png',
                                verbose_name='网站LOGO',
                                processors=[ResizeToFill(120, 120)],
                                blank=True,
