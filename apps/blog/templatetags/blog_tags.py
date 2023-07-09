@@ -74,13 +74,15 @@ def get_carousel_list():
 @register.simple_tag
 def get_new_timeline_id():
     """得到最后一个timeline的id，用来设置到缓存里面，实现动态缓存"""
-    return Timeline.objects.order_by('-pk').first().pk
+    objects = Timeline.objects.order_by('-pk')
+    return objects.first().pk if objects else 0
 
 
 @register.simple_tag
 def get_new_article_id():
     """得到最后一个article的id，用来设置到缓存里面，实现动态缓存"""
-    return Article.objects.order_by('-pk').first().pk
+    objects = Article.objects.order_by('-pk')
+    return objects.first().pk if objects else 0
 
 
 @register.simple_tag
