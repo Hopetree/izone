@@ -1,5 +1,4 @@
 {% extends "blog/base.html" %}
-{% load cache %}
 {% load static %}
 {% load humanize %}
 {% load blog_tags %}
@@ -11,7 +10,7 @@
 {% endblock %}
 
 {% block top-file %}
-<style type="text/css">
+<style>
 .archive {
     line-height:2;
 }
@@ -22,7 +21,6 @@
 <div class="container">
     <div class="row">
         {% get_new_article_id as new_article_id %}
-        {% cache 86400 'template:archive' new_article_id %}
         <div class="col-lg-8">
             <div class="card border-0 rounded-6 mb-3">
                 <div class="card-body f-16 archive">
@@ -49,7 +47,6 @@
             </div>
             {% if is_paginated %}{% load_pages %}{% endif %}
         </div>
-        {% endcache %}
         <div class="col-lg-4 d-none d-lg-block">
             {% include 'blog/tags/base_right.html' %}
         </div>
