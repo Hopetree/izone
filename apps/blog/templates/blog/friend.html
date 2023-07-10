@@ -17,7 +17,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="friend-block">
-                    <h2>活跃友链</h2>
+                    <h2 class="text-info"><a href="{% url 'blog:friend_add' %}">👉申请友链👈</a></h2>
                     <div class="friend-list">
                         {% for friend in friend_list %}
                             <a href="{{ friend.get_home_url }}" target="_blank">
@@ -50,9 +50,6 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <div class="friend-request">
-                        <a href="{% url 'blog:friend_add' %}">👉&nbsp;申请友链&nbsp;👈</a>
-                    </div>
                 </div>
             </div>
         </div>
