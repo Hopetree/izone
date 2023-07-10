@@ -69,13 +69,18 @@ class Category(models.Model):
 
 # 文章
 class Article(models.Model):
-    IMG_LINK = '/static/blog/img/summary.png'
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者',
                                on_delete=models.PROTECT)
     title = models.CharField(max_length=150, verbose_name='文章标题')
     summary = models.TextField('文章摘要', max_length=230, default='文章摘要等同于网页description内容，请务必填写...')
     body = models.TextField(verbose_name='文章内容')
-    img_link = models.CharField('图片地址', default=IMG_LINK, max_length=255)
+    img_link = ProcessedImageField(upload_to='article/upload/%Y/%m/%d/',
+                                   default='article/default/default.png',
+                                   verbose_name='封面图',
+                                   processors=[ResizeToFill(250, 150)],
+                                   blank=True,
+                                   help_text='上传图片大小建议使用5:3的宽高比，为了清晰度原始图片宽度应该超过250px'
+                                   )
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     views = models.IntegerField('阅览量', default=0)
