@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
@@ -100,6 +101,13 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.title[:30]}...' if len(self.title) > 30 else self.title
+
+    def save(self, *args, **kwargs):
+        # 当为更新且is_publish由False变更成True的时候才执行: 发布的文章时间的创建时间以发布时间为准
+        if self.pk and self.is_publish and Article.objects.filter(pk=self.pk,
+                                                                  is_publish=False).exists():
+            self.create_date = datetime.now()
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})
