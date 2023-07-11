@@ -248,6 +248,8 @@ def update_article(request):
     if request.method == 'POST' and request.is_ajax():
         article_slug = request.POST.get('article_slug')
         article_body = request.POST.get('article_body')
+        article_img_link = request.POST.get('article_img_link')
+        change_img_link_flag = request.POST.get('change_img_link_flag')
 
         try:
             article = Article.objects.get(slug=article_slug)
@@ -257,7 +259,11 @@ def update_article(request):
 
             # 更新article模型的数据
             article.body = article_body
-            article.save()
+            if change_img_link_flag == 'true':
+                article.img_link = article_img_link  # 更新封面图地址
+                article.save(update_fields=['body', 'img_link'])
+            else:
+                article.save(update_fields=['body'])
 
             callback = reverse('blog:detail', kwargs={'slug': article_slug})
             response_data = {'message': 'Success', 'data': {'callback': callback}, 'code': 0}

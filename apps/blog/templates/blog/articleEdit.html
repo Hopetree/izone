@@ -32,9 +32,16 @@
 {% block base_content %}
     <div id="layout">
         <header class="my-2">
-            <button type="button" class="btn btn-success btn-sm mr-2" id="save-article">保存修改</button>
-            <button type="button" class="btn btn-warning btn-sm mr-2" id="back-article">放弃编辑</button>
-            <button type="button" class="btn btn-info btn-sm mr-2" id="more-edit-article">后台编辑</button>
+            <form class="form-inline">
+                <button type="button" class="btn btn-success btn-sm mr-2" id="save-article">保存修改</button>
+                <button type="button" class="btn btn-warning btn-sm mr-2" id="back-article">放弃编辑</button>
+                <button type="button" class="btn btn-info btn-sm mr-2" id="more-edit-article">后台编辑</button>
+                <input type="text" class="form-control form-control-sm mr-2"
+                       id="article-img-link" style="min-width: 25rem"
+                       value="{{ article.img_link }}">
+                <input class="form-check-input" type="checkbox" id="change-img-link-flag">
+                <label class="form-check-label" for="autoSizingCheck" title="勾选之后保存才会更新封面图链接">更新封面图链接</label>
+            </form>
         </header>
         <div id="test-editormd">
             <textarea style="display:none;">{{ article.body }}</textarea>
@@ -56,7 +63,7 @@
             });
         });
     </script>
-    <script src="{% static 'blog/js/article.js' %}?v20230708.13"></script>
+    <script src="{% static 'blog/js/article.js' %}?v20230711.4"></script>
     <script>
         $('#save-article').click(function () {
             article_update_save("{{ csrf_token }}", "{% url 'blog:article_update' %}", "{{ article.slug }}")

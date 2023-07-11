@@ -1,5 +1,7 @@
 function article_update_save(csrf, api_url, article_slug) {
     const article_body = testEditor.getMarkdown();
+    const article_img_link = $.trim($('#article-img-link').val());
+    const change_img_link_flag = $('#change-img-link-flag').prop('checked');
     $.ajaxSetup({
         data: {
             csrfmiddlewaretoken: csrf
@@ -10,7 +12,9 @@ function article_update_save(csrf, api_url, article_slug) {
         url: api_url,
         data: {
             'article_slug': article_slug,
-            'article_body': article_body,
+            'article_img_link': article_img_link,
+            'change_img_link_flag': change_img_link_flag,
+            'article_body': article_body
         },
         dataType: 'json',
         success: function (data) {
