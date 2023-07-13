@@ -37,13 +37,27 @@
                     <div class="subject-article-list">
                         {% get_subject_article_list article.category as subject_articles %}
                         <ul>
-                            {% for each in subject_articles %}
-                                <li>
-                                    <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
-                                       href="{{ each.get_subject_absolute_url }}">{{ each.title }}</a>
-                                </li>
-                            {% endfor %}
+                            <li>
+                                <div class="subject-subcategory collapsible collapsed">
+                                    <div class="subcategory-title">默认</div>
+                                    <div class="caret">
+                                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
+                                             viewBox="0 0 24 24" class="caret-icon">
+                                            <path d="M9,19c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l5.3-5.3L8.3,6.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l6,6c0.4,0.4,0.4,1,0,1.4l-6,6C9.5,18.9,9.3,19,9,19z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <ul class="collapse">
+                                    {% for each in subject_articles %}
+                                        <li>
+                                            <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
+                                               href="{{ each.get_subject_absolute_url }}">{{ each.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
                         </ul>
+
                     </div>
                 </div>
             </div>
@@ -145,6 +159,12 @@
             if (firstLi) {
                 firstLi.classList.add('active');
             }
+        });
+        {#专题导航点击事件#}
+        $(".collapsible").click(function () {
+            $(this).toggleClass("collapsed");
+            const parentElement = $(this).parent();
+            parentElement.children("ul").toggleClass("collapse");
         });
     </script>
     {% if user.is_authenticated %}

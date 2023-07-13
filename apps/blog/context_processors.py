@@ -8,8 +8,8 @@ from .utils import (site_full_url, get_site_create_day)
 # todo 可以做成自动化，每次拉git代码的时候检查是否更新了某个静态文件，自动更新版本
 STATIC_VERSION = {
     'css_blog_base': '20230713.01',
-    'css_blog_detail': '20230713.03',
-    'css_blog_night': '20230713.03',
+    'css_blog_detail': '20230713.07',
+    'css_blog_night': '20230713.06',
 
     'js_blog_base': '20230713.01',
     'js_blog_article': '20230713.01',

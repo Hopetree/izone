@@ -268,6 +268,7 @@ pre {
 }
 
 .subject-list .toc-title {
+    color: #2d3039;
     margin-left: 1rem;
     padding-bottom: 0.6rem;
     margin-bottom: 0.8rem;
@@ -288,25 +289,70 @@ pre {
     color: #ea6f5a;
 }
 
-.subject-article-list a::before {
+.subject-article-list ul > li > ul a::before {
     content: "";
     position: absolute;
     top: 0;
     border-radius: 2px;
-    left: -1rem;
+    left: -1.1rem;
     height: 100%;
-    width: 2px;
+    width: .1rem;
 }
 
 .subject-article-list li {
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
 }
 
 .subject-list,
 .toc-block .article-toc {
     max-height: 43rem;
 }
+
+.subject-article-list ul > li ul {
+    border-left: rgba(60, 60, 60, .1) solid .1rem;
+}
+
+.subject-subcategory {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.subcategory-title {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    font-weight: 600;
+}
+
+.subject-subcategory {
+    cursor: pointer;
+}
+
+.subject-subcategory .caret {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1rem;
+    height: 1rem;
+    color: rgba(60, 60, 67, .43);
+    cursor: pointer;
+    transition: color .25s;
+}
+
+.collapsed .caret-icon {
+    transform: rotate(0)
+}
+
+.caret-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    transform: rotate(90deg);
+    transition: transform .25s;
+}
+
 
 /*subject end*/
 

@@ -224,6 +224,8 @@ pre {
 
 .subject-list a,
 .subject-list .toc-title,
+.subcategory-title,
+.subject-subcategory .caret,
 .toc a {
     color: #9caec7;
 }
