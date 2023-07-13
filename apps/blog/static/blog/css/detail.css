@@ -294,10 +294,6 @@ pre {
     margin-bottom: 0.4rem;
 }
 
-.subject-list,
-.toc-block .article-toc {
-    max-height: 43rem;
-}
 
 .subject-article-list ul > li ul {
     border-left: rgba(60, 60, 60, .1) solid .1rem;
@@ -374,10 +370,18 @@ pre {
         flex: 0 0 20%;
         max-width: 20%;
     }
+
+    .subject-list,
+    .toc-block .article-toc {
+        max-height: 673px;
+    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
-
+    .subject-list,
+    .toc-block .article-toc {
+        max-height: 694px;
+    }
 }
