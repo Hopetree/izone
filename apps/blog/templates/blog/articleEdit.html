@@ -63,7 +63,7 @@
             });
         });
     </script>
-    <script src="{% static 'blog/js/article.js' %}?v20230711.4"></script>
+    <script src="{% static 'blog/js/article.js' %}?v={{ static_version.js_blog_article }}"></script>
     <script>
         $('#save-article').click(function () {
             article_update_save("{{ csrf_token }}", "{% url 'blog:article_update' %}", "{{ article.slug }}")

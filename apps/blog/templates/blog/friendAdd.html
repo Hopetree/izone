@@ -104,7 +104,7 @@
 {% endblock %}
 
 {% block end_file %}
-    <script src="{% static 'blog/js/article.js' %}?v20230708.13"></script>
+    <script src="{% static 'blog/js/article.js' %}?v={{ static_version.js_blog_article }}"></script>
     <script>
         $('#friend-send').click(function () {
             friend_post()

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block top-file %}
-<link href="{% static 'tool/css/tool.css' %}?v=20180107.074679" rel="stylesheet">
+<link href="{% static 'tool/css/tool.css' %}?v={{ static_version.css_tool_tool }}" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
@@ -32,6 +32,6 @@
 {% endblock %}
 
 {% block end_file %}
-<script src="{% static 'tool/js/tool.js'%}?v=20230603.61"></script>
+<script src="{% static 'tool/js/tool.js'%}?v={{ static_version.js_tool_tool }}"></script>
 {% block end_f %}{% endblock %}
 {% endblock %}
