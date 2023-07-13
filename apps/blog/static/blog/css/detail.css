@@ -239,16 +239,6 @@ pre {
 }
 
 /*subject start*/
-.subject-col-7 {
-    flex: 0 0 60%;
-    max-width: 60%;
-}
-
-.subject-col-2 {
-    flex: 0 0 20%;
-    max-width: 20%;
-}
-
 
 .subject-block {
     padding-right: 0;
@@ -375,9 +365,19 @@ pre {
 /* Large devices (desktops, 992px and up) */
 /* X-iPad Y-iPad Pro*/
 @media (min-width: 992px) {
+    .subject-col-7 {
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+
+    .subject-col-2 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 /* PC X-iPad Pro*/
 @media (min-width: 1200px) {
+
 }
