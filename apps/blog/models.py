@@ -27,7 +27,7 @@ class Keyword(models.Model):
 class Tag(models.Model):
     name = models.CharField('文章标签', max_length=20)
     slug = models.SlugField(unique=True)
-    description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
+    description = models.TextField('描述', max_length=240, default='标签描述',
                                    help_text='用来作为SEO中description,长度参考SEO标准')
 
     class Meta:
@@ -50,7 +50,7 @@ class Tag(models.Model):
 class Category(models.Model):
     name = models.CharField('文章分类', max_length=20)
     slug = models.SlugField(unique=True)
-    description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
+    description = models.TextField('描述', max_length=240, default='分类描述',
                                    help_text='用来作为SEO中description,长度参考SEO标准')
 
     class Meta:
