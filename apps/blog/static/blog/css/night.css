@@ -222,16 +222,23 @@ pre {
     border-right: 0 solid #fff;
 }
 
+.subject-list a,
 .toc a {
     color: #9caec7;
 }
 
+
 .toc a:hover {
-    color: rgba(60, 60, 67, 1);
+    color: rgba(255, 255, 255, 0.7);
 }
 
+.subject-list,
 .article-toc {
     background: #18222d;
+}
+
+.subject-list a:hover {
+    color: #ea6f5a;
 }
 
 /*全局样式参数start*/

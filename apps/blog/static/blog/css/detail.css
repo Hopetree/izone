@@ -256,6 +256,7 @@ pre {
 }
 
 .subject-list {
+    color: rgba(60, 60, 67, .8);
     position: fixed;
     width: 19%;
     overflow: auto;
@@ -276,11 +277,12 @@ pre {
 }
 
 .subject-article-list a.active::before {
-    background-color: #e83e8c;
+    background-color: #ea6f5a;
 }
 
 .subject-article-list a.active {
     position: relative;
+    color: #ea6f5a;
 }
 
 .subject-article-list a::before {
