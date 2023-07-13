@@ -223,6 +223,7 @@ pre {
 }
 
 .subject-list a,
+.subject-list .toc-title,
 .toc a {
     color: #9caec7;
 }

@@ -9,7 +9,7 @@ from .utils import (site_full_url, get_site_create_day)
 STATIC_VERSION = {
     'css_blog_base': '20230713.01',
     'css_blog_detail': '20230713.02',
-    'css_blog_night': '20230713.02',
+    'css_blog_night': '20230713.03',
 
     'js_blog_base': '20230713.01',
     'js_blog_article': '20230713.01',
