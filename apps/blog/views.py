@@ -114,6 +114,13 @@ class DetailView(generic.DetailView):
         return obj
 
 
+class SubjectDetailView(DetailView):
+    """
+    专题文章视图
+    """
+    template_name = 'blog/subjectDetail.html'
+
+
 class CategoryView(generic.ListView):
     model = Article
     template_name = 'blog/category.html'

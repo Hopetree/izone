@@ -10,19 +10,44 @@
 
 
 {% block top-file %}
-    {#    <script>var stop_headroom = true;</script>#}
+    <script>var stop_headroom = true;</script>
     {% if user.is_authenticated %}
         <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
     {% endif %}
     <link href="{% static 'blog/css/detail.css' %}?v=20230705.1" rel="stylesheet">
     <link href="{% static 'blog/css/monokai.css' %}?v=20230611.42" rel="stylesheet">
     <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
+    <style>
+        footer {
+            display: none;
+        }
+
+        .subject-col-7 {
+            margin-bottom: 1.2rem;
+        }
+    </style>
 {% endblock %}
 
 {% block base_content %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-2 d-none d-lg-block subject-col-2 subject-block">
+                <div class="subject-list f-14 bg-white rounded-6">
+                    <div class="toc-title f-15"><strong>{{ article.category.name }}</strong></div>
+                    <div class="subject-article-list">
+                        {% get_subject_article_list article.category as subject_articles %}
+                        <ul>
+                            {% for each in subject_articles %}
+                                <li>
+                                    <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
+                                       href="{{ each.get_subject_absolute_url }}">{{ each.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 subject-col-7">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
                         <li class="breadcrumb-item">
@@ -86,8 +111,8 @@
                     {% include 'comment/comment_list.html' %}
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="article-toc d-none d-lg-block f-14 rounded-6">
+            <div class="col-lg-2 d-none d-lg-block subject-col-2 toc-block">
+                <div class="article-toc f-14 rounded-6">
                     <div class="toc-title f-15"><strong>目录</strong></div>
                     {{ article.toc|safe }}
                 </div>
@@ -101,21 +126,7 @@
             <img class="rounded mx-auto d-block" alt="image" style="max-width: 100%">
         </div>
     </div>
-    <!--前后文章-->
-    {% if article.get_pre %}
-        <div class="more-blog" id="icon-pre-blog">
-            <a href="{{ article.get_pre.get_absolute_url }}" title="上一篇：{{ article.get_pre.title }}">
-                <i class="fa fa-angle-left fa-3x"></i>
-            </a>
-        </div>
-    {% endif %}
-    {% if article.get_next %}
-        <div class="more-blog" id="icon-next-blog">
-            <a href="{{ article.get_next.get_absolute_url }}" title="下一篇：{{ article.get_next.title }}">
-                <i class="fa fa-angle-right fa-3x"></i>
-            </a>
-        </div>
-    {% endif %}
+
     <!--跳转到评论按钮-->
     <div class="text-center" id="go-to-com" title="查看评论" href="#comment-block"><i class="fa fa-commenting"></i></div>
 {% endblock %}

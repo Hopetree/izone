@@ -112,6 +112,10 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})
 
+    def get_subject_absolute_url(self):
+        """获取专栏地址"""
+        return reverse('blog:subject_detail', kwargs={'slug': self.slug})
+
     def body_to_markdown(self):
         return markdown.markdown(self.body, extensions=[
             'markdown.extensions.extra',

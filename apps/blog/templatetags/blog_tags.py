@@ -32,6 +32,20 @@ def get_article_list(sort=None, num=None):
 
 
 @register.simple_tag
+def get_subject_article_list(instance):
+    """
+    获取一个专题下所有文章，支持分类，tag，subject
+    @param instance: 实例
+    @return:
+    """
+    model_class = instance._meta.model
+    if model_class.__name__ == 'Category':
+        return Article.objects.filter(category=instance, is_publish=True)
+    elif model_class.__name__ == 'Tag':
+        return Article.objects.filter(tags=instance, is_publish=True)
+
+
+@register.simple_tag
 def keywords_to_str(art):
     """将文章关键词变成字符串"""
     keys = art.keywords.all()
