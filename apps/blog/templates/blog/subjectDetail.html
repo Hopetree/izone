@@ -35,10 +35,9 @@
                 <div class="subject-list f-14 rounded-6">
                     <div class="toc-title f-15"><strong>{{ article.category.name }}</strong></div>
                     <div class="subject-article-list">
-                        {% get_subject_article_list article.category as subject_articles %}
                         <ul>
                             <li>
-                                <div class="subject-subcategory collapsible collapsed">
+                                <div class="subject-subcategory collapsible">
                                     <div class="subcategory-title">默认</div>
                                     <div class="caret">
                                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
@@ -47,7 +46,8 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <ul class="collapse">
+                                {% get_subject_article_list article.category as subject_articles %}
+                                <ul class="">
                                     {% for each in subject_articles %}
                                         <li>
                                             <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
