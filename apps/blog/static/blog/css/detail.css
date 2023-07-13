@@ -80,15 +80,18 @@
     padding: 1rem 1rem .2rem 0;
 }
 
+.subject-list::-webkit-scrollbar,
 .article-toc::-webkit-scrollbar {
     width: 6px;
 }
 
+.subject-list::-webkit-scrollbar-track,
 .article-toc::-webkit-scrollbar-track {
     box-shadow: none;
     border-radius: 2px
 }
 
+.subject-list::-webkit-scrollbar-thumb,
 .article-toc::-webkit-scrollbar-thumb {
     background-color: #e4e6eb;
     outline: none;
