@@ -268,9 +268,7 @@ def update_article(request):
             article.body = article_body
             if change_img_link_flag == 'true':
                 article.img_link = article_img_link  # 更新封面图地址
-                article.save(update_fields=['body', 'img_link'])
-            else:
-                article.save(update_fields=['body'])
+            article.save()  # 这里不要设置更新的字段，不然会导致其他要在save更新的字段不更新
 
             callback = reverse('blog:detail', kwargs={'slug': article_slug})
             response_data = {'message': 'Success', 'data': {'callback': callback}, 'code': 0}
