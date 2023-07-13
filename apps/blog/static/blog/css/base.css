@@ -700,12 +700,12 @@ ul.checklist li {
 }
 
 .page-inner a > span:hover {
-    background: #4e6ef2;
+    background: rgba(23, 162, 184, .8);
     color: #FFFFFF;
 }
 
 .page-inner span.page-active {
-    background: #4e6ef2;
+    background: rgba(23, 162, 184, 1);
     color: #FFFFFF;
 }
 
