@@ -170,6 +170,7 @@ class Timeline(models.Model):
         return self.title[:20]
 
     def content_to_markdown(self):
+        """支持markdown，但是没必要用，content直接用html写更好"""
         return markdown.markdown(self.content,
                                  extensions=['markdown.extensions.extra', ]
                                  )

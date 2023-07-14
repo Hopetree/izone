@@ -1,59 +1,58 @@
 {% extends 'blog/base.html' %}
-{% load cache %}
 {% load static %}
 {% load blog_tags %}
 
 {% block top-file %}
-<link href="{% static 'blog/css/timeline.css'%}?v=1.07" rel="stylesheet">
+    <link href="{% static 'blog/css/timeline.css' %}?v=1.07" rel="stylesheet">
 {% endblock %}
 
 {% block head_title %}网站建站历程，查看博客搭建Timeline时间轴{% endblock %}
 {% block metas %}
-<meta name="description"
-      content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
-<meta name="keywords" content="Timeline时间轴,个人博客建站日志">
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="Timeline时间轴,个人博客建站日志">
 {% endblock %}
 
 {% block base_content %}
-<div class="container">
-    <div class="page-header mt-0">
-        <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
-    </div>
-    {% get_new_timeline_id as new_timeline_id %}
-    {% cache 86400 'template:timeline' new_timeline_id %}
-    <ul class="timeline" id="timeline">
-        {% for timeline in timeline_list %}
-        {% if timeline.side == 'L' %}
-        <li>
-            {% else %}
-        <li class="timeline-inverted">{% endif %}
+    <div class="container">
+        <div class="page-header mt-0">
+            <h1 id="timeline"><i class="fa fa-hourglass-half mr-2"></i>建站日志</h1>
+        </div>
+        {% get_new_timeline_id as new_timeline_id %}
+        <ul class="timeline" id="timeline">
+            {% for timeline in timeline_list %}
+                {% if timeline.side == 'L' %}
+                    <li>
+                        {% else %}
+                    <li class="timeline-inverted">{% endif %}
             <div class="timeline-badge {{ timeline.icon_color }}"><i class="{{ timeline.icon }}"></i></div>
             <div class="timeline-panel rounded-6">
                 <div class="timeline-heading">
                     <h2 class="timeline-title text-info">{{ timeline.title }}</h2>
                     <p class="mb-1">
-                        <span class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ timeline.update_date|date:'Y-m-d'  }}</span>
-                        <span class="pull-right" id="star" title="{% get_star_title timeline.star_num %}">{% get_star timeline.star_num %}</span>
+                        <span class="text-muted"><i
+                                class="glyphicon glyphicon-time"></i> {{ timeline.update_date|date:'Y-m-d' }}</span>
+                        <span class="pull-right" id="star"
+                              title="{% get_star_title timeline.star_num %}">{% get_star timeline.star_num %}</span>
                     </p>
                 </div>
                 <div class="timeline-body">
-                    {{ timeline.content_to_markdown|safe }}
+                    {{ timeline.content|safe }}
                 </div>
             </div>
-        </li>
-        {% empty %}
-        <p>暂时没有时间线</p>
-        {% endfor %}
-    </ul>
-    {% endcache %}
-</div>
+            </li>
+            {% empty %}
+                <p>暂时没有时间线</p>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 
 {% block js-file %}
-<script>
-$(document).ready(function(){
-    $(".timeline-body a").attr("target","_blank");
-});
+    <script>
+        $(document).ready(function () {
+            $(".timeline-body a").attr("target", "_blank");
+        });
 
-</script>
+    </script>
 {% endblock %}
