@@ -115,7 +115,7 @@ class Topic(models.Model):
     class Meta:
         verbose_name = '专题-主题'
         verbose_name_plural = verbose_name
-        ordering = ['-create_date']
+        ordering = ['sort_order']
 
     def __str__(self):
         return f'[{self.subject.name}]{self.name}'
