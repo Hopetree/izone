@@ -2,7 +2,7 @@
 {% load blog_tags static comment_tags %}
 {% load humanize %}
 
-{% block head_title %}{{ article.title }}_{{ article.category }}{% endblock %}
+{% block head_title %}{{ article.title }}_{{ article.topic }}{% endblock %}
 {% block metas %}
     <meta name="description" content="{{ article.summary }}">
     <meta name="keywords" content="{% keywords_to_str article %}">
@@ -33,31 +33,35 @@
         <div class="row justify-content-center">
             <div class="col-lg-2 d-none d-lg-block subject-col-2 subject-block">
                 <div class="subject-list f-14 rounded-6">
-                    <div class="toc-title f-15"><strong>{{ article.category.name }}</strong></div>
+                    <div class="toc-title f-15"><strong>{{ article.topic.subject.name }}</strong></div>
                     <div class="subject-article-list">
                         <ul>
-                            <li>
-                                <div class="subject-subcategory collapsible">
-                                    <div class="subcategory-title">默认</div>
-                                    <div class="caret">
-                                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
-                                             viewBox="0 0 24 24" class="caret-icon">
-                                            <path d="M9,19c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l5.3-5.3L8.3,6.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l6,6c0.4,0.4,0.4,1,0,1.4l-6,6C9.5,18.9,9.3,19,9,19z"></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                {% get_subject_article_list article.category as subject_articles %}
-                                <ul class="">
-                                    {% for each in subject_articles %}
-                                        <li>
-                                            <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
-                                               href="{{ each.get_subject_absolute_url }}">{{ each.title }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
+                            {% for topic in article.topic.subject.get_topics %}
+                                {#只显示有文章的主题，展开文章所属的主题，前提主题收起来#}
+                                {% if topic.get_articles %}
+                                    <li>
+                                        <div class="subject-subcategory collapsible {% if topic != article.topic %}collapsed{% endif %}">
+                                            <div class="subcategory-title">{{ topic.name }}</div>
+                                            <div class="caret">
+                                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                                                     focusable="false"
+                                                     viewBox="0 0 24 24" class="caret-icon">
+                                                    <path d="M9,19c-0.3,0-0.5-0.1-0.7-0.3c-0.4-0.4-0.4-1,0-1.4l5.3-5.3L8.3,6.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l6,6c0.4,0.4,0.4,1,0,1.4l-6,6C9.5,18.9,9.3,19,9,19z"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <ul class="{% if topic != article.topic %}collapse{% endif %}">
+                                            {% for each in topic.get_articles %}
+                                                <li>
+                                                    <a class="{% if request.path == each.get_subject_absolute_url %}active{% endif %}"
+                                                       href="{{ each.get_subject_absolute_url }}">{{ each.get_topic_title }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
                         </ul>
-
                     </div>
                 </div>
             </div>

@@ -32,9 +32,9 @@ def get_article_list(sort=None, num=None):
 
 
 @register.simple_tag
-def get_subject_article_list(instance):
+def get_instance_article_list(instance):
     """
-    获取一个专题下所有文章，支持分类，tag，subject
+    获取一个专题下所有文章，支持分类，tag，subject, topic
     @param instance: 实例
     @return:
     """
@@ -43,6 +43,8 @@ def get_subject_article_list(instance):
         return Article.objects.filter(category=instance, is_publish=True)
     elif model_class.__name__ == 'Tag':
         return Article.objects.filter(tags=instance, is_publish=True)
+    elif model_class.__name__ == 'Topic':
+        return Article.objects.filter(topic=instance, is_publish=True)
 
 
 @register.simple_tag

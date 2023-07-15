@@ -7,7 +7,7 @@ from django.conf import settings
 from django.views.decorators.http import require_http_methods
 from django.core.cache import cache
 
-from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink
+from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject, Topic
 from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse
 
 import markdown
@@ -119,6 +119,10 @@ class SubjectDetailView(DetailView):
     专题文章视图
     """
     template_name = 'blog/subjectDetail.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(topic__isnull=False)
 
 
 class CategoryView(generic.ListView):

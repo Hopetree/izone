@@ -68,6 +68,64 @@ class Category(models.Model):
         return Article.objects.filter(category=self, is_publish=True)
 
 
+# 专题
+class Subject(models.Model):
+    STATUS_CHOICES = (
+        ('not_started', '未开始'),
+        ('ongoing', '连载中'),
+        ('completed', '已完结'),
+    )
+
+    name = models.CharField('专题名称', max_length=50)
+    status = models.CharField('状态', max_length=20, choices=STATUS_CHOICES, default='not_started')
+    description = models.CharField('描述', max_length=250)
+    sort_order = models.IntegerField('排序', default=99, help_text='作为专题列表页的排序')
+    create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    cover_image = ProcessedImageField(upload_to='subject/upload/%Y/%m/%d/',
+                                      default='subject/default/default.png',
+                                      verbose_name='封面图',
+                                      processors=[ResizeToFill(250, 150)],
+                                      help_text='上传图片大小建议使用5:3的宽高比，为了清晰度原始图片宽度应该超过250px'
+                                      )
+
+    class Meta:
+        verbose_name = '专题'
+        verbose_name_plural = verbose_name
+        ordering = ['sort_order']
+
+    def __str__(self):
+        return self.name
+
+    def get_topics(self):
+        """得到一个专题的所有主题，按照排序进行排序"""
+        return Topic.objects.filter(subject=self).order_by('sort_order')
+
+
+# 专题的主题，作为专题的目录，专题-主题-文章
+class Topic(models.Model):
+    name = models.CharField('主题名称', max_length=50)
+    create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    sort_order = models.IntegerField('排序', default=99, help_text='仅作为主题在专题中的排序，类似目录')
+
+    subject = models.ForeignKey(Subject, verbose_name='所属专题', on_delete=models.PROTECT,
+                                related_name='topics')
+
+    class Meta:
+        verbose_name = '专题-主题'
+        verbose_name_plural = verbose_name
+        ordering = ['-create_date']
+
+    def __str__(self):
+        return f'[{self.subject.name}]{self.name}'
+
+    def get_articles(self):
+        """得到一个主题的所有已发布的文章，按照主题排序排序"""
+        return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order',
+                                                                            '-create_date')
+
+
 # 文章
 class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者',
@@ -94,6 +152,15 @@ class Article(models.Model):
     keywords = models.ManyToManyField(Keyword, verbose_name='文章关键词',
                                       help_text='文章关键词，用来作为SEO中keywords，最好使用长尾词，3-4个足够')
 
+    # 跟专题-主题相关的字段和关系，都是非必填，仅给专题的时候使用，其他地方一概不用
+    # 设计上一个专题有多个主题（目录的概念），一个主题可以有多个文章，一个文章只能归属一个主题
+    topic = models.ForeignKey(Topic, verbose_name='所属主题', on_delete=models.SET_NULL,
+                              null=True, blank=True, related_name='articles')
+    topic_order = models.IntegerField('主题中排序', default=99, null=True, blank=True,
+                                      help_text='仅作为文章在主题中的排序')
+    topic_short_title = models.CharField('主题短标题', max_length=50, null=True, blank=True,
+                                         help_text='专门给Topic使用的短标题')
+
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = verbose_name
@@ -110,6 +177,9 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
+        """优先使用专题地址"""
+        if self.topic:
+            return self.get_subject_absolute_url()
         return reverse('blog:detail', kwargs={'slug': self.slug})
 
     def get_subject_absolute_url(self):
@@ -131,6 +201,12 @@ class Article(models.Model):
 
     def get_next(self):
         return Article.objects.filter(id__gt=self.id, is_publish=True).order_by('id').first()
+
+    def get_topic_title(self):
+        """仅当有主题的时候优先使用短标题，这个函数给专题使用"""
+        if self.topic:
+            return self.topic_short_title or self.title
+        return self.title
 
 
 # 时间线

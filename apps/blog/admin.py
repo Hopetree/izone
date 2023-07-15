@@ -3,7 +3,30 @@ from django.apps import apps
 from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
-                     AboutBlog)
+                     AboutBlog, Subject, Topic)
+
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    date_hierarchy = 'create_date'
+    list_display = ('id', 'name', 'create_date', 'update_date', 'sort_order', 'status')
+    list_editable = ('sort_order', 'status')
+    list_display_links = ('name',)
+    list_filter = ('create_date', 'status', 'sort_order')
+
+
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    date_hierarchy = 'create_date'
+    list_display = ('id', 'subject_title', 'create_date', 'update_date', 'sort_order', 'subject')
+    list_editable = ('sort_order',)
+    list_display_links = ('subject_title',)
+    list_filter = ('create_date', 'sort_order', 'subject')
+
+    def subject_title(self, obj):
+        return str(obj)
+
+    subject_title.short_description = '完整标题'
 
 
 @admin.register(Article)
@@ -14,16 +37,25 @@ class ArticleAdmin(admin.ModelAdmin):
     exclude = ('views',)
 
     # 在查看修改的时候显示的属性，第一个字段带有<a>标签，所以最好放标题
-    list_display = ('id', 'title', 'author', 'create_date', 'update_date', 'is_top', 'is_publish')
+    list_display = ('id', 'title', 'author', 'is_top',
+                    'is_publish', 'topic', 'topic_order', 'topic_short_title')
+
+    # 字段归类显示
+    fieldsets = (
+        ('文章信息', {'fields': (('title', 'slug'), 'summary', 'body', 'img_link',
+                             ('is_top', 'is_publish'))}),
+        ('文章关系信息', {'fields': ('author', 'category', 'tags', 'keywords')}),
+        ('文章专题信息', {'fields': (('topic', 'topic_order'), 'topic_short_title')}),
+    )
 
     # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
-    list_editable = ('is_top', 'is_publish')
+    list_editable = ('is_top', 'is_publish', 'topic', 'topic_order', 'topic_short_title')
 
     # 设置需要添加<a>标签的字段
     list_display_links = ('title',)
 
     # 激活过滤器，这个很有用
-    list_filter = ('create_date', 'category', 'is_top', 'is_publish')
+    list_filter = ('create_date', 'category', 'is_top', 'is_publish', 'topic', 'topic_order')
 
     list_per_page = 50  # 控制每页显示的对象数量，默认是100
 
