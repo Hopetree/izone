@@ -110,3 +110,6 @@ upload/
 
 # templates test html
 templates/test*.html
+
+# log
+*.log*
