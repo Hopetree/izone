@@ -26,7 +26,8 @@ main {
     flex: 1 0 auto;
 }
 
-.container {
+.container,
+.container-fluid {
     padding-right: 5px;
     padding-left: 5px;
 }
@@ -947,7 +948,8 @@ div.archive > ul > li > ul {
 /* Small devices (landscape phones, 576px and up) */
 /* X-iPhone6 AND plus */
 @media (min-width: 576px) {
-    .container {
+    .container,
+    .container-fluid {
         max-width: 100%;
         padding-right: 5px;
         padding-left: 5px;
@@ -981,7 +983,8 @@ div.archive > ul > li > ul {
 /* Medium devices (tablets, 768px and up) */
 /* Y-iPad mini */
 @media (min-width: 768px) {
-    .container {
+    .container,
+    .container-fluid {
         max-width: 100%;
         padding-right: 8px;
         padding-left: 8px;
@@ -1038,7 +1041,8 @@ div.archive > ul > li > ul {
         margin-top: -1rem;
     }
 
-    .container {
+    .container,
+    .container-fluid {
         max-width: 100%;
         padding-right: 15px;
         padding-left: 15px;
