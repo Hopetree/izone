@@ -339,6 +339,8 @@ PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')
 
 
 # ****************************************** 日志配置开始 *****************************************
+# 配置了管理员邮箱则错误日志使用邮箱推送，否则邮件不推送，使用会记录到文件中
+izone_warn_handlers = ['file'] if not ADMINS else ['file', 'mail_admins']
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -384,7 +386,7 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['file'],
+            'handlers': izone_warn_handlers,
             'level': 'WARNING',
             'propagate': False,
         },
