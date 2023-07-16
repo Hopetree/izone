@@ -27,9 +27,9 @@
                         <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title }}</a>
                     </h2>
                     <p class="d-none d-sm-block mb-2 f-15">
-                        {{ article.summary|truncatechars:130 }}{% if article.summary.length > 130 %}...{% endif %}</p>
+                        {{ article.summary|truncatechars:130 }}{% if article.summary|length > 130 %}...{% endif %}</p>
                     <p class="d-block d-sm-none mb-2 f-15">
-                        {{ article.summary|truncatechars:64 }}{% if article.summary.length > 64 %}...{% endif %}</p>
+                        {{ article.summary|truncatechars:64 }}{% if article.summary|length > 64 %}...{% endif %}</p>
                     <div class="meta-container mb-0 f-12">
                         <a class="cate" href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
                             <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
