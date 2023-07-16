@@ -4,7 +4,8 @@ from django.conf import settings
 from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
-                    update_article, FriendLinkView, friend_add, SubjectDetailView)
+                    update_article, FriendLinkView, friend_add, SubjectDetailView,
+                    SubjectPageDetailView, SubjectListView)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
@@ -21,6 +22,10 @@ urlpatterns = [
     path('friend/', FriendLinkView.as_view(), name='friend'),  # 友情链接
     path('friend/add/', friend_add, name='friend_add'),  # 友情链接申请
 
+    # 专题列表页
+    path('subject/', SubjectListView.as_view(), name='subject_index'),
+    # 专题详情页
+    path('subject/<int:pk>/', SubjectPageDetailView.as_view(), name='subject_page'),
     # 专题文章内容页
     path('subject/article/<slug:slug>/', SubjectDetailView.as_view(), name='subject_detail'),
 

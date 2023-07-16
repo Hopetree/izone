@@ -1,0 +1,39 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load blog_tags %}
+
+{% block head_title %}专题{% endblock %}
+{% block metas %}
+    <meta name="description" content="专题：{% for subject in subjects %}{{ subject.name }}，{% endfor %}">
+    <meta name="keywords" content="{% for subject in subjects %}{{ subject.name }},{% endfor %}">
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row subject-card-list">
+            {% for subject in subjects %}
+                <div class="col-md-4 col-lg-3 col-xl-2 px-lg-2 mb-3">
+                    <div class="card subject-card">
+                        <a href="{{ subject.get_absolute_url }}">
+                            <img src="{{ subject.cover_image.url }}" class="card-img-top" alt="{{ subject.name }}">
+                            <div class="card-body" style="height: 10rem;">
+                                <div class="subject-card-title text-center">
+                                    <h5 class="card-title">{{ subject.name }}</h5>
+                                    <small class="subject-status">
+                                        <span class="text-secondary">专题状态：</span>
+                                        <span class="text-{{ subject.get_status_color }}">{{ subject.get_status_display }}</span>
+                                    </small>
+                                </div>
+                                <p class="card-text subject-desc">
+                                    {{ subject.description|truncatechars:48 }}
+                                    {% if subject.description|length > 48 %}...{% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -827,6 +827,31 @@ div.archive > ul > li > ul {
 
 /*归档页面end*/
 
+/*专题页面start*/
+.subject-card a:hover {
+    color: var(--izone-font-default);
+}
+
+.subject-card-title {
+    margin-bottom: .5rem;
+    border-bottom: rgba(60, 60, 60, .2) dashed .1rem;
+    padding-bottom: .3rem;
+}
+
+.subject-card-title .card-title {
+    margin-bottom: .3rem;
+}
+
+.card-body .subject-desc {
+    font-size: .7rem;
+}
+
+.subject-card .card-body {
+    padding: .5rem;
+}
+
+/*专题页面end*/
+
 
 /*全局样式参数start*/
 .light-theme, body {

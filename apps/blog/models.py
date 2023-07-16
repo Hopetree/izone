@@ -97,9 +97,21 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('blog:subject_page', kwargs={'pk': self.pk})
+
     def get_topics(self):
         """得到一个专题的所有主题，按照排序进行排序"""
         return Topic.objects.filter(subject=self).order_by('sort_order')
+
+    def get_status_color(self):
+        """返回对应状态的颜色"""
+        text_dict = {
+            'not_started': 'danger',
+            'ongoing': 'info',
+            'completed': 'success'
+        }
+        return text_dict[self.status]
 
 
 # 专题的主题，作为专题的目录，专题-主题-文章

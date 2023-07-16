@@ -1,0 +1,85 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load blog_tags %}
+
+{% block head_title %}{{ subject.name }}_专题{% endblock %}
+{% block metas %}
+    <meta name="description" content="{{ subject.description }}">
+    <meta name="keywords" content="{{ subject.name }}">
+{% endblock %}
+
+{% block top-file %}
+    <style>
+        .archive {
+            line-height: 2;
+        }
+
+        div.archive > ul:before {
+            display: none;
+        }
+
+        div.archive > ul > li:first-child:before {
+            background-color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
+                        <li class="breadcrumb-item">
+                            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'blog:subject_index' %}">专题</a>
+                        </li>
+                        <li class="breadcrumb-item active d-none d-md-block"
+                            aria-current="page">{{ subject.name }}</li>
+                    </ol>
+                </nav>
+                <div class="card border-0 rounded-6 mb-3">
+                    <div class="card-body f-16 archive">
+                        <h1 class="card-title text-center font-weight-bold text-info">{{ subject.name }}</h1>
+                        <hr>
+                        <div class="text-center f-13">
+                        <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
+                              title="最后编辑于{{ subject.update_date|date:'Y年m月d日' }}">{{ subject.create_date }}</span>
+                            <span class="mx-2">
+                                <span>专题状态：</span>
+                                <span class="text-{{ subject.get_status_color }}">{{ subject.get_status_display }}</span>
+                            </span>
+                        </div>
+                        <div class="alert alert-{{ subject.get_status_color }} my-3 mx-1" role="alert">
+                            <h3>专题简介</h3>
+                            <hr class="mt-0">
+                            <p class="mb-0">{{ subject.description }}</p>
+                        </div>
+                        <ul class="pl-4">
+                            {% for topic in subject.get_topics %}
+                                {% if topic.get_articles %}
+                                    <li>
+                                        <div class="text-info">{{ topic.name }}</div>
+                                        <ul class="pl-2">
+                                            {% for article in topic.get_articles %}
+                                                <li class="">
+                                                    <a href="{{ article.get_absolute_url }}">{{ article.create_date|date:'m-d' }}&nbsp;&nbsp;{{ article.title }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 d-none d-lg-block">
+                {% include 'blog/tags/base_right.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

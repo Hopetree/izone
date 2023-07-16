@@ -310,3 +310,19 @@ def friend_add(request):
             return resp.as_json_response()
 
     return render(request, 'blog/friendAdd.html')
+
+
+# 专题详情页
+class SubjectPageDetailView(generic.DetailView):
+    model = Subject
+    template_name = 'blog/subject.html'
+    context_object_name = 'subject'
+
+
+# 专题列表页
+class SubjectListView(generic.ListView):
+    model = Subject
+    template_name = 'blog/subjectIndex.html'
+    context_object_name = 'subjects'
+    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
+    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)

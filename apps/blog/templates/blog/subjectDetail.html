@@ -72,7 +72,7 @@
                             <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a>
+                            <a href="{{ article.topic.subject.get_absolute_url }}">{{ article.topic.subject.name }}</a>
                         </li>
                         <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
                             {% if user.is_superuser or user == article.author %}
