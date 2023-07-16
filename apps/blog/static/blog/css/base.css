@@ -834,7 +834,7 @@ div.archive > ul > li > ul {
 
 .subject-card-title {
     margin-bottom: .5rem;
-    border-bottom: rgba(60, 60, 60, .2) dashed .1rem;
+    border-bottom: rgba(60, 60, 60, .2) dashed 1px;
     padding-bottom: .3rem;
 }
 
