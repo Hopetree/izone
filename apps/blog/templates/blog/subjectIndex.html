@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row subject-card-list">
             {% for subject in subjects %}
-                <div class="col-md-4 col-lg-3 col-xl-2 px-lg-2 mb-3">
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2 px-lg-2 mb-3">
                     <div class="card subject-card">
                         <a href="{{ subject.get_absolute_url }}">
                             <img src="{{ subject.cover_image.url }}" class="card-img-top" alt="{{ subject.name }}">
