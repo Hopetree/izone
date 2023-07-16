@@ -1,26 +1,35 @@
 {% extends "blog/base.html" %}
 {% load static %}
 {% load humanize %}
-{% load blog_tags tool_tags%}
+{% load blog_tags tool_tags %}
 
 {% block head_title %}在线工具，提升工作效率{% endblock %}
 {% block metas %}
-<meta name="description" content="在线工具，提供站长工具包括百度主动推送工具、友链检测、正则表达式工具等，方便进行批量操作，提高工作效率，工具持续增加中">
-<meta name="keywords" content="在线工具,SEO工具,站长工具,爬虫工具">
+    <meta name="description" content="在线工具，提供站长工具包括百度主动推送工具、友链检测、正则表达式工具等，方便进行批量操作，提高工作效率，工具持续增加中">
+    <meta name="keywords" content="在线工具,SEO工具,站长工具,爬虫工具">
 {% endblock %}
 
 
 {% block top-file %}
-<link href="{% static 'tool/css/tool.css' %}?v={{ static_version.css_tool_tool }}" rel="stylesheet">
+    <link href="{% static 'tool/css/tool.css' %}?v={{ static_version.css_tool_tool }}" rel="stylesheet">
 {% endblock %}
 
 {% block base_content %}
-<div class="container">
-    <div class="row tool-list">
-        {% get_toollist_by_key as tool_list %}
-        {% for tool_item in tool_list %}
-        {% load_tool_item tool_item %}
-        {% endfor %}
+    <div class="container">
+        <div class="row tool-list">
+            {% get_toollist_by_key as tool_list %}
+            {% for tool_item in tool_list %}
+                {% load_tool_item tool_item %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% endblock %}
+
+{% block end_file %}
+    {#延迟加载markdown编辑器的静态文件#}
+    <script src="{% static 'editor/lib/codemirror/modes.min.js' %}" defer></script>
+    <script src="{% static 'editor/lib/codemirror/codemirror.min.js' %}" defer></script>
+    <script src="{% static 'editor/fonts/fontawesome-webfont.woff2' %}?v=4.3.0" defer></script>
+    <script src="{% static 'editor/lib/marked.min.js' %}" defer></script>
+    <script src="{% static 'editor/lib/prettify.min.js' %}" defer></script>
 {% endblock %}
