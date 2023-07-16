@@ -66,7 +66,7 @@
                                         <ul class="pl-2">
                                             {% for article in topic.get_articles %}
                                                 <li class="">
-                                                    <a href="{{ article.get_absolute_url }}">{{ article.create_date|date:'m-d' }}&nbsp;&nbsp;{{ article.title }}</a>
+                                                    <a href="{{ article.get_absolute_url }}">{{ article.create_date|date:'y-m-d' }}&nbsp;&nbsp;{{ article.title }}</a>
                                                 </li>
                                             {% endfor %}
                                         </ul>
