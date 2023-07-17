@@ -68,12 +68,12 @@
                             {% for topic in subject.get_topics %}
                                 {% if topic.get_articles %}
                                     <li>
-                                        <div class="text-info">
+                                        <div class="text-info" id="#{{ topic.name }}">
                                             {% if user.is_superuser %}
                                                 <a class="edit-blog" href="{% url 'admin:blog_topic_change' topic.pk %}"
                                                    target="_blank" title="后台编辑主题">{{ topic.name }}</a>
                                             {% else %}
-                                                {{ topic.name }}
+                                                <a href="#{{ topic.name }}">{{ topic.name }}</a>
                                             {% endif %}
                                         </div>
                                         <ul class="pl-2">

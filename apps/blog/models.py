@@ -132,6 +132,9 @@ class Topic(models.Model):
     def __str__(self):
         return f'[{self.subject.name}]{self.name}'
 
+    def get_absolute_url(self):
+        return reverse('blog:subject_page', kwargs={'pk': self.subject.pk}) + f'#{self.name}'
+
     def get_articles(self):
         """得到一个主题的所有已发布的文章，按照主题排序排序"""
         return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order',
