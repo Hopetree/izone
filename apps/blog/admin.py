@@ -23,6 +23,9 @@ class TopicAdmin(admin.ModelAdmin):
     list_display_links = ('subject_title',)
     list_filter = ('create_date', 'sort_order', 'subject')
 
+    # 设置搜索字段
+    search_fields = ['name', 'subject__name']
+
     def subject_title(self, obj):
         return str(obj)
 
@@ -61,7 +64,11 @@ class ArticleAdmin(admin.ModelAdmin):
 
     filter_horizontal = ('tags', 'keywords')  # 给多选增加一个左右添加的框
 
-    search_fields = ('author__username', 'title')
+    # 搜索，可以搜查本身字段也可以搜索外键的字段
+    search_fields = ('author__username', 'title', 'topic')
+
+    # 可以给外键的选择增加搜索，前提是外键的管理模型必须设置search_fields作为搜索条件
+    autocomplete_fields = ['topic']
 
     # 限制用户权限，只能看到自己编辑的文章
     def get_queryset(self, request):
