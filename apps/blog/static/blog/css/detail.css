@@ -82,7 +82,7 @@
 
 .subject-list::-webkit-scrollbar,
 .article-toc::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
 
 .subject-list::-webkit-scrollbar-track,
