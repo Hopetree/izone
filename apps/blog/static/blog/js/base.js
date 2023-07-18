@@ -52,7 +52,7 @@ function TOC_FUN(A) {
     return true
 }
 
-$(TOC_FUN('.toc a,.to-com,#go-to-com'));
+$(TOC_FUN('.toc a,.to-com,#go-to-com,.subject-topic-li a'));
 
 //文章內容图片点击放大，使用bootstrap4的modal模块
 $(".article-body img").click(function () {

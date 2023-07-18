@@ -67,7 +67,7 @@
                         <ul class="pl-4">
                             {% for topic in subject.get_topics %}
                                 {% if topic.get_articles %}
-                                    <li>
+                                    <li class="subject-topic-li">
                                         <h2 class="text-info" id="{{ topic.name }}"
                                             style="line-height: inherit;font-size: inherit">
                                             {% if user.is_superuser %}
