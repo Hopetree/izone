@@ -18,18 +18,13 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
-    list_display = ('id', 'subject_title', 'create_date', 'update_date', 'sort_order', 'subject')
+    list_display = ('id', '__str__', 'create_date', 'update_date', 'sort_order', 'subject')
     list_editable = ('sort_order',)
-    list_display_links = ('subject_title',)
+    list_display_links = ('__str__',)
     list_filter = ('create_date', 'sort_order', 'subject')
 
     # 设置搜索字段
     search_fields = ['name', 'subject__name']
-
-    def subject_title(self, obj):
-        return str(obj)
-
-    subject_title.short_description = '完整标题'
 
 
 @admin.register(Article)
