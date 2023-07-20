@@ -1,20 +1,4 @@
 # -*- coding: utf-8 -*-
-import re
-from datetime import datetime, timedelta
-import requests
-from dateutil.relativedelta import relativedelta
-from markdown import Markdown
-from markdown.extensions.toc import TocExtension  # 锚点的拓展
-from markdown.extensions.codehilite import CodeHiliteExtension
-from django.core.cache import cache
-from django.db.models import Q
-from django.utils.text import slugify
-from django_celery_results.models import TaskResult
-
-from blog.utils import CustomHtmlFormatter, site_full_url
-from blog.models import FriendLink, Article
-from comment.models import Notification, SystemNotification
-
 """
     定义一些任务的执行操作，将具体的操作从tasks.py里面抽离出来
     每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
@@ -26,6 +10,13 @@ def action_update_article_cache():
     更新所有文章的缓存，缓存格式跟文章视图保持一致
     @return:
     """
+    from markdown import Markdown
+    from markdown.extensions.toc import TocExtension  # 锚点的拓展
+    from markdown.extensions.codehilite import CodeHiliteExtension
+    from django.core.cache import cache
+    from django.utils.text import slugify
+    from blog.utils import CustomHtmlFormatter
+    from blog.models import Article
 
     total_num, done_num = 0, 0
     # 查询到所有缓存的key
@@ -57,6 +48,9 @@ def action_check_friend_links(site_link=None, white_list=None):
         3、新增补充校验：可以添加参数site_link，则不仅仅校验网页是否打开200，还会校验网站中是否有site_link外链
     @return:
     """
+    import re
+    import requests
+    from blog.models import FriendLink
 
     def get_link_status(url):
         try:
@@ -116,6 +110,9 @@ def action_clear_notification(day=200, is_read=True):
     @param day: 清理day天前的信息
     @return:
     """
+    from datetime import datetime, timedelta
+    from django.db.models import Q
+    from comment.models import Notification, SystemNotification
 
     current_date = datetime.now()
     delta = timedelta(days=day)
@@ -140,6 +137,9 @@ def action_cleanup_task_result(day=3):
     清理day天前成功或结束的，其他状态的一概不清理
     @return:
     """
+    from datetime import datetime, timedelta
+    from django.db.models import Q
+    from django_celery_results.models import TaskResult
 
     current_date = datetime.now()
     delta = timedelta(days=day)
@@ -158,6 +158,11 @@ def action_baidu_push(baidu_url, months):
     @param months: 几个月内的文章
     @return:
     """
+    import requests
+    from datetime import datetime
+    from dateutil.relativedelta import relativedelta
+    from blog.models import Article
+    from blog.utils import site_full_url
 
     def baidu_push(urls):
         headers = {
