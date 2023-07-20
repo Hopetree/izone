@@ -68,7 +68,7 @@
                             {% for topic in subject.get_topics %}
                                 {% if topic.get_articles %}
                                     <li class="subject-topic-li">
-                                        <h2 class="text-info" id="{{ topic.name }}"
+                                        <h2 class="text-info mb-0" id="{{ topic.name }}"
                                             style="line-height: inherit;font-size: inherit">
                                             {% if user.is_superuser %}
                                                 <a class="edit-blog" href="{% url 'admin:blog_topic_change' topic.pk %}"
