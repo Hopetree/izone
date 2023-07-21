@@ -203,7 +203,15 @@ def my_slice(value, arg):
                 bits.append(None)
             else:
                 bits.append(int(x))
-        return value[slice(*bits)] + '...' if isinstance(value, str) else value[slice(*bits)]
+        result = value[slice(*bits)]
+        if isinstance(value, str):
+            # 超过长度则在后面补...
+            if len(value) > bits[-1]:
+                result += '...'
+            # 不是从头开始，则在前面补...
+            if len(bits) > 1 and bits[0] > 0:
+                result = '...' + result
+        return result
 
     except (ValueError, TypeError):
         return value
