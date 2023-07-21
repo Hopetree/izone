@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% load humanize %}
-{% load comment_tags %}
+{% load comment_tags blog_tags %}
 
 {% block head_title %}个人信息推送{% endblock %}
 
@@ -30,7 +30,7 @@
                                            href="{{ each.comment.belong.get_absolute_url }}#com-{{ each.comment.id }}">
                                             {{ each.comment.belong.title }}</a>&nbsp;中@了你，并评论道：
                                     </h2>
-                                    <p>{{ each.comment.content|truncatechars:130 }}</p>
+                                    <p>{{ each.comment.content|my_slice:':130' }}</p>
                                 {% elif each.tag == "system" %}
                                     <h2>
                                         <span class="text-primary">【系统通知】</span>{{ each.title }}
