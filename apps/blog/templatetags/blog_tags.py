@@ -209,7 +209,7 @@ def my_slice(value, arg):
             if len(value) > bits[-1]:
                 result += '...'
             # 不是从头开始，则在前面补...
-            if len(bits) > 1 and bits[0] > 0:
+            if bits[0]:
                 result = '...' + result
         return result
 
