@@ -188,3 +188,22 @@ def deal_with_full_path(full_path, key, value):
     updated_query_string = urlencode(query_params, doseq=True)
     updated_url = urlunparse(parsed_url._replace(query=updated_query_string))
     return updated_url
+
+
+@register.filter(is_safe=True)
+def my_slice(value, arg):
+    """
+    复制内置的标签函数，截断字符串，并给字符串添加...
+    {{ friend.description|my_slice:":23" }}
+    """
+    try:
+        bits = []
+        for x in str(arg).split(':'):
+            if not x:
+                bits.append(None)
+            else:
+                bits.append(int(x))
+        return value[slice(*bits)] + '...' if isinstance(value, str) else value[slice(*bits)]
+
+    except (ValueError, TypeError):
+        return value

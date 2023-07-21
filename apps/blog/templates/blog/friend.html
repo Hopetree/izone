@@ -26,8 +26,7 @@
                                     <div class="friend-img">
                                         <img src="{{ friend.logo.url }}" alt="{{ friend.description }}">
                                         <div class="friend-description">
-                                            {{ friend.description|slice:":23" }}
-                                            {% if friend.description|length > 23 %}...{% endif %}
+                                            {{ friend.description|my_slice:":23" }}
                                         </div>
                                     </div>
                                     <div class="friend-title"><span>{{ friend.name }}</span></div>

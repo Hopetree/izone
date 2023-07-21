@@ -78,10 +78,9 @@
                             {% if user.is_superuser or user == article.author %}
                                 <a class="edit-blog" href="{% url 'blog:article_edit' article.slug %}"
                                    target="_blank" title="编辑文章">
-                                    {{ article.title|slice:":50" }}{% if article.title|length > 50 %}
-                                        ...{% endif %}</a>
+                                    {{ article.title|my_slice:":50" }}</a>
                             {% else %}
-                                {{ article.title|slice:":50" }}{% if article.title|length > 50 %}...{% endif %}
+                                {{ article.title|my_slice:":50" }}
                             {% endif %}
 
                         </li>
