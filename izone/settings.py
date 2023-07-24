@@ -77,6 +77,8 @@ INSTALLED_APPS = [
     'django_celery_results',  # celery结果
     'django_celery_beat',  # celery定时任务
 
+    'webstack',  # 导航应用
+
 ]
 
 # 自定义用户model
