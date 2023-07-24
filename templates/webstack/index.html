@@ -1,0 +1,43 @@
+{% extends 'webstack/base.html' %}
+{% load static %}
+
+{% block title %}我的导航网站{% endblock %}
+
+{% block meta %}
+    <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico' %}" type="image/x-icon"/>
+{% endblock %}
+
+{% block top-file %}{% endblock %}
+
+{% block logo %}
+    <div class="logo">
+        <a href="#" class="logo-expanded">
+            <img src="{% static 'webstack/assets/images/logo@2x.png' %}" width="100%" alt=""/>
+        </a>
+        <a href="#" class="logo-collapsed">
+            <img src="{% static 'webstack/assets/images/logo-collapsed@2x.png' %}" width="40" alt=""/>
+        </a>
+    </div>
+{% endblock %}
+
+{% block navbar-list %}
+    <li style="min-height: 75px;"><a href="{% url 'blog:index' %}">首页</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'blog:subject_index' %}">博客专题</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'tool:total' %}">在线工具</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'blog:about' %}">关于</a></li>
+{% endblock %}
+
+{% block main-menu %}{% endblock %}
+
+{% block footer %}
+    <div class="footer-text">
+        &copy; {{ this_year }}
+        <a href="https://github.com/Hopetree/django-webstack">
+            <strong>django-webstack</strong>
+        </a>
+        design by
+        <a href="https://github.com/Hopetree" target="_blank">
+            <strong>Hopetree</strong>
+        </a>
+    </div>
+{% endblock %}
