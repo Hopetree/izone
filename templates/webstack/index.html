@@ -11,10 +11,10 @@
 
 {% block logo %}
     <div class="logo">
-        <a href="#" class="logo-expanded">
+        <a href="{% url 'webstack:webstack_index' %}" class="logo-expanded">
             <img src="{% static 'webstack/assets/images/logo@2x.png' %}" width="100%" alt=""/>
         </a>
-        <a href="#" class="logo-collapsed">
+        <a href="{% url 'webstack:webstack_index' %}" class="logo-collapsed">
             <img src="{% static 'webstack/assets/images/logo-collapsed@2x.png' %}" width="40" alt=""/>
         </a>
     </div>
