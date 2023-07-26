@@ -7,7 +7,15 @@
     <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico' %}" type="image/x-icon"/>
 {% endblock %}
 
-{% block top-file %}{% endblock %}
+{% block top-file %}
+    <style>
+        .sidebar-menu .main-menu a > i {
+            margin-right: 0.8rem;
+            max-width: 1.2rem;
+            max-height: 1.2rem;
+        }
+    </style>
+{% endblock %}
 
 {% block logo %}
     <div class="logo">
