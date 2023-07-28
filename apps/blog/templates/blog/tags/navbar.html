@@ -17,7 +17,7 @@
             <li class="nav-item mr-2">
                 {% url 'webstack:webstack_index' as webstack_index_url %}
                 <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
-                   href="{{ webstack_index_url }}">导航</a>
+                   href="{{ webstack_index_url }}">网址导航</a>
             </li>
             <li class="nav-item mr-2">
                 {% url 'blog:subject_index' as subject_index_url %}
