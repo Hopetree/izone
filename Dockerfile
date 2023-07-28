@@ -8,7 +8,7 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt --index-url $pip_index_url --trusted-host $pip_trusted_host
 RUN mkdir -p log && chmod -R 755 log
-RUN pip install django-webstack==1.4.2 --index-url https://pypi.org/simple --trusted-host pypi.org
+RUN pip install django-webstack>=1.4.2 --index-url https://pypi.org/simple --trusted-host pypi.org
 
 COPY . .
 
