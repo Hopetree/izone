@@ -5,8 +5,8 @@
 
 {% block meta %}
     <link rel="shortcut icon" href="{% static 'blog/img/favicon.ico' %}" type="image/x-icon"/>
-    <meta name="keywords" content="程序员网址导航,网址收藏,tendcode.com">
-    <meta name="description" content="程序员常用网址导航聚合站">
+    <meta name="keywords" content="程序员导航,程序员资源网站,开发者导航,前端导航,设计师导航,站长导航,网址收藏,tendcode.com">
+    <meta name="description" content="致力于收录程序员常用优质网站，帮助广大程序员和编程开发者更轻松的找到自己喜欢或者需要的工具、项目以及网站">
 {% endblock %}
 
 {% block top-file %}{% endblock %}
@@ -23,10 +23,14 @@
 {% endblock %}
 
 {% block navbar-list %}
-    <li style="min-height: 75px;"><a href="{% url 'blog:index' %}">博客首页</a></li>
-    <li style="min-height: 75px;"><a href="{% url 'blog:subject_index' %}">博客专题</a></li>
-    <li style="min-height: 75px;"><a href="{% url 'tool:total' %}">在线工具</a></li>
-    <li style="min-height: 75px;"><a href="{% url 'blog:about' %}">关于</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'blog:index' %}">
+        <i class="fa fa-home" style="margin-right: .5rem;"></i>博客首页</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'blog:subject_index' %}">
+        <i class="fa fa-cubes" style="margin-right: .5rem;"></i>博客专题</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'tool:total' %}">
+        <i class="fa fa-briefcase" style="margin-right: .5rem;"></i>在线工具</a></li>
+    <li style="min-height: 75px;"><a href="{% url 'blog:about' %}">
+        <i class="fa fa-leaf" style="margin-right: .5rem;"></i>关于</a></li>
 {% endblock %}
 
 {% block main-menu %}{% endblock %}
