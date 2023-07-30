@@ -12,7 +12,7 @@ function copyToClipboard(text) {
     temp.remove();
 }
 
-$('.codehilite').each(function () {
+$('.article-body .codehilite').each(function () {
     // 读取代码块语言
     const langClass = $(this).find('pre code').attr('class');
     const language = langClass.replace(/^.*\blanguage-([^ ]+).*$/, '$1') || 'unknown';
