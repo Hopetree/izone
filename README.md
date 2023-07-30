@@ -18,11 +18,27 @@
 ## 博客页面效果（响应式）
 - PC 页面效果
 
-![pc](https://user-images.githubusercontent.com/30201215/60588842-93321b80-9dca-11e9-93f2-50e34b2c4b3f.jpg)
+![PC首页](https://github.com/Hopetree/izone/assets/30201215/e221d09b-9921-4707-977d-95c263d282b6)
 
 - PC 暗色主题效果
 
-![tendcode_2019-11-22_23-18-55](https://user-images.githubusercontent.com/30201215/69438380-e576d780-0d7f-11ea-9ea5-c182caa3a2a8.png)
+![PC首页暗色主题](https://github.com/Hopetree/izone/assets/30201215/ca505bfc-e5d0-40a1-b501-946975c03f73)
+
+- PC 文章详情页，左边显示专题目录，右边显示文章目录，支持代码高亮
+
+![PC文章页面](https://github.com/Hopetree/izone/assets/30201215/0c219bbd-6f29-4866-a827-6e98536f689a)
+
+- PC 专题页，按文章归类
+
+![PC 专题页，按文章归类](https://github.com/Hopetree/izone/assets/30201215/c0a828cc-2201-438b-a983-0c6c04a429c4)
+
+- PC 友情链接页，定时任务自动校验网址有效性
+
+![PC 友情链接页](https://github.com/Hopetree/izone/assets/30201215/033cdd61-75cf-41b4-bb45-9b45948daf3a)
+
+- PC 在线工具，平台自带工具
+
+![PC 在线工具](https://github.com/Hopetree/izone/assets/30201215/8336fd89-916b-49e5-94f2-a5a72e990158)
 
 - ipad 效果
 
