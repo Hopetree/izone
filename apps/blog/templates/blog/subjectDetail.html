@@ -8,7 +8,7 @@
     <meta name="keywords" content="{% keywords_to_str article %}">
     {#SEO优化#}
     <meta property="og:locale" content="zh_CN" />
-    <meta property="og:site_name" content="Tend to Code_一个使用django和bootstrap搭建的个人博客_{{ site_end_title }}" />
+    <meta property="og:site_name" content="{{ site_end_title }}" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ article.title }}_{{ article.category }}" />
     <meta property="og:url" content="{{ site_url }}{{ article.get_absolute_url }}" />
