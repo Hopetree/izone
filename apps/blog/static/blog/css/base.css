@@ -22,6 +22,11 @@ body {
     color: var(--izone-font-default) !important;
 }
 
+/*通知*/
+.container > div.alert {
+    width: 96.666667%;
+}
+
 main {
     flex: 1 0 auto;
 }
