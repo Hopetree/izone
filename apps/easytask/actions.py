@@ -3,6 +3,15 @@
     定义一些任务的执行操作，将具体的操作从tasks.py里面抽离出来
     每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
 """
+import requests
+
+
+def get_link_status(url):
+    try:
+        resp = requests.get(url, timeout=5, verify=False)
+    except Exception:
+        return 500, '请求超时'
+    return resp.status_code, resp.text
 
 
 def action_update_article_cache():
@@ -49,15 +58,7 @@ def action_check_friend_links(site_link=None, white_list=None):
     @return:
     """
     import re
-    import requests
     from blog.models import FriendLink
-
-    def get_link_status(url):
-        try:
-            resp = requests.get(url, timeout=5, verify=False)
-        except Exception:
-            return 500, ''
-        return resp.status_code, resp.text
 
     white_list = white_list or []  # 设置白名单，不校验
     active_num = 0
@@ -188,6 +189,41 @@ def action_baidu_push(baidu_url, months):
     return {'article_count': article_count, 'status': status, 'result': result}
 
 
+def action_check_site_links(white_list=None):
+    """
+    校验导航网站有效性，只校验状态为True或者False的，为空的不校验，所以特殊地址可以设置成空跳过校验
+    @param white_list: 网站名称白名单，忽略校验
+    @return:
+    """
+    from webstack.models import NavigationSite
+
+    white_list = white_list or []
+    active_num = 0
+    to_not_show = 0
+    to_show = 0
+    active_site_list = NavigationSite.objects.filter(is_show__isnull=False)
+    for site in active_site_list:
+        active_num += 1
+        if site.name in white_list:
+            continue
+        if site.is_show is True:
+            code, text = get_link_status(site.link)
+            if code < 200 or code >= 400:
+                site.is_show = False
+                site.not_show_reason = f'网页请求返回{code}'
+                site.save(update_fields=['is_show', 'not_show_reason'])
+                to_not_show += 1
+        else:
+            code, text = get_link_status(site.link)
+            if 200 <= code < 400:
+                site.is_show = True
+                site.not_show_reason = ''
+                site.save(update_fields=['is_show', 'not_show_reason'])
+                to_show += 1
+    data = {'active_num': active_num, 'to_not_show': to_not_show, 'to_show': to_show}
+    return data
+
+
 if __name__ == '__main__':
     import os
     import django
@@ -197,3 +233,4 @@ if __name__ == '__main__':
 
     # print(action_clear_notification(100))
     # print(action_cleanup_task_result(7))
+    print(action_check_site_links())

@@ -10,6 +10,7 @@ from .actions import (
     action_clear_notification,
     action_cleanup_task_result,
     action_baidu_push,
+    action_check_site_links,
 )
 
 
@@ -81,5 +82,18 @@ def baidu_push(baidu_url, months=3):
     """
     response = TaskResponse()
     result = action_baidu_push(baidu_url=baidu_url, months=months)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def check_navigation_site(white_list=None):
+    """
+    校验导航网站有效性，只校验状态为True或者False的，为空的不校验，所以特殊地址可以设置成空跳过校验
+    @param white_list: 网站名称白名单，忽略校验
+    @return:
+    """
+    response = TaskResponse()
+    result = action_check_site_links(white_list)
     response.data = result
     return response.as_dict()
