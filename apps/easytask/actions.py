@@ -7,11 +7,29 @@ import requests
 
 
 def get_link_status(url):
+    """
+    请求地址，返回请求状态和内容
+    @param url:
+    @return:
+    """
     try:
         resp = requests.get(url, timeout=5, verify=False)
     except Exception:
         return 500, '请求超时'
     return resp.status_code, resp.text
+
+
+def white_list_check(lis, string):
+    """
+    校验一个字符串是否包含一个列表中任意一个元素
+    @param lis:
+    @param string:
+    @return: bool
+    """
+    for each in lis:
+        if each in string:
+            return True
+    return False
 
 
 def action_update_article_cache():
@@ -189,22 +207,23 @@ def action_baidu_push(baidu_url, months):
     return {'article_count': article_count, 'status': status, 'result': result}
 
 
-def action_check_site_links(white_list=None):
+def action_check_site_links(white_domain_list=None):
     """
     校验导航网站有效性，只校验状态为True或者False的，为空的不校验，所以特殊地址可以设置成空跳过校验
-    @param white_list: 网站名称白名单，忽略校验
+    @param white_domain_list: 域名白名单
     @return:
     """
     from webstack.models import NavigationSite
 
-    white_list = white_list or []
+    white_domain_list = white_domain_list or []
     active_num = 0
     to_not_show = 0
     to_show = 0
     active_site_list = NavigationSite.objects.filter(is_show__isnull=False)
     for site in active_site_list:
         active_num += 1
-        if site.name in white_list:
+        # 当站点包含白名单域名则直接跳过校验
+        if white_list_check(white_domain_list, site.link):
             continue
         if site.is_show is True:
             code, text = get_link_status(site.link)
