@@ -9,7 +9,21 @@
     <meta name="description" content="致力于收录程序员常用优质网站，帮助广大程序员和编程开发者更轻松的找到自己喜欢或者需要的工具、项目以及网站">
 {% endblock %}
 
-{% block top-file %}{% endblock %}
+{% block top-file %}
+    <style>
+        @media (max-width: 576px) {
+            .page-container .main-content {
+                padding: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .page-container .main-content {
+                padding: 30px;
+            }
+        }
+    </style>
+{% endblock %}
 
 {% block logo %}
     <div class="logo">
