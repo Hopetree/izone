@@ -1,6 +1,6 @@
 from django.db.models import Count, Q
 from django.http import Http404, HttpResponseForbidden, JsonResponse, HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, render, reverse
+from django.shortcuts import get_object_or_404, render, reverse, redirect
 from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
@@ -59,9 +59,8 @@ class IndexView(generic.ListView):
         return queryset
 
 
-class DetailView(generic.DetailView):
+class BaseDetailView(generic.DetailView):
     model = Article
-    template_name = 'blog/detail.html'
     context_object_name = 'article'
 
     def get_queryset(self):
@@ -114,7 +113,21 @@ class DetailView(generic.DetailView):
         return obj
 
 
-class SubjectDetailView(DetailView):
+class DetailView(BaseDetailView):
+    template_name = 'blog/detail.html'
+
+    def get(self, request, *args, **kwargs):
+        # 获取实例
+        instance = self.get_object()
+        # 如果有主题，则跳转到主题格式的文章详情页
+        if instance.topic:
+            redirect_url = reverse('blog:subject_detail', kwargs={'slug': instance.slug})
+            return redirect(redirect_url)
+        # 如果不满足条件，则继续处理视图逻辑
+        return super().get(request, *args, **kwargs)
+
+
+class SubjectDetailView(BaseDetailView):
     """
     专题文章视图
     """
