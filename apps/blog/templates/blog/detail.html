@@ -73,7 +73,7 @@
                         <hr>
                         <div class="text-center f-13">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
-                              title="最后编辑于 {{ article.update_date|date:'Y年m月d日' }}">发表于 {{ article.create_date }}</span>
+                              title="最后编辑于{{ article.update_date|date:'Y年m月d日' }}">发表于 {{ article.create_date }}</span>
                             <span class="mx-2">阅读 {{ article.views }}</span>
                             <span class="mx-2">评论 {{ article.article_comments.count }}</span>
                         </div>
