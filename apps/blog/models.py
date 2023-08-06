@@ -104,6 +104,13 @@ class Subject(models.Model):
         """得到一个专题的所有主题，按照排序进行排序"""
         return Topic.objects.filter(subject=self).order_by('sort_order')
 
+    def get_article_count(self):
+        """获取专题下文章数量"""
+        num = 0
+        for each in self.get_topics():
+            num += each.get_articles().count()
+        return num
+
     def get_status_color(self):
         """返回对应状态的颜色"""
         text_dict = {

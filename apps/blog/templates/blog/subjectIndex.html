@@ -23,6 +23,9 @@
                                         <span class="text-secondary">专题状态：</span>
                                         <span class="text-{{ subject.get_status_color }}">{{ subject.get_status_display }}</span>
                                     </small>
+                                    <small class="subject-article-count">
+                                        <span class="text-secondary">文章数量：{{ subject.get_article_count }} 篇</span>
+                                    </small>
                                 </div>
                                 <p class="card-text subject-desc">
                                     {{ subject.description|my_slice:':48' }}
