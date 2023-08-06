@@ -12,28 +12,28 @@
             <li class="nav-item mr-2">
                 {% url 'blog:index' as index_url %}
                 <a class="nav-link py-md-3 {% if request.path == index_url %}active{% endif %}"
-                   href="{{ index_url }}">首页<span class="sr-only">(current)</span></a>
+                   href="{{ index_url }}"><i class="fa fa-home mr-1"></i>首页<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item mr-2">
                 {% url 'blog:subject_index' as subject_index_url %}
                 <a class="nav-link py-md-3 {% if request.path == subject_index_url %}active{% endif %}"
-                   href="{{ subject_index_url }}">专题</a>
+                   href="{{ subject_index_url }}"><i class="fa fa-cubes mr-1"></i>专题</a>
             </li>
             <li class="nav-item mr-2">
                 {% url 'blog:archive' as archive_url %}
                 <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}"
-                   href="{{ archive_url }}">归档</a>
+                   href="{{ archive_url }}"><i class="fa fa-archive mr-1"></i>归档</a>
             </li>
             <li class="nav-item mr-2">
                 {% url 'webstack:webstack_index' as webstack_index_url %}
                 <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
-                   href="{{ webstack_index_url }}">网址导航</a>
+                   href="{{ webstack_index_url }}"><i class="fa fa-chrome mr-1"></i>网址导航</a>
             </li>
             {% if tool_flag %}
                 <li class="nav-item mr-2">
                     {% url 'tool:total' as tool_url %}
                     <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}"
-                       href="{{ tool_url }}">在线工具</a>
+                       href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
                 </li>
             {% endif %}
             {% if api_flag %}
@@ -49,7 +49,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true"
                        aria-expanded="false"
-                    >个人外链</a>
+                    ><i class="fa fa-paper-plane-o mr-1"></i>个人外链</a>
                     <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
                          aria-labelledby="navbarDropdown">
                         {% for link_item in private_links %}
@@ -63,12 +63,12 @@
             <li class="nav-item mr-2 ">
                 {% url 'blog:friend' as friend_url %}
                 <a class="nav-link py-md-3 {% if request.path == friend_url %}active{% endif %}"
-                   href="{{ friend_url }}">友情链接</a>
+                   href="{{ friend_url }}"><i class="fa fa-share-alt mr-1"></i>友情链接</a>
             </li>
             <li class="nav-item mr-2 ">
                 {% url 'blog:about' as about_url %}
                 <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}"
-                   href="{{ about_url }}">关于</a>
+                   href="{{ about_url }}"><i class="fa fa-leaf mr-1"></i>关于</a>
             </li>
             <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform"
                   action="{% url 'blog:search_view' %}">
