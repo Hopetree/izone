@@ -60,7 +60,7 @@ class ArticleAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags', 'keywords')  # 给多选增加一个左右添加的框
 
     # 搜索，可以搜查本身字段也可以搜索外键的字段
-    search_fields = ('author__username', 'title', 'topic')
+    search_fields = ('author__username', 'title', 'topic__name')
 
     # 可以给外键的选择增加搜索，前提是外键的管理模型必须设置search_fields作为搜索条件
     autocomplete_fields = ['topic']
