@@ -279,6 +279,10 @@ pre {
     color: #ea6f5a;
 }
 
+.active-subject .subcategory-title {
+   color: #ea6f5a;
+}
+
 .subject-article-list ul > li > ul a::before {
     content: "";
     position: absolute;

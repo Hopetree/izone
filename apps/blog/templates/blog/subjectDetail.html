@@ -56,7 +56,7 @@
                                 {#只显示有文章的主题，展开文章所属的主题，前提主题收起来#}
                                 {% if topic.get_articles %}
                                     <li>
-                                        <div class="subject-subcategory collapsible {% if topic != article.topic %}collapsed{% endif %}">
+                                        <div class="subject-subcategory collapsible {% if topic != article.topic %}collapsed{% else %}active-subject{% endif %}">
                                             <div class="subcategory-title">{{ topic.name }}</div>
                                             <div class="caret">
                                                 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
