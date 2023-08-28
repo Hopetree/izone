@@ -110,6 +110,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
 # 登出直接退出，不用确认
 ACCOUNT_LOGOUT_ON_GET = True
+# 是否https
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
 
 # 表单插件的配置
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
