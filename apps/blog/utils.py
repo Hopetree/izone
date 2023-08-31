@@ -43,9 +43,9 @@ class DateCalculator:
                 last_start = start.replace(year=end.year)
                 remaining_days = (end - last_start).days
         if years > 0:
-            result = f"{years}年{remaining_days}天"
+            result = f"{years} 年 {remaining_days} 天"
         else:
-            result = f"{remaining_days}天"
+            result = f"{remaining_days} 天"
 
         return result, start_year
 
