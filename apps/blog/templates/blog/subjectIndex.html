@@ -16,7 +16,7 @@
                     <div class="card subject-card">
                         <a href="{{ subject.get_absolute_url }}">
                             <img src="{{ subject.cover_image.url }}" class="card-img-top" alt="{{ subject.name }}">
-                            <div class="card-body" style="height: 10rem;">
+                            <div class="card-body" style="height: 7.2rem;">
                                 <div class="subject-card-title text-center">
                                     <h5 class="card-title">{{ subject.name }}</h5>
                                     <small class="subject-status">
@@ -28,7 +28,7 @@
                                     </small>
                                 </div>
                                 <p class="card-text subject-desc">
-                                    {{ subject.description|my_slice:':48' }}
+                                    {{ subject.description|my_slice:':22' }}
                                 </p>
                             </div>
                         </a>
