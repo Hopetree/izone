@@ -337,5 +337,5 @@ class SubjectListView(generic.ListView):
     model = Subject
     template_name = 'blog/subjectIndex.html'
     context_object_name = 'subjects'
-    paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
-    paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
+    paginate_by = 100
+    paginate_orphans = 0
