@@ -5,7 +5,7 @@
         <div class="article-block">
             <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
                 <div class="align-self-center rounded-6 mr-2 mr-lg-3 w-25 modal-open">
-                    <a href="{{ article.get_absolute_url }}" target="_blank">
+                    <a href="{{ article.get_absolute_url }}">
                         <img class="w-100 article-img" src="{{ article.img_link.url }}" alt="{{ article.title }}">
                     </a>
                 </div>
@@ -24,7 +24,7 @@
                         </span>
                     </div>
                     <h2 class="mt-0 font-weight-bold text-info f-17">
-                        <a href="{{ article.get_absolute_url }}" target="_blank">{{ article.title }}</a>
+                        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
                     </h2>
                     <p class="d-none d-sm-block mb-2 f-15">
                         {{ article.summary|my_slice:':130' }}</p>
@@ -34,7 +34,7 @@
                         <a class="cate" href="{{ article.category.get_absolute_url }}" title="查看当前分类下更多文章">
                             <i class="fa fa-book mr-1"></i>{{ article.category }}</a>
                         <span><i class="fa fa-eye ml-2 mr-1"></i>{{ article.views }}</span>
-                        <a href="{{ article.get_absolute_url }}#comment-block" target="_blank" title="查看文章评论">
+                        <a href="{{ article.get_absolute_url }}#comment-block" title="查看文章评论">
                             <i class="fa fa-comments ml-2 mr-1"></i>{% get_comment_count article %}</a>
                     </div>
                 </div>
