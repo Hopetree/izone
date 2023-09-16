@@ -389,3 +389,16 @@ pre {
         max-height: 694px;
     }
 }
+
+@media (min-width: 1450px) {
+    .subject-col-7 {
+        max-width: 834px;
+    }
+    .subject-col-2 {
+        max-width: 300px;
+    }
+    .article-toc,
+    .subject-list {
+        max-width:284px
+    }
+}
