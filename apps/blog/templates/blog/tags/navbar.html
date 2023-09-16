@@ -24,11 +24,6 @@
                 <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}"
                    href="{{ archive_url }}"><i class="fa fa-archive mr-1"></i>归档</a>
             </li>
-            <li class="nav-item mr-2">
-                {% url 'webstack:webstack_index' as webstack_index_url %}
-                <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
-                   href="{{ webstack_index_url }}"><i class="fa fa-chrome mr-1"></i>网址导航</a>
-            </li>
             {% if tool_flag %}
                 <li class="nav-item mr-2">
                     {% url 'tool:total' as tool_url %}
@@ -36,6 +31,11 @@
                        href="{{ tool_url }}"><i class="fa fa-balance-scale mr-1"></i>在线工具</a>
                 </li>
             {% endif %}
+            <li class="nav-item mr-2">
+                {% url 'webstack:webstack_index' as webstack_index_url %}
+                <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
+                   href="{{ webstack_index_url }}"><i class="fa fa-chrome mr-1"></i>网址导航</a>
+            </li>
             {% if api_flag %}
                 <li class="nav-item mr-2 d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank">API</a>
