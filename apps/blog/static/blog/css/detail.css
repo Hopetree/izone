@@ -280,7 +280,7 @@ pre {
 }
 
 .active-subject .subcategory-title {
-   color: #ea6f5a;
+    color: #ea6f5a;
 }
 
 .subject-article-list ul > li > ul a::before {
@@ -394,11 +394,20 @@ pre {
     .subject-col-7 {
         max-width: 834px;
     }
+
     .subject-col-2 {
         max-width: 300px;
     }
+
     .article-toc,
     .subject-list {
-        max-width:284px
+        max-width: 284px
+    }
+}
+
+@media (min-width: 2650px) {
+    .subject-list,
+    .toc-block .article-toc {
+        max-height: 1240px;
     }
 }
