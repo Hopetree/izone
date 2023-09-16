@@ -405,9 +405,9 @@ pre {
     }
 }
 
-@media (min-width: 2650px) {
+@media (min-width: 2560px) {
     .subject-list,
     .toc-block .article-toc {
-        max-height: 1240px;
+        max-height: 1230px;
     }
 }
