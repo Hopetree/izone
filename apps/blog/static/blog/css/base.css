@@ -847,18 +847,6 @@ div.archive > ul > li > ul {
     margin-bottom: .3rem;
 }
 
-.subject-card .subject-article-count {
-    display: none;
-}
-
-.subject-card:hover .subject-status {
-    display: none;
-}
-
-.subject-card:hover .subject-article-count {
-    display: inline;
-}
-
 .card-body .subject-desc {
     font-size: .7rem;
 }
