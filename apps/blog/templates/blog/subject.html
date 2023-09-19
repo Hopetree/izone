@@ -55,8 +55,8 @@
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
                               title="最后编辑于{{ subject.update_date|date:'Y年m月d日' }}">{{ subject.create_date }}</span>
                             <span class="mx-2">
-                                <span>专题状态：</span>
-                                <span class="text-{{ subject.get_status_color }}">{{ subject.get_status_display }}</span>
+                                <span>文章数量：</span>
+                                <span>{{ subject.get_article_count }}</span>
                             </span>
                         </div>
                         <div class="alert alert-info my-3 mx-1" role="alert">
