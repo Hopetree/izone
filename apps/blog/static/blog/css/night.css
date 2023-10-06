@@ -248,6 +248,10 @@ pre {
     background-color: #18222d;
 }
 
+.blog-info-list .badge {
+    color: #333;
+}
+
 /*全局样式参数start*/
 .dark-theme, body {
     --izone-layer-golden-1: rgba(209, 171, 97, 0.23);

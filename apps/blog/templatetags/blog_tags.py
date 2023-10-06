@@ -9,9 +9,12 @@ from ..models import (
     Tag,
     Carousel,
     FriendLink,
-    Timeline
+    Timeline,
+    Subject
 )
+from comment.models import ArticleComment
 from django.db.models.aggregates import Count
+from django.core.cache import cache
 from django.utils.html import mark_safe
 import re
 
@@ -214,4 +217,25 @@ def my_slice(value, arg):
         return result
 
     except (ValueError, TypeError):
+        return value
+
+
+@register.simple_tag
+def get_blog_infos():
+    """
+    获取博客的文章、专题、标签、评论总数，优先从缓存从获取
+    @return:
+    """
+    cache_key = 'blog:blog_info:sum'
+    cache_value = cache.get(cache_key)
+    if cache_value:
+        return cache_value
+    else:
+        value = {
+            'article': Article.objects.filter(is_publish=True).count(),
+            'subject': Subject.objects.count(),
+            'tag': Tag.objects.count(),
+            'comment': ArticleComment.objects.count()
+        }
+        cache.set(cache_key, value, 3600 * 12)
         return value

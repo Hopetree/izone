@@ -13,6 +13,8 @@ from .actions import (
     action_check_site_links,
 )
 
+from blog.templatetags.blog_tags import get_blog_infos
+
 
 @shared_task
 def simple_task(x, y):
@@ -95,5 +97,17 @@ def check_navigation_site(white_domain_list=None):
     """
     response = TaskResponse()
     result = action_check_site_links(white_domain_list)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def set_blog_infos():
+    """
+    主动设置缓存
+    @return:
+    """
+    response = TaskResponse()
+    result = get_blog_infos()
     response.data = result
     return response.as_dict()

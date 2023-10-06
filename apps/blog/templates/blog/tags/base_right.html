@@ -14,16 +14,43 @@
                 </a>
             </div>
             <div class="col">
-                <a href="{% url 'blog:timeline'%}" target="_blank" title="查看网站建站历程">
+                <a href="{% url 'blog:timeline' %}" target="_blank" title="查看网站建站历程">
                     <img style="max-width:40px" alt="网站的建站历程" src="{% static 'blog/img/blog.png' %}">
                     <p class="mt-2">更新记录</p>
                 </a>
             </div>
             <div class="col">
-                <a href="{% url 'rss'%}" target="_blank" title="订阅博客">
+                <a href="{% url 'rss' %}" target="_blank" title="订阅博客">
                     <img style="max-width:40px" alt="订阅博客RSS" src="{% static 'blog/img/rss.png' %}">
                     <p class="mt-2">RSS订阅</p>
                 </a>
+            </div>
+        </div>
+        {% get_blog_infos as blog_infos %}
+        <div class="row text-center blog-info-list">
+            <div class="col">
+                <div>
+                    <p class="mt-1 badge">{{ blog_infos.article }}</p>
+                    <p class="mt-1">文章</p>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <p class="mt-1 badge">{{ blog_infos.subject }}</p>
+                    <p class="mt-1">专题</p>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <p class="mt-1 badge">{{ blog_infos.tag }}</p>
+                    <p class="mt-1">标签</p>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <p class="mt-1 badge">{{ blog_infos.comment }}</p>
+                    <p class="mt-1">评论</p>
+                </div>
             </div>
         </div>
     </div>
@@ -36,11 +63,11 @@
     {% get_category_list as categories %}
     <ul class="list-group list-group-flush f-16">
         {% for each in categories %}
-        <li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">
-            <a class="category-item" href="{{ each.get_absolute_url }}"
-               title="查看【{{ each.name }}】分类下所有文章">{{ each.name }}</a>
-            <span class="badge text-center" title="当前分类下有{{ each.total_num }}篇文章">{{ each.total_num }}</span>
-        </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">
+                <a class="category-item" href="{{ each.get_absolute_url }}"
+                   title="查看【{{ each.name }}】分类下所有文章">{{ each.name }}</a>
+                <span class="badge text-center" title="当前分类下有{{ each.total_num }}篇文章">{{ each.total_num }}</span>
+            </li>
         {% endfor %}
     </ul>
 </div>
@@ -53,8 +80,8 @@
         <div class="tag-cloud">
             {% get_tag_list as tag_list %}
             {% for tag in tag_list %}
-            <a href="{{ tag.get_absolute_url }}" class="tags f-16" id="tag-{{ forloop.counter }}"
-               title="【{{ tag.name }}】标签下有{{ tag.total_num }}篇文章">{{ tag.name }}</a>
+                <a href="{{ tag.get_absolute_url }}" class="tags f-16" id="tag-{{ forloop.counter }}"
+                   title="【{{ tag.name }}】标签下有{{ tag.total_num }}篇文章">{{ tag.name }}</a>
             {% endfor %}
         </div>
     </div>

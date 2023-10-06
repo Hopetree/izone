@@ -466,6 +466,17 @@ ul.checklist li {
     content: "";
 }
 
+.blog-info-list p {
+    margin-bottom: .5rem;
+}
+
+.blog-info-list .badge {
+    background-color: #e4e6eb;
+    margin-bottom: 0;
+    border-radius: .6rem;
+    padding: 0.4em 0.5em;
+}
+
 /*标签云*/
 .tag-cloud {
     width: 100%;
