@@ -31,6 +31,9 @@ def update_cache():
     response = TaskResponse()
     article_result = action_update_article_cache()
     response.data['article'] = article_result
+    # 博客统计信息
+    blog_info_result = get_blog_infos()
+    response.data['blog_infos'] = blog_info_result
     return response.as_dict()
 
 
@@ -97,17 +100,5 @@ def check_navigation_site(white_domain_list=None):
     """
     response = TaskResponse()
     result = action_check_site_links(white_domain_list)
-    response.data = result
-    return response.as_dict()
-
-
-@shared_task
-def set_blog_infos():
-    """
-    主动设置缓存
-    @return:
-    """
-    response = TaskResponse()
-    result = get_blog_infos()
     response.data = result
     return response.as_dict()
