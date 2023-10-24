@@ -243,6 +243,24 @@ def action_check_site_links(white_domain_list=None):
     return data
 
 
+def action_publish_article_by_task(article_ids):
+    """
+    定时将草稿发布出去
+    @param article_ids: 需要发布的文章ID
+    @return:
+    """
+    from blog.models import Article
+    data = {}
+    for each_id in article_ids:
+        article = Article.objects.get(id=each_id)
+        if article and article.is_publish is False:
+            article.is_publish = True
+            article.save()
+            data[each_id] = 'done'
+        data[each_id] = 'miss'
+    return data
+
+
 if __name__ == '__main__':
     import os
     import django

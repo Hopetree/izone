@@ -11,6 +11,7 @@ from .actions import (
     action_cleanup_task_result,
     action_baidu_push,
     action_check_site_links,
+    action_publish_article_by_task,
 )
 
 from blog.templatetags.blog_tags import get_blog_infos
@@ -100,5 +101,18 @@ def check_navigation_site(white_domain_list=None):
     """
     response = TaskResponse()
     result = action_check_site_links(white_domain_list)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def publish_article_by_task(article_ids):
+    """
+    定时将草稿发布出去
+    @param article_ids: 需要发布的文章ID
+    @return:
+    """
+    response = TaskResponse()
+    result = action_publish_article_by_task(article_ids)
     response.data = result
     return response.as_dict()
