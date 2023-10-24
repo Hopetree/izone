@@ -252,7 +252,7 @@ def action_publish_article_by_task(article_ids):
     from blog.models import Article
     data = {}
     for each_id in article_ids:
-        article = Article.objects.get(id=each_id)
+        article = Article.objects.get(id=int(each_id))
         if article and article.is_publish is False:
             article.is_publish = True
             article.save()
