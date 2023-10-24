@@ -257,7 +257,8 @@ def action_publish_article_by_task(article_ids):
             article.is_publish = True
             article.save()
             data[each_id] = 'done'
-        data[each_id] = 'miss'
+        else:
+            data[each_id] = 'miss'
     return data
 
 
