@@ -253,12 +253,15 @@ def action_publish_article_by_task(article_ids):
     data = {}
     for each_id in article_ids:
         article = Article.objects.get(id=int(each_id))
-        if article and article.is_publish is False:
-            article.is_publish = True
-            article.save()
-            data[each_id] = 'done'
+        if article:
+            if article.is_publish is False:
+                article.is_publish = True
+                article.save()
+                data[each_id] = 'Article published successfully'
+            else:
+                data[each_id] = 'Article has been published'
         else:
-            data[each_id] = 'miss'
+            data[each_id] = 'Article not found'
     return data
 
 
