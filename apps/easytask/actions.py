@@ -3,6 +3,8 @@
     定义一些任务的执行操作，将具体的操作从tasks.py里面抽离出来
     每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
 """
+from datetime import datetime, timedelta
+from blog.utils import RedisKeys
 import requests
 
 
@@ -129,7 +131,6 @@ def action_clear_notification(day=200, is_read=True):
     @param day: 清理day天前的信息
     @return:
     """
-    from datetime import datetime, timedelta
     from django.db.models import Q
     from comment.models import Notification, SystemNotification
 
@@ -156,7 +157,6 @@ def action_cleanup_task_result(day=3):
     清理day天前成功或结束的，其他状态的一概不清理
     @return:
     """
-    from datetime import datetime, timedelta
     from django.db.models import Q
     from django_celery_results.models import TaskResult
 
@@ -265,6 +265,102 @@ def action_publish_article_by_task(article_ids):
     return data
 
 
+class ArticleViewsTool:
+    base_data = {
+        'total_views': {},
+        'last_week_views': {},
+        'this_week_views': {}
+    }
+    key = RedisKeys.views_statistics
+
+    @staticmethod
+    def get_last_week_dates():
+        """
+        获取上周日期列表
+        @return:
+        """
+        today = datetime.today()
+        last_monday = today - timedelta(days=(today.weekday() + 7))
+        last_week_dates = [last_monday + timedelta(days=i) for i in range(7)]
+        # 将日期格式化为字符串，并返回列表
+        last_week_dates_str = [date.strftime('%Y%m%d') for date in last_week_dates]
+        return last_week_dates_str
+
+    @staticmethod
+    def get_this_week_dates():
+        """
+        获取本周日期列表
+        @return:
+        """
+        today = datetime.today()
+        this_monday = today - timedelta(days=today.weekday())
+        this_week_dates = [this_monday + timedelta(days=i) for i in range(today.weekday() + 1)]
+        # 将日期格式化为字符串，并返回列表
+        this_week_dates_str = [date.strftime('%Y%m%d') for date in this_week_dates]
+        return this_week_dates_str
+
+    @staticmethod
+    def get_day_of_week(date_string):
+        # 将输入的日期字符串转换为日期对象
+        date_object = datetime.strptime(date_string, '%Y%m%d')
+        # 获取星期几的数字（0代表星期一，1代表星期二，以此类推）
+        day_of_week = date_object.weekday()
+        # 映射数字到星期几的字符串
+        days_of_week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        day_str = days_of_week[day_of_week]
+
+        return day_str
+
+    @staticmethod
+    def get_yesterday(date_string):
+        # 将输入的日期字符串转换为日期对象
+        date_object = datetime.strptime(date_string, '%Y%m%d')
+        yesterday = date_object - timedelta(days=1)
+        return yesterday.strftime('%Y%m%d')
+
+    @staticmethod
+    def get_today_total_views():
+        """
+        获取当天当前的阅读总量
+        @return:
+        """
+        from django.db.models import Sum
+        from blog.models import Article
+        total_views = Article.objects.aggregate(Sum('views'))['views__sum']
+        total_views = total_views or 0
+        return total_views
+
+    def set_data_to_redis(self):
+        """
+        从redis读取数据并分析后存入redis
+        @return:
+        """
+        from django.core.cache import cache
+        today = datetime.today().strftime('%Y%m%d')
+        data = cache.get(self.key)
+        if not data:
+            data = self.base_data.copy()
+            data['total_views'][today] = self.get_today_total_views()
+        else:
+            data['total_views'][today] = self.get_today_total_views()
+            for last_day in self.get_last_week_dates():
+                yesterday = self.get_yesterday(last_day)
+                last_day_views = data['total_views'].get(last_day)
+                yesterday_views = data['total_views'].get(yesterday)
+                if last_day_views and yesterday_views:
+                    last_day_key = self.get_day_of_week(last_day)
+                    data['last_week_views'][last_day_key] = last_day_views - yesterday_views
+            for this_day in self.get_this_week_dates():
+                yesterday = self.get_yesterday(this_day)
+                this_day_views = data['total_views'].get(this_day)
+                yesterday_views = data['total_views'].get(yesterday)
+                if this_day_views and yesterday_views:
+                    this_day_key = self.get_day_of_week(this_day)
+                    data['this_week_views'][this_day_key] = this_day_views - yesterday_views
+        cache.set(self.key, data, 3600 * 24 * 7)
+        return data
+
+
 if __name__ == '__main__':
     import os
     import django
@@ -274,4 +370,7 @@ if __name__ == '__main__':
 
     # print(action_clear_notification(100))
     # print(action_cleanup_task_result(7))
-    print(action_check_site_links())
+    # print(action_check_site_links())
+    # print(ArticleViewsTool.get_last_week_dates())
+    # print(ArticleViewsTool.get_this_week_dates())
+    print(ArticleViewsTool().set_data_to_redis())

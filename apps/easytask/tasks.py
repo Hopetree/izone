@@ -12,6 +12,7 @@ from .actions import (
     action_baidu_push,
     action_check_site_links,
     action_publish_article_by_task,
+    ArticleViewsTool,
 )
 
 from blog.templatetags.blog_tags import get_blog_infos
@@ -114,5 +115,17 @@ def publish_article_by_task(article_ids):
     """
     response = TaskResponse()
     result = action_publish_article_by_task(article_ids)
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def set_views_to_redis():
+    """
+    定时读取每日的文章访问量，写入redis，一定要设置一个23:59分执行的任务
+    @return:
+    """
+    response = TaskResponse()
+    result = ArticleViewsTool().set_data_to_redis()
     response.data = result
     return response.as_dict()

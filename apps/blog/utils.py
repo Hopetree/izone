@@ -122,3 +122,10 @@ class ApiResponse(object):
 class ErrorApiResponse(ApiResponse):
     def __init__(self, code=1, data=None, message="", error=""):
         super().__init__(code, data, message, error)
+
+
+class RedisKeys:
+    """
+    配置一些redis的key，其他组件可以引用，避免多个地方使用key不统一的问题
+    """
+    views_statistics = 'views.statistics'  # 统计文章访问量
