@@ -27,7 +27,12 @@
 
                 // 指定图表的配置项和数据
                 option = {
-                    title: {text: '文章阅读量趋势图'},
+                    title: {
+                        text: '文章阅读量趋势图',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 16, fontWeight: 'normal'}
+                    },
                     legend: {data: ['本周访问量', '上周访问量']},
                     dataset: {
                         source: myData
@@ -42,7 +47,7 @@
                                 show: true,
                                 position: 'top',
                                 textStyle: {
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             }
                         },
@@ -53,7 +58,7 @@
                                 show: true,
                                 position: 'bottom',
                                 textStyle: {
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             }
                         }
