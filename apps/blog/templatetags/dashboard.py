@@ -15,7 +15,7 @@ def get_views_data_from_redis():
     redis_key = RedisKeys.views_statistics
     redis_data = cache.get(redis_key)
     days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    data = [['product', '本周访问量', '上周访问量']]
+    data = [['product', '本周阅读量', '上周阅读量']]
     if not redis_data:
         for day in days:
             data.append([day, '-', '-'])

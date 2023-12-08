@@ -28,12 +28,12 @@
                 // 指定图表的配置项和数据
                 option = {
                     title: {
-                        text: '文章阅读量趋势图',
+                        text: '文章两周阅读量趋势图',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 16, fontWeight: 'normal'}
                     },
-                    legend: {data: ['本周访问量', '上周访问量']},
+                    legend: {data: ['本周阅读量', '上周阅读量']},
                     dataset: {
                         source: myData
                     },
@@ -41,7 +41,6 @@
                     yAxis: {type: 'value'},
                     series: [
                         {
-                            name: '本周访问量',
                             type: 'line',
                             label: {
                                 show: true,
@@ -52,7 +51,6 @@
                             }
                         },
                         {
-                            name: '上周访问量',
                             type: 'line',
                             label: {
                                 show: true,
