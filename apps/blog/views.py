@@ -339,3 +339,8 @@ class SubjectListView(generic.ListView):
     context_object_name = 'subjects'
     paginate_by = 100
     paginate_orphans = 0
+
+
+# dashboard页面
+def dashboard(request):
+    return render(request, 'blog/dashboard.html')

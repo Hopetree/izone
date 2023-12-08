@@ -1,0 +1,68 @@
+{% extends 'blog/base.html' %}
+{% load static blog_tags %}
+{% load dashboard %}
+
+{% block head_title %}网站看板_Dashboard{% endblock %}
+
+{% block metas %}
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="dashboard,看板,访问量统计,统计看板">
+{% endblock %}
+
+{% block top-file %}
+    <script src="https://cdn.bootcss.com/echarts/5.4.3/echarts.min.js"></script>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div id="views_box" style="width: 100%;height:400px;"></div>
+            {% get_views_data_from_redis as views_data %}
+            <div id="views_data" style="display: none;">{{ views_data|json_script:"views_data" }}</div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                const myData = JSON.parse(document.getElementById("views_data").textContent);
+                const myChart = echarts.init(document.getElementById('views_box'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    title: {text: '文章访问量趋势图'},
+                    legend: {data: ['本周访问量', '上周访问量']},
+                    dataset: {
+                        source: myData
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value'},
+                    series: [
+                        {
+                            name: '本周访问量',
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        },
+                        {
+                            name: '上周访问量',
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'bottom',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            </script>
+        </div>
+    </div>
+{% endblock %}
