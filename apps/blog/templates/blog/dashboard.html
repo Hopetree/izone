@@ -27,6 +27,13 @@
 
                 // 指定图表的配置项和数据
                 option = {
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {type: ['line', 'bar']},
+                            saveAsImage: {}
+                        }
+                    },
                     title: {
                         text: '文章两周阅读量趋势图',
                         x: 'center',
