@@ -366,7 +366,7 @@ class AboutBlog(models.Model):
 
 
 class ArticleView(models.Model):
-    date = models.CharField('统计日期', max_length=10)
+    date = models.CharField('统计日期', max_length=10, unique=True)  # 唯一性
     body = models.TextField(verbose_name='统计数据')
     create_date = models.DateTimeField(verbose_name='录入时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='更新时间', auto_now=True)

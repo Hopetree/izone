@@ -265,6 +265,15 @@ def action_publish_article_by_task(article_ids):
     return data
 
 
+def action_write_or_update_view():
+    """
+    写入或更新当天的文章阅读量
+    @return:
+    """
+    from blog.models import ArticleView
+    date_value = datetime.today().strftime('%Y%m%d')
+
+
 class ArticleViewsTool:
     base_data = {
         'total_views': {},
