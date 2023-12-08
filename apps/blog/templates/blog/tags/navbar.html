@@ -100,6 +100,8 @@
                         {% if user.is_staff %}
                             <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
                                     class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
+                            <a class="dropdown-item pl-3" href="{% url 'blog:dashboard' %}"><i
+                                    class="fa fa-fw fa-tachometer text-info mr-2"></i>网站看板</a>
                         {% endif %}
                         <a class="dropdown-item pl-3" href="{% url 'comment:notification_no_read' %}"><i
                                 class="fa fa-fw fa-bell text-info mr-2"></i>消息
