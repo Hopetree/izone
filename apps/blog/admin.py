@@ -3,7 +3,7 @@ from django.apps import apps
 from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
-                     AboutBlog, Subject, Topic)
+                     AboutBlog, Subject, Topic, ArticleView)
 
 
 @admin.register(Subject)
@@ -151,3 +151,9 @@ class AboutBlogAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return None
+
+
+@admin.register(ArticleView)
+class ArticleViewAdmin(admin.ModelAdmin):
+    list_display = ('date', 'body', 'create_date', 'update_date')
+    date_hierarchy = 'create_date'

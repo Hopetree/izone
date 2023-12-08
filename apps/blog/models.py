@@ -363,3 +363,18 @@ class AboutBlog(models.Model):
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
         ])
+
+
+class ArticleView(models.Model):
+    date = models.CharField('统计日期', max_length=10)
+    body = models.TextField(verbose_name='统计数据')
+    create_date = models.DateTimeField(verbose_name='录入时间', auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name='更新时间', auto_now=True)
+
+    class Meta:
+        verbose_name = '文章浏览量统计'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
+
+    def __str__(self):
+        return self.date
