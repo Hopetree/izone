@@ -3,6 +3,7 @@
     定义一些任务的执行操作，将具体的操作从tasks.py里面抽离出来
     每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
 """
+import json
 from datetime import datetime, timedelta
 from blog.utils import RedisKeys
 import requests
@@ -270,16 +271,23 @@ def action_write_or_update_view():
     写入或更新当天的文章阅读量
     @return:
     """
+    from django.db.models import Sum
+    from blog.models import Article
     from blog.models import ArticleView
     date_value = datetime.today().strftime('%Y%m%d')
+    total_views = Article.objects.aggregate(Sum('views'))['views__sum'] or 0
+    article_views_dict = {}
+    # 获取所有文章的id和views字段
+    articles = Article.objects.all()
+    # 将id和views存储在字典中
+    for article in articles:
+        article_views_dict[article.id] = article.views
+    body = json.dumps({'total_views': total_views, 'today_views': article_views_dict})
+    # 写入或更新一条实例
+    ArticleView.objects.update_or_create(date=date_value, defaults={'body': body})
 
 
 class ArticleViewsTool:
-    base_data = {
-        'total_views': {},
-        'last_week_views': {},
-        'this_week_views': {}
-    }
     key = RedisKeys.views_statistics
 
     @staticmethod
@@ -328,44 +336,43 @@ class ArticleViewsTool:
         return yesterday.strftime('%Y%m%d')
 
     @staticmethod
-    def get_today_total_views():
+    def get_date_total_views(date):
         """
-        获取当天当前的阅读总量
+        获取一个日期的阅读量总数，没有就返回0
+        @param date: 20231208
         @return:
         """
-        from django.db.models import Sum
-        from blog.models import Article
-        total_views = Article.objects.aggregate(Sum('views'))['views__sum']
-        total_views = total_views or 0
-        return total_views
+        from blog.models import ArticleView
+        obj = ArticleView.objects.filter(date=date)
+        if obj:
+            total_views = json.loads(obj.first().body)['total_views']
+            return total_views
+        return 0
 
     def set_data_to_redis(self):
         """
-        从redis读取数据并分析后存入redis
+        从ArticleView模型中获取数据，并分析入库到redis
         @return:
         """
         from django.core.cache import cache
-        today = datetime.today().strftime('%Y%m%d')
-        data = cache.get(self.key)
-        if not data:
-            data = self.base_data.copy()
-            data['total_views'][today] = self.get_today_total_views()
-        else:
-            data['total_views'][today] = self.get_today_total_views()
-            for last_day in self.get_last_week_dates():
-                yesterday = self.get_yesterday(last_day)
-                last_day_views = data['total_views'].get(last_day)
-                yesterday_views = data['total_views'].get(yesterday)
-                if last_day_views and yesterday_views:
-                    last_day_key = self.get_day_of_week(last_day)
-                    data['last_week_views'][last_day_key] = last_day_views - yesterday_views
-            for this_day in self.get_this_week_dates():
-                yesterday = self.get_yesterday(this_day)
-                this_day_views = data['total_views'].get(this_day)
-                yesterday_views = data['total_views'].get(yesterday)
-                if this_day_views and yesterday_views:
-                    this_day_key = self.get_day_of_week(this_day)
-                    data['this_week_views'][this_day_key] = this_day_views - yesterday_views
+        today_str = datetime.today().strftime('%Y%m%d')
+        data = {'last_week_views': {}, 'this_week_views': {},
+                'total_views': self.get_date_total_views(today_str)}
+
+        for last_day in self.get_last_week_dates():
+            yesterday = self.get_yesterday(last_day)
+            last_day_views = self.get_date_total_views(last_day)
+            yesterday_views = self.get_date_total_views(yesterday)
+            if last_day_views and yesterday_views:
+                last_day_key = self.get_day_of_week(last_day)
+                data['last_week_views'][last_day_key] = last_day_views - yesterday_views
+        for this_day in self.get_this_week_dates():
+            yesterday = self.get_yesterday(this_day)
+            this_day_views = self.get_date_total_views(this_day)
+            yesterday_views = self.get_date_total_views(yesterday)
+            if this_day_views and yesterday_views:
+                this_day_key = self.get_day_of_week(this_day)
+                data['this_week_views'][this_day_key] = this_day_views - yesterday_views
         cache.set(self.key, data, 3600 * 24 * 7)
         return data
 
@@ -380,6 +387,5 @@ if __name__ == '__main__':
     # print(action_clear_notification(100))
     # print(action_cleanup_task_result(7))
     # print(action_check_site_links())
-    # print(ArticleViewsTool.get_last_week_dates())
-    # print(ArticleViewsTool.get_this_week_dates())
+    action_write_or_update_view()
     print(ArticleViewsTool().set_data_to_redis())
