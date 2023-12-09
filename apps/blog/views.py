@@ -1,22 +1,27 @@
+import time
+
+import markdown
+from django.conf import settings
+from django.core.cache import cache
 from django.db.models import Count, Q
-from django.http import Http404, HttpResponseForbidden, JsonResponse, HttpResponseBadRequest
+from django.http import (
+    HttpResponse,
+    Http404,
+    HttpResponseForbidden,
+    JsonResponse,
+    HttpResponseBadRequest
+)
 from django.shortcuts import get_object_or_404, render, reverse, redirect
 from django.utils.text import slugify
 from django.views import generic
-from django.conf import settings
 from django.views.decorators.http import require_http_methods
-from django.core.cache import cache
-
-from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject, Topic
-from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse
-
-import markdown
-from markdown.extensions.toc import TocExtension  # 锚点的拓展
-from markdown.extensions.codehilite import CodeHiliteExtension
-import time
-
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
+from markdown.extensions.codehilite import CodeHiliteExtension
+from markdown.extensions.toc import TocExtension  # 锚点的拓展
+
+from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject
+from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse
 
 
 # Create your views here.
@@ -341,6 +346,8 @@ class SubjectListView(generic.ListView):
     paginate_orphans = 0
 
 
-# dashboard页面
+# dashboard页面，仅管理员可以访问，其他用户不能访问
 def dashboard(request):
-    return render(request, 'blog/dashboard.html')
+    if request.user.is_staff:
+        return render(request, 'blog/dashboard.html')
+    return render(request, '403.html')
