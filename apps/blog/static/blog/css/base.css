@@ -413,7 +413,7 @@ ul.checklist li {
 }
 
 #article-view-card {
-    background-image: linear-gradient(180deg, #f3c64de0 0%, #FFFFFF 20%);
+    background-image: linear-gradient(180deg, rgba(246, 118, 87, 0.88) 0%, #FFFFFF 20%);
 }
 
 #category-card {
@@ -435,7 +435,8 @@ ul.checklist li {
 #home-card .card-header,
 #tag-card .card-header,
 #category-card .card-header,
-#friends-card .card-header {
+#friends-card .card-header,
+#article-view-card .card-header {
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 10px;
 }
@@ -443,7 +444,8 @@ ul.checklist li {
 #home-card .card-header strong,
 #tag-card .card-header strong,
 #category-card .card-header strong,
-#friends-card .card-header strong {
+#friends-card .card-header strong,
+#article-view-card .card-header strong {
     padding-bottom: 12.5px;
     border-bottom: 2px solid #00AAEE;
 }
