@@ -1,4 +1,5 @@
 {% load blog_tags static %}
+{% load dashboard %}
 
 <!--个人空间-->
 <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 d-none d-lg-block" id="home-card">
@@ -55,6 +56,23 @@
         </div>
     </div>
 </div>
+<!--阅读榜单，至少5篇文章才显示，最多显示10篇文章-->
+{% get_hot_article_list as hot_article_list %}
+{% if hot_article_list|length >= 5 %}
+    <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3" id="article-view-card">
+        <div class="card-header bg-none px-0">
+            <strong><i class="fa fa-fire mr-2 f-17"></i>昨日热榜</strong>
+        </div>
+        <ul class="article-view-list list-group list-group-flush f-14">
+            {% for hot_article in hot_article_list|slice:":10" %}
+                <li class="pr-2 py-2">
+                    <a href="{{ hot_article.get_absolute_url }}"
+                       title="昨日新增阅读量{{ hot_article.add_view }}">{{ hot_article.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 <!--文章分类-->
 <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3" id="category-card">
     <div class="card-header bg-none px-0">

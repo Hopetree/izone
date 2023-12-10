@@ -412,6 +412,10 @@ ul.checklist li {
     background-image: linear-gradient(180deg, #47b9f5eb 0%, #FFFFFF 50%);
 }
 
+#article-view-card {
+    background-image: linear-gradient(180deg, #f3c64de0 0%, #FFFFFF 20%);
+}
+
 #category-card {
     background-image: linear-gradient(180deg, #7890f7eb 0%, #FFFFFF 20%);
 }
@@ -464,6 +468,47 @@ ul.checklist li {
     transform-origin: 25% center;
     border-width: 4px;
     content: "";
+}
+
+ul.article-view-list {
+    counter-reset: li-index;
+}
+
+ul.article-view-list > li {
+    list-style-type: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+ul.article-view-list > li:last-child {
+    border-bottom: none;
+    margin-bottom: .2rem;
+}
+
+ul.article-view-list > li:before {
+    display: block;
+    float: left;
+    content: counter(li-index);
+    counter-increment: li-index;
+    font-size: 12px;
+    text-align: center;
+    border: 0;
+    width: 1.1rem;
+    margin-right: 0.5rem;
+    color: #fff;
+    background: rgba(241, 117, 49, 0.8);
+    border-radius: 3px
+}
+
+ul.article-view-list > li:nth-child(1):before {
+    background: rgba(246, 17, 81, 0.8);
+}
+
+ul.article-view-list > li:nth-child(2):before {
+    background: rgba(243, 51, 15, 0.8);
+}
+
+ul.article-view-list > li:nth-child(3):before {
+    background: rgba(234, 78, 50, 0.8);
 }
 
 .blog-info-list p {

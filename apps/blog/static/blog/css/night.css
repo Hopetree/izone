@@ -90,7 +90,8 @@ blockquote {
 #home-card,
 #category-card,
 #tag-card,
-#friends-card {
+#friends-card,
+#article-view-card {
     background: #2b2b2b;
 }
 
