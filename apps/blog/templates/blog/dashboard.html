@@ -17,7 +17,7 @@
 {% block base_content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div id="views_box" style="width: 100%;height:400px;"></div>
+            <div id="views_box" style="width: 100%;height:560px;"></div>
             {% get_views_data_from_redis as views_data %}
             <div id="views_data" style="display: none;">{{ views_data|json_script:"views_data" }}</div>
             <script type="text/javascript">
@@ -38,7 +38,7 @@
                         text: '文章两周阅读量趋势图',
                         x: 'center',
                         y: 'bottom',
-                        textStyle: {fontSize: 16, fontWeight: 'normal'}
+                        textStyle: {fontSize: 18}
                     },
                     legend: {data: ['本周阅读量', '上周阅读量']},
                     dataset: {
