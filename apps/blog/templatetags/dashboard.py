@@ -35,6 +35,7 @@ def get_hot_article_list():
     """
     获取昨日热门文章，元数据来自于定时任务统计的每日阅读量数据
     验证：有删除，新增文章的操作，不能报错
+    只保留10篇文章就行，且都需要有阅读量的增加
     @return:
     """
     yesterday_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
@@ -60,10 +61,12 @@ def get_hot_article_list():
             result = []
             for each in data:
                 article_obj_query = Article.objects.filter(id=each['key'])
-                if article_obj_query:
+                if article_obj_query and each['value']:
                     article_obj = article_obj_query.first()
                     article_obj.add_view = each['value']
                     result.append(article_obj)
+                    if len(result) >= 10:
+                        break
             cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
             return result
     return []
