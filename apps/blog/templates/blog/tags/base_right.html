@@ -65,7 +65,7 @@
         </div>
         <ul class="article-view-list list-group list-group-flush f-14">
             {% for hot_article in hot_article_list|slice:":10" %}
-                <li class="pr-2 py-2">
+                <li class="py-2">
                     <a href="{{ hot_article.get_absolute_url }}"
                        title="昨日新增阅读量{{ hot_article.add_view }}">{{ hot_article.title }}</a>
                 </li>
