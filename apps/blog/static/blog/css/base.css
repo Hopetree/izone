@@ -497,7 +497,7 @@ ul.article-view-list > li:before {
     width: 1.1rem;
     margin-right: 0.5rem;
     color: #fff;
-    background: rgba(241, 117, 49, 0.8);
+    background: rgba(64, 168, 180, 0.8);
     border-radius: 3px
 }
 
@@ -511,6 +511,13 @@ ul.article-view-list > li:nth-child(2):before {
 
 ul.article-view-list > li:nth-child(3):before {
     background: rgba(234, 78, 50, 0.8);
+}
+
+ul.article-view-list > li:nth-child(4):before,
+ul.article-view-list > li:nth-child(5):before,
+ul.article-view-list > li:nth-child(6):before,
+ul.article-view-list > li:nth-child(7):before {
+    background: rgba(242, 132, 19, 0.8);
 }
 
 .blog-info-list p {
