@@ -157,3 +157,4 @@ class AboutBlogAdmin(admin.ModelAdmin):
 class ArticleViewAdmin(admin.ModelAdmin):
     list_display = ('date', 'body', 'create_date', 'update_date')
     date_hierarchy = 'create_date'
+    ordering = ('-date',)
