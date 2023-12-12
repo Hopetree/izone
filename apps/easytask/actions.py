@@ -413,6 +413,7 @@ class ArticleViewsTool:
 if __name__ == '__main__':
     import os
     import django
+    from django.core.cache import cache
 
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'izone.settings')
     django.setup()
@@ -420,5 +421,7 @@ if __name__ == '__main__':
     # print(action_clear_notification(100))
     # print(action_cleanup_task_result(7))
     # print(action_check_site_links())
+    cache.delete(RedisKeys.views_statistics)
+    cache.delete(RedisKeys.hours_views_statistics.format(hour=datetime.now().strftime('%Y%m%d%H')))
     action_write_or_update_view()
     print(ArticleViewsTool().set_data_to_redis())
