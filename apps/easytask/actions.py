@@ -349,6 +349,20 @@ class ArticleViewsTool:
             return total_views
         return 0
 
+    @staticmethod
+    def get_hours_views(date):
+        """
+        获取一个日期的每小时的数据，没有则返回{}
+        @param date:
+        @return:
+        """
+        from blog.models import ArticleView
+        obj = ArticleView.objects.filter(date=date)
+        if obj and json.loads(obj.first().body).get('every_hours'):
+            every_hours = json.loads(obj.first().body)['every_hours']
+            return every_hours
+        return {}
+
     def set_data_to_redis(self):
         """
         从ArticleView模型中获取数据，并分析入库到redis
@@ -356,8 +370,17 @@ class ArticleViewsTool:
         """
         from django.core.cache import cache
         today_str = datetime.today().strftime('%Y%m%d')
-        data = {'last_week_views': {}, 'this_week_views': {},
-                'total_views': self.get_date_total_views(today_str)}
+        this_hour = datetime.now().strftime('%H')
+        total_views = self.get_date_total_views(today_str)
+        hour_views = self.get_hours_views(today_str)
+        hour_views[this_hour] = total_views
+
+        data = {
+            'last_week_views': {},  # 上周数据
+            'this_week_views': {},  # 本周数据
+            'total_views': total_views,  # 当天当时数据
+            'every_hours': hour_views  # 当天每个小时数据
+        }
 
         for last_day in self.get_last_week_dates():
             yesterday = self.get_yesterday(last_day)
