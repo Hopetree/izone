@@ -30,6 +30,19 @@ def get_views_data_from_redis():
     return data
 
 
+def get_hours_data_by_date(date):
+    """
+    获取一个日期的小时数据
+    @param date:
+    @return: dict
+    """
+    obj = ArticleView.objects.filter(date=date)
+    if obj and json.loads(obj.first().body).get('every_hours'):
+        return json.loads(obj.first().body).get('every_hours')
+    return {}
+
+
+@register.simple_tag
 def get_hours_views_from_redis():
     """
     从redis获取当天和昨天每小时的阅读量，获取不到则返回空格式
@@ -41,7 +54,37 @@ def get_hours_views_from_redis():
     if redis_value:
         return redis_value
     else:
+        data = [['product', '今天每小时阅读量', '昨天每小时阅读量']]
+        pre_date_str = (datetime.today() - timedelta(days=2)).strftime('%Y%m%d')  # 前天
+        yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
+        thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
+        pre_hours_data = get_hours_data_by_date(pre_date_str)
+        yes_hours_data = get_hours_data_by_date(yes_date_str)
+        thi_hours_data = get_hours_data_by_date(thi_date_str)
         hour_list = [str(h).zfill(2) for h in range(0, 24)]
+        for hour in hour_list:
+            if hour == '00':
+                if thi_hours_data.get(hour) and yes_hours_data.get('23'):
+                    thi_value = thi_hours_data[hour] - yes_hours_data['23']  # 今天00点访问量
+                else:
+                    thi_value = '-'
+                if yes_hours_data.get(hour) and pre_hours_data.get('23'):
+                    yes_value = yes_hours_data[hour] - pre_hours_data['23']  # 昨天00点访问量
+                else:
+                    yes_value = '-'
+            else:
+                last_hour = str(int(hour) - 1).zfill(2)
+                if thi_hours_data.get(hour) and thi_hours_data.get(last_hour):
+                    thi_value = thi_hours_data[hour] - thi_hours_data[last_hour]
+                else:
+                    thi_value = '-'
+                if yes_hours_data.get(hour) and yes_hours_data.get(last_hour):
+                    yes_value = yes_hours_data[hour] - yes_hours_data[last_hour]
+                else:
+                    yes_value = '-'
+            data.append([hour, thi_value, yes_value])
+        cache.set(redis_key, data, 3600)  # 缓存1小时即可，每小时必须更新
+        return data
 
 
 @register.simple_tag
