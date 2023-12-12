@@ -130,3 +130,4 @@ class RedisKeys:
     """
     views_statistics = 'views.statistics'  # 统计文章访问量
     hot_article_list = 'hot.article.list'  # 昨日热门文章列表
+    hours_views_statistics = 'views.hours.statistics'  # 两天每小时访问量统计

@@ -30,6 +30,17 @@ def get_views_data_from_redis():
     return data
 
 
+def get_hours_views_from_redis():
+    """
+    从redis获取当天和昨天每小时的阅读量，获取不到则返回空格式
+    @return:
+    """
+    this_hour = datetime.now().strftime('%Y%m%d%H')
+    redis_key = f'{RedisKeys.hours_views_statistics}.{this_hour}'
+    redis_data = cache.get(redis_key)
+    hour_list = [str(h).zfill(2) for h in range(0, 24)]
+
+
 @register.simple_tag
 def get_hot_article_list():
     """

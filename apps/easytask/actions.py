@@ -275,6 +275,7 @@ def action_write_or_update_view():
     from blog.models import Article
     from blog.models import ArticleView
     date_value = datetime.today().strftime('%Y%m%d')
+    this_hour = datetime.now().strftime('%H')
     total_views = Article.objects.aggregate(Sum('views'))['views__sum'] or 0
     article_views_dict = {}
     # 获取所有文章的id和views字段
@@ -282,7 +283,20 @@ def action_write_or_update_view():
     # 将id和views存储在字典中
     for article in articles:
         article_views_dict[article.id] = article.views
-    body = json.dumps({'total_views': total_views, 'today_views': article_views_dict})
+    body_data = {
+        'total_views': total_views,  # 当前阅读总计
+        'today_views': article_views_dict,  # 当前阅读详情
+        'every_hours': {}  # 当前每小时阅读统计
+    }
+    obj = ArticleView.objects.filter(date=date_value)
+    if obj and json.loads(obj.first().body).get('every_hours'):
+        every_hours = json.loads(obj.first().body).get('every_hours')
+    else:
+        every_hours = {}
+    every_hours[this_hour] = total_views
+    body_data['every_hours'] = every_hours
+
+    body = json.dumps(body_data)
     # 写入或更新一条实例
     ArticleView.objects.update_or_create(date=date_value, defaults={'body': body})
 
@@ -370,16 +384,12 @@ class ArticleViewsTool:
         """
         from django.core.cache import cache
         today_str = datetime.today().strftime('%Y%m%d')
-        this_hour = datetime.now().strftime('%H')
         total_views = self.get_date_total_views(today_str)
-        hour_views = self.get_hours_views(today_str)
-        hour_views[this_hour] = total_views
 
         data = {
             'last_week_views': {},  # 上周数据
             'this_week_views': {},  # 本周数据
             'total_views': total_views,  # 当天当时数据
-            'every_hours': hour_views  # 当天每个小时数据
         }
 
         for last_day in self.get_last_week_dates():
