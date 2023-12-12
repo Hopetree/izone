@@ -129,5 +129,5 @@ class RedisKeys:
     配置一些redis的key，其他组件可以引用，避免多个地方使用key不统一的问题
     """
     views_statistics = 'views.statistics'  # 统计文章访问量
-    hot_article_list = 'hot.article.list'  # 昨日热门文章列表
-    hours_views_statistics = 'views.hours.statistics'  # 两天每小时访问量统计
+    hot_article_list = 'hot.article.list.{date}'  # 昨日热门文章列表
+    hours_views_statistics = 'views.hours.statistics.{hour}'  # 两天每小时访问量统计

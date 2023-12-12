@@ -36,9 +36,12 @@ def get_hours_views_from_redis():
     @return:
     """
     this_hour = datetime.now().strftime('%Y%m%d%H')
-    redis_key = f'{RedisKeys.hours_views_statistics}.{this_hour}'
-    redis_data = cache.get(redis_key)
-    hour_list = [str(h).zfill(2) for h in range(0, 24)]
+    redis_key = RedisKeys.hours_views_statistics.format(hour=this_hour)
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        return redis_value
+    else:
+        hour_list = [str(h).zfill(2) for h in range(0, 24)]
 
 
 @register.simple_tag
@@ -51,7 +54,7 @@ def get_hot_article_list():
     """
     yesterday_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     last_day_str = (datetime.today() - timedelta(days=2)).strftime('%Y%m%d')  # 前天
-    redis_key = f'{RedisKeys.hot_article_list}.{yesterday_str}'
+    redis_key = RedisKeys.hot_article_list.format(date=yesterday_str)
     redis_value = cache.get(redis_key)
     if redis_value:
         return redis_value
