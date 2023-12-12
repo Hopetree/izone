@@ -33,7 +33,7 @@ def get_today_views_by_forecast():
     yes_hours_data = get_hours_data_by_date(yes_date_str)
     thi_hours_data = get_hours_data_by_date(thi_date_str)
     # 昨天数据必须满24小时，今天数据最少有一个小时的才能计算
-    if len(yes_hours_data) == 24 and len(thi_hours_data) > 0:
+    if yes_hours_data.get('23') and yes_hours_data.get(this_hour) and thi_hours_data.get(this_hour):
         yes_total_views = yes_hours_data['23']  # 昨日总计
         yes_done_views = yes_hours_data[this_hour]  # 昨日此时
         thi_done_views = thi_hours_data[this_hour]  # 今日此时
