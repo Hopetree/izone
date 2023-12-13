@@ -35,14 +35,14 @@
                         }
                     },
                     title: {
-                        text: '文章两周阅读量趋势图',
+                        text: '两周有效访问量趋势图',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18}
                     },
-                    legend: {data: ['本周阅读量', '上周阅读量', '今日预测']},
+                    legend: {data: ['本周访问量', '上周访问量', '今日预测']},
                     dataset: {
-                        source: [['product', '本周阅读量', '上周阅读量', '今日预测']].concat(myDayViewsData)
+                        source: [['product', '本周访问量', '上周访问量', '今日预测']].concat(myDayViewsData)
                     },
                     xAxis: {type: 'category'},
                     yAxis: {type: 'value'},
@@ -105,14 +105,14 @@
                         }
                     },
                     title: {
-                        text: '文章两天阅读量趋势图',
+                        text: '两天有效访问量趋势图',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18}
                     },
-                    legend: {data: ['今天每小时阅读量', '昨天每小时阅读量']},
+                    legend: {data: ['今天每小时访问量', '昨天每小时访问量']},
                     dataset: {
-                        source: [['product', '今天每小时阅读量', '昨天每小时阅读量']].concat(myHoursViewData)
+                        source: [['product', '今天每小时访问量', '昨天每小时访问量']].concat(myHoursViewData)
                     },
                     xAxis: {type: 'category'},
                     yAxis: {type: 'value'},
