@@ -12,6 +12,33 @@
 
 {% block top-file %}
     <script src="https://cdn.bootcss.com/echarts/5.4.3/echarts.min.js"></script>
+    <!--设置默认的主题颜色为亮色-->
+    <script>
+        var baseEchartsColor = {
+            backgroundColor: '#fff',
+            titleColor: '#464646'
+        }
+        var nightEchartsColor = {
+            backgroundColor: '#1a222c',
+            titleColor: '#d5d3d3'
+        }
+        var echartsTheme = baseEchartsColor
+    </script>
+    <!--根据cookies判断是否启用暗色主题-->
+    {% if not request.COOKIES.toggleTheme %}
+        {% now_hour as hour %}
+        {% if hour < 6 or hour > 18 %}
+            <script>
+                var echartsTheme = nightEchartsColor
+            </script>
+        {% endif %}
+    {% else %}
+        {% if request.COOKIES.toggleTheme == "dark" %}
+            <script>
+                var echartsTheme = nightEchartsColor
+            </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block base_content %}
@@ -27,6 +54,7 @@
 
                 // 指定图表的配置项和数据
                 option = {
+                    backgroundColor: echartsTheme.backgroundColor,
                     toolbox: {
                         show: true,
                         feature: {
@@ -38,9 +66,12 @@
                         text: '两周有效访问量趋势图',
                         x: 'center',
                         y: 'bottom',
-                        textStyle: {fontSize: 18}
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
                     },
-                    legend: {data: ['本周访问量', '上周访问量', '今日预测']},
+                    legend: {
+                        data: ['本周访问量', '上周访问量', '今日预测'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
                     dataset: {
                         source: [['product', '本周访问量', '上周访问量', '今日预测']].concat(myDayViewsData)
                     },
@@ -96,6 +127,7 @@
 
                 // 指定图表的配置项和数据
                 option = {
+                    backgroundColor: echartsTheme.backgroundColor,
                     color: ['#fc8452', '#9a60b4', '#ea7ccc', '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272'],
                     toolbox: {
                         show: true,
@@ -108,9 +140,12 @@
                         text: '两天有效访问量趋势图',
                         x: 'center',
                         y: 'bottom',
-                        textStyle: {fontSize: 18}
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
                     },
-                    legend: {data: ['今天每小时访问量', '昨天每小时访问量']},
+                    legend: {
+                        data: ['今天每小时访问量', '昨天每小时访问量'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
                     dataset: {
                         source: [['product', '今天每小时访问量', '昨天每小时访问量']].concat(myHoursViewData)
                     },

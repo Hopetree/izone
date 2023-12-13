@@ -423,5 +423,5 @@ if __name__ == '__main__':
     # print(action_check_site_links())
     cache.delete(RedisKeys.views_statistics)
     cache.delete(RedisKeys.hours_views_statistics.format(hour=datetime.now().strftime('%Y%m%d%H')))
-    action_write_or_update_view()
+    # action_write_or_update_view()
     print(ArticleViewsTool().set_data_to_redis())
