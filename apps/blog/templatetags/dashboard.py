@@ -5,6 +5,7 @@ from django.core.cache import cache
 
 from blog.utils import RedisKeys
 from blog.models import ArticleView, Article
+from easytask.actions import ArticleViewsTool
 
 register = template.Library()
 
@@ -53,6 +54,9 @@ def get_views_data_from_redis():
     redis_data = cache.get(redis_key)
     days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
     data = []
+    # 初次判断如果没有缓存则设置一次缓存，可以保证这里一定有数据
+    if not redis_data:
+        ArticleViewsTool().set_data_to_redis()
     if not redis_data:
         for day in days:
             data.append([day, '-', '-', '-'])
