@@ -100,7 +100,8 @@ blockquote {
 #category-card .card-header strong,
 .tool-cate .card-header strong,
 .description strong,
-#friends-card .card-header strong {
+#friends-card .card-header strong,
+#article-view-card .card-header strong {
     border-bottom: 2px solid #9caec7;
 }
 
@@ -108,7 +109,8 @@ blockquote {
 #tag-card .card-header,
 .description h1,
 #category-card .card-header,
-#friends-card .card-header {
+#friends-card .card-header,
+#article-view-card .card-header {
     border-bottom: 2px solid #001d25;
 }
 
