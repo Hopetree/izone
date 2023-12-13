@@ -66,6 +66,7 @@ def get_views_data_from_redis():
         for day in days:
             if get_day_of_week(thi_date_str) == day:  # 如果是今天的数据，则预测今天
                 forecast_views = get_today_views_by_forecast()
+                forecast_views = 500
             else:
                 forecast_views = '-'
             data.append([day, this_week.get(day, '-'), last_week.get(day, '-'), forecast_views])
