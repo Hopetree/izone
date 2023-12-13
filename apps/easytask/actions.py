@@ -272,8 +272,7 @@ def action_write_or_update_view():
     @return:
     """
     from django.db.models import Sum
-    from blog.models import Article
-    from blog.models import ArticleView
+    from blog.models import Article, ArticleView, PageView
     date_value = datetime.today().strftime('%Y%m%d')
     this_hour = datetime.now().strftime('%H')
     total_views = Article.objects.aggregate(Sum('views'))['views__sum'] or 0
@@ -283,9 +282,18 @@ def action_write_or_update_view():
     # 将id和views存储在字典中
     for article in articles:
         article_views_dict[article.id] = article.views
+
+    # 单页面的统计逻辑
+    page_views_dict = {}
+    page_total_views = PageView.objects.aggregate(Sum('views'))['views__sum'] or 0
+    total_views += page_total_views  # 将文章和单页面的总访问量叠加
+    for page in PageView.objects.all():
+        page_views_dict[page.url] = page.views
+
     body_data = {
         'total_views': total_views,  # 当前阅读总计
         'today_views': article_views_dict,  # 当前阅读详情
+        'page_views': page_views_dict,  # 单页面的阅读详情
         'every_hours': {}  # 当前每小时阅读统计
     }
     obj = ArticleView.objects.filter(date=date_value)

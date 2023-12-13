@@ -21,7 +21,7 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject
-from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse
+from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse, add_views
 
 
 # Create your views here.
@@ -199,6 +199,7 @@ class TagView(generic.ListView):
         return context_data
 
 
+@add_views('blog:about', 'About页面')
 def AboutView(request):
     obj = AboutBlog.objects.first()
     if obj:
