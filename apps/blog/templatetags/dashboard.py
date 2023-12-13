@@ -43,7 +43,7 @@ def get_today_views_by_forecast():
 
 
 @register.simple_tag
-def get_views_data_from_redis(t1, t2, t3):
+def get_views_data_from_redis():
     """
     从redis里面获取文章访问量数据，获取不到则返回空格式
     @return:
@@ -52,7 +52,7 @@ def get_views_data_from_redis(t1, t2, t3):
     redis_key = RedisKeys.views_statistics
     redis_data = cache.get(redis_key)
     days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    data = [['product', t1, t2, t3]]
+    data = []
     if not redis_data:
         for day in days:
             data.append([day, '-', '-', '-'])
@@ -81,7 +81,7 @@ def get_hours_data_by_date(date):
 
 
 @register.simple_tag
-def get_hours_views_from_redis(t1, t2):
+def get_hours_views_from_redis():
     """
     从redis获取当天和昨天每小时的阅读量，获取不到则返回空格式
     @return:
@@ -92,7 +92,7 @@ def get_hours_views_from_redis(t1, t2):
     if redis_value:
         return redis_value
     else:
-        data = [['product', t1, t2]]
+        data = []
         pre_date_str = (datetime.today() - timedelta(days=2)).strftime('%Y%m%d')  # 前天
         yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
         thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
