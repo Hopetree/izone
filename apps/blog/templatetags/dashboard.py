@@ -29,18 +29,18 @@ def get_today_views_by_forecast():
     预测今天的访问量总数，根据昨天每小时和今天已经生成的小时数据进行预测，数据越多应该越接近
     @return:
     """
-    result = 400
+    result = '-'
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
-    this_hour = datetime.now().strftime('%H')
+    last_hour = (datetime.now() - timedelta(hours=1)).strftime('%H')  # 拿到前一个小时的数据，当前还没有
     yes_hours_data = get_hours_data_by_date(yes_date_str)
     thi_hours_data = get_hours_data_by_date(thi_date_str)
     # 昨天数据必须满24小时，今天数据最少有一个小时的才能计算
-    if all([yes_hours_data.get('23'), yes_hours_data.get(this_hour),
-            thi_hours_data.get(this_hour)]):
+    if all([yes_hours_data.get('23'), yes_hours_data.get(last_hour),
+            thi_hours_data.get(last_hour)]):
         yes_total_views = yes_hours_data['23']  # 昨日总计
-        yes_done_views = yes_hours_data[this_hour]  # 昨日此时
-        thi_done_views = thi_hours_data[this_hour]  # 今日此时
+        yes_done_views = yes_hours_data[last_hour]  # 昨日此时
+        thi_done_views = thi_hours_data[last_hour]  # 今日此时
         logger.info(f'{yes_total_views},{yes_done_views},{thi_done_views}')
         result = int(yes_total_views * thi_done_views / yes_done_views) - yes_hours_data['23']
     return result
