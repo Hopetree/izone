@@ -395,3 +395,7 @@ class PageView(models.Model):
         verbose_name = "单页面浏览量"
         verbose_name_plural = verbose_name
         ordering = ['url']
+
+    def update_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])

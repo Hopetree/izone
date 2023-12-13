@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.html import mark_safe
 from django.core.cache import cache
+from blog.utils import add_views
 from .apis.bd_push import push_urls, get_urls
 from .apis.useragent import get_user_agent
 from .apis.docker_search import DockerSearch
@@ -20,6 +21,7 @@ def Toolview(request):
 
 
 # 百度主动推送
+@add_views('tool:baidu_push', '百度主动推送')
 def BD_pushview(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -31,6 +33,7 @@ def BD_pushview(request):
 
 
 # 百度主动推送升级版，提取sitemap链接推送
+@add_views('tool:baidu_push_site', 'Sitemap主动推送')
 def BD_pushview_site(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -48,6 +51,7 @@ def BD_pushview_site(request):
 
 
 # 在线正则表达式
+@add_views('tool:regex', '在线正则表达式')
 def regexview(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -77,6 +81,7 @@ def regexview(request):
 
 
 # 生成请求头
+@add_views('tool:useragent', 'User-Agent生成器')
 def useragent_view(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -92,11 +97,13 @@ def useragent_view(request):
 
 
 # HTML特殊字符对照表
+@add_views('tool:html_characters', 'HTML查询表')
 def html_characters(request):
     return render(request, 'tool/characters.html')
 
 
 # docker镜像查询
+@add_views('tool:docker_search', 'Docker镜像查询')
 def docker_search_view(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -121,11 +128,13 @@ def docker_search_view(request):
     return render(request, 'tool/docker_search.html')
 
 
+@add_views('tool:markdown_editor', 'Markdown编辑器')
 def editor_view(request):
     return render(request, 'tool/editor.html')
 
 
 # 词云图
+@add_views('tool:word_cloud', '词云图')
 def word_cloud(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
@@ -136,16 +145,19 @@ def word_cloud(request):
     return render(request, 'tool/word_cloud.html')
 
 
+@add_views('tool:json2go', 'JSON转Go工具')
 def json2go(request):
     return render(request, 'tool/json2go.html')
 
 
 # 个人所得税年度汇算
+@add_views('tool:tax', '综合所得年度汇算')
 def tax(request):
     return render(request, 'tool/tax.html')
 
 
 # ip地址查询
+@add_views('tool:ip', 'IP地址查询')
 def query_ip(request):
     """
     备用接口https://ip-api.com/docs/api:json

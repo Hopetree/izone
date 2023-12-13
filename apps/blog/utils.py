@@ -1,10 +1,13 @@
 # -*- coding:utf-8 -*-
+import time
 from datetime import datetime
 from django.apps import apps as django_apps
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.http import JsonResponse
 from pygments.formatters.html import HtmlFormatter
+
+from .models import PageView
 
 
 class CustomHtmlFormatter(HtmlFormatter):
@@ -131,3 +134,49 @@ class RedisKeys:
     views_statistics = 'views.statistics'  # 统计文章访问量
     hot_article_list = 'hot.article.list.{date}'  # 昨日热门文章列表
     hours_views_statistics = 'views.hours.statistics.{hour}'  # 两天每小时访问量统计
+
+
+def add_views(url, name=None, is_cache=True):
+    """
+    单页面访问量统计的视图函数装饰器
+    @param is_cache: 是否使用缓存判断访问，跟文章的逻辑一样
+    @param name: 页面名称，也可以是描述，方便辨认，没有实际作用
+    @param url: 全局唯一，tool:ip这种格式，可以被解析成URL
+    @return:
+    """
+
+    def decorator(func):
+        def wrapper(request, *args, **kwargs):
+
+            result = func(request, *args, **kwargs)
+            # ******* 浏览量增加的逻辑 *******
+            # 仅访问页面的时候才进行计算，接口调用不计算，管理员访问也不计算
+            if request.method == "GET" and not request.is_ajax() and not request.user.is_superuser:
+                # 获取或者创建一个实例
+                page_views = PageView.objects.filter(url=url)
+                if page_views:
+                    obj = page_views.first()
+                else:
+                    obj = PageView(url=url, name=name, views=0)
+                    obj.save()
+
+                if is_cache:  # 要判断缓存，则存状态
+                    cache_key = f'page_views:read:{url}'
+                    is_read_time = request.session.get(cache_key)
+                    if not is_read_time:
+                        obj.update_views()
+                        request.session[cache_key] = time.time()
+                    else:
+                        t = time.time() - is_read_time
+                        if t > 60 * 30:
+                            obj.update_views()
+                            request.session[cache_key] = time.time()
+                else:
+                    obj.update_views()
+            # ******* 浏览量增加的逻辑 *******
+
+            return result
+
+        return wrapper
+
+    return decorator
