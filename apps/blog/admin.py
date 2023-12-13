@@ -3,7 +3,8 @@ from django.apps import apps
 from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
-                     AboutBlog, Subject, Topic, ArticleView)
+                     AboutBlog, Subject, Topic, ArticleView,
+                     PageView)
 
 
 @admin.register(Subject)
@@ -158,3 +159,10 @@ class ArticleViewAdmin(admin.ModelAdmin):
     list_display = ('date', 'body', 'create_date', 'update_date')
     date_hierarchy = 'create_date'
     ordering = ('-date',)
+
+
+@admin.register(PageView)
+class PageViewAdmin(admin.ModelAdmin):
+    list_display = ('url', 'name', 'views', 'create_date', 'update_date')
+    date_hierarchy = 'create_date'
+    ordering = ('url',)
