@@ -285,7 +285,8 @@ def action_write_or_update_view():
 
     # 单页面的统计逻辑
     page_views_dict = {}
-    page_total_views = PageView.objects.aggregate(Sum('views'))['views__sum'] or 0
+    filter_objs = PageView.objects.filter(is_compute=True)
+    page_total_views = filter_objs.aggregate(Sum('views'))['views__sum'] or 0
     total_views += page_total_views  # 将文章和单页面的总访问量叠加
     for page in PageView.objects.all():
         page_views_dict[page.url] = page.views
