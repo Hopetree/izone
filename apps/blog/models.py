@@ -398,4 +398,4 @@ class PageView(models.Model):
 
     def update_views(self):
         self.views += 1
-        self.save(update_fields=['views'])
+        self.save(update_fields=['views', 'update_date'])
