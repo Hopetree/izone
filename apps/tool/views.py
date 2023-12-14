@@ -80,8 +80,8 @@ def regexview(request):
     return render(request, 'tool/regex.html')
 
 
-# 生成请求头
-@add_views('tool:useragent', 'User-Agent生成器')
+# 生成请求头，不统计流量，有人在频繁访问
+# @add_views('tool:useragent', 'User-Agent生成器')
 def useragent_view(request):
     if request.is_ajax() and request.method == "POST":
         data = request.POST
