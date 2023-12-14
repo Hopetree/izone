@@ -163,6 +163,7 @@ class ArticleViewAdmin(admin.ModelAdmin):
 
 @admin.register(PageView)
 class PageViewAdmin(admin.ModelAdmin):
-    list_display = ('url', 'name', 'views', 'create_date', 'update_date')
+    list_display = ('url', 'name', 'views', 'is_compute', 'create_date', 'update_date')
     date_hierarchy = 'create_date'
     ordering = ('url',)
+    list_editable = ('is_compute',)

@@ -385,6 +385,7 @@ class PageView(models.Model):
     url = models.CharField('页面地址', max_length=255, unique=True)  # 唯一性
     name = models.CharField('页面名称', max_length=255, blank=True, null=True)
     views = models.IntegerField('浏览量', default=0)
+    is_compute = models.BooleanField('是否计算到访问量', default=True)  # 有的页面只记录，不计算
     create_date = models.DateTimeField(verbose_name='录入时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
