@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}{% endblock %}</title>
+    {% block meta %}{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-core.css' %}">
+    <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-components.css' %}">
+    <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-skins.css' %}">
+    <link rel="stylesheet" href="{% static 'webstack/assets/css/nav.css' %}">
+    <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        .sidebar-menu {
+            width: 200px;
+        }
+
+        .sidebar-menu .logo-env {
+            padding: 18px 8px;
+        }
+
+        .sidebar-menu .main-menu {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .sidebar-menu .main-menu a {
+            padding: 14px 4px;
+        }
+
+        .sidebar-menu .main-menu a > i {
+            margin-right: 8px;
+            width: 18px;
+            max-height: 18px;
+        }
+
+        .sidebar-menu .main-menu ul li a {
+            padding-left: 34px;
+        }
+
+        .xe-widget.xe-conversations {
+            padding: 10px;
+        }
+
+        .xe-comment-entry img {
+            margin-top: 5px;
+        }
+
+        .xe-comment p {
+            margin-right: 10px;
+        }
+
+        @media screen and (min-width: 768px) {
+            .sidebar-menu.collapsed {
+                width: 66px;
+            }
+        }
+    </style>
+    {% block top-file %}{% endblock %}
+</head>
+
+<body class="page-body">
+<!-- skin-white -->
+<div class="page-container">
+    <div class="sidebar-menu toggle-others fixed collapsed">
+        <div class="sidebar-menu-inner">
+            <header class="logo-env">
+                <!-- logo -->
+                {% block logo %}{% endblock %}
+                <div class="mobile-menu-toggle visible-xs">
+                    <a href="#" data-toggle="user-info-menu">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <a href="#" data-toggle="mobile-menu">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+            </header>
+            <ul id="main-menu" class="main-menu">
+                {% for menu in first_menus %}
+                    {% if menu.has_site %}
+                        <li>
+                            {% if menu.get_second_menu_list %}
+                                <a>
+                                    <i class="{{ menu.icon }}"></i>
+                                    <span class="title">{{ menu.name }}</span>
+                                </a>
+                                <ul>
+                                    {% for each in menu.get_second_menu_list %}
+                                        {% if each.get_site_list %}
+                                            <li>
+                                                <a href="#{{ each.name }}" class="smooth">
+                                                    <span class="title">{{ each.name }}</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <a href="#{{ menu.name }}" class="smooth">
+                                    <i class="{{ menu.icon }}"></i>
+                                    <span class="title">{{ menu.name }}</span>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% block main-menu %}{% endblock %}
+            </ul>
+        </div>
+    </div>
+    <div class="main-content">
+        <!-- 上边导航 -->
+        <nav class="navbar user-info-navbar" role="navigation">
+            <!-- User Info, Notifications and Menu Bar -->
+            <!-- Left links for user info navbar -->
+            <ul class="user-info-menu left-links list-inline list-unstyled">
+                <li class="hidden-sm hidden-xs" style="min-height: 75px;">
+                    <a href="#" data-toggle="sidebar">
+                        <i class="fa-bars"></i>
+                    </a>
+                </li>
+                {% block navbar-list %}{% endblock %}
+            </ul>
+        </nav>
+
+        {% for menu in first_menus %}
+            {% for second_menu in menu.second_menus.all %}
+                {% if second_menu.get_site_list %}
+                    <h4 class="text-gray" id="{{ second_menu.name }}">
+                        <i class="{{ second_menu.icon }}" style="margin-right: 7px;"></i>
+                        {{ second_menu.name }}
+                    </h4>
+                    <div class="row">
+                        {% for web in second_menu.get_site_list %}
+                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                                <div class="xe-widget xe-conversations box2 label-info"
+                                     onclick="window.open('{{ web.link }}', '_blank')" data-toggle="tooltip"
+                                     data-placement="bottom" title="" data-original-title="{{ web.description }}">
+                                    <div class="xe-comment-entry">
+                                        <a class="xe-user-img">
+                                            <img data-src="{{ web.logo.url }}"
+                                                 class="lozad img-circle"
+                                                 width="40">
+                                        </a>
+                                        <div class="xe-comment">
+                                            <a href="#" class="xe-user-name overflowClip_1">
+                                                <strong>{{ web.name }}</strong>
+                                            </a>
+                                            <p class="overflowClip_2 text-small">{{ web.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
+        <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
+        <!-- Or class "fixed" to  always fix the footer to the end of page -->
+        <footer class="main-footer sticky footer-type-1">
+            <div class="footer-inner">
+                <!-- Add your copyright text here -->
+                {% block footer %}{% endblock %}
+                <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
+                <div class="go-up">
+                    <a href="#" rel="go-top">
+                        <i class="fa-angle-up"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<!-- 锚点平滑移动 -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        //img lazy loaded
+        const observer = lozad();
+        observer.observe();
+
+        $(document).on('click', '.has-sub', function () {
+            var _this = $(this)
+            if (!$(this).hasClass('expanded')) {
+                setTimeout(function () {
+                    _this.find('ul').attr("style", "")
+                }, 300);
+
+            } else {
+                $('.has-sub ul').each(function (id, ele) {
+                    var _that = $(this)
+                    if (_this.find('ul')[0] != ele) {
+                        setTimeout(function () {
+                            _that.attr("style", "")
+                        }, 300);
+                    }
+                })
+            }
+        })
+        $('.user-info-menu .hidden-sm').click(function () {
+            if ($('.sidebar-menu').hasClass('collapsed')) {
+                $('.has-sub.expanded > ul').attr("style", "")
+            } else {
+                $('.has-sub.expanded > ul').show()
+            }
+        })
+        $("#main-menu li ul li").click(function () {
+            $(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式
+            $(this).addClass('active'); // 添加当前元素的样式
+        });
+        $("a.smooth").click(function (ev) {
+            ev.preventDefault();
+
+            public_vars.$mainMenu.add(public_vars.$sidebarProfile).toggleClass('mobile-is-visible');
+            ps_destroy();
+            $("html, body").animate({
+                scrollTop: $($(this).attr("href")).offset().top - 30
+            }, {
+                duration: 500,
+                easing: "swing"
+            });
+        });
+        return false;
+    });
+
+    var href = "";
+    var pos = 0;
+    $("a.smooth").click(function (e) {
+        $("#main-menu li").each(function () {
+            $(this).removeClass("active");
+        });
+        $(this).parent("li").addClass("active");
+        e.preventDefault();
+        href = $(this).attr("href");
+        pos = $(href).position().top - 30;
+    });
+</script>
+<!-- Bottom Scripts -->
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="{% static 'webstack/assets/js/TweenMax.min.js' %}"></script>
+<script src="{% static 'webstack/assets/js/resizeable.js' %}"></script>
+<script src="{% static 'webstack/assets/js/joinable.js' %}"></script>
+<script src="{% static 'webstack/assets/js/xenon-api.js' %}"></script>
+<script src="{% static 'webstack/assets/js/xenon-toggles.js' %}"></script>
+<!-- JavaScripts initializations and stuff -->
+<script src="{% static 'webstack/assets/js/xenon-custom.js' %}"></script>
+<script src="{% static 'webstack/assets/js/lozad.js' %}"></script>
+</body>
+
+</html>
