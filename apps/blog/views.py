@@ -5,13 +5,13 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Count, Q
 from django.http import (
-    HttpResponse,
     Http404,
     HttpResponseForbidden,
     JsonResponse,
     HttpResponseBadRequest
 )
 from django.shortcuts import get_object_or_404, render, reverse, redirect
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.views import generic
 from django.views.decorators.http import require_http_methods
@@ -217,6 +217,7 @@ def AboutView(request):
     return render(request, 'blog/about.html', context={'body': body})
 
 
+@method_decorator(add_views('blog:timeline', '时间线'), name='get')
 class TimelineView(generic.ListView):
     model = Timeline
     template_name = 'blog/timeline.html'
@@ -232,6 +233,7 @@ class SilianView(generic.ListView):
     context_object_name = 'badurls'
 
 
+@method_decorator(add_views('blog:friend', '友链'), name='get')
 class FriendLinkView(generic.ListView):
     model = FriendLink
     template_name = 'blog/friend.html'
