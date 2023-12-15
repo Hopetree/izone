@@ -169,6 +169,37 @@ def get_hot_article_list():
                     result.append(article_obj)
                     if len(result) >= 10:
                         break
-            cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
-            return result
+            if result:
+                cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
+                return result
+    return []
+
+
+@register.simple_tag
+def get_30_days_views_from_redis():
+    this_hour = datetime.now().strftime('%Y%m%d%H')
+    redis_key = RedisKeys.month_views_statistics.format(hour=this_hour)
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        return redis_value
+    else:
+        day_list = [(datetime.today() - timedelta(days=d)).strftime('%Y%m%d') for d in range(31)]
+        day_list = list(reversed(day_list))
+        data = []
+        for day in day_list:
+            last_day = (datetime.strptime(day, '%Y%m%d') - timedelta(days=1)).strftime('%Y%m%d')
+            show_day = f'{day[4:6]}-{day[6:8]}'
+            obj = ArticleView.objects.filter(date=day)
+            last_obj = ArticleView.objects.filter(date=last_day)
+
+            if (obj and json.loads(obj.first().body).get('total_views')) and (
+                    last_obj and json.loads(last_obj.first().body).get('total_views')):
+                add_views = json.loads(obj.first().body).get('total_views') - json.loads(
+                    last_obj.first().body).get('total_views')
+                data.append([show_day, add_views])
+            else:
+                data.append([show_day, '-'])
+        if data:
+            cache.set(redis_key, data, 3600)  # 缓存一小时
+            return data
     return []

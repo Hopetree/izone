@@ -179,5 +179,59 @@
                 myHoursViewChart.setOption(option);
             </script>
         </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="30_days_views_box" style="width: 100%;height:340px;"></div>
+            {% get_30_days_views_from_redis as 30_days_views_data %}
+            <div id="30_days_views_data"
+                 style="display: none;">{{ 30_days_views_data|json_script:"30_days_views_data" }}</div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                const my30DayViewData = JSON.parse(document.getElementById("30_days_views_data").textContent);
+                const my30DayViewChart = echarts.init(document.getElementById('30_days_views_box'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    color: ['#ee6666', '#9a60b4', '#fac858', '#fc8452', '#ea7ccc', '#5470c6', '#91cc75', '#73c0de', '#3ba272'],
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {type: ['line', 'bar']},
+                            saveAsImage: {}
+                        }
+                    },
+                    title: {
+                        text: '30天有效访问量趋势图',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    legend: {
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
+                    dataset: {
+                        source: [['product', '每日访问量']].concat(my30DayViewData)
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value'},
+                    series: [
+                        {
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                my30DayViewChart.setOption(option);
+            </script>
+        </div>
+
     </div>
 {% endblock %}
