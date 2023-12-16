@@ -21,9 +21,11 @@ def get_today_views_by_forecast():
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
     last_hour = (datetime.now() - timedelta(hours=1)).strftime('%H')  # 拿到前一个小时的数据，当前还没有
-    yes_article_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'article_every_hours')
+    yes_article_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str,
+                                                               'article_every_hours')
     yes_page_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'page_every_hours')
-    thi_article_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str, 'article_every_hours')
+    thi_article_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str,
+                                                               'article_every_hours')
     thi_page_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str, 'page_every_hours')
     # 昨天数据必须满24小时，今天数据最少有一个小时的才能计算
     if all([yes_article_hours.get('23'), yes_page_hours.get('23'),
@@ -82,17 +84,17 @@ def get_hours_views_from_redis():
         yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
         thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
         pre_article_hours_data = ArticleViewsTool.get_date_value_by_key(pre_date_str,
-                                                                        'article_every_hours') or {}
+                                                                        'article_every_hours')
         pre_page_hours_data = ArticleViewsTool.get_date_value_by_key(pre_date_str,
-                                                                     'page_every_hours') or {}
+                                                                     'page_every_hours')
         yes_article_hours_data = ArticleViewsTool.get_date_value_by_key(yes_date_str,
-                                                                        'article_every_hours') or {}
+                                                                        'article_every_hours')
         yes_page_hours_data = ArticleViewsTool.get_date_value_by_key(yes_date_str,
-                                                                     'page_every_hours') or {}
+                                                                     'page_every_hours')
         thi_article_hours_data = ArticleViewsTool.get_date_value_by_key(thi_date_str,
-                                                                        'article_every_hours') or {}
+                                                                        'article_every_hours')
         thi_page_hours_data = ArticleViewsTool.get_date_value_by_key(thi_date_str,
-                                                                     'page_every_hours') or {}
+                                                                     'page_every_hours')
         hour_list = [str(h).zfill(2) for h in range(0, 24)]
         for hour in hour_list:
             if hour == '00':

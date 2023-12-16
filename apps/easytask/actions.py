@@ -402,10 +402,18 @@ class ArticleViewsTool:
         @return: 没有就返回空，所以拿的时候要自行判断类型
         """
         from blog.models import ArticleView
+        value = None
         obj = ArticleView.objects.filter(date=date)
         if obj:
             body = json.loads(obj.first().body)
-            return body.get(key)
+            value = body.get(key)
+        if value:
+            return value
+        else:
+            if key in ["total_views_num", "article_views_num", "page_views_num"]:
+                return 0
+            else:
+                return {}
 
     def set_data_to_redis(self):
         """
