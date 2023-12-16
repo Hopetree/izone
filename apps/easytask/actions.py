@@ -346,7 +346,6 @@ def action_write_or_update_view():
 
 
 class ArticleViewsTool:
-    key = RedisKeys.views_statistics
 
     @staticmethod
     def get_last_week_dates():
@@ -415,12 +414,11 @@ class ArticleViewsTool:
             else:
                 return {}
 
-    def set_data_to_redis(self):
+    def get_two_week_data(self):
         """
         从ArticleView模型中获取数据，并分析入库到redis
         @return:
         """
-        from django.core.cache import cache
 
         data = {
             'last_week_views': {},  # 上周数据
@@ -441,5 +439,4 @@ class ArticleViewsTool:
             if this_day_views and yesterday_views:
                 this_day_key = self.get_day_of_week(this_day)
                 data['this_week_views'][this_day_key] = this_day_views - yesterday_views
-        cache.set(self.key, data, 3600 * 24 * 7)
         return data

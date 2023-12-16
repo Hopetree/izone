@@ -45,26 +45,25 @@ def get_views_data_from_redis():
     @return:
     """
     thi_date_str = datetime.today().strftime('%Y%m%d')
-    redis_key = RedisKeys.views_statistics
+    this_hour = datetime.now().strftime('%Y%m%d%H')
+    redis_key = RedisKeys.week_views_statistics.format(hour=this_hour)
     redis_data = cache.get(redis_key)
-    days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    data = []
-    # 初次判断如果没有缓存则设置一次缓存，可以保证这里一定有数据
-    if not redis_data:
-        ArticleViewsTool().set_data_to_redis()
-    if not redis_data:
-        for day in days:
-            data.append([day, '-', '-', '-'])
+    if redis_data:
+        return redis_data
     else:
-        last_week = redis_data['last_week_views']
-        this_week = redis_data['this_week_views']
+        week_data = ArticleViewsTool().get_two_week_data()
+        days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data = []
+        last_week = week_data['last_week_views']
+        this_week = week_data['this_week_views']
         for day in days:
             if ArticleViewsTool.get_day_of_week(thi_date_str) == day:  # 如果是今天的数据，则预测今天
                 forecast_views = get_today_views_by_forecast()
             else:
                 forecast_views = '-'
             data.append([day, this_week.get(day, '-'), last_week.get(day, '-'), forecast_views])
-    return data
+        cache.set(redis_key, data, 3600)
+        return data
 
 
 @register.simple_tag

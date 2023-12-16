@@ -13,7 +13,6 @@ from .actions import (
     action_check_site_links,
     action_publish_article_by_task,
     action_write_or_update_view,
-    ArticleViewsTool,
 )
 
 from blog.templatetags.blog_tags import get_blog_infos
@@ -129,6 +128,5 @@ def set_views_to_redis():
     response = TaskResponse()
     # 先将统计数据写入模型，然后分析后写入redis
     action_write_or_update_view()
-    result = ArticleViewsTool().set_data_to_redis()
-    response.data = result
+    response.data = {'msg': 'write ok'}
     return response.as_dict()
