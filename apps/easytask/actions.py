@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 from blog.utils import RedisKeys
 import requests
 
+from django.db.models import Sum
+from blog.models import Article, ArticleView, PageView
+
 
 def get_link_status(url):
     """
@@ -269,41 +272,73 @@ def action_publish_article_by_task(article_ids):
 def action_write_or_update_view():
     """
     写入或更新当天的文章阅读量
+    body:
+    {
+        "total_views_num": 664512,
+        "article_views_num": 664412,
+        "page_views_num": 112,
+        "article_views": {
+            "90": 26,
+            "89": 113
+        },
+        "page_views": {
+            "blog:about": 9,
+            "blog:friend": 10
+        },
+        "article_every_hours": {
+            "00": 664440,
+            "01": 664454
+        },
+        "page_every_hours": {
+            "00": 209,
+            "01": 230
+        }
+    }
     @return:
     """
-    from django.db.models import Sum
-    from blog.models import Article, ArticleView, PageView
+
     date_value = datetime.today().strftime('%Y%m%d')
     this_hour = datetime.now().strftime('%H')
-    total_views = Article.objects.aggregate(Sum('views'))['views__sum'] or 0
+    # 文章计算逻辑
+    article_views_num = Article.objects.aggregate(Sum('views'))['views__sum'] or 0
     article_views_dict = {}
-    # 获取所有文章的id和views字段
     articles = Article.objects.all()
-    # 将id和views存储在字典中
     for article in articles:
         article_views_dict[article.id] = article.views
 
     # 单页面的统计逻辑
     page_views_dict = {}
-    filter_objs = PageView.objects.filter(is_compute=True)
-    page_total_views = filter_objs.aggregate(Sum('views'))['views__sum'] or 0
-    total_views += page_total_views  # 将文章和单页面的总访问量叠加
+    page_views_num = PageView.objects.filter(is_compute=True).aggregate(Sum('views'))[
+                         'views__sum'] or 0
     for page in PageView.objects.all():
         page_views_dict[page.url] = page.views
 
+    total_views_num = article_views_num + page_views_num  # 将文章和单页面的总访问量叠加
+
     body_data = {
-        'total_views': total_views,  # 当前阅读总计
-        'today_views': article_views_dict,  # 当前阅读详情
+        'total_views_num': total_views_num,  # 当前总计=文章总计+单页面总计
+        'article_views_num': article_views_num,  # 当前文章阅读总计
+        'page_views_num': page_views_num,  # 单页面总计
+        'article_views': article_views_dict,  # 当前阅读详情
         'page_views': page_views_dict,  # 单页面的阅读详情
-        'every_hours': {}  # 当前每小时阅读统计
+        'article_every_hours': {},  # 当前文章每小时阅读统计
+        'page_every_hours': {}  # 当前单页面每小时统计
     }
+
+    # 每小时的数据需要保留历史数据，所以先从历史中拿
+    article_every_hours = {}
+    page_every_hours = {}
     obj = ArticleView.objects.filter(date=date_value)
-    if obj and json.loads(obj.first().body).get('every_hours'):
-        every_hours = json.loads(obj.first().body).get('every_hours')
-    else:
-        every_hours = {}
-    every_hours[this_hour] = total_views
-    body_data['every_hours'] = every_hours
+    if obj:
+        old_body = json.loads(obj.first().body)
+        if old_body.get('article_every_hours'):
+            article_every_hours = old_body.get('article_every_hours')
+        if old_body.get('page_every_hours'):
+            page_every_hours = old_body.get('page_every_hours')
+    article_every_hours[this_hour] = article_views_num
+    page_every_hours[this_hour] = page_views_num
+    body_data['article_every_hours'] = article_every_hours
+    body_data['page_every_hours'] = page_every_hours
 
     body = json.dumps(body_data)
     # 写入或更新一条实例
@@ -359,32 +394,18 @@ class ArticleViewsTool:
         return yesterday.strftime('%Y%m%d')
 
     @staticmethod
-    def get_date_total_views(date):
+    def get_date_value_by_key(date, key):
         """
         获取一个日期的阅读量总数，没有就返回0
         @param date: 20231208
-        @return:
+        @param key: body的参数
+        @return: 没有就返回空，所以拿的时候要自行判断类型
         """
         from blog.models import ArticleView
         obj = ArticleView.objects.filter(date=date)
         if obj:
-            total_views = json.loads(obj.first().body)['total_views']
-            return total_views
-        return 0
-
-    @staticmethod
-    def get_hours_views(date):
-        """
-        获取一个日期的每小时的数据，没有则返回{}
-        @param date:
-        @return:
-        """
-        from blog.models import ArticleView
-        obj = ArticleView.objects.filter(date=date)
-        if obj and json.loads(obj.first().body).get('every_hours'):
-            every_hours = json.loads(obj.first().body)['every_hours']
-            return every_hours
-        return {}
+            body = json.loads(obj.first().body)
+            return body.get(key)
 
     def set_data_to_redis(self):
         """
@@ -392,45 +413,25 @@ class ArticleViewsTool:
         @return:
         """
         from django.core.cache import cache
-        today_str = datetime.today().strftime('%Y%m%d')
-        total_views = self.get_date_total_views(today_str)
 
         data = {
             'last_week_views': {},  # 上周数据
             'this_week_views': {},  # 本周数据
-            'total_views': total_views,  # 当天当时数据
         }
 
         for last_day in self.get_last_week_dates():
             yesterday = self.get_yesterday(last_day)
-            last_day_views = self.get_date_total_views(last_day)
-            yesterday_views = self.get_date_total_views(yesterday)
+            last_day_views = self.get_date_value_by_key(last_day, 'total_views_num')
+            yesterday_views = self.get_date_value_by_key(yesterday, 'total_views_num')
             if last_day_views and yesterday_views:
                 last_day_key = self.get_day_of_week(last_day)
                 data['last_week_views'][last_day_key] = last_day_views - yesterday_views
         for this_day in self.get_this_week_dates():
             yesterday = self.get_yesterday(this_day)
-            this_day_views = self.get_date_total_views(this_day)
-            yesterday_views = self.get_date_total_views(yesterday)
+            this_day_views = self.get_date_value_by_key(this_day, 'total_views_num')
+            yesterday_views = self.get_date_value_by_key(yesterday, 'total_views_num')
             if this_day_views and yesterday_views:
                 this_day_key = self.get_day_of_week(this_day)
                 data['this_week_views'][this_day_key] = this_day_views - yesterday_views
         cache.set(self.key, data, 3600 * 24 * 7)
         return data
-
-
-if __name__ == '__main__':
-    import os
-    import django
-    from django.core.cache import cache
-
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'izone.settings')
-    django.setup()
-
-    # print(action_clear_notification(100))
-    # print(action_cleanup_task_result(7))
-    # print(action_check_site_links())
-    cache.delete(RedisKeys.views_statistics)
-    cache.delete(RedisKeys.hours_views_statistics.format(hour=datetime.now().strftime('%Y%m%d%H')))
-    # action_write_or_update_view()
-    print(ArticleViewsTool().set_data_to_redis())

@@ -12,18 +12,6 @@ logger = logging.getLogger(__name__)
 register = template.Library()
 
 
-def get_day_of_week(date_string):
-    # 将输入的日期字符串转换为日期对象
-    date_object = datetime.strptime(date_string, '%Y%m%d')
-    # 获取星期几的数字（0代表星期一，1代表星期二，以此类推）
-    day_of_week = date_object.weekday()
-    # 映射数字到星期几的字符串
-    days_of_week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-    day_str = days_of_week[day_of_week]
-
-    return day_str
-
-
 def get_today_views_by_forecast():
     """
     预测今天的访问量总数，根据昨天每小时和今天已经生成的小时数据进行预测，数据越多应该越接近
@@ -33,16 +21,18 @@ def get_today_views_by_forecast():
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
     last_hour = (datetime.now() - timedelta(hours=1)).strftime('%H')  # 拿到前一个小时的数据，当前还没有
-    yes_hours_data = get_hours_data_by_date(yes_date_str)
-    thi_hours_data = get_hours_data_by_date(thi_date_str)
+    yes_article_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'article_every_hours')
+    yes_page_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'page_every_hours')
+    thi_article_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str, 'article_every_hours')
+    thi_page_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str, 'page_every_hours')
     # 昨天数据必须满24小时，今天数据最少有一个小时的才能计算
-    if all([yes_hours_data.get('23'), yes_hours_data.get(last_hour),
-            thi_hours_data.get(last_hour)]):
-        yes_total_views = yes_hours_data['23']  # 昨日总计
-        yes_done_views = yes_hours_data[last_hour]  # 昨日此时
-        thi_done_views = thi_hours_data[last_hour]  # 今日此时
-        logger.info(f'{yes_total_views},{yes_done_views},{thi_done_views}')
-        result = int(yes_total_views * thi_done_views / yes_done_views) - yes_hours_data['23']
+    if all([yes_article_hours.get('23'), yes_page_hours.get('23'),
+            yes_article_hours.get(last_hour), yes_page_hours.get(last_hour),
+            thi_article_hours.get(last_hour), thi_page_hours.get(last_hour)]):
+        yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
+        yes_done_views = yes_article_hours[last_hour] + yes_page_hours[last_hour]  # 昨日此时总计
+        thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
+        result = int(yes_total_views * thi_done_views / yes_done_views) - yes_total_views
     return result
 
 
@@ -67,24 +57,12 @@ def get_views_data_from_redis():
         last_week = redis_data['last_week_views']
         this_week = redis_data['this_week_views']
         for day in days:
-            if get_day_of_week(thi_date_str) == day:  # 如果是今天的数据，则预测今天
+            if ArticleViewsTool.get_day_of_week(thi_date_str) == day:  # 如果是今天的数据，则预测今天
                 forecast_views = get_today_views_by_forecast()
             else:
                 forecast_views = '-'
             data.append([day, this_week.get(day, '-'), last_week.get(day, '-'), forecast_views])
     return data
-
-
-def get_hours_data_by_date(date):
-    """
-    获取一个日期的小时数据
-    @param date:
-    @return: dict
-    """
-    obj = ArticleView.objects.filter(date=date)
-    if obj and json.loads(obj.first().body).get('every_hours'):
-        return json.loads(obj.first().body).get('every_hours')
-    return {}
 
 
 @register.simple_tag
@@ -103,31 +81,59 @@ def get_hours_views_from_redis():
         pre_date_str = (datetime.today() - timedelta(days=2)).strftime('%Y%m%d')  # 前天
         yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
         thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
-        pre_hours_data = get_hours_data_by_date(pre_date_str)
-        yes_hours_data = get_hours_data_by_date(yes_date_str)
-        thi_hours_data = get_hours_data_by_date(thi_date_str)
+        pre_article_hours_data = ArticleViewsTool.get_date_value_by_key(pre_date_str,
+                                                                        'article_every_hours') or {}
+        pre_page_hours_data = ArticleViewsTool.get_date_value_by_key(pre_date_str,
+                                                                     'page_every_hours') or {}
+        yes_article_hours_data = ArticleViewsTool.get_date_value_by_key(yes_date_str,
+                                                                        'article_every_hours') or {}
+        yes_page_hours_data = ArticleViewsTool.get_date_value_by_key(yes_date_str,
+                                                                     'page_every_hours') or {}
+        thi_article_hours_data = ArticleViewsTool.get_date_value_by_key(thi_date_str,
+                                                                        'article_every_hours') or {}
+        thi_page_hours_data = ArticleViewsTool.get_date_value_by_key(thi_date_str,
+                                                                     'page_every_hours') or {}
         hour_list = [str(h).zfill(2) for h in range(0, 24)]
         for hour in hour_list:
             if hour == '00':
-                if thi_hours_data.get(hour) and yes_hours_data.get('23'):
-                    thi_value = thi_hours_data[hour] - yes_hours_data['23']  # 今天00点访问量
+                if thi_article_hours_data.get(hour) and yes_article_hours_data.get('23'):
+                    thi_article_value = thi_article_hours_data[hour] - yes_article_hours_data['23']
                 else:
-                    thi_value = '-'
-                if yes_hours_data.get(hour) and pre_hours_data.get('23'):
-                    yes_value = yes_hours_data[hour] - pre_hours_data['23']  # 昨天00点访问量
+                    thi_article_value = '-'
+                if thi_page_hours_data.get(hour) and yes_page_hours_data.get('23'):
+                    thi_page_value = thi_page_hours_data[hour] - yes_page_hours_data['23']
                 else:
-                    yes_value = '-'
+                    thi_page_value = '-'
+                if yes_article_hours_data.get(hour) and pre_article_hours_data.get('23'):
+                    yes_article_value = yes_article_hours_data[hour] - pre_article_hours_data['23']
+                else:
+                    yes_article_value = '-'
+                if yes_page_hours_data.get(hour) and pre_page_hours_data.get('23'):
+                    yes_page_value = yes_page_hours_data[hour] - pre_page_hours_data['23']
+                else:
+                    yes_page_value = '-'
             else:
                 last_hour = str(int(hour) - 1).zfill(2)
-                if thi_hours_data.get(hour) and thi_hours_data.get(last_hour):
-                    thi_value = thi_hours_data[hour] - thi_hours_data[last_hour]
+                if thi_article_hours_data.get(hour) and thi_article_hours_data.get(last_hour):
+                    thi_article_value = thi_article_hours_data[hour] - thi_article_hours_data[
+                        last_hour]
                 else:
-                    thi_value = '-'
-                if yes_hours_data.get(hour) and yes_hours_data.get(last_hour):
-                    yes_value = yes_hours_data[hour] - yes_hours_data[last_hour]
+                    thi_article_value = '-'
+                if thi_page_hours_data.get(hour) and thi_page_hours_data.get(last_hour):
+                    thi_page_value = thi_page_hours_data[hour] - thi_page_hours_data[last_hour]
                 else:
-                    yes_value = '-'
-            data.append([hour, thi_value, yes_value])
+                    thi_page_value = '-'
+                if yes_article_hours_data.get(hour) and yes_article_hours_data.get(last_hour):
+                    yes_article_value = yes_article_hours_data[hour] - yes_article_hours_data[
+                        last_hour]
+                else:
+                    yes_article_value = '-'
+                if yes_page_hours_data.get(hour) and yes_page_hours_data.get(last_hour):
+                    yes_page_value = yes_page_hours_data[hour] - yes_page_hours_data[last_hour]
+                else:
+                    yes_page_value = '-'
+            data.append(
+                [hour, thi_article_value, thi_page_value, yes_article_value, yes_page_value])
         cache.set(redis_key, data, 3600)  # 缓存1小时即可，每小时必须更新
         return data
 
@@ -147,13 +153,9 @@ def get_hot_article_list():
     if redis_value:
         return redis_value
     else:
-        yesterday_obj = ArticleView.objects.filter(date=yesterday_str)
-        yesterday_data = yesterday_obj.first().body if yesterday_obj else None
-        last_day_obj = ArticleView.objects.filter(date=last_day_str)
-        last_day_data = last_day_obj.first().body if last_day_obj else None
-        if yesterday_data and last_day_data:
-            yesterday_views = json.loads(yesterday_data)['today_views']
-            last_day_views = json.loads(last_day_data)['today_views']
+        yesterday_views = ArticleViewsTool.get_date_value_by_key(yesterday_str, 'article_views')
+        last_day_views = ArticleViewsTool.get_date_value_by_key(last_day_str, 'article_views')
+        if yesterday_views and last_day_views:
             # 取昨天的数据，前天不存在的文章默认就是0
             result = {key: yesterday_views[key] - last_day_views.get(key, 0) for key in
                       yesterday_views}
@@ -189,13 +191,10 @@ def get_30_days_views_from_redis():
         for day in day_list:
             last_day = (datetime.strptime(day, '%Y%m%d') - timedelta(days=1)).strftime('%Y%m%d')
             show_day = f'{day[4:6]}-{day[6:8]}'
-            obj = ArticleView.objects.filter(date=day)
-            last_obj = ArticleView.objects.filter(date=last_day)
-
-            if (obj and json.loads(obj.first().body).get('total_views')) and (
-                    last_obj and json.loads(last_obj.first().body).get('total_views')):
-                add_views = json.loads(obj.first().body).get('total_views') - json.loads(
-                    last_obj.first().body).get('total_views')
+            last_views_num = ArticleViewsTool.get_date_value_by_key(last_day, 'total_views_num')
+            this_views_num = ArticleViewsTool.get_date_value_by_key(day, 'total_views_num')
+            if last_views_num and this_views_num:
+                add_views = this_views_num - last_views_num
                 data.append([show_day, add_views])
             else:
                 data.append([show_day, '-'])

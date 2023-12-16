@@ -128,7 +128,7 @@
                 // 指定图表的配置项和数据
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
-                    color: ['#fc8452', '#9a60b4', '#ea7ccc', '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272'],
+                    color: ['#5470c6', '#91cc75', '#73c0de', '#fc8452', '#fac858', '#3ba272', '#ee6666', '#9a60b4', '#ea7ccc'],
                     toolbox: {
                         show: true,
                         feature: {
@@ -136,40 +136,53 @@
                             saveAsImage: {}
                         }
                     },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
                     title: {
-                        text: '两天有效访问量趋势图',
+                        text: '每小时访问量趋势图',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}
                     },
                     legend: {
-                        data: ['今天每小时访问量', '昨天每小时访问量'],
                         textStyle: {color: echartsTheme.titleColor}
                     },
                     dataset: {
-                        source: [['product', '今天每小时访问量', '昨天每小时访问量']].concat(myHoursViewData)
+                        source: [['product', '今日文章', '今日单页面', '昨日文章', '昨日单页面']].concat(myHoursViewData)
                     },
                     xAxis: {type: 'category'},
                     yAxis: {type: 'value'},
                     series: [
                         {
                             type: 'bar',
-                            label: {
-                                show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
+                            stack: '今日',
+                            emphasis: {
+                                focus: 'series'
                             }
                         },
                         {
                             type: 'bar',
-                            label: {
-                                show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
+                            stack: '今日',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            stack: '昨日',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            stack: '昨日',
+                            emphasis: {
+                                focus: 'series'
                             }
                         }
                     ]
