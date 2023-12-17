@@ -132,6 +132,7 @@ class RedisKeys:
     配置一些redis的key，其他组件可以引用，避免多个地方使用key不统一的问题
     """
     hot_article_list = 'hot.article.list.{date}'  # 昨日热门文章列表
+    hot_tool_list = 'hot.tool.list.{date}'  # 昨日热门工具列表
     week_views_statistics = 'views.week.statistics.{hour}'  # 两周数据
     hours_views_statistics = 'views.hours.statistics.{hour}'  # 两天每小时访问量统计
     month_views_statistics = 'views.month.statistics.{hour}'  # 30天访问量统计

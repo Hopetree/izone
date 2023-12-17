@@ -1,42 +1,67 @@
 {% load tool_tags %}
+{% load dashboard %}
 
 {% if not request.user.is_superuser %}
-{% get_toollist_by_key as tool_list %}
-<div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
-    <div class="card-header bg-white px-0">
-        <strong><i class="fa fa-trophy mr-2 f-17"></i>自定义工具</strong>
-    </div>
-    <div class="card-body px-0 py-3">
-        <div class="tool-list">
-            {% for tool in tool_list %}
-            <div class="w-50 float-left text-center mb-2">
-                <div class="mx-2 bg-info text-white tool-link-text">
-                    <a class="mx-1" href="{{ tool.url }}" title="{{ tool.desc }}">{{ tool.name }}</a>
-                </div>
+    {% get_toollist_by_key as tool_list %}
+    <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
+        <div class="card-header bg-white px-0">
+            <strong><i class="fa fa-trophy mr-2 f-17"></i>自定义工具</strong>
+        </div>
+        <div class="card-body px-0 py-3">
+            <div class="tool-list">
+                {% for tool in tool_list %}
+                    <div class="w-50 float-left text-center mb-2">
+                        <div class="mx-2 bg-info text-white tool-link-text">
+                            <a class="mx-1" href="{{ tool.url }}" title="{{ tool.desc }}">{{ tool.name }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
+{% endif %}
+
+{% if request.user.is_superuser %}
+    {% get_hot_tool_list as hot_tool_list %}
+    {% if hot_tool_list|length >= 4 %}
+        <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
+            <div class="card-header bg-white px-0">
+                <strong><i class="fa fa-trophy mr-2 f-17"></i>昨日热榜</strong>
+            </div>
+            <div class="card-body px-0 py-3">
+                <div class="tool-list">
+                    {% for tool in hot_tool_list %}
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2 bg-info text-white tool-link-text">
+                                <a class="mx-1" href="{{ tool.url_path }}"
+                                   title="昨日新增访问量：{{ tool.add_view }}">{{ tool.name }}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endif %}
 
 {% get_toolcates as cates %}
 {% for each_cate in cates %}
-<div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
-    <div class="card-header bg-white px-0">
-        <strong><i class="{{ each_cate.icon }} mr-2 f-17"></i>{{ each_cate.name }}</strong>
-    </div>
-    <div class="card-body px-0 py-3">
-        <div class="tool-list">
-            {% get_toollinks each_cate as tools %}
-            {% for tool in tools %}
-            <div class="w-50 float-left text-center mb-2">
-                <div class="mx-2 bg-info text-white tool-link-text">
-                    <a class="mx-1" href="{{ tool.link }}" title="{{ tool.description }}" target="_blank">{{ tool.name }}</a>
-                </div>
+    <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3 tool-cate">
+        <div class="card-header bg-white px-0">
+            <strong><i class="{{ each_cate.icon }} mr-2 f-17"></i>{{ each_cate.name }}</strong>
+        </div>
+        <div class="card-body px-0 py-3">
+            <div class="tool-list">
+                {% get_toollinks each_cate as tools %}
+                {% for tool in tools %}
+                    <div class="w-50 float-left text-center mb-2">
+                        <div class="mx-2 bg-info text-white tool-link-text">
+                            <a class="mx-1" href="{{ tool.link }}" title="{{ tool.description }}"
+                               target="_blank">{{ tool.name }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
 {% endfor %}

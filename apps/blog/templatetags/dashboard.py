@@ -3,9 +3,11 @@ import logging
 from datetime import datetime, timedelta
 from django import template
 from django.core.cache import cache
+from django.shortcuts import reverse
+from django.urls.exceptions import NoReverseMatch
 
 from blog.utils import RedisKeys
-from blog.models import ArticleView, Article
+from blog.models import ArticleView, Article, PageView
 from easytask.actions import ArticleViewsTool
 
 logger = logging.getLogger(__name__)
@@ -202,4 +204,45 @@ def get_30_days_views_from_redis():
         if data:
             cache.set(redis_key, data, 3600)  # 缓存一小时
             return data
+    return []
+
+
+@register.simple_tag
+def get_hot_tool_list():
+    """
+    获取昨日的工具使用热榜，最多返回6篇
+    """
+    yesterday_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
+    last_day_str = (datetime.today() - timedelta(days=2)).strftime('%Y%m%d')  # 前天
+    redis_key = RedisKeys.hot_tool_list.format(date=yesterday_str)
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        return redis_value
+    else:
+        yesterday_views = ArticleViewsTool.get_date_value_by_key(yesterday_str, 'page_views')
+        last_day_views = ArticleViewsTool.get_date_value_by_key(last_day_str, 'page_views')
+        if yesterday_views and last_day_views:
+            # 取昨天的数据，前天不存在的文章默认就是0
+            result = {key: yesterday_views[key] - last_day_views.get(key, 0) for key in
+                      yesterday_views if key.startswith('tool:')}
+            sorted_obj = sorted([(key, value) for key, value in result.items()], key=lambda x: x[1],
+                                reverse=True)
+            data = [{'key': key, 'value': value} for key, value in sorted_obj]
+            result = []
+            for each in data:
+                try:
+                    url_path = reverse(each['key'])  # 解析一下URL，能解析才是有效对象
+                    obj_query = PageView.objects.filter(url=each['key'])
+                    if obj_query and each['value']:
+                        page_obj = obj_query.first()
+                        page_obj.add_view = each['value']
+                        page_obj.url_path = url_path
+                        result.append(page_obj)
+                        if len(result) >= 6:
+                            break
+                except NoReverseMatch:
+                    continue
+            if result:
+                # cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
+                return result
     return []
