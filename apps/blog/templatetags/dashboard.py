@@ -243,6 +243,6 @@ def get_hot_tool_list():
                 except NoReverseMatch:
                     continue
             if result:
-                # cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
+                cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
                 return result
     return []
