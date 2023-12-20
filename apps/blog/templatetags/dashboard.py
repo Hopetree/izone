@@ -20,15 +20,24 @@ def get_today_views_by_forecast():
     @return:
     """
     result = '-'
+    last_week_date_str = (datetime.today() - timedelta(days=7)).strftime('%Y%m%d')  # 上周今天
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
     last_hour = (datetime.now() - timedelta(hours=1)).strftime('%H')  # 拿到前一个小时的数据，当前还没有
+    last_week_article_hours = ArticleViewsTool.get_date_value_by_key(last_week_date_str,
+                                                                     'article_every_hours')
+    last_week_page_hours = ArticleViewsTool.get_date_value_by_key(last_week_date_str,
+                                                                  'page_every_hours')
     yes_article_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str,
                                                                'article_every_hours')
     yes_page_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'page_every_hours')
     thi_article_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str,
                                                                'article_every_hours')
     thi_page_hours = ArticleViewsTool.get_date_value_by_key(thi_date_str, 'page_every_hours')
+    # 如果有上周的今天的数据，则使用上周数据，否使用昨天数据
+    if last_week_article_hours and last_week_page_hours:
+        yes_article_hours = last_week_article_hours
+        yes_page_hours = last_week_page_hours
     # 昨天数据必须满24小时，今天数据最少有一个小时的才能计算
     if all([yes_article_hours.get('23'), yes_page_hours.get('23'),
             yes_article_hours.get(last_hour), yes_page_hours.get(last_hour),
@@ -36,7 +45,7 @@ def get_today_views_by_forecast():
         yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
         yes_done_views = yes_article_hours[last_hour] + yes_page_hours[last_hour]  # 昨日此时总计
         thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
-        result = int(yes_total_views * thi_done_views / yes_done_views) - yes_total_views
+        result = thi_done_views + (yes_total_views - yes_done_views)
     return result
 
 
