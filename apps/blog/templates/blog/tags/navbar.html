@@ -103,8 +103,10 @@
                             <a class="dropdown-item pl-3" href="{% url 'blog:dashboard' %}"><i
                                     class="fa fa-fw fa-tachometer text-info mr-2"></i>网站看板</a>
                         {% endif %}
-                        <a class="dropdown-item pl-3" href="{% url 'comment:notification_no_read' %}"><i
-                                class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                        {% url 'comment:notification_no_read' as no_read_url %}
+                        {% url 'comment:notification' as read_url %}
+                        <a class="dropdown-item pl-3" href="{% if msgnum > 0 %}{{ no_read_url }}{% else %}{{ read_url }}{% endif %}">
+                            <i class="fa fa-fw fa-bell text-info mr-2"></i>消息
                             {% if msgnum > 0 %}
                                 <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>
                             {% endif %}
