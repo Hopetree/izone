@@ -55,6 +55,7 @@ def get_today_views_by_forecast():
         result = (last_week_total_views - last_week_yes_total_views) * \
                  (thi_done_views - yes_total_views) / \
                  (last_week_done_views - last_week_yes_total_views)
+        result = int(result)
     elif all([yes_article_hours.get('23'), yes_page_hours.get('23'),
               yes_article_hours.get(last_hour), yes_page_hours.get(last_hour),
               thi_article_hours.get(last_hour), thi_page_hours.get(last_hour)]):
