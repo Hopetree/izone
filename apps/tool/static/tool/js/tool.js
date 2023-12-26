@@ -1,3 +1,13 @@
+//禁用按钮一段时间后自动启用
+function disableButton(button,t=5000) {
+    // 禁用按钮
+    button.prop("disabled", true);
+
+    // t毫秒后启用按钮
+    setTimeout(function() {
+        button.prop("disabled", false);
+    }, t);
+}
 //get url params
 var getParam = function (name) {
     var search = document.location.search;

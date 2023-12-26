@@ -37,6 +37,8 @@
 <script>
 $('#start-re').click(function() {
 	regex_api("{{ csrf_token }}", "{% url 'tool:regex' %}");
+	//禁用按钮
+    disableButton($('#start-re'),2000);
 })
 
 </script>

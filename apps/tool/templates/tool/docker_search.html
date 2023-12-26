@@ -43,6 +43,8 @@
         $('#start-push').click(function () {
             docker_search("{{ csrf_token }}", "{% url 'tool:docker_search' %}");
             {#docker_search_from_hub();#}
+            //禁用按钮
+            disableButton($('#start-push'),3000);
         })
 
     </script>

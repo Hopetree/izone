@@ -70,7 +70,9 @@
 <script>
 {#useragent_api("{{ csrf_token }}","{% url 'tool:useragent' %}");#}
 $("#get_useragent").click(function(){
-    useragent_api("{{ csrf_token }}","{% url 'tool:useragent' %}")
+    useragent_api("{{ csrf_token }}","{% url 'tool:useragent' %}");
+    //禁用按钮
+    disableButton($("#get_useragent"),2000);
 })
 </script>
 {% endblock %}

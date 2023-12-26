@@ -147,6 +147,8 @@
 <script>
 $('#start-push').click(function() {
 	push_spider("{{ csrf_token }}", "{% url 'tool:baidu_push' %}");
+	//禁用按钮
+    disableButton($('#start-push'),2000);
 })
 
 </script>

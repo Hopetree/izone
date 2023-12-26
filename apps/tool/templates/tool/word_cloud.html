@@ -52,6 +52,8 @@
     <script>
         $('#start-wc').click(function () {
             word_cloud("{{ csrf_token }}", "{% url 'tool:word_cloud' %}", 500000);
+            //禁用按钮
+            disableButton($('#start-wc'),2000);
         })
     </script>
 {% endblock %}
