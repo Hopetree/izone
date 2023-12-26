@@ -21,6 +21,7 @@ def get_today_views_by_forecast():
     """
     result = '-'
     last_week_date_str = (datetime.today() - timedelta(days=7)).strftime('%Y%m%d')  # 上周今天
+    last_week_yes_str = (datetime.today() - timedelta(days=8)).strftime('%Y%m%d')  # 上周昨天
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
     thi_date_str = datetime.today().strftime('%Y%m%d')  # 今天
     last_hour = (datetime.now() - timedelta(hours=1)).strftime('%H')  # 拿到前一个小时的数据，当前还没有
@@ -28,6 +29,10 @@ def get_today_views_by_forecast():
                                                                      'article_every_hours')
     last_week_page_hours = ArticleViewsTool.get_date_value_by_key(last_week_date_str,
                                                                   'page_every_hours')
+    last_week_yes_article_hours = ArticleViewsTool.get_date_value_by_key(last_week_yes_str,
+                                                                         'article_every_hours')
+    last_week_yes_page_hours = ArticleViewsTool.get_date_value_by_key(last_week_yes_str,
+                                                                      'page_every_hours')
     yes_article_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str,
                                                                'article_every_hours')
     yes_page_hours = ArticleViewsTool.get_date_value_by_key(yes_date_str, 'page_every_hours')
@@ -38,12 +43,18 @@ def get_today_views_by_forecast():
     if all([last_week_article_hours.get('23'), last_week_page_hours.get('23'),
             last_week_article_hours.get(last_hour), last_week_page_hours.get(last_hour),
             yes_article_hours.get('23'), yes_page_hours.get('23'),
-            thi_article_hours.get(last_hour), thi_page_hours.get(last_hour)]):
+            thi_article_hours.get(last_hour), thi_page_hours.get(last_hour),
+            last_week_yes_article_hours.get('23'), last_week_yes_page_hours.get('23')]):
         last_week_total_views = last_week_article_hours['23'] + last_week_page_hours['23']
         last_week_done_views = last_week_article_hours[last_hour] + last_week_page_hours[last_hour]
+        last_week_yes_total_views = last_week_yes_article_hours['23'] + \
+                                    last_week_yes_page_hours['23']
         yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
         thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
-        result = thi_done_views + (last_week_total_views - last_week_done_views) - yes_total_views
+        # 上周今日总*今日当前/上周今日当前
+        result = (last_week_total_views - last_week_yes_total_views) * \
+                 (thi_done_views - yes_total_views) / \
+                 (last_week_done_views - last_week_yes_total_views)
     elif all([yes_article_hours.get('23'), yes_page_hours.get('23'),
               yes_article_hours.get(last_hour), yes_page_hours.get(last_hour),
               thi_article_hours.get(last_hour), thi_page_hours.get(last_hour)]):
