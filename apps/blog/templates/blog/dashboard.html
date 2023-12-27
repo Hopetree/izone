@@ -200,7 +200,7 @@
             </script>
         </div>
         <div class="row justify-content-center">
-            <div class="mb-3" id="30_days_views_box" style="width: 100%;height:340px;"></div>
+            <div class="mb-3" id="30_days_views_box" style="width: 100%;height:500px;"></div>
             {% get_30_days_views_from_redis as 30_days_views_data %}
             <div id="30_days_views_data"
                  style="display: none;">{{ 30_days_views_data|json_script:"30_days_views_data" }}</div>
@@ -256,6 +256,61 @@
 
                 // 使用刚指定的配置项和数据显示图表。
                 my30DayViewChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="user_data_views_box" style="width: 100%;height:500px;"></div>
+            {% get_user_growth_trend as user_data %}
+            <div id="user_data"
+                 style="display: none;">{{ user_data|json_script:"user_data" }}</div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                const myUserData = JSON.parse(document.getElementById("user_data").textContent);
+                const myUserDataViewChart = echarts.init(document.getElementById('user_data_views_box'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    color: ['#fc8452', '#ee6666', '#fac858', '#9a60b4', '#5470c6', '#91cc75', '#73c0de', '#3ba272'],
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    title: {
+                        text: '平台用户总数趋势',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    dataset: {
+                        source: [['product', '用户总数']].concat(myUserData)
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value'},
+                    series: [
+                        {
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myUserDataViewChart.setOption(option);
             </script>
         </div>
     </div>

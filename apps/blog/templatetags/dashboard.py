@@ -9,6 +9,7 @@ from django.urls.exceptions import NoReverseMatch
 from blog.utils import RedisKeys
 from blog.models import ArticleView, Article, PageView
 from easytask.actions import ArticleViewsTool
+from oauth.models import Ouser
 
 logger = logging.getLogger(__name__)
 register = template.Library()
@@ -272,3 +273,28 @@ def get_hot_tool_list():
                 cache.set(redis_key, result, 3600 * 24)  # 缓存一天即可，反正到了新一天自动更换key
                 return result
     return []
+
+
+@register.simple_tag
+def get_user_growth_trend():
+    this_hour = datetime.now().strftime('%Y%m%d%H')
+    redis_key = RedisKeys.user_views_statistics.format(hour=this_hour)
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        return redis_value
+    else:
+        data = []
+        data_dict = {}
+        users = Ouser.objects.values_list('date_joined').order_by('date_joined')
+        num = 1
+        for user in users:
+            key = user[0].strftime('%Y-%m-%d')
+            if key not in data_dict:
+                data_dict[key] = num
+            else:
+                data_dict[key] += 1
+            num += 1
+        for k, v in data_dict.items():
+            data.append([k, v])
+        cache.set(redis_key, data, 3600)
+        return data
