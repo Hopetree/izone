@@ -55,7 +55,7 @@
                 // 指定图表的配置项和数据
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
-                    color: ['#3ba272', '#9a60b4', '#fac858'],
+                    color: ['#3ba272', '#9a60b4', '#f38b53', '#fac858'],
                     toolbox: {
                         show: true,
                         feature: {
@@ -76,15 +76,25 @@
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}
                     },
                     legend: {
-                        data: ['本周访问量', '上周访问量', '今日预测'],
+                        data: ['本周访问量', '上周访问量', '今日预测', '上周此时'],
                         textStyle: {color: echartsTheme.titleColor}
                     },
                     dataset: {
-                        source: [['product', '本周访问量', '上周访问量', '今日预测']].concat(myDayViewsData)
+                        source: [['product', '本周访问量', '上周访问量', '今日预测', '上周此时']].concat(myDayViewsData)
                     },
                     xAxis: {type: 'category'},
                     yAxis: {type: 'value'},
                     series: [
+                        {
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
                         {
                             type: 'line',
                             label: {

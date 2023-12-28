@@ -20,7 +20,7 @@ def get_today_views_by_forecast():
     预测今天的访问量总数，根据昨天每小时和今天已经生成的小时数据进行预测，数据越多应该越接近
     @return:
     """
-    result = '-'
+    result = ('-', '-')
     last_week_date_str = (datetime.today() - timedelta(days=7)).strftime('%Y%m%d')  # 上周今天
     last_week_yes_str = (datetime.today() - timedelta(days=8)).strftime('%Y%m%d')  # 上周昨天
     yes_date_str = (datetime.today() - timedelta(days=1)).strftime('%Y%m%d')  # 昨天
@@ -53,17 +53,11 @@ def get_today_views_by_forecast():
         yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
         thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
         # 上周今日总*今日当前/上周今日当前
-        result = (last_week_total_views - last_week_yes_total_views) * \
-                 (thi_done_views - yes_total_views) / \
-                 (last_week_done_views - last_week_yes_total_views)
-        result = int(result)
-    elif all([yes_article_hours.get('23'), yes_page_hours.get('23'),
-              yes_article_hours.get(last_hour), yes_page_hours.get(last_hour),
-              thi_article_hours.get(last_hour), thi_page_hours.get(last_hour)]):
-        yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
-        yes_done_views = yes_article_hours[last_hour] + yes_page_hours[last_hour]  # 昨日此时总计
-        thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
-        result = thi_done_views + (yes_total_views - yes_done_views) - yes_total_views
+        forecast_views = (last_week_total_views - last_week_yes_total_views) * \
+                         (thi_done_views - yes_total_views) / \
+                         (last_week_done_views - last_week_yes_total_views)
+        last_this_hour_views = last_week_done_views - last_week_yes_total_views
+        result = int(forecast_views), last_this_hour_views
     return result
 
 
@@ -87,10 +81,11 @@ def get_views_data_from_redis():
         this_week = week_data['this_week_views']
         for day in days:
             if ArticleViewsTool.get_day_of_week(thi_date_str) == day:  # 如果是今天的数据，则预测今天
-                forecast_views = get_today_views_by_forecast()
+                forecast_views, done_views = get_today_views_by_forecast()
             else:
-                forecast_views = '-'
-            data.append([day, this_week.get(day, '-'), last_week.get(day, '-'), forecast_views])
+                forecast_views, done_views = ('-', '-')
+            data.append(
+                [day, this_week.get(day, '-'), last_week.get(day, '-'), forecast_views, done_views])
         cache.set(redis_key, data, 3600)
         return data
 
