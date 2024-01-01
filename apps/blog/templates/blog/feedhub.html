@@ -1,0 +1,122 @@
+{% extends 'blog/base.html' %}
+{% load static blog_tags %}
+{% load dashboard %}
+
+{% block head_title %}Feed 集合{% endblock %}
+
+{% block metas %}
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="feed">
+{% endblock %}
+
+{% block top-file %}
+    <style>
+        .container-fluid {
+            padding-right: 25px;
+            padding-left: 25px;
+        }
+
+        .card-header {
+            border-bottom: none;
+            padding-bottom: .5rem;
+            padding-top: .5rem;
+        }
+
+        .card-header img {
+            width: 22px;
+            height: auto;
+            border-radius: 50%;
+            margin-bottom: 4px;
+        }
+
+        .list-group {
+            height: 350px;
+            overflow: auto;
+            margin-top: .25rem;
+            margin-bottom: .75rem;
+        }
+
+        .list-group::-webkit-scrollbar {
+            width: 5px;
+            height: 8px;
+        }
+
+        .list-group::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border-radius: 6px;
+        }
+
+        .list-group:hover::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+
+        .list-group::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        ul.rss-view-list {
+            counter-reset: li-index;
+        }
+
+        ul.rss-view-list > li {
+            border-bottom: none;
+        }
+
+        ul.rss-view-list > li:before {
+            display: block;
+            float: left;
+            content: counter(li-index);
+            counter-increment: li-index;
+            font-size: 12px;
+            text-align: center;
+            border: 0;
+            width: 1.1rem;
+            margin-right: 0.5rem;
+            color: #fff;
+            background: rgb(126, 184, 193);
+            border-radius: 3px;
+        }
+
+        ul.rss-view-list > li:nth-child(1):before {
+            background: rgba(234, 68, 77, 1);
+        }
+
+        ul.rss-view-list > li:nth-child(2):before {
+            background: rgba(237, 112, 45, 1);
+        }
+
+        ul.rss-view-list > li:nth-child(3):before {
+            background: rgba(238, 173, 63, 1);
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container-fluid">
+        <div class="row">
+            {% get_feed_list as feed_list %}
+            {% for feed in feed_list %}
+                <div class="col-xs-12 col-6 col-sm-4 col-lg-3 col-xl-3 px-lg-2">
+                    <div class="card border-0 rounded-6 px-3 mb-2 mb-md-3">
+                        <div class="card-header bg-none px-0">
+                            <img alt="{{ feed.name }}" src="{{ feed.icon }}">
+                            <strong class="ml-1">{{ feed.name }}</strong>
+                        </div>
+                        <ul class="rss-view-list list-group list-group-flush f-14">
+                            {% for entry in feed.entries %}
+                                <li class="py-2">
+                                    <a href="{{ entry.link }}">{{ entry.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+

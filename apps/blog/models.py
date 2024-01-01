@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from django.db import models
 from django.conf import settings
@@ -400,3 +401,24 @@ class PageView(models.Model):
     def update_views(self):
         self.views += 1
         self.save(update_fields=['views', 'update_date'])
+
+
+class FeedHub(models.Model):
+    name = models.CharField('名称', max_length=50, unique=True)
+    url = models.CharField('feed地址', max_length=255)
+    icon = models.TextField('图标地址', help_text='可以填写base64图片格式或者图标地址')
+    is_active = models.BooleanField('是否有效', help_text='作为是否采集的标识', default=True)
+    create_date = models.DateTimeField(verbose_name='录入时间', auto_now_add=True)
+    data = models.TextField('数据', help_text='定义任务采集数据', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Feed Hub"
+        verbose_name_plural = verbose_name
+        ordering = ['name']
+
+    def update_data(self, data):
+        self.data = data
+        self.save(update_fields=['data'])

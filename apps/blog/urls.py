@@ -5,7 +5,7 @@ from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
                     update_article, FriendLinkView, friend_add, SubjectDetailView,
-                    SubjectPageDetailView, SubjectListView, dashboard)
+                    SubjectPageDetailView, SubjectListView, dashboard, feed_hub)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
@@ -22,6 +22,7 @@ urlpatterns = [
     path('friend/', FriendLinkView.as_view(), name='friend'),  # 友情链接
     path('friend/add/', friend_add, name='friend_add'),  # 友情链接申请
     path('dashboard/', dashboard, name='dashboard'),  # 看板
+    path('feed-hub/', feed_hub, name='feedhub'),  # feed hub
 
     # 专题列表页
     path('subject/', SubjectListView.as_view(), name='subject_index'),

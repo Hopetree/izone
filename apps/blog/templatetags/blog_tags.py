@@ -1,6 +1,8 @@
 # 创建了新的tags标签文件后必须重启服务器
+import json
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+from blog.utils import RedisKeys
 
 from django import template
 from ..models import (
@@ -10,7 +12,8 @@ from ..models import (
     Carousel,
     FriendLink,
     Timeline,
-    Subject
+    Subject,
+    FeedHub
 )
 from comment.models import ArticleComment
 from django.db.models.aggregates import Count
@@ -239,3 +242,24 @@ def get_blog_infos():
         }
         cache.set(cache_key, value, 3600 * 12)
         return value
+
+
+@register.simple_tag
+def get_feed_list():
+    this_hour = datetime.now().strftime('%Y%m%d%H')
+    redis_key = RedisKeys.feed_hub_data.format(hour=this_hour)
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        return redis_value
+    feed_list = []
+    feed_items = FeedHub.objects.filter(is_active=True)
+    for feed in feed_items:
+        if feed.data and json.loads(feed.data):
+            feed_list.append({
+                'name': feed.name,
+                'icon': feed.icon,
+                'entries': json.loads(feed.data)
+            })
+    if feed_list:
+        cache.set(redis_key, feed_list, 3600)
+    return feed_list

@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
                      AboutBlog, Subject, Topic, ArticleView,
-                     PageView)
+                     PageView, FeedHub)
 
 
 @admin.register(Subject)
@@ -167,3 +167,10 @@ class PageViewAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
     ordering = ('url',)
     list_editable = ('is_compute',)
+
+
+@admin.register(FeedHub)
+class PageViewAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'is_active', 'create_date')
+    date_hierarchy = 'create_date'
+    list_editable = ('is_active',)

@@ -354,3 +354,8 @@ def dashboard(request):
     if request.user.is_staff:
         return render(request, 'blog/dashboard.html')
     return render(request, '403.html')
+
+
+# feed hub
+def feed_hub(request):
+    return render(request, 'blog/feedhub.html')

@@ -440,3 +440,24 @@ class ArticleViewsTool:
                 this_day_key = self.get_day_of_week(this_day)
                 data['this_week_views'][this_day_key] = this_day_views - yesterday_views
         return data
+
+
+def action_get_feed_data():
+    """
+    采集feed数据并回写到数据库
+    """
+    import feedparser
+    from blog.models import FeedHub
+
+    data = {}
+    feed_items = FeedHub.objects.filter(is_active=True)
+    for feed in feed_items:
+        try:
+            feed_parser = feedparser.parse(feed.url)
+            entries = [{'title': each['title'], 'link': each['link']} for each in
+                       feed_parser['entries']]
+            feed.update_data(json.dumps(entries))
+            data[feed.name] = 'ok'
+        except:
+            data[feed.name] = 'nok'
+    return data

@@ -138,6 +138,8 @@ class RedisKeys:
     month_views_statistics = 'views.month.statistics.{hour}'  # 30天访问量统计
     user_views_statistics = 'views.user.statistics.{hour}'  # 用户总量趋势
 
+    feed_hub_data = 'feed.hub.data.{hour}'  # feed 数据
+
 
 def add_views(url, name=None, is_cache=True):
     """
