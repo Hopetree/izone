@@ -36,6 +36,11 @@
                 <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
                    href="{{ webstack_index_url }}"><i class="fa fa-chrome mr-1"></i>网址导航</a>
             </li>
+            <li class="nav-item mr-2">
+                {% url 'blog:feedhub' as feed_hub_url %}
+                <a class="nav-link py-md-3 {% if request.path == feed_hub_url %}active{% endif %}"
+                   href="{{ feed_hub_url }}"><i class="fa fa-rss mr-1"></i>Feed Hub</a>
+            </li>
             {% if api_flag %}
                 <li class="nav-item mr-2 d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank">API</a>
@@ -105,7 +110,8 @@
                         {% endif %}
                         {% url 'comment:notification_no_read' as no_read_url %}
                         {% url 'comment:notification' as read_url %}
-                        <a class="dropdown-item pl-3" href="{% if msgnum > 0 %}{{ no_read_url }}{% else %}{{ read_url }}{% endif %}">
+                        <a class="dropdown-item pl-3"
+                           href="{% if msgnum > 0 %}{{ no_read_url }}{% else %}{{ read_url }}{% endif %}">
                             <i class="fa fa-fw fa-bell text-info mr-2"></i>消息
                             {% if msgnum > 0 %}
                                 <span class="badge badge-warning ml-3 text-center">{{ msgnum }}</span>
