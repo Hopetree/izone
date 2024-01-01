@@ -174,4 +174,4 @@ class PageViewAdmin(admin.ModelAdmin):
     list_display = ('name', 'url', 'is_active', 'sort_order', 'create_date')
     date_hierarchy = 'create_date'
     ordering = ('sort_order',)
-    list_editable = ('is_active',)
+    list_editable = ('is_active', 'sort_order')
