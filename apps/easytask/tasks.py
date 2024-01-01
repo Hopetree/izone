@@ -133,6 +133,7 @@ def set_views_to_redis():
     return response.as_dict()
 
 
+@shared_task
 def set_feed_data():
     """
     定时采集feed数据，回写到数据库
