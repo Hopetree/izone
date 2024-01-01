@@ -410,6 +410,7 @@ class FeedHub(models.Model):
     is_active = models.BooleanField('是否有效', help_text='作为是否采集的标识', default=True)
     create_date = models.DateTimeField(verbose_name='录入时间', auto_now_add=True)
     data = models.TextField('数据', help_text='定义任务采集数据', blank=True, null=True)
+    sort_order = models.IntegerField('排序', default=99, help_text='作为显示的时候的顺序')
 
     def __str__(self):
         return self.name
@@ -417,7 +418,7 @@ class FeedHub(models.Model):
     class Meta:
         verbose_name = "Feed Hub"
         verbose_name_plural = verbose_name
-        ordering = ['name']
+        ordering = ['sort_order']
 
     def update_data(self, data):
         self.data = data

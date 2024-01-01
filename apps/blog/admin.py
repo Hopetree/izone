@@ -171,6 +171,7 @@ class PageViewAdmin(admin.ModelAdmin):
 
 @admin.register(FeedHub)
 class PageViewAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'is_active', 'create_date')
+    list_display = ('name', 'url', 'is_active', 'sort_order', 'create_date')
     date_hierarchy = 'create_date'
+    ordering = ('sort_order',)
     list_editable = ('is_active',)
