@@ -105,7 +105,7 @@
                             <strong class="ml-1">{{ feed.name }}</strong>
                         </div>
                         <ul class="rss-view-list list-group list-group-flush f-14">
-                            {% for entry in feed.entries %}
+                            {% for entry in feed.data.entries %}
                                 <li class="pt-1 pb-2">
                                     <a href="{{ entry.link }}">{{ entry.title }}</a>
                                 </li>

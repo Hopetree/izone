@@ -449,15 +449,17 @@ def action_get_feed_data():
     import feedparser
     from blog.models import FeedHub
 
-    data = {}
+    result = {}
     feed_items = FeedHub.objects.filter(is_active=True)
     for feed in feed_items:
         try:
+            data = {}
             feed_parser = feedparser.parse(feed.url)
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
-            feed.update_data(json.dumps(entries))
-            data[feed.name] = 'ok'
+            data['entries'] = entries
+            feed.update_data(json.dumps(data))
+            result[feed.name] = 'ok'
         except:
-            data[feed.name] = 'nok'
-    return data
+            result[feed.name] = 'nok'
+    return result
