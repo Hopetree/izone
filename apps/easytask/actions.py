@@ -442,10 +442,11 @@ class ArticleViewsTool:
         return data
 
 
-def updated_time(updated_parsed):
+def updated_time(feed):
     """
     获取更新时间，获取不到就返回空
     """
+    updated_parsed = feed.get('updated_parsed')
     if not updated_parsed:
         return
     try:
@@ -472,7 +473,7 @@ def action_get_feed_data():
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
             data['entries'] = entries
-            update_time = updated_time(feed_parser.feed.updated_parsed)
+            update_time = updated_time(feed_parser.feed)
             if update_time:
                 data['updated'] = update_time
             feed.update_data(json.dumps(data))
