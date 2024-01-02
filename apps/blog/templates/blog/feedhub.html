@@ -31,15 +31,14 @@
         }
 
         .list-group {
-            height: 350px;
+            height: 330px;
             overflow: auto;
             margin-top: .25rem;
             margin-bottom: .75rem;
         }
 
         .list-group::-webkit-scrollbar {
-            width: 5px;
-            height: 8px;
+            width: 3px;
         }
 
         .list-group::-webkit-scrollbar-thumb {
@@ -107,7 +106,7 @@
                         </div>
                         <ul class="rss-view-list list-group list-group-flush f-14">
                             {% for entry in feed.entries %}
-                                <li class="py-2">
+                                <li class="pt-1 pb-2">
                                     <a href="{{ entry.link }}">{{ entry.title }}</a>
                                 </li>
                             {% endfor %}
