@@ -246,8 +246,10 @@ def get_blog_infos():
 
 @register.simple_tag
 def get_feed_list():
+    count = FeedHub.objects.filter(is_active=True).count()
     this_hour = datetime.now().strftime('%Y%m%d%H')
     redis_key = RedisKeys.feed_hub_data.format(hour=this_hour)
+    redis_key = f'{redis_key}.{count}'
     redis_value = cache.get(redis_key)
     if redis_value:
         return redis_value
