@@ -442,6 +442,20 @@ class ArticleViewsTool:
         return data
 
 
+def updated_time(updated_parsed):
+    """
+    获取更新时间，获取不到就返回空
+    """
+    if not updated_parsed:
+        return
+    try:
+        t = updated_parsed
+        time = f'{t.tm_year}{t.tm_mon:02d}{t.tm_mday:02d} {t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d}'
+        return time
+    except:
+        return
+
+
 def action_get_feed_data():
     """
     采集feed数据并回写到数据库
@@ -458,6 +472,9 @@ def action_get_feed_data():
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
             data['entries'] = entries
+            update_time = updated_time(feed_parser.feed.updated_parsed)
+            if update_time:
+                data['updated'] = update_time
             feed.update_data(json.dumps(data))
             result[feed.name] = 'ok'
         except:

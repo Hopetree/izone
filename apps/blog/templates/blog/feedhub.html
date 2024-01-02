@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load humanize %}
 {% load static blog_tags %}
 {% load dashboard %}
 
@@ -103,6 +104,9 @@
                         <div class="card-header bg-none px-0">
                             <img alt="{{ feed.name }}" src="{{ feed.icon }}">
                             <strong class="ml-1">{{ feed.name }}</strong>
+                            {% if feed.updated %}
+                                <span style="font-size: 70%">（{{ feed.updated|naturaltime }}）</span>
+                            {% endif %}
                         </div>
                         <ul class="rss-view-list list-group list-group-flush f-14">
                             {% for entry in feed.data.entries %}

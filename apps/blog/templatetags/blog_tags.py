@@ -250,9 +250,13 @@ def get_feed_list():
     feed_items = FeedHub.objects.filter(is_active=True)
     for feed in feed_items:
         if feed.data and json.loads(feed.data):
-            feed_list.append({
+            d = {
                 'name': feed.name,
                 'icon': feed.icon,
                 'data': json.loads(feed.data)
-            })
+            }
+            if json.loads(feed.data).get('updated'):
+                updated = json.loads(feed.data).get('updated')
+                d['updated'] = datetime.strptime(updated, '%Y%m%d %H:%M:%S')
+            feed_list.append(d)
     return feed_list
