@@ -480,7 +480,7 @@ def action_get_feed_data():
             update_time = updated_time(feed_parser.feed)
             if update_time:
                 data['updated'] = update_time
-            feed.update_data(json.dumps(data))
+            feed.update_data(json.dumps(data, ensure_ascii=False))
             result[feed.name] = 'ok'
         except:
             result[feed.name] = 'nok'
