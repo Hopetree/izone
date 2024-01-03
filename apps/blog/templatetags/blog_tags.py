@@ -249,7 +249,8 @@ def get_feed_list():
     feed_list = []
     feed_items = FeedHub.objects.filter(is_active=True)
     for feed in feed_items:
-        if feed.data and json.loads(feed.data):
+        # 只显示有文章的
+        if feed.data and json.loads(feed.data) and json.loads(feed.data).get('entries'):
             d = {
                 'name': feed.name,
                 'icon': feed.icon,
