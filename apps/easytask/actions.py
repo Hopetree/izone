@@ -464,12 +464,16 @@ def action_get_feed_data():
     import feedparser
     from blog.models import FeedHub
 
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0'
+    }
+
     result = {}
     feed_items = FeedHub.objects.filter(is_active=True)
     for feed in feed_items:
         try:
             data = {}
-            feed_parser = feedparser.parse(feed.url)
+            feed_parser = feedparser.parse(feed.url, request_headers=headers)
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
             data['entries'] = entries
