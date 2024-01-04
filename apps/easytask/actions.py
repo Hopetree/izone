@@ -451,9 +451,11 @@ def updated_time(feed):
         return
     try:
         t = updated_parsed
-        tm_hour = t.tm_hour + 8
-        time = f'{t.tm_year}{t.tm_mon:02d}{t.tm_mday:02d} {tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d}'
-        return time
+        time = f'{t.tm_year}{t.tm_mon:02d}{t.tm_mday:02d} {t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d}'
+        # 加8个小时，因为默认是0时区的时间
+        time_obj = datetime.strptime(time, '%Y%m%d %H:%M:%S')
+        new_time = time_obj + timedelta(hours=8)
+        return new_time.strftime('%Y%m%d %H:%M:%S')
     except:
         return
 
