@@ -451,7 +451,7 @@ def updated_time(feed):
         return
     try:
         t = updated_parsed
-        time = f'{t.tm_year}{t.tm_mon:02d}{t.tm_mday:02d} {t.tm_hour:02d}:{t.tm_min:02d}:{t.tm_sec:02d}'
+        time = f'{t.tm_year}{t.tm_mon:02d}{t.tm_mday:02d} {t.tm_hour - 8:02d}:{t.tm_min:02d}:{t.tm_sec:02d}'
         return time
     except:
         return

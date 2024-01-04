@@ -7,7 +7,7 @@ class RSSResponse(object):
         self.title = title
         self.link = link
         self.items = items or []
-        self.update = datetime.now().strftime("%a, %d %b %Y %H:%M:%S %z")
+        self.update = datetime.now().strftime("%a, %d %b %Y %H:%M:%S") + ' +0800'
 
     def __getitem__(self, key):
         return getattr(self, key)
