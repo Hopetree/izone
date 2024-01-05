@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
-        <title>{{ title }}</title>
-        <link>{{ link }}</link>
-        <lastBuildDate>{{ update }}</lastBuildDate>
-        {% if description %}<description>{{ description }}</description>{% endif %}
+        <title><![CDATA[{{ title }}]]></title>
+        <link><![CDATA[{{ link }}]]></link>
+        <lastBuildDate><![CDATA[{{ update }}]]></lastBuildDate>
+        {% if description %}<description><![CDATA[{{ description }}]]></description>{% endif %}
         {% for item in items %}
             <item>
-                <title>{{ item.title }}</title>
-                <link>{{ item.link }}</link>
+                <title><![CDATA[{{ item.title }}]]></title>
+                <link><![CDATA[{{ item.link }}]]></link>
                 {% if item.description %}
-                    <description>{{ item.description }}</description>
+                    <description><![CDATA[{{ item.description }}]]></description>
                 {% endif %}
             </item>
         {% endfor %}
