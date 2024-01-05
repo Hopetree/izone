@@ -4,6 +4,7 @@
         <title>{{ title }}</title>
         <link>{{ link }}</link>
         <lastBuildDate>{{ update }}</lastBuildDate>
+        {% if description %}<description>{{ description }}</description>{% endif %}
         {% for item in items %}
             <item>
                 <title>{{ item.title }}</title>
