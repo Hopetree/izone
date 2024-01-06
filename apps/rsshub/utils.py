@@ -27,16 +27,17 @@ class RSSResponse(object):
         return data
 
 
-def get_juejin_hot_article(category_id):
+def get_juejin_hot(type_id, category_id):
     """
     获取掘金热榜文章，根据分类ID获取不同分类的文章
-    :param category_id: 分类ID，从掘金接口拿，默认1就是综合
-    :return: dict
+    @param type_id: 类型，hot表示热榜，collect表示收藏榜
+    @param category_id: 分类，对应掘金的分类ID
+    @return:
     """
 
-    rss = RSSResponse('掘金热榜 ‧ 综合', 'https://juejin.cn/hot/articles')
+    rss = RSSResponse()
     url = 'https://api.juejin.cn/content_api/v1/content/article_rank'
-    params = {'type': 'hot', 'category_id': category_id}
+    params = {'type': type_id, 'category_id': category_id}
     response = requests.get(url, params=params, timeout=5, verify=False)
     data = response.json()['data']
     items = []
