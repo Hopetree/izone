@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import pytz
 
 import requests
 
@@ -9,7 +10,8 @@ class RSSResponse(object):
         self.title = title
         self.link = link
         self.items = items or []
-        self.update = datetime.now().strftime("%a, %d %b %Y %H:%M:%S") + ' +0800'
+        self.update = datetime.now().astimezone(pytz.timezone('UTC')).strftime(
+            "%a, %d %b %Y %H:%M:%S %Z")
 
     def __getitem__(self, key):
         return getattr(self, key)
