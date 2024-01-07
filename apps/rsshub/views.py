@@ -2,7 +2,8 @@ import requests
 from django.shortcuts import render
 from django.core.cache import cache
 
-from .utils import get_juejin_hot
+from .utils import (get_juejin_hot,
+                    get_cnblogs_pick)
 
 
 # Create your views here.
@@ -48,5 +49,18 @@ def juejin_hot_articles(request, type_id, category_id):
         context['title'] = title
         context['link'] = link
 
+        cache.set(redis_key, context, 3600 * 2)
+    return render(request, 'rsshub/rss.xml', context=context, content_type='application/xml')
+
+
+def cnblogs_pick(request):
+    redis_key = f'rss:cnblogs:pick'
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        context = redis_value
+    else:
+        context = get_cnblogs_pick()
+        context['title'] = '博客园 ‧ 精华博文'
+        context['link'] = 'https://www.cnblogs.com/pick/'
         cache.set(redis_key, context, 3600 * 2)
     return render(request, 'rsshub/rss.xml', context=context, content_type='application/xml')

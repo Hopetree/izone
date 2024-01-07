@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 from datetime import datetime
 import pytz
 
@@ -46,6 +47,23 @@ def get_juejin_hot(type_id, category_id):
     for each in data:
         title = each['content']['title']
         link = 'https://juejin.cn/post/' + each['content']['content_id']
+        items.append({'title': title, 'link': link})
+    rss.items = items
+    return rss.as_dict()
+
+
+def get_cnblogs_pick():
+    """
+    获取博客园的精华
+    @return:
+    """
+    url = 'https://www.cnblogs.com/pick/'
+    response = requests.get(url, timeout=5, verify=False)
+    article_list = re.findall('<a class="post-item-title" href="(.*?)" target="_blank">(.*?)</a>',
+                              response.text)
+    rss = RSSResponse()
+    items = []
+    for link, title in article_list:
         items.append({'title': title, 'link': link})
     rss.items = items
     return rss.as_dict()
