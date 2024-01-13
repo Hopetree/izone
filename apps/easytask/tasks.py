@@ -2,6 +2,7 @@
 import time
 
 from celery import shared_task
+from django.core.management import call_command
 
 from .utils import TaskResponse
 from .actions import (
@@ -141,4 +142,16 @@ def set_feed_data():
     response = TaskResponse()
     # 先将统计数据写入模型，然后分析后写入redis
     response.data = action_get_feed_data()
+    return response.as_dict()
+
+
+@shared_task
+def clear_expired_sessions():
+    """
+    定时清理过期的session
+    @return:
+    """
+    response = TaskResponse()
+    call_command('clearsessions')
+    response.data = {'msg': 'clear sessions done'}
     return response.as_dict()
