@@ -152,8 +152,6 @@ def clear_expired_sessions():
     @return:
     """
     response = TaskResponse()
-    start = time.time()
     call_command('clearsessions')
-    end = time.time()
-    response.data = {'msg': f'clear sessions done in {end - start}s'}
+    response.data = {'msg': 'clear sessions done'}
     return response.as_dict()

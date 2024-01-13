@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 
 
 class TaskResponse(object):
@@ -7,6 +8,7 @@ class TaskResponse(object):
         self.data = data or {}
         self.message = message
         self.error = error
+        self.start_time = time.time()
 
     def __getitem__(self, key):
         return getattr(self, key)
@@ -19,7 +21,8 @@ class TaskResponse(object):
             'code': self.code,
             'data': self.data,
             'message': self.message,
-            'error': self.error
+            'error': self.error,
+            'time': round(time.time() - self.start_time, 2)
         }
         return data
 
