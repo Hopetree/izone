@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{% block title %}{% endblock %}</title>
     {% block meta %}{% endblock %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/3.0.2/css/bootstrap.min.css">
+    <link href="{% static 'blog/font-awesome/4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/bootstrap/3.0.2/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-core.css' %}">
     <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-components.css' %}">
     <link rel="stylesheet" href="{% static 'webstack/assets/css/xenon-skins.css' %}">
     <link rel="stylesheet" href="{% static 'webstack/assets/css/nav.css' %}">
-    <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'blog/js/jq/1.11.1/jquery.min.js' %}"></script>
     <style>
         .sidebar-menu {
             width: 200px;
@@ -245,7 +245,7 @@
     });
 </script>
 <!-- Bottom Scripts -->
-<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="{% static 'blog/js/bootstrap/3.3.1/bootstrap.min.js' %}"></script>
 <script src="{% static 'webstack/assets/js/TweenMax.min.js' %}"></script>
 <script src="{% static 'webstack/assets/js/resizeable.js' %}"></script>
 <script src="{% static 'webstack/assets/js/joinable.js' %}"></script>
