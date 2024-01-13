@@ -28,7 +28,7 @@
 {% block top-file %}
     {#    <script>var stop_headroom = true;</script>#}
     {% if user.is_authenticated %}
-        <link href="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
+        <link href="{% static 'blog/simplemde/1.11.2/simplemde.min.css' %}" rel="stylesheet">
     {% endif %}
     <link href="{% static 'blog/css/detail.css' %}?v={{ static_version.css_blog_detail }}" rel="stylesheet">
     <link href="{% static 'blog/css/monokai.css' %}?v=20230611.42" rel="stylesheet">
@@ -152,7 +152,7 @@
         });
     </script>
     {% if user.is_authenticated %}
-        <script src="https://cdn.bootcss.com/simplemde/1.11.2/simplemde.min.js"></script>
+        <script src="{% static 'blog/simplemde/1.11.2/simplemde.min.js' %}"></script>
         <script src="{% static 'comment/js/editor.js' %}?v=20230516.1"></script>
         <script src="{% static 'comment/js/activate-power.js' %}?v=20180120"></script>
         <script>
