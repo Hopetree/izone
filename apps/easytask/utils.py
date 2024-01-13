@@ -22,7 +22,7 @@ class TaskResponse(object):
             'data': self.data,
             'message': self.message,
             'error': self.error,
-            'time': round(time.time() - self.start_time, 2)
+            'time': round(time.time() - self.start_time, 3)
         }
         return data
 
