@@ -242,7 +242,7 @@ DATABASES = {
         'PASSWORD': izone_mysql_pwd,  # 数据库的密码
         'HOST': izone_mysql_host,
         'PORT': izone_mysql_port,
-        'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True}
+        'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True, 'connect_timeout': 30}
     }
 }
 # *************************************** 数据库配置结束 **************************************
