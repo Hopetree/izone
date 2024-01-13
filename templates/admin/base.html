@@ -7,7 +7,7 @@
   <title>{% block title %}{% endblock %}</title>
 
   {% block bootstrap_admin_css %}
-      <link href="{% static 'blog/css/bootstrap/3.3.7/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'blog/bootstrap/3.3.7/css/bootstrap.min.css' %}" rel="stylesheet">
   {% endblock bootstrap_admin_css %}
 
   <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
@@ -188,7 +188,7 @@
 
 {% block bootstrap_admin_js %}
   <script>if (typeof jQuery === 'undefined' && django && django.jQuery) {jQuery = django.jQuery;}</script>
-  <script src="{% static 'blog/js/bootstrap/3.3.7/bootstrap.min.js' %}"></script>
+  <script src="{% static 'blog/bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
   <script src="{% static 'bootstrap_admin/js/base.js' %}"></script>
 {% endblock bootstrap_admin_js %}
 
