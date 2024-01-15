@@ -14,7 +14,7 @@ class AllArticleRssFeed(Feed):
 
     # 需要显示的内容条目，这个可以自己挑选一些热门或者最新的博客
     def items(self):
-        return Article.objects.all()[:10]
+        return Article.objects.filter(is_publish=True)[:10]
 
     # 显示的内容的标题,这个才是最主要的东西
     def item_title(self, item):
