@@ -145,6 +145,27 @@ class RedisKeys:
     feed_hub_data = 'feed.hub.data.{hour}'  # feed 数据
 
 
+def check_request_headers(headers_obj):
+    """
+    校验请求头信息，比如识别User-Agent，从而过滤掉该请求
+    @param headers_obj: request.headers对象
+    @return:
+    use: flag = check_request_headers(request.headers)
+    """
+    # 常见的搜索引擎爬虫的请求头，还有Python的
+    # 无请求头或者请求头里面包含爬虫信息则返回False，否则返回True
+    user_agent_black_keys = ['spider', 'bot', 'python']
+    if not headers_obj.get('user-agent'):
+        return False
+    else:
+        user_agent = str(headers_obj.get('user-agent')).lower()
+        for key in user_agent_black_keys:
+            if key in user_agent:
+                logger.warning(f'Bot/Spider request user-agent：{user_agent}')
+                return False
+    return True
+
+
 def add_views(url, name=None, is_cache=True):
     """
     单页面访问量统计的视图函数装饰器
@@ -163,27 +184,28 @@ def add_views(url, name=None, is_cache=True):
             # 仅访问页面的时候才进行计算，接口调用不计算，管理员访问也不计算
             if request.method == "GET" and not request.is_ajax() and not request.user.is_superuser:
                 # 获取或者创建一个实例
-                logger.info(request.headers.items())
-                page_views = PageView.objects.filter(url=url)
-                if page_views:
-                    obj = page_views.first()
-                else:
-                    obj = PageView(url=url, name=name, views=0)
-                    obj.save()
-
-                if is_cache:  # 要判断缓存，则存状态
-                    cache_key = f'page_views:read:{url}'
-                    is_read_time = request.session.get(cache_key)
-                    if not is_read_time:
-                        obj.update_views()
-                        request.session[cache_key] = time.time()
+                # logger.info(request.headers.items())
+                if check_request_headers(request.headers):
+                    page_views = PageView.objects.filter(url=url)
+                    if page_views:
+                        obj = page_views.first()
                     else:
-                        t = time.time() - is_read_time
-                        if t > 60 * 30:
+                        obj = PageView(url=url, name=name, views=0)
+                        obj.save()
+
+                    if is_cache:  # 要判断缓存，则存状态
+                        cache_key = f'page_views:read:{url}'
+                        is_read_time = request.session.get(cache_key)
+                        if not is_read_time:
                             obj.update_views()
                             request.session[cache_key] = time.time()
-                else:
-                    obj.update_views()
+                        else:
+                            t = time.time() - is_read_time
+                            if t > 60 * 30:
+                                obj.update_views()
+                                request.session[cache_key] = time.time()
+                    else:
+                        obj.update_views()
             # ******* 浏览量增加的逻辑 *******
 
             return result

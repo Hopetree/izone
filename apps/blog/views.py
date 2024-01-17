@@ -21,7 +21,12 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 
 from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject
-from .utils import site_full_url, CustomHtmlFormatter, ApiResponse, ErrorApiResponse, add_views
+from .utils import (site_full_url,
+                    CustomHtmlFormatter,
+                    ApiResponse,
+                    ErrorApiResponse,
+                    add_views,
+                    check_request_headers)
 
 
 # Create your views here.
@@ -84,21 +89,22 @@ class BaseDetailView(generic.DetailView):
         obj = super().get_object()
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
-        ses = self.request.session
-        the_key = self.context_object_name + ':read:{}'.format(obj.id)
-        is_read_time = ses.get(the_key)
-        if u == obj.author or u.is_superuser:
-            pass
-        else:
-            if not is_read_time:
-                obj.update_views()
-                ses[the_key] = time.time()
+        if check_request_headers(self.request.headers):  # 请求头校验通过才计算阅读量
+            ses = self.request.session
+            the_key = self.context_object_name + ':read:{}'.format(obj.id)
+            is_read_time = ses.get(the_key)
+            if u == obj.author or u.is_superuser:
+                pass
             else:
-                now_time = time.time()
-                t = now_time - is_read_time
-                if t > 60 * 30:
+                if not is_read_time:
                     obj.update_views()
                     ses[the_key] = time.time()
+                else:
+                    now_time = time.time()
+                    t = now_time - is_read_time
+                    if t > 60 * 30:
+                        obj.update_views()
+                        ses[the_key] = time.time()
         # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
         md_key = self.context_object_name + ':markdown:{}:{}'.format(obj.id, ud)
