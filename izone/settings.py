@@ -346,13 +346,13 @@ PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')
 
 # ****************************************** 日志配置开始 *****************************************
 # 配置了管理员邮箱则错误日志使用邮箱推送，否则邮件不推送，使用会记录到文件中
-izone_warn_handlers = ['file'] if not ADMINS else ['file', 'mail_admins']
+izone_warn_handlers = ['error_file'] if not ADMINS else ['error_file', 'mail_admins']
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'format': '[{levelname}] [{asctime}] [{module} {funcName} {process:d}] {message}',
             'style': '{',
         },
         'simple': {
@@ -378,18 +378,27 @@ LOGGING = {
             'formatter': 'verbose',
         },
         'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'backupCount': 7,
+            'filename': os.path.join(BASE_DIR, 'log', 'izone-access.log'),
+            'formatter': 'verbose',
+        },
+        'error_file': {
             'level': 'WARNING',
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'when': 'midnight',
             'backupCount': 7,
-            'filename': os.path.join(BASE_DIR, 'log', 'izone.log'),
+            'filename': os.path.join(BASE_DIR, 'log', 'izone-error.log'),
             'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'propagate': True,
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True
         },
         'django.request': {
             'handlers': izone_warn_handlers,

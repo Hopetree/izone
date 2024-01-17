@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 import time
+import logging
+from functools import wraps
 from datetime import datetime
 from django.apps import apps as django_apps
 from django.core.exceptions import ImproperlyConfigured
@@ -8,6 +10,8 @@ from django.http import JsonResponse
 from pygments.formatters.html import HtmlFormatter
 
 from .models import PageView
+
+logger = logging.getLogger('django')
 
 
 class CustomHtmlFormatter(HtmlFormatter):
@@ -151,6 +155,7 @@ def add_views(url, name=None, is_cache=True):
     """
 
     def decorator(func):
+        @wraps(func)
         def wrapper(request, *args, **kwargs):
 
             result = func(request, *args, **kwargs)
@@ -158,6 +163,7 @@ def add_views(url, name=None, is_cache=True):
             # 仅访问页面的时候才进行计算，接口调用不计算，管理员访问也不计算
             if request.method == "GET" and not request.is_ajax() and not request.user.is_superuser:
                 # 获取或者创建一个实例
+                logger.info(request.headers.items())
                 page_views = PageView.objects.filter(url=url)
                 if page_views:
                     obj = page_views.first()
