@@ -88,10 +88,16 @@ function site_push_spider(CSRF, URL) {
 
 //regex api
 function regex_api(CSRF, URL) {
+    var max_word = 50000;
     var r = $.trim($('#form-regex').val());
     var texts = $.trim($('#form-text').val());
     if (r.length == 0 | texts.length == 0) {
         alert('待提取信息和正则表达式都不能为空！');
+        return false
+    }
+    ;
+    if (texts.length > max_word) {
+        alert('文本长度超过限制：' + texts.length + '/' + max_word);
         return false
     }
     ;
