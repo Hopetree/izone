@@ -47,8 +47,7 @@
 {% if messages %}
     <div class="container">
         {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-
-                {{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show"
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-secondary{% endif %} alert-dismissible rounded-6 fade show"
                  role="alert">
                 {{ message }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
