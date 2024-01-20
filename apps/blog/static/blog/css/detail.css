@@ -230,6 +230,13 @@ pre {
     padding: 5rem 1rem;
 }
 
+.more-page-card a {
+    background: var(--izone-background-container);
+    color: var(--izone-font-default);
+    padding: 5px 14px;
+    border-radius: 14px;
+}
+
 #icon-pre-blog {
     left: 2%;
 }

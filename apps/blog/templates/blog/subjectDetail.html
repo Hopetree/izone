@@ -7,20 +7,22 @@
     <meta name="description" content="{{ article.summary }}">
     <meta name="keywords" content="{% keywords_to_str article %}">
     {#SEO优化#}
-    <meta property="og:locale" content="zh_CN" />
-    <meta property="og:site_name" content="{{ site_end_title }}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{ article.title }}_{{ article.category }}" />
-    <meta property="og:url" content="{{ site_url }}{{ article.get_absolute_url }}" />
-    <meta property="og:image" content="{{ site_url }}{{ article.img_link.url }}" />
-    <meta property="og:image:secure_url" content="{{ site_url }}{{ article.img_link.url }}" />
-    <meta property="og:image:width" content="250" />
-    <meta property="og:image:height" content="150" />
-    <meta property="article:published_time" content="{{ article.create_date | date:"Y-m-d" }}T{{ article.create_date | time:"H:i:s" }}+00:00" />
-    <meta property="article:modified_time" content="{{ article.update_date | date:"Y-m-d" }}T{{ article.update_date | time:"H:i:s" }}+00:00" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="{{ article.title }}_{{ article.category }}" />
-    <meta name="twitter:image" content="{{ site_url }}{{ article.img_link.url }}" />
+    <meta property="og:locale" content="zh_CN"/>
+    <meta property="og:site_name" content="{{ site_end_title }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ article.title }}_{{ article.category }}"/>
+    <meta property="og:url" content="{{ site_url }}{{ article.get_absolute_url }}"/>
+    <meta property="og:image" content="{{ site_url }}{{ article.img_link.url }}"/>
+    <meta property="og:image:secure_url" content="{{ site_url }}{{ article.img_link.url }}"/>
+    <meta property="og:image:width" content="250"/>
+    <meta property="og:image:height" content="150"/>
+    <meta property="article:published_time"
+          content="{{ article.create_date | date:"Y-m-d" }}T{{ article.create_date | time:"H:i:s" }}+00:00"/>
+    <meta property="article:modified_time"
+          content="{{ article.update_date | date:"Y-m-d" }}T{{ article.update_date | time:"H:i:s" }}+00:00"/>
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="{{ article.title }}_{{ article.category }}"/>
+    <meta name="twitter:image" content="{{ site_url }}{{ article.img_link.url }}"/>
     {#SEO优化#}
 {% endblock %}
 
@@ -137,6 +139,26 @@
                         </div>
                         {% include 'blog/tags/reward.html' %}
                     </div>
+                </div>
+                <div class="more-page-card my-4">
+                    <nav class="more-page f-16">
+                        <ul class="pagination justify-content-between">
+                            <li class="page-item">
+                                {% if article.get_pre %}
+                                    <a href="{{ article.get_pre.get_absolute_url }}"
+                                       data-toggle="tooltip" data-placement="top"
+                                       title="{{ article.get_pre.title }}">上一篇</a>
+                                {% endif %}
+                            </li>
+                            <li class="page-item">
+                                {% if article.get_next %}
+                                    <a href="{{ article.get_next.get_absolute_url }}"
+                                       data-toggle="tooltip" data-placement="top"
+                                       title="{{ article.get_next.title }}">下一篇</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
                 <div class="card mt-2 rounded-6 border-0" id="comment-block">
                     {% include 'comment/comment_form.html' %}
