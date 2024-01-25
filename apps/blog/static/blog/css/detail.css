@@ -64,10 +64,12 @@
 
 .article-body a {
     color: #ea6f5a;
+    text-decoration: none;
 }
 
 .article-body a:hover {
     color: #17a2b8;
+    text-decoration: underline;
 }
 
 /*设置文章导航*/
