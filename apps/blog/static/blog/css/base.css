@@ -408,25 +408,25 @@ ul.checklist li {
     border-radius: .5rem !important;
 }
 
-#home-card {
-    background-image: linear-gradient(180deg, #47b9f5eb 0%, #FFFFFF 50%);
-}
+/*#home-card {*/
+/*    background-image: linear-gradient(180deg, #47b9f5eb 0%, #FFFFFF 50%);*/
+/*}*/
 
-#article-view-card {
-    background-image: linear-gradient(180deg, rgba(246, 118, 87, 0.88) 0%, #FFFFFF 20%);
-}
+/*#article-view-card {*/
+/*    background-image: linear-gradient(180deg, rgba(246, 118, 87, 0.88) 0%, #FFFFFF 20%);*/
+/*}*/
 
-#category-card {
-    background-image: linear-gradient(180deg, #7890f7eb 0%, #FFFFFF 20%);
-}
+/*#category-card {*/
+/*    background-image: linear-gradient(180deg, #7890f7eb 0%, #FFFFFF 20%);*/
+/*}*/
 
-#tag-card {
-    background-image: linear-gradient(180deg, #f1a887eb 0%, #FFFFFF 20%);
-}
+/*#tag-card {*/
+/*    background-image: linear-gradient(180deg, #f1a887eb 0%, #FFFFFF 20%);*/
+/*}*/
 
-#friends-card {
-    background-image: linear-gradient(180deg, #e3b759eb 0%, #FFFFFF 50%);
-}
+/*#friends-card {*/
+/*    background-image: linear-gradient(180deg, #e3b759eb 0%, #FFFFFF 50%);*/
+/*}*/
 
 #category-card .list-group-item {
     background-color: transparent;
