@@ -6,6 +6,7 @@
 import json
 from datetime import datetime, timedelta
 from blog.utils import RedisKeys
+from blog.views import make_markdown
 import requests
 
 from django.db.models import Sum
@@ -60,12 +61,7 @@ def action_update_article_cache():
         md_key = f'article:markdown:{obj.id}:{ud}'
         # 设置不存在的缓存
         if md_key not in keys:
-            md = Markdown(extensions=[
-                'markdown.extensions.extra',
-                'markdown_checklist.extension',
-                CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter),
-                TocExtension(slugify=slugify),
-            ])
+            md = make_markdown()
             # 设置过期时间的时候分散时间，不要设置成同一时间
             cache.set(md_key, (md.convert(obj.body), md.toc), 3600 * 24 + 10 * done_num)
             done_num += 1

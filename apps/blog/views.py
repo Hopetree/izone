@@ -27,6 +27,24 @@ from .utils import (site_full_url,
                     ErrorApiResponse,
                     add_views,
                     check_request_headers)
+from utils.markdown_ext import (
+    DelExtension,
+    IconExtension,
+    AlertExtension
+)
+
+
+def make_markdown():
+    md = markdown.Markdown(extensions=[
+        'markdown.extensions.extra',
+        'markdown_checklist.extension',
+        CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter),
+        TocExtension(slugify=slugify),
+        DelExtension(),
+        IconExtension(),
+        AlertExtension()
+    ])
+    return md
 
 
 # Create your views here.
@@ -112,12 +130,7 @@ class BaseDetailView(generic.DetailView):
         if cache_md and settings.DEBUG is False:
             obj.body, obj.toc = cache_md
         else:
-            md = markdown.Markdown(extensions=[
-                'markdown.extensions.extra',
-                'markdown_checklist.extension',
-                CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter),
-                TocExtension(slugify=slugify),
-            ])
+            md = make_markdown()
             obj.body = md.convert(obj.body)
             obj.toc = md.toc
             cache.set(md_key, (obj.body, obj.toc), 3600 * 24 * 7)

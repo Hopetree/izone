@@ -104,5 +104,5 @@ class IconExtension(Extension):
     """
 
     def extendMarkdown(self, md):
-        DEL_PATTERN = r'(icon:[a-z]+)'
+        DEL_PATTERN = r'(icon:[a-z-]+)'
         md.inlinePatterns.register(IconInlineProcessor(DEL_PATTERN, md), 'icon', 200)
