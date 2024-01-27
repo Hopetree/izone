@@ -68,7 +68,7 @@ class AlertBlockProcessor(BlockProcessor):
         if len(first_blocks) == 3:
             title = first_blocks[2]
         elif len(first_blocks) == 2:
-            title = 'Tip'
+            title = ''
         else:
             return False
         blocks[0] = re.sub(self.RE_FENCE_START, '', blocks[0])
@@ -86,22 +86,19 @@ class AlertBlockProcessor(BlockProcessor):
                 strong_tag = etree.Element('strong')
                 title_elm = etree.Element('p')
                 class_value = 'alert alert-{}'
-                flag = False
-                for key in ['primary', 'secondary', 'success', 'danger', 'warning', 'info']:
+                for key in self.icon_dict.keys():
                     if key in original_block:
                         e.set('class', class_value.format(key))
                         e.set('role', 'alert')
-                        icon_elm.set('class', 'fa fa-{} mr-1'.format(self.icon_dict[key]))
-                        strong_tag.append(icon_elm)
-                        span_elm = etree.Element('span')
-                        span_elm.text = title
-                        strong_tag.append(span_elm)
-                        title_elm.append(strong_tag)
-                        e.insert(0, title_elm)
-                        flag = True
+                        if title:
+                            icon_elm.set('class', 'fa fa-{} mr-1'.format(self.icon_dict[key]))
+                            strong_tag.append(icon_elm)
+                            span_elm = etree.Element('span')
+                            span_elm.text = title
+                            strong_tag.append(span_elm)
+                            title_elm.append(strong_tag)
+                            e.insert(0, title_elm)
                         break
-                if not flag:
-                    return False
                 self.parser.parseBlocks(e, blocks[0:block_num + 1])
                 # remove used blocks
                 for i in range(0, block_num + 1):
@@ -132,7 +129,7 @@ if __name__ == '__main__':
     ])
 
     t = '''
-::: warning 提示
+::: warning
 
 注意，这是一个演示效果，~~我是被删除的内容~~
 :::
