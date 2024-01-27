@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import markdown
 from django.contrib.syndication.views import Feed
 from .models import Article
 from django.conf import settings
@@ -24,4 +25,6 @@ class AllArticleRssFeed(Feed):
     def item_description(self, item):
         # return item.body_to_markdown()
         more_link = f'<a href="{item.get_absolute_url()}">查看全文</a>'
-        return f'<p>{item.summary}...</p>' + more_link
+        description = markdown.markdown(item.summary + '...',
+                                        extensions=['markdown.extensions.extra'])
+        return description + more_link
