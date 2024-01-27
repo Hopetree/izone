@@ -121,6 +121,10 @@
     margin-bottom: .4em;
 }
 
+.article-body .alert p {
+    margin-bottom: .1rem;
+}
+
 .toc a {
     display: block;
     color: rgba(60, 60, 67, .8);
