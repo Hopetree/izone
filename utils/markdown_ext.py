@@ -91,7 +91,7 @@ class AlertBlockProcessor(BlockProcessor):
                     if key in original_block:
                         e.set('class', class_value.format(key))
                         e.set('role', 'alert')
-                        icon_elm.set('class', 'fa fa-{}'.format(self.icon_dict[key]))
+                        icon_elm.set('class', 'fa fa-{} mr-1'.format(self.icon_dict[key]))
                         strong_tag.append(icon_elm)
                         span_elm = etree.Element('span')
                         span_elm.text = title
