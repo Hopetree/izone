@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import markdown
 from django.contrib.syndication.views import Feed
 from .models import Article
 from django.conf import settings
@@ -23,5 +22,4 @@ class AllArticleRssFeed(Feed):
 
     # 显示的内容的描述
     def item_description(self, item):
-        # return item.body_to_markdown()
-        return markdown.markdown(item.summary + f'...[查看全文]({item.get_absolute_url()})')
+        return item.body_to_markdown()
