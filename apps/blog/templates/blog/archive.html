@@ -26,11 +26,11 @@
                     {% regroup articles by create_date.year as year_list %}
                     <ul class="pl-4">
                         {% for article in year_list %}
-                        <li>{{ article.grouper }} 年
+                        <li>{{ article.grouper }} 年 (共 {{ article.list|length }} 篇)
                             {% regroup article.list by create_date.month as month_list %}
                             <ul class="pl-2">
                                 {% for each in month_list %}
-                                <li>{{ each.grouper }} 月 (共 {{ each.list|length }} 篇)
+                                <li>{{ each.grouper }} 月
                                     <ul class="pl-4">
                                         {% for item in each.list %}
                                         <li><a href="{{ item.get_absolute_url }}">{{ item.create_date|date:'m-d' }}&nbsp;&nbsp;{{ item.title }}</a></li>
