@@ -22,4 +22,6 @@ class AllArticleRssFeed(Feed):
 
     # 显示的内容的描述
     def item_description(self, item):
-        return item.body_to_markdown()
+        # return item.body_to_markdown()
+        more_link = f'<a href="{item.get_absolute_url()}">查看全文</a>'
+        return f'<p>{item.summary}...</p>' + more_link
