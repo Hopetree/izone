@@ -46,8 +46,17 @@ class IconExtension(Extension):
 
 
 class AlertBlockProcessor(BlockProcessor):
-    RE_FENCE_START = r'^:{3}\s*primary\n*|^:{3}\s*secondary\n*|^:{3}\s*success\n*|^:{3}\s*danger\n*|^:{3}\s*warning\n*|^:{3}\s*info\n*'
+    RE_FENCE_START = r'^:{3}\s*primary\s*.*\n*|^:{3}\s*secondary\s*.*\n*|^:{3}\s*success\s*.*\n*|^:{3}\s*danger\s*.*\n*|^:{3}\s*warning\s*.*\n*|^:{3}\s*info\s*.*\n*'
     RE_FENCE_END = r'\n*:{3}$'
+
+    icon_dict = {
+        'primary': 'info-circle',
+        'secondary': 'info-circle',
+        'success': 'info-circle',
+        'danger': 'warning',
+        'warning': 'warning',
+        'info': 'info-circle'
+    }
 
     def test(self, parent, block):
         return re.match(self.RE_FENCE_START, block)
@@ -55,7 +64,15 @@ class AlertBlockProcessor(BlockProcessor):
     def run(self, parent, blocks):
         # print(blocks)
         original_block = blocks[0]
+        first_blocks = original_block.split()
+        if len(first_blocks) == 3:
+            title = first_blocks[2]
+        elif len(first_blocks) == 2:
+            title = 'Tip'
+        else:
+            return False
         blocks[0] = re.sub(self.RE_FENCE_START, '', blocks[0])
+        # print(blocks[0])
 
         # Find block with ending fence
         for block_num, block in enumerate(blocks):
@@ -65,12 +82,22 @@ class AlertBlockProcessor(BlockProcessor):
                 blocks[block_num] = re.sub(self.RE_FENCE_END, '', block)
                 # render fenced area inside a new div
                 e = etree.SubElement(parent, 'div')
+                icon_elm = etree.Element('i')
+                strong_tag = etree.Element('strong')
+                title_elm = etree.Element('p')
                 class_value = 'alert alert-{}'
                 flag = False
                 for key in ['primary', 'secondary', 'success', 'danger', 'warning', 'info']:
                     if key in original_block:
                         e.set('class', class_value.format(key))
                         e.set('role', 'alert')
+                        icon_elm.set('class', 'fa fa-{}'.format(self.icon_dict[key]))
+                        strong_tag.append(icon_elm)
+                        span_elm = etree.Element('span')
+                        span_elm.text = title
+                        strong_tag.append(span_elm)
+                        title_elm.append(strong_tag)
+                        e.insert(0, title_elm)
                         flag = True
                         break
                 if not flag:
@@ -87,7 +114,7 @@ class AlertBlockProcessor(BlockProcessor):
 
 class AlertExtension(Extension):
     """
-    生成左右对齐的div
+    生产Alert块
     """
 
     def extendMarkdown(self, md):
@@ -97,20 +124,19 @@ class AlertExtension(Extension):
 if __name__ == '__main__':
     import markdown
 
-    md = markdown.Markdown(extensions=[
+    m = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
         DelExtension(),
         IconExtension(),
         AlertExtension()
     ])
 
-    text = '''
-:::info
-**icon:question-circle 注意**
+    t = '''
+::: warning 提示
 
 注意，这是一个演示效果，~~我是被删除的内容~~
 :::
     '''
 
-    html = md.convert(text)
+    html = m.convert(t)
     print(html)
