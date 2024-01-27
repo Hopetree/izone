@@ -23,9 +23,9 @@ class AllArticleRssFeed(Feed):
     # 显示的内容的描述
     def item_description(self, item):
         """
-        只返回描述，要看全文还是需要到博客查看，可以避免rss更新不及时的问题
+        只返回描述，要看全文还是需要到博客查看
         @param item:
         @return:
         """
         # return item.body_to_markdown()
-        return item.summary + f'<a href="{item.get_absolute_url()}">查看全文</a>'
+        return item.summary.strip() + f'<a href="{item.get_absolute_url()}">查看全文</a>'
