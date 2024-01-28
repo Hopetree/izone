@@ -30,7 +30,9 @@ from .utils import (site_full_url,
 from utils.markdown_ext import (
     DelExtension,
     IconExtension,
-    AlertExtension
+    AlertExtension,
+    CodeItemExtension,
+    CodeGroupExtension
 )
 
 
@@ -42,7 +44,9 @@ def make_markdown():
         TocExtension(slugify=slugify),
         DelExtension(),
         IconExtension(),
-        AlertExtension()
+        AlertExtension(),
+        CodeItemExtension(),
+        CodeGroupExtension()
     ])
     return md
 

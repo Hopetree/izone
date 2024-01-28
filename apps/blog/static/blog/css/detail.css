@@ -356,6 +356,39 @@ pre {
     transition: transform .25s;
 }
 
+nav.nav-code-group {
+    background: #292b30;
+    border-radius: 8px 8px 0 0;
+    padding-bottom: -1px;
+    border-bottom: 1px solid #222;
+}
+
+nav.nav-code-group .nav-tabs .nav-link {
+    border: none;
+    border-radius: 8px 8px 0 0;
+    color: #909095;
+    text-decoration: none;
+}
+
+nav.nav-code-group .nav-tabs .nav-link.active {
+    background: #292b30;
+    color: #fff;
+    margin-bottom: -1px;
+    border-bottom: 1px solid #20c997;
+}
+
+nav.nav-code-group .nav-tabs {
+    border-bottom: none;
+
+}
+
+nav.nav-code-group .nav-tabs .nav-item {
+    margin-bottom: 0;
+}
+
+div.code-group .code-wrapper {
+    border-radius: 0;
+}
 
 /*subject end*/
 
