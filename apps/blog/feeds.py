@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from xml.sax.saxutils import escape
 from django.contrib.syndication.views import Feed
 from .models import Article
 from django.conf import settings
@@ -23,4 +24,4 @@ class AllArticleRssFeed(Feed):
     # 显示的内容的描述
     def item_description(self, item):
         # return item.body_to_markdown()
-        return str(item.summary)
+        return escape(str(item.summary))
