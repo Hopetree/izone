@@ -23,5 +23,4 @@ class AllArticleRssFeed(Feed):
 
     # 显示的内容的描述
     def item_description(self, item):
-        # return item.body_to_markdown()
-        return escape(str(item.summary))
+        return item.body_to_markdown()
