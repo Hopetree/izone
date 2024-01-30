@@ -887,7 +887,7 @@ div.archive > ul > li:before {
 
 div.archive > ul > li:first-child:before {
     background-color: #228e6c;
-    color: rgb(226 232 240/1);
+    color: rgb(226 232 240);
 }
 
 div.archive > ul,
