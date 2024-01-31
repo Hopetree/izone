@@ -1225,6 +1225,6 @@ div.archive > ul > li > ul {
     }
 
     .navbar-nav form.navbar-form {
-        max-width: 12rem;
+        width: 12rem;
     }
 }
