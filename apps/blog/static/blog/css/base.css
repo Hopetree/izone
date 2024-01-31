@@ -1223,4 +1223,8 @@ div.archive > ul > li > ul {
     .media-date {
         border-right: 1px solid var(--izone-gray-1-1);
     }
+
+    .navbar-nav form.navbar-form {
+        max-width: 12rem;
+    }
 }
