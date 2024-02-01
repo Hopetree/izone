@@ -9,47 +9,47 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-2">
+            <li class="nav-item mr-1">
                 {% url 'blog:index' as index_url %}
                 <a class="nav-link py-md-3 {% if request.path == index_url %}active{% endif %}"
                    href="{{ index_url }}">首页<span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item mr-2">
+            <li class="nav-item mr-1">
                 {% url 'blog:subject_index' as subject_index_url %}
                 <a class="nav-link py-md-3 {% if request.path == subject_index_url %}active{% endif %}"
                    href="{{ subject_index_url }}">专题</a>
             </li>
-            <li class="nav-item mr-2">
+            <li class="nav-item mr-1">
                 {% url 'blog:archive' as archive_url %}
                 <a class="nav-link py-md-3 {% if request.path == archive_url %}active{% endif %}"
                    href="{{ archive_url }}">归档</a>
             </li>
             {% if tool_flag %}
-                <li class="nav-item mr-2">
+                <li class="nav-item mr-1">
                     {% url 'tool:total' as tool_url %}
                     <a class="nav-link py-md-3 {% if request.resolver_match.namespace == 'tool' %}active{% endif %}"
                        href="{{ tool_url }}">在线工具</a>
                 </li>
             {% endif %}
-            <li class="nav-item mr-2">
+            <li class="nav-item mr-1">
                 {% url 'webstack:webstack_index' as webstack_index_url %}
                 <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
                    href="{{ webstack_index_url }}">网址导航</a>
             </li>
-            <li class="nav-item mr-2">
+            <li class="nav-item mr-1">
                 {% url 'blog:feedhub' as feed_hub_url %}
                 <a class="nav-link py-md-3 {% if request.path == feed_hub_url %}active{% endif %}"
                    href="{{ feed_hub_url }}">Feed Hub</a>
             </li>
             {% if api_flag %}
-                <li class="nav-item mr-2 d-xs-block d-sm-none d-lg-block">
+                <li class="nav-item mr-1 d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank">API</a>
                 </li>
             {% endif %}
 
             <!-- 个人外链 -->
             {% if private_links %}
-                <li class="nav-item dropdown mr-2 d-xs-block d-sm-none d-lg-block">
+                <li class="nav-item dropdown mr-1 d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
                        data-toggle="dropdown"
                        aria-haspopup="true"
@@ -65,17 +65,17 @@
                     </div>
                 </li>
             {% endif %}
-            <li class="nav-item mr-2 ">
+            <li class="nav-item mr-1">
                 {% url 'blog:friend' as friend_url %}
                 <a class="nav-link py-md-3 {% if request.path == friend_url %}active{% endif %}"
                    href="{{ friend_url }}">友情链接</a>
             </li>
-            <li class="nav-item mr-2 ">
+            <li class="nav-item mr-1">
                 {% url 'blog:about' as about_url %}
                 <a class="nav-link py-md-3 {% if request.path == about_url %}active{% endif %}"
                    href="{{ about_url }}">关于</a>
             </li>
-            <form class="nav-item navbar-form mr-2 py-md-2" role="search" method="get" id="searchform"
+            <form class="nav-item navbar-form mr-1 py-md-2" role="search" method="get" id="searchform"
                   action="{% url 'blog:search_view' %}">
                 <div class="input-group">
                     <input type="search" name="q" class="form-control" placeholder="站内搜索" autocomplete="off"
