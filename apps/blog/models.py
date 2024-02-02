@@ -103,7 +103,7 @@ class Subject(models.Model):
 
     def get_topics(self):
         """得到一个专题的所有主题，按照排序进行排序"""
-        return Topic.objects.filter(subject=self).order_by('sort_order')
+        return Topic.objects.filter(subject=self).order_by('sort_order', '-pk')
 
     def get_article_count(self):
         """获取专题下文章数量"""
@@ -111,6 +111,16 @@ class Subject(models.Model):
         for each in self.get_topics():
             num += each.get_articles().count()
         return num
+
+    def get_article_list(self):
+        """
+        返回一个专题下文章的列表，这个跟显示的一致，可以用来得到上下文
+        @return:
+        """
+        article_list = []
+        for topic in self.get_topics():
+            article_list.extend(topic.get_articles())
+        return article_list
 
     def get_status_color(self):
         """返回对应状态的颜色"""
@@ -145,23 +155,7 @@ class Topic(models.Model):
 
     def get_articles(self):
         """得到一个主题的所有已发布的文章，按照主题排序排序"""
-        return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order', 'pk')
-
-    def get_pre(self):
-        topics = Topic.objects.filter(subject=self.subject,
-                                      sort_order__lte=self.sort_order).order_by(
-            '-sort_order', '-create_date').exclude(pk=self.pk)
-        for topic in topics:
-            if topic.get_articles():
-                return topic
-
-    def get_next(self):
-        topics = Topic.objects.filter(subject=self.subject,
-                                      sort_order__gte=self.sort_order).order_by(
-            'sort_order', 'create_date').exclude(pk=self.pk)
-        for topic in topics:
-            if topic.get_articles():
-                return topic
+        return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order', '-pk')
 
 
 # 文章
@@ -240,63 +234,20 @@ class Article(models.Model):
         @return:
         """
         if self.topic:
-            # 情况一：同主题，同序号，则按照创建先后返回最后一个
-            articles = Article.objects.filter(topic=self.topic,
-                                              is_publish=True,
-                                              topic_order=self.topic_order,
-                                              pk__lt=self.pk,
-                                              ).order_by('pk').exclude(pk=self.pk)
-            if articles:
-                return articles.last()
-
-            # 情况二：同主题，序号比自己小，则直接返回最后一个
-            articles = Article.objects.filter(topic=self.topic,
-                                              is_publish=True,
-                                              topic_order__lt=self.topic_order,
-                                              ).order_by('topic_order', 'pk').exclude(pk=self.pk)
-            if articles:
-                return articles.last()
-
-            # 情况三：当前主题没有上一个，则取上一个主题的最后一个作为上一篇
-            pre_topic = self.topic.get_pre()
-            if pre_topic:
-                articles = Article.objects.filter(topic=pre_topic,
-                                                  is_publish=True).order_by(
-                    'topic_order', 'pk').exclude(pk=self.pk)
-                if articles:
-                    return articles.last()
+            subject_articles = self.topic.subject.get_article_list()
+            for index, article in enumerate(subject_articles):
+                if article.pk == self.pk and index != 0:
+                    return subject_articles[index - 1]
             return
 
         return Article.objects.filter(id__lt=self.id, is_publish=True).order_by('-id').first()
 
     def get_next(self):
         if self.topic:
-            # 情况一：同主题，同序号，则按照创建先后返回下一个
-            articles = Article.objects.filter(topic=self.topic,
-                                              is_publish=True,
-                                              topic_order=self.topic_order,
-                                              pk__gt=self.pk,
-                                              ).order_by('pk').exclude(pk=self.pk)
-            if articles:
-                return articles.first()
-
-            # 情况二：同主题，序号比自己大，则直接返回第一个
-            articles = Article.objects.filter(topic=self.topic,
-                                              is_publish=True,
-                                              topic_order__gt=self.topic_order,
-                                              ).order_by('topic_order', 'pk').exclude(pk=self.pk)
-            if articles:
-                return articles.first()
-
-            # 取下一个主题的最后一个作为上一篇
-            next_topic = self.topic.get_next()
-            if next_topic:
-                articles = Article.objects.filter(topic=next_topic,
-                                                  is_publish=True).order_by(
-                    'topic_order', 'pk').exclude(pk=self.pk)
-                if articles:
-                    return articles.first()
-
+            subject_articles = self.topic.subject.get_article_list()
+            for index, article in enumerate(subject_articles):
+                if article.pk == self.pk and index != len(subject_articles) - 1:
+                    return subject_articles[index + 1]
             return
 
         return Article.objects.filter(id__gt=self.id, is_publish=True).order_by('id').first()
