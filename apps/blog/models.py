@@ -145,8 +145,23 @@ class Topic(models.Model):
 
     def get_articles(self):
         """得到一个主题的所有已发布的文章，按照主题排序排序"""
-        return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order',
-                                                                            '-create_date')
+        return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order', 'pk')
+
+    def get_pre(self):
+        topics = Topic.objects.filter(subject=self.subject,
+                                      sort_order__lte=self.sort_order).order_by(
+            '-sort_order', '-create_date').exclude(pk=self.pk)
+        for topic in topics:
+            if topic.get_articles():
+                return topic
+
+    def get_next(self):
+        topics = Topic.objects.filter(subject=self.subject,
+                                      sort_order__gte=self.sort_order).order_by(
+            'sort_order', 'create_date').exclude(pk=self.pk)
+        for topic in topics:
+            if topic.get_articles():
+                return topic
 
 
 # 文章
@@ -220,9 +235,70 @@ class Article(models.Model):
         self.save(update_fields=['views'])
 
     def get_pre(self):
+        """
+        有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回
+        @return:
+        """
+        if self.topic:
+            # 情况一：同主题，同序号，则按照创建先后返回最后一个
+            articles = Article.objects.filter(topic=self.topic,
+                                              is_publish=True,
+                                              topic_order=self.topic_order,
+                                              pk__lt=self.pk,
+                                              ).order_by('pk').exclude(pk=self.pk)
+            if articles:
+                return articles.last()
+
+            # 情况二：同主题，序号比自己小，则直接返回最后一个
+            articles = Article.objects.filter(topic=self.topic,
+                                              is_publish=True,
+                                              topic_order__lt=self.topic_order,
+                                              ).order_by('pk').exclude(pk=self.pk)
+            if articles:
+                return articles.last()
+
+            # 情况三：当前主题没有上一个，则取上一个主题的最后一个作为上一篇
+            pre_topic = self.topic.get_pre()
+            if pre_topic:
+                articles = Article.objects.filter(topic=pre_topic,
+                                                  is_publish=True).order_by(
+                    'topic_order', 'pk').exclude(pk=self.pk)
+                if articles:
+                    return articles.last()
+            return
+
         return Article.objects.filter(id__lt=self.id, is_publish=True).order_by('-id').first()
 
     def get_next(self):
+        if self.topic:
+            # 情况一：同主题，同序号，则按照创建先后返回下一个
+            articles = Article.objects.filter(topic=self.topic,
+                                              is_publish=True,
+                                              topic_order=self.topic_order,
+                                              pk__gt=self.pk,
+                                              ).order_by('pk').exclude(pk=self.pk)
+            if articles:
+                return articles.first()
+
+            # 情况二：同主题，序号比自己大，则直接返回第一个
+            articles = Article.objects.filter(topic=self.topic,
+                                              is_publish=True,
+                                              topic_order__gt=self.topic_order,
+                                              ).order_by('pk').exclude(pk=self.pk)
+            if articles:
+                return articles.first()
+
+            # 取下一个主题的最后一个作为上一篇
+            next_topic = self.topic.get_next()
+            if next_topic:
+                articles = Article.objects.filter(topic=next_topic,
+                                                  is_publish=True).order_by(
+                    'topic_order', 'pk').exclude(pk=self.pk)
+                if articles:
+                    return articles.first()
+
+            return
+
         return Article.objects.filter(id__gt=self.id, is_publish=True).order_by('id').first()
 
     def get_topic_title(self):
