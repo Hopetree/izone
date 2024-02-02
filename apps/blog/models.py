@@ -253,7 +253,7 @@ class Article(models.Model):
             articles = Article.objects.filter(topic=self.topic,
                                               is_publish=True,
                                               topic_order__lt=self.topic_order,
-                                              ).order_by('pk').exclude(pk=self.pk)
+                                              ).order_by('topic_order', 'pk').exclude(pk=self.pk)
             if articles:
                 return articles.last()
 
@@ -284,7 +284,7 @@ class Article(models.Model):
             articles = Article.objects.filter(topic=self.topic,
                                               is_publish=True,
                                               topic_order__gt=self.topic_order,
-                                              ).order_by('pk').exclude(pk=self.pk)
+                                              ).order_by('topic_order', 'pk').exclude(pk=self.pk)
             if articles:
                 return articles.first()
 
