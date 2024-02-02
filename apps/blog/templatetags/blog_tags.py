@@ -101,6 +101,22 @@ def load_pages(context, max_length=10):
         if right_num - left_num < max_length - 1:
             left_num = right_num - max_length + 1
         page_range = range(left_num, right_num + 1)
+
+    page_range = list(page_range)
+    # 对应10个以上的页面，显示省略号，需要模板支持
+    if 10 <= max_length < paginator.num_pages:
+        if page_range[-1] == paginator.num_pages - 1:
+            page_range.append(paginator.num_pages)
+        elif page_range[-1] < paginator.num_pages - 1:
+            page_range[-1] = "..."
+            page_range.append(paginator.num_pages)
+
+        if page_range[0] == 2:
+            page_range.insert(0, 1)
+        elif page_range[0] > 2:
+            page_range[0] = "..."
+            page_range.insert(0, 1)
+
     context['page_range'] = page_range
     return context
 

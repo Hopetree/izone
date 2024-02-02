@@ -7,6 +7,8 @@
     {% for page in page_range %}
         {% if page_obj.number == page %}
             <span class="page-active">{{ page }}</span>
+        {% elif page == "..." %}
+            <span class="mx-0" style="background: none;width:1rem">{{ page }}</span>
         {% else %}
             {% deal_with_full_path request.get_full_path 'page' page as page_path %}
             <a href="{{ page_path }}"><span>{{ page }}</span></a>
