@@ -15,7 +15,7 @@ django-crispy-forms==1.7.2
 django-haystack==2.8.1
 django-imagekit==4.0.2
 django-redis==4.10.0
-django-tctip==1.4.4
+django-tctip==1.4.6
 django-timezone-field==4.2.3
 djangorestframework==3.11.2
 django-webstack>=1.5.4
