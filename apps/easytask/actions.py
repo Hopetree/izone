@@ -170,11 +170,11 @@ def action_cleanup_task_result(day=3):
     return {'task_result_count': task_result_count}
 
 
-def action_baidu_push(baidu_url, months):
+def action_baidu_push(baidu_url, weeks):
     """
     主动推送文章地址到百度，指定推送最近months月的文章链接
     @param baidu_url: 百度接口调用地址，包含token
-    @param months: 几个月内的文章
+    @param weeks: 几周内的文章
     @return:
     """
     import requests
@@ -197,7 +197,7 @@ def action_baidu_push(baidu_url, months):
             return False, e
 
     current_date = datetime.now()
-    previous_date = current_date - relativedelta(months=months)
+    previous_date = current_date - relativedelta(weeks=weeks)
     article_list = Article.objects.filter(create_date__gte=previous_date, is_publish=True)
     article_count = article_list.count()
     if not article_count:

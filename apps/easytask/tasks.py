@@ -82,15 +82,15 @@ def cleanup_task_result(day=3):
 
 
 @shared_task
-def baidu_push(baidu_url, months=3):
+def baidu_push(baidu_url, weeks=1):
     """
     百度推送
     @param baidu_url:
-    @param months:
+    @param weeks:
     @return:
     """
     response = TaskResponse()
-    result = action_baidu_push(baidu_url=baidu_url, months=months)
+    result = action_baidu_push(baidu_url=baidu_url, weeks=weeks)
     response.data = result
     return response.as_dict()
 
