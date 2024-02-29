@@ -1,10 +1,15 @@
 # 创建了新的tags标签文件后必须重启服务器
 import json
+import re
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-from blog.utils import RedisKeys
 
 from django import template
+from django.core.cache import cache
+from django.db.models.aggregates import Count
+from django.utils.html import mark_safe
+
+from comment.models import ArticleComment
 from ..models import (
     Article,
     Category,
@@ -15,11 +20,6 @@ from ..models import (
     Subject,
     FeedHub
 )
-from comment.models import ArticleComment
-from django.db.models.aggregates import Count
-from django.core.cache import cache
-from django.utils.html import mark_safe
-import re
 
 register = template.Library()
 
@@ -256,7 +256,7 @@ def get_blog_infos():
             'tag': Tag.objects.count(),
             'comment': ArticleComment.objects.count()
         }
-        cache.set(cache_key, value, 3600 * 12)
+        cache.set(cache_key, value, 3600 * 2)
         return value
 
 

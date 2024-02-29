@@ -5,12 +5,12 @@
 """
 import json
 from datetime import datetime, timedelta
-from blog.utils import RedisKeys
-from blog.views import make_markdown
-import requests
 
+import requests
 from django.db.models import Sum
+
 from blog.models import Article, ArticleView, PageView
+from blog.views import make_markdown
 
 
 def get_link_status(url):
@@ -44,12 +44,7 @@ def action_update_article_cache():
     更新所有文章的缓存，缓存格式跟文章视图保持一致
     @return:
     """
-    from markdown import Markdown
-    from markdown.extensions.toc import TocExtension  # 锚点的拓展
-    from markdown.extensions.codehilite import CodeHiliteExtension
     from django.core.cache import cache
-    from django.utils.text import slugify
-    from blog.utils import CustomHtmlFormatter
     from blog.models import Article
 
     total_num, done_num = 0, 0
