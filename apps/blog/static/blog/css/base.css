@@ -231,6 +231,10 @@ ul.checklist li {
     width: 11rem;
 }
 
+.navbar .navbar-nav .nav-link {
+    font-weight: 500
+}
+
 /*to top+++++++++++++++++++++++++++++++++++++++++++++++++*/
 #to-top {
     position: fixed;
