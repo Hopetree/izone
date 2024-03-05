@@ -611,7 +611,6 @@ ul.article-view-list > li:nth-child(7):before {
 
 .friend-block h2 {
     text-align: center;
-    border-bottom: var(--izone-gray-1-1) dashed .1rem;
     padding-bottom: 1rem;
     color: var(--izone-font-3);
     letter-spacing: .5rem;
