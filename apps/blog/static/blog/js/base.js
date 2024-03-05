@@ -90,13 +90,13 @@ $("#change-theme").click(function () {
     const theme_value = Cookies.get(theme_key);
     if (theme_value === "dark") {
         Cookies.set(theme_key, "light", {
-            expires: 180,
+            expires: 3,
             path: '/'
         });
         removeDarkTheme();
     } else {
         Cookies.set(theme_key, "dark", {
-            expires: 180,
+            expires: 3,
             path: '/'
         });
         addDarkTheme();
