@@ -1,6 +1,5 @@
-import requests
-from django.shortcuts import render
 from django.core.cache import cache
+from django.shortcuts import render
 
 from .utils import (get_juejin_hot,
                     get_cnblogs_pick,
@@ -77,5 +76,5 @@ def github_issues_ryf(request):
         context = get_github_issues(issues_url)
         context['title'] = '阮一峰周刊 issues'
         context['link'] = 'https://github.com/ruanyf/weekly/issues'
-        cache.set(redis_key, context, 3600 * 6)
+        cache.set(redis_key, context, 3600 * 2)
     return render(request, 'rsshub/rss.xml', context=context, content_type='application/xml')
