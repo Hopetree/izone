@@ -58,12 +58,31 @@ def get_cnblogs_pick():
     @return:
     """
     url = 'https://www.cnblogs.com/pick/'
-    response = requests.get(url, timeout=5, verify=False)
+    try:
+        response = requests.get(url, timeout=5, verify=False)
+    except:
+        response = ''
     article_list = re.findall('<a class="post-item-title" href="(.*?)" target="_blank">(.*?)</a>',
                               response.text)
     rss = RSSResponse()
     items = []
     for link, title in article_list:
         items.append({'title': title, 'link': link})
+    rss.items = items
+    return rss.as_dict()
+
+
+def get_github_issues(url):
+    try:
+        response = requests.get(url, timeout=10, verify=False)
+    except:
+        response = ''
+    issues = re.findall(
+        r'data-hovercard-type="issue" data-hovercard-url=".*?" href="(.*?)">(.*?)</a>',
+        response.text)
+    rss = RSSResponse()
+    items = []
+    for link, title in issues:
+        items.append({'title': title.strip(), 'link': 'https://github.com' + link})
     rss.items = items
     return rss.as_dict()
