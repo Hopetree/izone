@@ -158,6 +158,7 @@
 
 blockquote {
     margin: 0 0 .5em;
+    font-style: italic;
 }
 
 blockquote p {
