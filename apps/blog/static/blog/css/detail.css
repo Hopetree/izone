@@ -160,6 +160,10 @@ blockquote {
     margin: 0 0 .5em;
 }
 
+blockquote p {
+    margin-bottom: 0;
+}
+
 pre {
     line-height: 1.5;
     overflow-: auto;
