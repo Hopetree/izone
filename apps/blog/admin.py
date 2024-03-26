@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
                      AboutBlog, Subject, Topic, ArticleView,
-                     PageView, FeedHub)
+                     PageView, FeedHub, MenuLink)
 
 
 @admin.register(Subject)
@@ -42,7 +42,7 @@ class ArticleAdmin(admin.ModelAdmin):
     # 字段归类显示
     fieldsets = (
         ('文章信息', {'fields': (('title', 'slug'), 'summary', 'body', 'img_link',
-                             ('is_top', 'is_publish'))}),
+                                 ('is_top', 'is_publish'))}),
         ('文章关系信息', {'fields': ('author', 'category', 'tags', 'keywords')}),
         ('文章专题信息', {'fields': (('topic', 'topic_order'), 'topic_short_title')}),
     )
@@ -175,3 +175,10 @@ class PageViewAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
     ordering = ('sort_order',)
     list_editable = ('is_active', 'sort_order')
+
+
+@admin.register(MenuLink)
+class MenuLinkViewAdmin(admin.ModelAdmin):
+    list_display = ('name', 'icon', 'link', 'title', 'active', 'sort_order')
+    ordering = ('sort_order',)
+    list_editable = ('active', 'sort_order')

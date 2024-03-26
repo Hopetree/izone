@@ -39,6 +39,5 @@ def settings_info(request):
         'my_github': settings.MY_GITHUB,
         'site_verification': settings.MY_SITE_VERIFICATION,
         'site_url': site_full_url(),
-        'private_links': json.loads(settings.PRIVATE_LINKS),
         'static_version': STATIC_VERSION,
     }

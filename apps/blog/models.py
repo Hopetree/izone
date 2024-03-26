@@ -137,7 +137,8 @@ class Topic(models.Model):
     name = models.CharField('主题名称', max_length=50)
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
-    sort_order = models.IntegerField('排序', default=99, help_text='仅作为主题在专题中的排序，类似目录')
+    sort_order = models.IntegerField('排序', default=99,
+                                     help_text='仅作为主题在专题中的排序，类似目录')
 
     subject = models.ForeignKey(Subject, verbose_name='所属专题', on_delete=models.PROTECT,
                                 related_name='topics')
@@ -163,7 +164,8 @@ class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者',
                                on_delete=models.PROTECT)
     title = models.CharField(max_length=150, verbose_name='文章标题')
-    summary = models.TextField('文章摘要', max_length=230, default='文章摘要等同于网页description内容，请务必填写...')
+    summary = models.TextField('文章摘要', max_length=230,
+                               default='文章摘要等同于网页description内容，请务必填写...')
     body = models.TextField(verbose_name='文章内容')
     img_link = ProcessedImageField(upload_to='article/upload/%Y/%m/%d/',
                                    default='article/default/default.png',
@@ -308,7 +310,8 @@ class Carousel(models.Model):
     title = models.CharField('标题', max_length=20, blank=True, null=True, help_text='标题可以为空')
     content = models.CharField('描述', max_length=80)
     img_url = models.CharField('图片地址', max_length=200)
-    url = models.CharField('跳转链接', max_length=200, default='#', help_text='图片跳转的超链接，默认#表示不跳转')
+    url = models.CharField('跳转链接', max_length=200, default='#',
+                           help_text='图片跳转的超链接，默认#表示不跳转')
 
     class Meta:
         verbose_name = '图片轮播'
@@ -322,7 +325,8 @@ class Carousel(models.Model):
 
 # 死链
 class Silian(models.Model):
-    badurl = models.CharField('死链地址', max_length=200, help_text='注意：地址是以http开头的完整链接格式')
+    badurl = models.CharField('死链地址', max_length=200,
+                              help_text='注意：地址是以http开头的完整链接格式')
     remark = models.CharField('死链说明', max_length=50, blank=True, null=True)
     add_date = models.DateTimeField('提交日期', auto_now_add=True)
 
@@ -450,3 +454,20 @@ class FeedHub(models.Model):
     def update_data(self, data):
         self.data = data
         self.save(update_fields=['data'])
+
+
+class MenuLink(models.Model):
+    name = models.CharField('名称', max_length=20, unique=True, help_text='如：Github 主页')
+    icon = models.CharField('图标', max_length=20, unique=True, help_text='如：fa-github')
+    link = models.CharField('链接', max_length=200, unique=True)
+    title = models.CharField('标题', max_length=50, unique=True, help_text='外链的描述')
+    active = models.BooleanField('是否有效', help_text='是展示有效的链接', default=True)
+    sort_order = models.IntegerField('排序', default=99, help_text='作为显示的时候的顺序')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "菜单外链"
+        verbose_name_plural = verbose_name
+        ordering = ['sort_order']
