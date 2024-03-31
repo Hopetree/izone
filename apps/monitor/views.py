@@ -111,17 +111,17 @@ def server_push(request):
         json_data['hdd'] = hdd  # 磁盘使用率
         json_data['cpu'] = round(json_data['cpu'], 1)  # CPU使用率
         json_data['memory_total'] = '{}G'.format(
-            int(json_data['memory_total'] / 1024 / 1024 / 1024))
+            round(json_data['memory_total'] / (1024 * 1024 * 1024), 2))
         json_data['memory_used'] = '{}G'.format(
-            int(json_data['memory_used'] / 1024 / 1024 / 1024))
+            round(json_data['memory_used'] / (1024 * 1024 * 1024), 2))
         json_data['swap_total'] = '{}G'.format(
-            int(json_data['swap_total'] / 1024 / 1024 / 1024))
+            round(json_data['swap_total'] / (1024 * 1024 * 1024), 2))
         json_data['swap_used'] = '{}G'.format(
-            int(json_data['swap_used'] / 1024 / 1024 / 1024))
+            round(json_data['swap_used'] / (1024 * 1024 * 1024), 2))
         json_data['hdd_total'] = '{}G'.format(
-            int(json_data['hdd_total'] / 1024 / 1024 / 1024))
+            round(json_data['hdd_total'] / (1024 * 1024 * 1024), 2))
         json_data['hdd_used'] = '{}G'.format(
-            int(json_data['hdd_used'] / 1024 / 1024 / 1024))
+            round(json_data['hdd_used'] / (1024 * 1024 * 1024), 2))
         instance.data = json.dumps(json_data)
         instance.interval = json_data['interval']
         instance.save()
