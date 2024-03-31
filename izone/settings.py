@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'webstack',  # 导航应用
 
     'rsshub',  # RSSHub，自定义第三方rss订阅
+    'monitor',  # 服务监控
 
 ]
 
