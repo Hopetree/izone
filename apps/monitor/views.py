@@ -86,8 +86,9 @@ def get_server_list(request):
         else:
             instance_data['status'] = 'online'
         instance_data['name'] = instance.name
-        instance_data['version'] = '6.23.4'
         instance_data['date'] = instance.update_date
+        # 服务版本，没有就显示null
+        instance_data['version'] = instance_data.get('version')
         server_list.append(instance_data)
     data['data']['list'] = server_list
     return JsonResponse(data)
