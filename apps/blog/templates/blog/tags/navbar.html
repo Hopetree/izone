@@ -34,21 +34,25 @@
             {% endif %}
 
             <li class="nav-item dropdown d-xs-block d-sm-none d-lg-block">
-                <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
+                {% url 'webstack:webstack_index' as webstack_index_url %}
+                {% url 'blog:feedhub' as feed_hub_url %}
+                {% url 'monitor:demo' as monitor_demo_url %}
+                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == monitor_demo_url %}active{% endif %}"
+                   href="#"
+                   id="more-link"
+                   role="button"
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false"
                 >扩展功能</a>
                 <div class="dropdown-menu dropdown-menu-left mt-0 border-0" aria-labelledby="navbarDropdown">
-                    {% url 'webstack:webstack_index' as webstack_index_url %}
                     <a class="dropdown-item pl-3" href="{{ webstack_index_url }}"
                        title="个人的导航网站">
                         <i class="fa fa-fw fa-chrome text-info mr-2"></i>网址导航</a>
-                    {% url 'blog:feedhub' as feed_hub_url %}
                     <a class="dropdown-item pl-3" href="{{ feed_hub_url }}"
                        title="个人的内容聚合平台">
                         <i class="fa fa-fw fa-rss-square text-info mr-2"></i>Feed Hub</a>
-                    <a class="dropdown-item pl-3" href="{% url 'monitor:demo' %}"><i
+                    <a class="dropdown-item pl-3" href="{{ monitor_demo_url }}"><i
                                     class="fa fa-fw fa-tachometer text-info mr-2"></i>监控Demo</a>
                 </div>
             </li>
