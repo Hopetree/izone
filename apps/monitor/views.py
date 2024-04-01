@@ -23,6 +23,48 @@ def index(request):
     return render(request, '403.html')
 
 
+def demo(request):
+    return render(request, 'monitor/demo.html')
+
+
+def get_server_list_for_demo(request):
+    data = {'code': 0, 'error': '', 'message': '', 'data': {}}
+    server_list = []
+    for i in range(1, 12):
+        server_data = {
+            "interval": 10,
+            "uptime": "{} 天".format(random.randint(10, 100)),
+            "system": "linux-3.10.0-1160.99.1.el7.x86_64-x86_64-centos-7.9.2009",
+            "cpu_cores": i * 2,
+            "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
+            "cpu": round(random.uniform(0, 100), 1),
+            "load_1": round(random.uniform(0, 10), 2),
+            "load_5": round(random.uniform(0, 10), 2),
+            "load_15": round(random.uniform(0, 10), 2),
+            "memory_total": "8.00G",
+            "memory_used": "{}G".format(round(random.uniform(0, 6), 2)),
+            "swap_total": "2.0G",
+            "swap_used": "0.0G",
+            "hdd_total": "100G",
+            "hdd_used": "{}G".format(round(random.uniform(0, 100), 2)),
+            "network_in": "{}K".format(round(random.uniform(0, 100), 1)),
+            "network_out": "{}K".format(round(random.uniform(0, 100), 1)),
+            "process": random.randint(100, 500),
+            "thread": random.randint(500, 1000),
+            "tcp": random.randint(1, 50),
+            "udp": random.randint(0, 10),
+            "memory": round(random.uniform(0, 100), 1),
+            "hdd": round(random.uniform(0, 100), 1),
+            "status": random.choice(['online', 'offline']),
+            "name": f"Node-{str(i).zfill(2)}",
+            "version": f"6.23.{i}",
+            "date": "{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        }
+        server_list.append(server_data)
+    data['data']['list'] = server_list
+    return JsonResponse(data)
+
+
 @login_required
 @user_passes_test(is_admin)
 def get_server_list(request):
