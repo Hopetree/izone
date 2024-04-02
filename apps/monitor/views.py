@@ -58,6 +58,7 @@ def get_server_list_for_demo(request):
             "status": random.choice(['online', 'offline']),
             "name": f"Node-{str(i).zfill(2)}",
             "version": f"6.23.{i}",
+            "client_version": "0.1.0",
             "date": "{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         }
         server_list.append(server_data)

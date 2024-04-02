@@ -121,7 +121,7 @@
 {% endblock %}
 
 {% block end_file %}
-    <script src="{% static 'monitor/js/monitor.js' %}?v=2024032813"></script>
+    <script src="{% static 'monitor/js/monitor.js' %}?v=2024040413"></script>
     <script>
         // 页面打开执行一次
         get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list_for_demo' %}");

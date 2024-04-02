@@ -49,7 +49,8 @@ function get_servers(csrf, api) {
                         hdd,
                         version,
                         date,
-                        interval
+                        interval,
+                        client_version
                     } = item;
                     let status_bg = 'bg-success';
                     let is_show = '';
@@ -100,6 +101,7 @@ function get_servers(csrf, api) {
                         `<div>进程数|线程数: ${process} | ${thread}</div>` +
                         `<div>上报频率: ${interval} 秒</div>` +
                         `<div>上报时间: ${date}</div>` +
+                        `<div>客户端版本: ${client_version}</div>` +
                         '</div></td></tr>'
                     table_body += item_html + item_even_html;
                 }
