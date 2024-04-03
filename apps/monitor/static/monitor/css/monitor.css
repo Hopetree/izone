@@ -82,3 +82,9 @@
         display: none !important
     }
 }
+
+@media (min-width: 993px) {
+    .monitor-big-none {
+        display: none !important
+    }
+}

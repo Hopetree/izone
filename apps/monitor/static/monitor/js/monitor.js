@@ -99,6 +99,9 @@ function get_servers(csrf, api) {
                         `<div>硬盘: ${hdd_used} / ${hdd_total}</div>` +
                         `<div>TCP|UDP: ${tcp} | ${udp}</div>` +
                         `<div>进程数|线程数: ${process} | ${thread}</div>` +
+                        `<div class="monitor-big-none">负载: ${load_1} | ${load_5} | ${load_15}</div>` +
+                        `<div class="monitor-big-none">网络↑|↓: ${network_out} | ${network_in}</div>` +
+                        `<div class="monitor-big-none">服务版本: ${version}</div>` +
                         `<div>上报频率: ${interval} 秒</div>` +
                         `<div>上报时间: ${date}</div>` +
                         `<div>客户端版本: ${client_version}</div>` +
