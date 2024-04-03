@@ -83,12 +83,12 @@ function get_servers(csrf, api) {
                         `<td><div class="status-container"><div class="status-icon ${status_bg}"></div></div></td>` +
                         `<td>${name}</td>` +
                         `<td>${uptime}</td>` +
-                        `<td>${load_1} | ${load_5} | ${load_15}</td>` +
-                        `<td>${network_out} | ${network_in}</td>` +
+                        `<td class="monitor-none">${load_1} | ${load_5} | ${load_15}</td>` +
+                        `<td class="monitor-none">${network_out} | ${network_in}</td>` +
                         `<td><div class="progress"><div class="progress-bar ${cpu_bg}" role="progressbar" style="width: ${cpu}%;" aria-valuenow="${cpu}" aria-valuemin="0" aria-valuemax="100">${cpu}%</div></div></td>` +
                         `<td><div class="progress"><div class="progress-bar ${memory_bg}" role="progressbar" style="width: ${memory}%;" aria-valuenow="${memory}" aria-valuemin="0" aria-valuemax="100">${memory}%</div></div></td>` +
                         `<td><div class="progress"><div class="progress-bar ${hdd_bg}" role="progressbar" style="width: ${hdd}%;" aria-valuenow="${hdd}" aria-valuemin="0" aria-valuemax="100">${hdd}%</div></div></td>` +
-                        `<td>${version}</td>` +
+                        `<td class="monitor-none">${version}</td>` +
                         '</tr>';
                     const item_even_html = `<tr class="expandRow ${isEvenOrOdd(i)}"><td colspan="16"><div class="accordian-body collapse ${is_show}" id="more-info-${i}" aria-expanded="true">` +
                         `<div>系统版本: ${system}</div>` +

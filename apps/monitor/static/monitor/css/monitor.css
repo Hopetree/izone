@@ -75,3 +75,10 @@
     padding: 0 !important;
     border-top: 0 !important;
 }
+
+
+@media (max-width: 992px) {
+    .monitor-none {
+        display: none !important
+    }
+}
