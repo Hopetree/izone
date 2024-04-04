@@ -1,5 +1,4 @@
 .monitor {
-    padding: 1rem;
     background-color: var(--izone-background-container);
 }
 
@@ -18,7 +17,7 @@
 
 .monitor > .table > tbody > tr > td,
 .monitor > .table > tbody > tr > th {
-    padding: .6rem;
+    padding: .4rem;
 }
 
 .monitor > .table > tbody > tr.odd > td,
