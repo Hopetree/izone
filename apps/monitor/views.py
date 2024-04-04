@@ -145,7 +145,9 @@ def server_push(request):
             return JsonResponse(resp_data, status=400)
 
         # 原始数据处理后存入数据库
-        if json_data['uptime'] < 3600 * 24:
+        if json_data['uptime'] < 3600:
+            json_data['uptime'] = '{} 分钟'.format(int(json_data['uptime'] / 60))
+        elif json_data['uptime'] < 3600 * 24:
             json_data['uptime'] = '{} 小时'.format(int(json_data['uptime'] / 3600))
         else:
             json_data['uptime'] = '{} 天'.format(int(json_data['uptime'] / (3600 * 24)))
