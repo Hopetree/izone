@@ -22,6 +22,7 @@ class MonitorServer(models.Model):
     secret_value = models.CharField("密钥", max_length=256, blank=True, null=True,
                                     help_text='保存后自动生成')
     data = models.TextField('上报数据', blank=True, null=True, help_text='json格式')
+    active = models.BooleanField('是否有效', help_text='用来过滤，无效的不显示', default=True)
 
     create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_date = models.DateTimeField(verbose_name='更新时间', auto_now=True)

@@ -75,7 +75,8 @@ def get_server_list(request):
     instance_list = MonitorServer.objects.filter(
         secret_key__isnull=False,
         secret_value__isnull=False,
-        data__isnull=False
+        data__isnull=False,
+        active=True
     )
     for instance in instance_list:
         instance_data = json.loads(instance.data)
