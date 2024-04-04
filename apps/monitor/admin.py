@@ -5,8 +5,8 @@ from .models import MonitorServer
 # Register your models here.
 @admin.register(MonitorServer)
 class MonitorServerViewAdmin(admin.ModelAdmin):
-    list_display = ('name', 'interval', 'sort_order', 'username', 'secret_key')
+    list_display = ('name', 'interval', 'sort_order', 'active', 'username', 'secret_key')
     ordering = ('sort_order',)
-    list_editable = ('sort_order',)
+    list_editable = ('sort_order', 'active')
 
     readonly_fields = ('secret_key', 'secret_value', 'data')
