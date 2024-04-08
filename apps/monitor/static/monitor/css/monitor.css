@@ -47,6 +47,13 @@
     background-image: linear-gradient(#9b2522 0, #9b2522 100%);
 }
 
+.monitor td > img {
+    height: 1rem;
+    width: auto;
+    margin-bottom: 2px;
+    margin-right: 2px;
+}
+
 .monitor .progress {
     height: 1.4rem;
 }

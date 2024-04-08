@@ -29,12 +29,15 @@ def demo(request):
 
 def get_server_list_for_demo(request):
     data = {'code': 0, 'error': '', 'message': '', 'data': {}}
+    sli = ['darwin', 'redhat', 'debian', 'ubuntu',
+           'centos', 'windows', '-', 'redhat', 'debian',
+           'centos', 'windows', 'darwin', 'redhat', 'debian']
     server_list = []
     for i in range(1, 12):
         server_data = {
             "interval": 10,
             "uptime": "{} 天".format(random.randint(10, 100)),
-            "system": "linux-3.10.0-1160.99.1.el7.x86_64-x86_64-centos-7.9.2009",
+            "system": f"linux-3.10.0-1160.99.1.el7.x86_64-x86_64-{sli[i]}-7.9.2009",
             "cpu_cores": i * 2,
             "cpu_model": "AMD Ryzen 7 5700U with Radeon Graphics",
             "cpu": round(random.uniform(0, 100), 1),
@@ -62,6 +65,7 @@ def get_server_list_for_demo(request):
             "date": "{}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         }
         server_list.append(server_data)
+    server_list[-1]['system'] = 'Unknown'
     data['data']['list'] = server_list
     return JsonResponse(data)
 

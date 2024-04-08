@@ -52,6 +52,34 @@ function get_servers(csrf, api) {
                         interval,
                         client_version
                     } = item;
+                    let sys_icon;
+                    const static_path = '/static/monitor/img';
+                    switch (true) {
+                        case system.toLowerCase().includes("darwin"):
+                            sys_icon = `<img alt="darwin" src="${static_path}/mac-os.svg">macOS`
+                            break
+                        case system.toLowerCase().includes("windows"):
+                            sys_icon = `<img alt="windows" src="${static_path}/windows.svg">Windows`
+                            break
+                        case system.toLowerCase().includes("ubuntu"):
+                            sys_icon = `<img alt="ubuntu" src="${static_path}/ubuntu.svg">Ubuntu`
+                            break
+                        case system.toLowerCase().includes("centos"):
+                            sys_icon = `<img alt="centos" src="${static_path}/centos.svg">Centos`
+                            break
+                        case system.toLowerCase().includes("debian"):
+                            sys_icon = `<img alt="debian" src="${static_path}/debian.svg">Debian`
+                            break
+                        case system.toLowerCase().includes("redhat"):
+                            sys_icon = `<img alt="redhat" src="${static_path}/redhat.svg">Redhat`
+                            break
+                        case system.toLowerCase().includes("linux"):
+                            sys_icon = `<img alt="linux" src="${static_path}/linux.svg">Linux`
+                            break
+                        default:
+                            sys_icon = 'Unknown'
+
+                    }
                     let status_bg = 'bg-success';
                     let is_show = '';
                     let cpu_bg = 'bg-success', memory_bg = 'bg-success', hdd_bg = 'bg-success';
@@ -82,6 +110,7 @@ function get_servers(csrf, api) {
                     const item_html = `<tr data-toggle="collapse" data-target="#more-info-${i}" class="accordion-toggle ${isEvenOrOdd(i)}" aria-expanded="true">` +
                         `<td><div class="status-container"><div class="status-icon ${status_bg}"></div></div></td>` +
                         `<td>${name}</td>` +
+                        `<td class="monitor-none">${sys_icon}</td>` +
                         `<td>${uptime}</td>` +
                         `<td class="monitor-none">${load_1} | ${load_5} | ${load_15}</td>` +
                         `<td class="monitor-none">${network_out} | ${network_in}</td>` +
