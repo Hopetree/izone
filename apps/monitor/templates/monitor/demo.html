@@ -15,6 +15,6 @@
         // 页面打开执行一次
         get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list_for_demo' %}");
         // 每隔3秒执行一次myFunction函数
-        //setInterval(() => get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list_for_demo' %}"), 3000);
+        setInterval(() => get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list_for_demo' %}"), 3000);
     </script>
 {% endblock %}
