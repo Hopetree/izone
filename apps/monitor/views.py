@@ -173,7 +173,7 @@ def server_push(request):
             round(json_data['hdd_total'] / (1024 * 1024 * 1024), 2))
         json_data['hdd_used'] = '{}G'.format(
             round(json_data['hdd_used'] / (1024 * 1024 * 1024), 2))
-        instance.data = json.dumps(json_data)
+        instance.data = json.dumps(json_data, ensure_ascii=False)
         instance.interval = json_data['interval']
         instance.save()
         resp_data['data'] = json_data
