@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from django.urls import reverse
+
 from .utils import AESCipher
 
 
@@ -34,6 +36,10 @@ class MonitorServer(models.Model):
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_absolute_url():
+        return reverse('monitor:index')
 
     def save(self, *args, **kwargs):
         if not self.pk or self._fields_have_changed(['username', 'password', 'push_url']):
