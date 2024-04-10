@@ -151,14 +151,17 @@ def server_push(request):
 
         # 原始数据处理后存入数据库
         if json_data['uptime'] < 3600:
-            uptime_m = round(json_data['uptime'] / 60, 1)
-            json_data['uptime'] = '{} 分钟'.format(uptime_m)
+            uptime_m = json_data['uptime'] // 60
+            uptime_s = json_data['uptime'] % 60
+            json_data['uptime'] = '{}分{}秒'.format(uptime_m, uptime_s)
         elif json_data['uptime'] < 3600 * 24:
-            uptime_h = round(json_data['uptime'] / 3600, 1)
-            json_data['uptime'] = '{} 小时'.format(uptime_h)
+            uptime_h = json_data['uptime'] // 3600
+            uptime_m = json_data['uptime'] % 3600 // 60
+            json_data['uptime'] = '{}小时{}分'.format(uptime_h, uptime_m)
         else:
-            uptime_d = round(json_data['uptime'] / (3600 * 24), 1)
-            json_data['uptime'] = '{} 天'.format(uptime_d)
+            uptime_d = json_data['uptime'] // (3600 * 24)
+            uptime_h = json_data['uptime'] % (3600 * 24) // 3600
+            json_data['uptime'] = '{}天{}小时'.format(uptime_d, uptime_h)
         memory = round((json_data['memory_used'] / json_data['memory_total']) * 100, 1)
         hdd = round((json_data['hdd_used'] / json_data['hdd_total']) * 100, 1)
         json_data['memory'] = memory  # 内存使用率
