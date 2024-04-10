@@ -151,11 +151,14 @@ def server_push(request):
 
         # 原始数据处理后存入数据库
         if json_data['uptime'] < 3600:
-            json_data['uptime'] = '{} 分钟'.format(int(json_data['uptime'] / 60))
+            uptime_m = round(json_data['uptime'] / 60, 1)
+            json_data['uptime'] = '{} 分钟'.format(uptime_m)
         elif json_data['uptime'] < 3600 * 24:
-            json_data['uptime'] = '{} 小时'.format(int(json_data['uptime'] / 3600))
+            uptime_h = round(json_data['uptime'] / 3600, 1)
+            json_data['uptime'] = '{} 小时'.format(uptime_h)
         else:
-            json_data['uptime'] = '{} 天'.format(int(json_data['uptime'] / (3600 * 24)))
+            uptime_d = round(json_data['uptime'] / (3600 * 24), 1)
+            json_data['uptime'] = '{} 天'.format(uptime_d)
         memory = round((json_data['memory_used'] / json_data['memory_total']) * 100, 1)
         hdd = round((json_data['hdd_used'] / json_data['hdd_total']) * 100, 1)
         json_data['memory'] = memory  # 内存使用率
