@@ -134,7 +134,7 @@
                         </div>
                         <div class="tag-cloud my-4">
                             {% for tag in article.tags.all %}
-                                <a class="tags f-16" href="{{ tag.get_absolute_url }}">#{{ tag.name }}</a>
+                                <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }}</a>
                             {% endfor %}
                         </div>
                         {% include 'blog/tags/reward.html' %}
