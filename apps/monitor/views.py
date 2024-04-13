@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
+from blog.utils import add_views
 from .utils import Server
 from .models import MonitorServer
 
@@ -23,6 +24,7 @@ def index(request):
     return render(request, '403.html')
 
 
+@add_views('monitor:demo', '服务监控Demo')
 def demo(request):
     return render(request, 'monitor/demo.html')
 
