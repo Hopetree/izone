@@ -92,19 +92,19 @@ function get_servers(csrf, api) {
                         is_show = 'show'
                     }
                     // 判断进度条颜色
-                    if (60 < cpu && cpu < 80) {
+                    if (70 < cpu && cpu < 90) {
                         cpu_bg = 'bg-warning'
-                    } else if (cpu >= 80) {
+                    } else if (cpu >= 90) {
                         cpu_bg = 'bg-danger'
                     }
-                    if (60 < memory && memory < 80) {
+                    if (70 < memory && memory < 90) {
                         memory_bg = 'bg-warning'
-                    } else if (memory >= 80) {
+                    } else if (memory >= 90) {
                         memory_bg = 'bg-danger'
                     }
-                    if (60 < hdd && hdd < 80) {
+                    if (70 < hdd && hdd < 90) {
                         hdd_bg = 'bg-warning'
-                    } else if (hdd >= 80) {
+                    } else if (hdd >= 90) {
                         hdd_bg = 'bg-danger'
                     }
                     const item_html = `<tr data-toggle="collapse" data-target="#more-info-${i}" class="accordion-toggle ${isEvenOrOdd(i)}" aria-expanded="true">` +
