@@ -43,6 +43,11 @@ IZONE_TOOLS = {
             'img': 'tool/img/golang.png',
             'desc': '基于开源项目 json-to-go 的在线JSON转Go结构体工具，可以快速创建JSON结构的类型'
         }, {
+            'name': 'Linux时间线',
+            'url': 'tool:linux_timeline',
+            'img': 'tool/img/linux.png',
+            'desc': '基于开源项目 LinuxTimeline 所产生的svg，记录了不同Linux发行版的历史和发展。'
+        }, {
             'name': 'Docker镜像查询',
             'url': 'tool:docker_search',
             'img': 'blog/img/docker.png',

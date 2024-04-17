@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (Toolview, BD_pushview, BD_pushview_site,
                     regexview, useragent_view, html_characters,
                     docker_search_view, editor_view, word_cloud,
-                    json2go, tax, query_ip,
+                    json2go, tax, query_ip, linux_timeline,
                     )
 
 urlpatterns = [
@@ -19,4 +19,5 @@ urlpatterns = [
     path('json2go/', json2go, name='json2go'),  # json转go
     path('tax/', tax, name='tax'),  # 个人所得税年度汇算
     path('ip/', query_ip, name='ip'),  # 查询IP
+    path('linux-timeline/', linux_timeline, name='linux_timeline'),
 ]
