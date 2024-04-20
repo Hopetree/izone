@@ -60,7 +60,7 @@ IZONE_TOOLS = {
         }, {
             'name': 'HTML查询表',
             'url': 'tool:html_characters',
-            'img': 'blog/img/html.png',
+            'img': 'tool/img/HTML5.png',
             'desc': 'HTTP状态码对照表，HTML常用字符查询表，HTML特殊字符对照表'
         }, {
             'name': '在线正则表达式',
