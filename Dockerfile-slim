@@ -1,0 +1,34 @@
+FROM python:3.9-slim
+
+# 国内用户构建命令参考
+# DOCKER_BUILDKIT=0 docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ --build-arg pip_trusted_host=mirrors.aliyun.com --build-arg debian_host=mirrors.ustc.edu.cn -f Dockerfile-slim -t hopetree/izone:lts .
+
+# 默认的系统源和pypi源都使用国外的，国内构建的时候可以用命令行参数替换成国内源
+ARG debian_host=deb.debian.org
+ARG pip_index_url=https://pypi.org/simple
+ARG pip_trusted_host=pypi.org
+
+
+ENV PYTHONUNBUFFERED=1
+WORKDIR /opt/cloud/izone
+
+# 替换系统源，要注意这里不同版本的debian源文件不同
+RUN sed -i "s/deb.debian.org/${debian_host}/g" /etc/apt/sources.list.d/debian.sources
+
+# 安装sqlclient的依赖，slim镜像中缺少
+RUN apt-get update && apt-get install -y \
+    default-libmysqlclient-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --index-url $pip_index_url --trusted-host $pip_trusted_host
+RUN mkdir -p log && chmod -R 755 log
+
+COPY . .
+
+# 设置镜像的创建时间，当做网站更新时间
+RUN sed -i "s/web_update_time=\"\"/web_update_time=\"$(date +'%Y-%m-%d %H:%M')\"/g" ./apps/blog/templates/blog/base.html
+
+CMD ["supervisord", "-n", "-c", "supervisord.conf"]
