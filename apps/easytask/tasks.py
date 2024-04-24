@@ -16,6 +16,9 @@ from .actions import (
     action_write_or_update_view,
     action_get_feed_data
 )
+from monitor.actions import (
+    action_check_host_status
+)
 
 from blog.templatetags.blog_tags import get_blog_infos
 
@@ -154,4 +157,18 @@ def clear_expired_sessions():
     response = TaskResponse()
     call_command('clearsessions')
     response.data = {'msg': 'clear sessions done'}
+    return response.as_dict()
+
+
+@shared_task
+def check_host_status(recipient_list=None):
+    """
+    定时检查服务监控的节点状态
+    定时任务需要设置1分钟执行一次
+    @param recipient_list: 收件人的邮件地址，必填，否则不检查
+    @return:
+    """
+    response = TaskResponse()
+    msg = action_check_host_status(recipient_list=recipient_list)
+    response.data = {'msg': msg}
     return response.as_dict()
