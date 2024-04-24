@@ -18,7 +18,12 @@ def action_check_host_status(recipient_list=None):
 
     current_date = datetime.now()
     alarm_list = []
-    hosts = MonitorServer.objects.filter(active=True)
+    hosts = MonitorServer.objects.filter(
+        secret_key__isnull=False,
+        secret_value__isnull=False,
+        data__isnull=False,
+        active=True
+    )
     for host in hosts:
         # 转换成分钟
         m = int((current_date - host.update_date).total_seconds() / 60)
