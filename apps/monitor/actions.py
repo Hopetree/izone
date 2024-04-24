@@ -34,7 +34,7 @@ def action_check_host_status(recipient_list=None):
         else:
             continue
     if all([alarm_list, from_email, recipient_list]):
-        subject = f'⚠️服务监控告警-{current_date.strftime("%Y-%m-%d %H:%M:%S")}'
+        subject = f'⚠️服务监控告警 {current_date.strftime("%Y-%m-%d %H:%M:%S")}'
         message = '\n'.join(alarm_list)
         ok_num = send_mail(subject, message, from_email, recipient_list)
         return f"Send email ok: {ok_num}"
