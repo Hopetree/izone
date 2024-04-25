@@ -2,10 +2,13 @@ import json
 from datetime import datetime
 
 
-def action_check_host_status(recipient_list=None):
+def action_check_host_status(recipient_list=None, times=None):
     from django.conf import settings
     from django.core.mail import send_mail
     from .models import MonitorServer
+
+    # 可以通过参数传递通知的频率
+    times = times or [1, 10, 60, 60 * 4, 60 * 24]
 
     if not recipient_list:
         return 'No recipient_list, please set it.'
@@ -28,7 +31,7 @@ def action_check_host_status(recipient_list=None):
         # 转换成分钟
         m = int((current_date - host.update_date).total_seconds() / 60)
         # 多个时间点发送
-        if m in [1, 10, 60, 240, 60 * 24]:
+        if m in times:
             msg = f'警告：节点 {host.name} 离线 {m} 分钟'
             alarm_list.append(msg)
         else:
