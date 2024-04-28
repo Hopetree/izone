@@ -95,6 +95,7 @@ def get_server_list(request):
             instance_data['status'] = 'online'
         instance_data['name'] = instance.name
         instance_data['date'] = instance.update_date
+        instance_data['alarm'] = '是' if instance.alarm else '否'
         # 服务版本，没有就显示null
         instance_data['version'] = instance_data.get('version')
         server_list.append(instance_data)

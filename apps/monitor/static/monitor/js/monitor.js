@@ -50,7 +50,8 @@ function get_servers(csrf, api) {
                         version,
                         date,
                         interval,
-                        client_version
+                        client_version,
+                        alarm
                     } = item;
                     let sys_icon;
                     const static_path = '/static/monitor/img';
@@ -131,6 +132,7 @@ function get_servers(csrf, api) {
                         `<div class="monitor-big-none">负载: ${load_1} | ${load_5} | ${load_15}</div>` +
                         `<div class="monitor-big-none">网络↑|↓: ${network_out} | ${network_in}</div>` +
                         `<div class="monitor-big-none">服务版本: ${version}</div>` +
+                        `<div>离线告警: ${alarm}</div>` +
                         `<div>上报频率: ${interval} 秒</div>` +
                         `<div>上报时间: ${date}</div>` +
                         `<div>客户端版本: ${client_version}</div>` +
