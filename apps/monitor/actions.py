@@ -25,7 +25,8 @@ def action_check_host_status(recipient_list=None, times=None):
         secret_key__isnull=False,
         secret_value__isnull=False,
         data__isnull=False,
-        active=True
+        active=True,
+        alarm=True
     )
     for host in hosts:
         # 转换成分钟
