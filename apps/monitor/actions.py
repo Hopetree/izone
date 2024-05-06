@@ -2,10 +2,19 @@ import json
 from datetime import datetime
 
 
-def action_check_host_status(recipient_list=None, times=None):
+def action_check_host_status(recipient_list=None, times=None, ignore_hours=None):
     from django.conf import settings
     from django.core.mail import send_mail
     from .models import MonitorServer
+
+    current_date = datetime.now()
+
+    # 忽略的检查时段，这些时段不检查状态
+    # 这个忽略的意义是因为运营商会定期断网更新IP，导致上报失败触发告警，比如电信是4点多断网一段时间
+    ignore_hours = ignore_hours or []
+
+    if current_date.hour in ignore_hours:
+        return f'Ignore period for {ignore_hours}, do not check.'
 
     # 可以通过参数传递通知的频率
     times = times or [1, 10, 60, 60 * 4, 60 * 24]
@@ -17,9 +26,8 @@ def action_check_host_status(recipient_list=None, times=None):
         from_email = settings.DEFAULT_FROM_EMAIL
     else:
         # 如果未设置发件人邮箱，设置为空，直接退出
-        return 'Email configuration not set'
+        return 'Email configuration not set.'
 
-    current_date = datetime.now()
     alarm_list = []
     hosts = MonitorServer.objects.filter(
         secret_key__isnull=False,

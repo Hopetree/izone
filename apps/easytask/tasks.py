@@ -161,15 +161,17 @@ def clear_expired_sessions():
 
 
 @shared_task
-def check_host_status(recipient_list=None, times=None):
+def check_host_status(recipient_list=None, times=None, ignore_hours=None):
     """
     定时检查服务监控的节点状态
     定时任务需要设置1分钟执行一次
+    @param ignore_hours: 忽略时段，在这些时段不检查状态
     @param times: 通知频率，默认[1, 10, 60, 60 * 4, 60 * 24]
     @param recipient_list: 收件人的邮件地址，必填，否则不检查
     @return:
     """
     response = TaskResponse()
-    msg = action_check_host_status(recipient_list=recipient_list, times=times)
+    msg = action_check_host_status(recipient_list=recipient_list, times=times,
+                                   ignore_hours=ignore_hours)
     response.data = {'msg': msg}
     return response.as_dict()
