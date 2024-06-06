@@ -232,7 +232,7 @@ class Article(models.Model):
 
     def get_pre(self):
         """
-        有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回
+        有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回同样没有主题的
         @return:
         """
         if self.topic:
@@ -242,7 +242,10 @@ class Article(models.Model):
                     return subject_articles[index - 1]
             return
 
-        return Article.objects.filter(id__lt=self.id, is_publish=True).order_by('-id').first()
+        return Article.objects.filter(id__lt=self.id,
+                                      is_publish=True,
+                                      topic__isnull=True
+                                      ).order_by('-id').first()
 
     def get_next(self):
         if self.topic:
@@ -252,7 +255,10 @@ class Article(models.Model):
                     return subject_articles[index + 1]
             return
 
-        return Article.objects.filter(id__gt=self.id, is_publish=True).order_by('id').first()
+        return Article.objects.filter(id__gt=self.id,
+                                      is_publish=True,
+                                      topic__isnull=True
+                                      ).order_by('id').first()
 
     def get_topic_title(self):
         """仅当有主题的时候优先使用短标题，这个函数给专题使用"""
