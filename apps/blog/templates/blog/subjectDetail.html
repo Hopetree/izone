@@ -46,7 +46,7 @@
 
         /* 打印的时候忽略一些内容 */
         @media print {
-            #article-data, #article-breadcrumb, #comment-block, #article-copyright, #article-reward, #article-more, .tag-cloud {
+            .print-none {
                 display: none;
             }
         }
@@ -59,7 +59,7 @@
 {% block base_content %}
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-2 d-none d-lg-block subject-col-2 subject-block">
+            <div class="col-lg-2 d-none d-lg-block subject-col-2 subject-block print-none">
                 <div class="subject-list f-14 rounded-6">
                     <div class="toc-title f-15"><strong>{{ article.topic.subject.name }}</strong></div>
                     <div class="subject-article-list">
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="col-lg-7 subject-col-7">
-                <nav aria-label="breadcrumb" id="article-breadcrumb">
+                <nav aria-label="breadcrumb" class="print-none">
                     <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
                         <li class="breadcrumb-item">
                             <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
@@ -126,7 +126,7 @@
                     <div class="card-body px-2 px-md-3 pb-0">
                         <h1 class="card-title text-center font-weight-bold text-info">{{ article.title }}</h1>
                         <hr>
-                        <div class="text-center f-13" id="article-data">
+                        <div class="text-center f-13 print-none">
                         <span class="mx-2" data-toggle="tooltip" data-placement="bottom"
                               title="最后编辑于{{ article.update_date|date:'Y年m月d日' }}">发表于 {{ article.create_date|date:'Y年m月d日' }}</span>
                             <span class="mx-2">阅读 {{ article.views }}</span>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="article-body mt-4 f-17" style="line-height:1.8">
                             {{ article.body|safe }}
-                            <blockquote class="p-1 f-14" style="border-left: 4px solid #dc3545;" id="article-copyright">
+                            <blockquote class="p-1 f-14 print-none" style="border-left: 4px solid #dc3545;">
                                 <p class="m-1"><strong>版权声明：</strong>如无特殊说明，文章均为本站原创，转载请注明出处</p>
                                 <p class="m-1"><strong>本文链接：</strong>{{ site_url }}{{ article.get_absolute_url }}</p>
                                 <p class="m-1"><strong>许可协议：</strong><a
@@ -142,7 +142,7 @@
                                 </p>
                             </blockquote>
                         </div>
-                        <div class="tag-cloud my-4">
+                        <div class="tag-cloud my-4 print-none">
                             {% for tag in article.tags.all %}
                                 <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }}</a>
                             {% endfor %}
@@ -150,7 +150,7 @@
                         {% include 'blog/tags/reward.html' %}
                     </div>
                 </div>
-                <div class="more-page-card my-4" id="article-more">
+                <div class="more-page-card my-4 print-none">
                     <nav class="more-page f-16">
                         <ul class="pagination justify-content-between">
                             <li class="page-item">
@@ -170,13 +170,13 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="card mt-2 rounded-6 border-0" id="comment-block">
+                <div class="card mt-2 rounded-6 border-0 print-none" id="comment-block">
                     {% include 'comment/comment_form.html' %}
                     {% get_parent_comments article as comment_list %}
                     {% include 'comment/comment_list.html' %}
                 </div>
             </div>
-            <div class="col-lg-2 d-none d-lg-block subject-col-2 toc-block">
+            <div class="col-lg-2 d-none d-lg-block subject-col-2 toc-block print-none">
                 <div class="article-toc f-14 rounded-6">
                     <div class="toc-title f-15">
                         <strong>大纲</strong>
