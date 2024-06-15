@@ -295,6 +295,14 @@ pre {
 
 /*监控页面-end*/
 
+/*端口信息*/
+#ports-container .pagination a {
+    background-color: #22303f;
+    color: #9caec7;
+}
+
+/*端口信息*/
+
 /*全局样式参数start*/
 .dark-theme, body {
     --izone-layer-golden-1: rgba(209, 171, 97, 0.23);

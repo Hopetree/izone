@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block head_title %}常用端口号及服务信息{% endblock %}
+
+{% block metas %}
+    <meta name="description" content="常用端口号及服务信息">
+    <meta name="keywords" content="port,常用端口,端口大全">
+{% endblock %}
+
+{% block top-file %}
+    <link href="{% static 'portinfo/css/dataTables.bootstrap4.min.css' %}?v=2.0.8" rel="stylesheet">
+    <style>
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container-fluid" id="ports-container">
+        <h1>常用端口号及服务信息</h1>
+        <div class="table-responsive">
+            <table id="portsTable" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center">端口号</th>
+                    <th class="text-center">协议</th>
+                    <th class="text-center">服务名称</th>
+                    <th class="text-center">描述</th>
+                    <th class="text-center">默认状态</th>
+                    <th class="text-center">常见用途</th>
+                    <th class="text-center">备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for port in ports %}
+                    <tr>
+                        <td class="text-center">{{ port.port_number }}</td>
+                        <td class="text-center">{{ port.protocol }}</td>
+                        <td class="text-center">{{ port.service_name }}</td>
+                        <td class="text-center">{{ port.description }}</td>
+                        <td class="text-center">{{ port.default_status }}</td>
+                        <td class="text-center">{{ port.common_usage }}</td>
+                        <td class="text-center">{{ port.notes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block end_file %}
+    <script src="{% static 'portinfo/js/dataTables.min.js' %}?v=2.0.8"></script>
+    <script src="{% static 'portinfo/js/dataTables.bootstrap4.min.js' %}?v=2.0.8"></script>
+    <script>
+        new DataTable('#portsTable');
+    </script>
+{% endblock %}
