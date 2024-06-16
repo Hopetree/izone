@@ -99,6 +99,24 @@
     "notes": "可以被用于垃圾邮件发送，建议使用加密传输（如SSL/TLS）"
   },
   {
+    "port_number": 53,
+    "protocol": "UDP",
+    "service_name": "DNS",
+    "description": "域名系统",
+    "default_status": "开启",
+    "common_usage": "域名解析",
+    "notes": "可被用于DDoS攻击，需防护"
+  },
+  {
+    "port_number": 67,
+    "protocol": "UDP",
+    "service_name": "DHCP",
+    "description": "动态主机配置协议",
+    "default_status": "开启",
+    "common_usage": "自动分配IP地址",
+    "notes": "可被攻击者利用进行中间人攻击"
+  },
+  {
     "port_number": 110,
     "protocol": "TCP",
     "service_name": "POP3",
@@ -106,6 +124,15 @@
     "default_status": "关闭",
     "common_usage": "邮件接收",
     "notes": "不安全，建议使用POP3S"
+  },
+  {
+    "port_number": 123,
+    "protocol": "UDP",
+    "service_name": "NTP",
+    "description": "网络时间协议",
+    "default_status": "开启",
+    "common_usage": "时间同步",
+    "notes": "易被利用进行反射攻击"
   },
   {
     "port_number": 143,
@@ -126,78 +153,6 @@
     "notes": "默认社区字符串易被猜测，需配置安全策略"
   },
   {
-    "port_number": 443,
-    "protocol": "TCP",
-    "service_name": "HTTPS",
-    "description": "超文本传输协议安全",
-    "default_status": "开启",
-    "common_usage": "安全网页浏览",
-    "notes": "比HTTP安全，需定期更新证书"
-  },
-  {
-    "port_number": 3306,
-    "protocol": "TCP",
-    "service_name": "MySQL",
-    "description": "MySQL数据库服务",
-    "default_status": "关闭",
-    "common_usage": "数据库访问",
-    "notes": "需设置强密码和访问控制"
-  },
-  {
-    "port_number": 3389,
-    "protocol": "TCP",
-    "service_name": "RDP",
-    "description": "远程桌面协议",
-    "default_status": "关闭",
-    "common_usage": "远程桌面连接",
-    "notes": "易被攻击，需加强认证和加密"
-  },
-  {
-    "port_number": 5900,
-    "protocol": "TCP",
-    "service_name": "VNC",
-    "description": "虚拟网络计算",
-    "default_status": "关闭",
-    "common_usage": "远程桌面连接",
-    "notes": "不安全，建议使用SSH隧道"
-  },
-  {
-    "port_number": 8080,
-    "protocol": "TCP",
-    "service_name": "HTTP Proxy",
-    "description": "HTTP代理",
-    "default_status": "关闭",
-    "common_usage": "代理服务",
-    "notes": "需配置认证和访问控制"
-  },
-  {
-    "port_number": 53,
-    "protocol": "UDP",
-    "service_name": "DNS",
-    "description": "域名系统",
-    "default_status": "开启",
-    "common_usage": "域名解析",
-    "notes": "可被用于DDoS攻击，需防护"
-  },
-  {
-    "port_number": 67,
-    "protocol": "UDP",
-    "service_name": "DHCP",
-    "description": "动态主机配置协议",
-    "default_status": "开启",
-    "common_usage": "自动分配IP地址",
-    "notes": "可被攻击者利用进行中间人攻击"
-  },
-  {
-    "port_number": 123,
-    "protocol": "UDP",
-    "service_name": "NTP",
-    "description": "网络时间协议",
-    "default_status": "开启",
-    "common_usage": "时间同步",
-    "notes": "易被利用进行反射攻击"
-  },
-  {
     "port_number": 389,
     "protocol": "TCP/UDP",
     "service_name": "LDAP",
@@ -205,6 +160,15 @@
     "default_status": "关闭",
     "common_usage": "目录服务",
     "notes": "不安全，建议使用LDAPS"
+  },
+  {
+    "port_number": 443,
+    "protocol": "TCP",
+    "service_name": "HTTPS",
+    "description": "超文本传输协议安全",
+    "default_status": "开启",
+    "common_usage": "安全网页浏览",
+    "notes": "比HTTP安全，需定期更新证书"
   },
   {
     "port_number": 636,
@@ -243,6 +207,15 @@
     "notes": "强加密，需配置强认证"
   },
   {
+    "port_number": 1433,
+    "protocol": "TCP",
+    "service_name": "MSSQL",
+    "description": "Microsoft SQL Server",
+    "default_status": "开启",
+    "common_usage": "数据库服务",
+    "notes": "用于Microsoft SQL Server"
+  },
+  {
     "port_number": 1701,
     "protocol": "UDP",
     "service_name": "L2TP",
@@ -270,6 +243,51 @@
     "notes": "较为安全，但需强认证"
   },
   {
+    "port_number": 1883,
+    "protocol": "TCP",
+    "service_name": "MQTT",
+    "description": "Message Queuing Telemetry Transport",
+    "default_status": "开启",
+    "common_usage": "轻量级消息传输协议",
+    "notes": "用于物联网（IoT）设备的通信"
+  },
+  {
+    "port_number": 2049,
+    "protocol": "TCP",
+    "service_name": "NFS",
+    "description": "Network File System",
+    "default_status": "开启",
+    "common_usage": "文件共享",
+    "notes": "用于NFS协议"
+  },
+  {
+    "port_number": 2181,
+    "protocol": "TCP",
+    "service_name": "Zookeeper",
+    "description": "Zookeeper客户端连接",
+    "default_status": "关闭",
+    "common_usage": "分布式协调服务",
+    "notes": "用于客户端连接的Zookeeper端口"
+  },
+  {
+    "port_number": 2888,
+    "protocol": "TCP",
+    "service_name": "Zookeeper",
+    "description": "Zookeeper同步通信",
+    "default_status": "关闭",
+    "common_usage": "分布式协调服务",
+    "notes": "用于同步通信的Zookeeper端口"
+  },
+  {
+    "port_number": 3000,
+    "protocol": "TCP",
+    "service_name": "Grafana",
+    "description": "开源可视化平台",
+    "default_status": "关闭",
+    "common_usage": "监控和分析仪表板",
+    "notes": "常用于Grafana服务，默认端口"
+  },
+  {
     "port_number": 3306,
     "protocol": "TCP",
     "service_name": "MySQL",
@@ -277,6 +295,87 @@
     "default_status": "关闭",
     "common_usage": "数据库访问",
     "notes": "需设置强密码和访问控制"
+  },
+  {
+    "port_number": 3306,
+    "protocol": "TCP",
+    "service_name": "MySQL",
+    "description": "MySQL数据库服务",
+    "default_status": "关闭",
+    "common_usage": "数据库访问",
+    "notes": "需设置强密码和访问控制"
+  },
+  {
+    "port_number": 3306,
+    "protocol": "TCP",
+    "service_name": "TiDB",
+    "description": "TiDB 分布式数据库",
+    "default_status": "开启",
+    "common_usage": "数据库服务",
+    "notes": "PingCAP自主研发的分布式SQL数据库"
+  },
+  {
+    "port_number": 3389,
+    "protocol": "TCP",
+    "service_name": "RDP",
+    "description": "远程桌面协议",
+    "default_status": "关闭",
+    "common_usage": "远程桌面连接",
+    "notes": "易被攻击，需加强认证和加密"
+  },
+  {
+    "port_number": 3888,
+    "protocol": "TCP",
+    "service_name": "Zookeeper",
+    "description": "Zookeeper领导选举",
+    "default_status": "关闭",
+    "common_usage": "分布式协调服务",
+    "notes": "用于领导选举的Zookeeper端口"
+  },
+  {
+    "port_number": 4369,
+    "protocol": "TCP",
+    "service_name": "Erlang Port Mapper",
+    "description": "Erlang Port Mapper Daemon",
+    "default_status": "开启",
+    "common_usage": "分布式系统",
+    "notes": "RabbitMQ和其他Erlang应用程序使用的端口"
+  },
+  {
+    "port_number": 4840,
+    "protocol": "TCP",
+    "service_name": "OPC UA",
+    "description": "Open Platform Communications Unified Architecture",
+    "default_status": "关闭",
+    "common_usage": "工业自动化通信",
+    "notes": "用于工业自动化的通信协议"
+  },
+  {
+    "port_number": 5000,
+    "protocol": "TCP",
+    "service_name": "Flask",
+    "description": "Python微框架",
+    "default_status": "关闭",
+    "common_usage": "开发和测试Web应用",
+    "notes": "常用于Flask开发服务器，默认端口"
+  },
+  {
+    "port_number": 5222,
+    "protocol": "TCP",
+    "service_name": "XMPP",
+    "description": "Extensible Messaging and Presence Protocol",
+    "default_status": "开启",
+    "common_usage": "即时通讯",
+    "notes": "用于即时消息和状态通知"
+  },
+  {
+    "port_number": 5223,
+    "protocol": "TCP",
+    "service_name": "XMPP over SSL",
+    "description": "Secure XMPP",
+    "default_status": "开启",
+    "common_usage": "安全的即时通讯",
+    "notes": "用于安全的即时消息和状态通知"
   },
   {
     "port_number": 5432,
@@ -288,6 +387,51 @@
     "notes": "需设置强密码和访问控制"
   },
   {
+    "port_number": 5432,
+    "protocol": "TCP",
+    "service_name": "KunlunDB",
+    "description": "KunlunDB 分布式数据库",
+    "default_status": "开启",
+    "common_usage": "数据库服务",
+    "notes": "昆仑数据库，面向高并发和高可用场景"
+  },
+  {
+    "port_number": 5601,
+    "protocol": "TCP",
+    "service_name": "Kibana",
+    "description": "Kibana Web Interface",
+    "default_status": "开启",
+    "common_usage": "日志和分析",
+    "notes": "用于Kibana的Web用户界面"
+  },
+  {
+    "port_number": 5672,
+    "protocol": "TCP",
+    "service_name": "RabbitMQ",
+    "description": "RabbitMQ AMQP",
+    "default_status": "关闭",
+    "common_usage": "消息队列",
+    "notes": "用于AMQP的RabbitMQ默认端口"
+  },
+  {
+    "port_number": 5900,
+    "protocol": "TCP",
+    "service_name": "VNC",
+    "description": "虚拟网络计算",
+    "default_status": "关闭",
+    "common_usage": "远程桌面连接",
+    "notes": "不安全，建议使用SSH隧道"
+  },
+  {
+    "port_number": 6000,
+    "protocol": "TCP",
+    "service_name": "X11",
+    "description": "X Window System",
+    "default_status": "关闭",
+    "common_usage": "图形界面",
+    "notes": "用于X11服务"
+  },
+  {
     "port_number": 6379,
     "protocol": "TCP",
     "service_name": "Redis",
@@ -295,6 +439,51 @@
     "default_status": "关闭",
     "common_usage": "缓存和消息队列",
     "notes": "默认无认证，需配置安全策略"
+  },
+  {
+    "port_number": 6667,
+    "protocol": "TCP",
+    "service_name": "IRC",
+    "description": "Internet Relay Chat",
+    "default_status": "关闭",
+    "common_usage": "网络聊天",
+    "notes": "用于网络聊天的标准端口"
+  },
+  {
+    "port_number": 6697,
+    "protocol": "TCP",
+    "service_name": "IRC over SSL",
+    "description": "Secure IRC",
+    "default_status": "关闭",
+    "common_usage": "安全的网络聊天",
+    "notes": "用于安全的网络聊天的标准端口"
+  },
+  {
+    "port_number": 7001,
+    "protocol": "TCP",
+    "service_name": "WebLogic",
+    "description": "Oracle WebLogic Server",
+    "default_status": "关闭",
+    "common_usage": "Java EE应用服务器",
+    "notes": "常用于Oracle WebLogic Server，默认端口"
+  },
+  {
+    "port_number": 7001,
+    "protocol": "TCP",
+    "service_name": "TongWeb",
+    "description": "TongWeb 应用服务器",
+    "default_status": "开启",
+    "common_usage": "Java EE 应用服务器",
+    "notes": "东方通自主研发的应用服务器"
+  },
+  {
+    "port_number": 7002,
+    "protocol": "TCP",
+    "service_name": "WebLogic",
+    "description": "Oracle WebLogic Server",
+    "default_status": "关闭",
+    "common_usage": "Java EE应用服务器",
+    "notes": "用于Oracle WebLogic Server的SSL通信，默认端口"
   },
   {
     "port_number": 8000,
@@ -315,6 +504,15 @@
     "notes": "常用于Apache Tomcat"
   },
   {
+    "port_number": 8080,
+    "protocol": "TCP",
+    "service_name": "Jingdong JBoss",
+    "description": "JD JBoss 应用服务器",
+    "default_status": "开启",
+    "common_usage": "Java EE 应用服务器",
+    "notes": "京东自主研发的应用服务器，兼容JBoss"
+  },
+  {
     "port_number": 8081,
     "protocol": "TCP",
     "service_name": "HTTP-alt",
@@ -322,6 +520,33 @@
     "default_status": "关闭",
     "common_usage": "开发和测试Web服务器",
     "notes": "常用于Sonatype Nexus仓库管理"
+  },
+  {
+    "port_number": 8086,
+    "protocol": "TCP",
+    "service_name": "InfluxDB",
+    "description": "InfluxDB HTTP API",
+    "default_status": "关闭",
+    "common_usage": "时序数据库",
+    "notes": "用于InfluxDB的HTTP API"
+  },
+  {
+    "port_number": 8090,
+    "protocol": "TCP",
+    "service_name": "Kylin Server",
+    "description": "Kylin 分布式服务器",
+    "default_status": "开启",
+    "common_usage": "分布式计算",
+    "notes": "中标麒麟服务器，兼容Hadoop生态"
+  },
+  {
+    "port_number": 8161,
+    "protocol": "TCP",
+    "service_name": "ActiveMQ",
+    "description": "ActiveMQ 消息队列",
+    "default_status": "开启",
+    "common_usage": "消息队列",
+    "notes": "Apache ActiveMQ，被许多信创项目采用"
   },
   {
     "port_number": 8443,
@@ -333,6 +558,51 @@
     "notes": "常用于Apache Tomcat"
   },
   {
+    "port_number": 8500,
+    "protocol": "TCP",
+    "service_name": "Consul",
+    "description": "Consul HTTP API",
+    "default_status": "关闭",
+    "common_usage": "服务发现和配置",
+    "notes": "用于HTTP API的Consul端口"
+  },
+  {
+    "port_number": 8600,
+    "protocol": "TCP",
+    "service_name": "Consul",
+    "description": "Consul DNS",
+    "default_status": "关闭",
+    "common_usage": "服务发现和配置",
+    "notes": "用于DNS的Consul端口"
+  },
+  {
+    "port_number": 8761,
+    "protocol": "TCP",
+    "service_name": "Eureka",
+    "description": "Eureka Server",
+    "default_status": "关闭",
+    "common_usage": "服务注册与发现",
+    "notes": "用于Eureka Server"
+  },
+  {
+    "port_number": 8848,
+    "protocol": "TCP",
+    "service_name": "Nacos",
+    "description": "Nacos 配置管理",
+    "default_status": "开启",
+    "common_usage": "服务发现与配置管理",
+    "notes": "阿里巴巴开源的服务发现和配置管理平台"
+  },
+  {
+    "port_number": 8883,
+    "protocol": "TCP",
+    "service_name": "MQTT over SSL",
+    "description": "Secure MQTT",
+    "default_status": "开启",
+    "common_usage": "安全的轻量级消息传输协议",
+    "notes": "用于物联网（IoT）设备的安全通信"
+  },
+  {
     "port_number": 8888,
     "protocol": "TCP",
     "service_name": "HTTP-alt",
@@ -342,6 +612,24 @@
     "notes": "常用于Jupyter Notebook"
   },
   {
+    "port_number": 8888,
+    "protocol": "TCP",
+    "service_name": "KingbaseES",
+    "description": "KingbaseES 数据库",
+    "default_status": "开启",
+    "common_usage": "数据库服务",
+    "notes": "人大金仓数据库，广泛用于信创项目"
+  },
+  {
+    "port_number": 8989,
+    "protocol": "TCP",
+    "service_name": "Seata",
+    "description": "Seata 分布式事务",
+    "default_status": "开启",
+    "common_usage": "分布式事务管理",
+    "notes": "阿里巴巴开源的分布式事务解决方案"
+  },
+  {
     "port_number": 9000,
     "protocol": "TCP",
     "service_name": "CSlistener",
@@ -349,6 +637,24 @@
     "default_status": "关闭",
     "common_usage": "Web IDE",
     "notes": "常用于SonarQube"
+  },
+  {
+    "port_number": 9000,
+    "protocol": "TCP",
+    "service_name": "FISCO BCOS",
+    "description": "FISCO BCOS 区块链平台",
+    "default_status": "开启",
+    "common_usage": "区块链平台",
+    "notes": "微众银行主导的企业级区块链平台"
+  },
+  {
+    "port_number": 9042,
+    "protocol": "TCP",
+    "service_name": "Cassandra",
+    "description": "Cassandra CQL",
+    "default_status": "关闭",
+    "common_usage": "数据库服务",
+    "notes": "用于CQL的Cassandra端口"
   },
   {
     "port_number": 9092,
@@ -378,6 +684,24 @@
     "notes": "用于Elasticsearch节点集群通信"
   },
   {
+    "port_number": 9418,
+    "protocol": "TCP",
+    "service_name": "Git",
+    "description": "Git Protocol",
+    "default_status": "开启",
+    "common_usage": "版本控制",
+    "notes": "用于Git的默认端口"
+  },
+  {
+    "port_number": 9800,
+    "protocol": "TCP",
+    "service_name": "WebLogic",
+    "description": "Oracle WebLogic Server",
+    "default_status": "关闭",
+    "common_usage": "应用服务器",
+    "notes": "用于Oracle WebLogic Server"
+  },
+  {
     "port_number": 9876,
     "protocol": "TCP",
     "service_name": "Service Registry",
@@ -389,11 +713,65 @@
   {
     "port_number": 9999,
     "protocol": "TCP",
-    "service_name": "Jupyter",
-    "description": "Jupyter Notebook",
+    "service_name": "Jenkins",
+    "description": "Jenkins Server",
     "default_status": "关闭",
-    "common_usage": "数据科学和开发",
-    "notes": "常用于Jupyter Notebook服务器"
+    "common_usage": "持续集成和持续交付",
+    "notes": "用于Jenkins服务器"
+  },
+  {
+    "port_number": 10000,
+    "protocol": "TCP",
+    "service_name": "Webmin",
+    "description": "Webmin管理接口",
+    "default_status": "关闭",
+    "common_usage": "系统管理",
+    "notes": "用于Webmin服务"
+  },
+  {
+    "port_number": 10050,
+    "protocol": "TCP",
+    "service_name": "Zabbix Agent",
+    "description": "Zabbix Agent",
+    "default_status": "开启",
+    "common_usage": "监控代理",
+    "notes": "用于Zabbix Agent与Zabbix Server之间通信"
+  },
+  {
+    "port_number": 10051,
+    "protocol": "TCP",
+    "service_name": "Zabbix Server",
+    "description": "Zabbix Server",
+    "default_status": "开启",
+    "common_usage": "监控服务器",
+    "notes": "用于Zabbix Server接收数据和处理"
+  },
+  {
+    "port_number": 11211,
+    "protocol": "TCP",
+    "service_name": "Memcached",
+    "description": "Memcached默认端口",
+    "default_status": "关闭",
+    "common_usage": "缓存服务",
+    "notes": "用于Memcached服务"
+  },
+  {
+    "port_number": 11300,
+    "protocol": "TCP",
+    "service_name": "Beanstalkd",
+    "description": "Beanstalkd Job Queue",
+    "default_status": "关闭",
+    "common_usage": "作业队列",
+    "notes": "用于Beanstalkd作业队列"
+  },
+  {
+    "port_number": 15672,
+    "protocol": "TCP",
+    "service_name": "RabbitMQ",
+    "description": "RabbitMQ管理插件",
+    "default_status": "关闭",
+    "common_usage": "消息队列",
+    "notes": "用于管理插件的RabbitMQ端口"
   },
   {
     "port_number": 27017,
@@ -403,5 +781,50 @@
     "default_status": "关闭",
     "common_usage": "数据库访问",
     "notes": "需配置强认证和访问控制"
+  },
+  {
+    "port_number": 50070,
+    "protocol": "TCP",
+    "service_name": "Hadoop HDFS",
+    "description": "Hadoop HDFS Web UI",
+    "default_status": "关闭",
+    "common_usage": "大数据存储",
+    "notes": "用于Hadoop HDFS的Web用户界面"
+  },
+  {
+    "port_number": 50075,
+    "protocol": "TCP",
+    "service_name": "Hadoop DataNode",
+    "description": "Hadoop DataNode",
+    "default_status": "关闭",
+    "common_usage": "大数据存储",
+    "notes": "用于Hadoop DataNode服务"
+  },
+  {
+    "port_number": 60010,
+    "protocol": "TCP",
+    "service_name": "HBase Master",
+    "description": "HBase Master Web UI",
+    "default_status": "关闭",
+    "common_usage": "分布式存储",
+    "notes": "用于HBase Master的Web用户界面"
+  },
+  {
+    "port_number": 60020,
+    "protocol": "TCP",
+    "service_name": "HBase RegionServer",
+    "description": "HBase RegionServer",
+    "default_status": "关闭",
+    "common_usage": "分布式存储",
+    "notes": "用于HBase RegionServer服务"
+  },
+  {
+    "port_number": 61616,
+    "protocol": "TCP",
+    "service_name": "ActiveMQ",
+    "description": "ActiveMQ默认端口",
+    "default_status": "关闭",
+    "common_usage": "消息代理",
+    "notes": "用于ActiveMQ服务"
   }
 ]

@@ -24,8 +24,8 @@ class Command(BaseCommand):
             port, created = Port.objects.update_or_create(
                 port_number=port_number,
                 protocol=protocol,
+                service_name=service_name,
                 defaults={
-                    'service_name': service_name,
                     'description': description,
                     'default_status': default_status,
                     'common_usage': common_usage,
