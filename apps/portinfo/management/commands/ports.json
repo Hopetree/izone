@@ -657,6 +657,15 @@
     "notes": "用于CQL的Cassandra端口"
   },
   {
+    "port_number": 9090,
+    "protocol": "TCP",
+    "service_name": "Prometheus",
+    "description": "Prometheus 监控和报警系统",
+    "default_status": "开启",
+    "common_usage": "监控服务",
+    "notes": "用于收集和存储时间序列数据"
+  },
+  {
     "port_number": 9092,
     "protocol": "TCP",
     "service_name": "Kafka",
@@ -664,6 +673,15 @@
     "default_status": "关闭",
     "common_usage": "分布式消息系统",
     "notes": "常用于流处理平台"
+  },
+  {
+    "port_number": 9100,
+    "protocol": "TCP",
+    "service_name": "Node Exporter",
+    "description": "Prometheus Node Exporter",
+    "default_status": "开启",
+    "common_usage": "系统指标采集",
+    "notes": "用于收集主机系统的硬件和操作系统指标"
   },
   {
     "port_number": 9200,
