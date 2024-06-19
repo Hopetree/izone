@@ -33,7 +33,7 @@ def get_server_list_for_demo(request):
     data = {'code': 0, 'error': '', 'message': '', 'data': {}}
     sli = ['darwin', 'redhat', 'debian', 'ubuntu',
            'centos', 'windows', '-', 'redhat', 'debian',
-           'centos', 'windows', 'darwin', 'redhat', 'debian']
+           'DSM', 'windows', 'darwin', 'redhat', 'debian']
     server_list = []
     for i in range(1, 12):
         server_data = {
