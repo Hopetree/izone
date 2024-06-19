@@ -75,7 +75,7 @@ function get_servers(csrf, api) {
                             sys_icon = `<img alt="redhat" src="${static_path}/redhat.svg">Redhat`
                             break
                         case system.toLowerCase().includes("dsm"):
-                            sys_icon = `<img alt="DSM" src="${static_path}/DSM.svg">Synology`
+                            sys_icon = `<img alt="DSM" src="${static_path}/DSM.svg">DSM`
                             break
                         case system.toLowerCase().includes("linux"):
                             sys_icon = `<img alt="linux" src="${static_path}/linux.svg">Linux`
