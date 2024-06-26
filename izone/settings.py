@@ -80,6 +80,8 @@ INSTALLED_APPS = [
     'webstack',  # 导航应用
 
     'rsshub',  # RSSHub，自定义第三方rss订阅
+    'monitor',  # 服务监控
+    'portinfo',  # 端口信息
 
 ]
 
@@ -318,7 +320,8 @@ DEFAULT_FROM_EMAIL = os.getenv('IZONE_DEFAULT_FROM_EMAIL', 'TendCode博客 <your
 # 网站默认设置和上下文信息
 SITE_LOGO_NAME = os.getenv('IZONE_LOGO_NAME', 'TendCode')
 SITE_END_TITLE = os.getenv('IZONE_SITE_END_TITLE', 'izone')
-SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION', 'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
+SITE_DESCRIPTION = os.getenv('IZONE_SITE_DESCRIPTION',
+                             'izone 是一个使用 Django+Bootstrap4 搭建的个人博客类型网站')
 SITE_KEYWORDS = os.getenv('IZONE_SITE_KEYWORDS', 'izone,Django博客,个人博客')
 # ***************************************** 网站配置结束 *****************************************
 
@@ -339,8 +342,8 @@ LA51_PROTOCOL = os.getenv('IZONE_LA51_PROTOCOL', '')
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
 # 使用 http 还是 https （sitemap 中的链接可以体现出来）
 PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
-# 个人外链信息（导航栏下拉中显示）
-PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')
+# 个人外链信息（导航栏下拉中显示），已经作废，导航外链从后台添加
+# PRIVATE_LINKS = os.getenv('IZONE_PRIVATE_LINKS', '[]')
 # ***************************************** 个性化配置结束 ****************************************
 
 

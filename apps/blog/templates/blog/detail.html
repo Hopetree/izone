@@ -89,7 +89,7 @@
                         </div>
                         <div class="tag-cloud my-4">
                             {% for tag in article.tags.all %}
-                                <a class="tags f-16" href="{{ tag.get_absolute_url }}">#{{ tag.name }}</a>
+                                <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }}</a>
                             {% endfor %}
                         </div>
                         {% include 'blog/tags/reward.html' %}
@@ -99,12 +99,6 @@
                     {% include 'comment/comment_form.html' %}
                     {% get_parent_comments article as comment_list %}
                     {% include 'comment/comment_list.html' %}
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="article-toc d-none d-lg-block f-14 rounded-6">
-                    <div class="toc-title f-15"><strong>大纲</strong></div>
-                    {{ article.toc|safe }}
                 </div>
             </div>
         </div>

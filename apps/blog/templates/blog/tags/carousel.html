@@ -19,6 +19,10 @@
                 {% endif %}
                 <a href="{{ each.url }}">
                     <img class="w-100" src="{{ each.img_url }}" alt="{{ each.content }}">
+                    <div class="carousel-caption d-none d-md-block py-0">
+                        {% if each.title %}<h4>{{ each.title }}</h4>{% else %}<h4>&nbsp;</h4>{% endif %}
+                        {% if each.content %}<p class="f-14">{{ each.content }}</p>{% else %}<p>&nbsp;</p>{% endif %}
+                    </div>
                 </a>
             </div>
             {% endfor %}

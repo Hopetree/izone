@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.templatetags.static import static
+from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.html import mark_safe
 from django.core.cache import cache
 from blog.utils import add_views
@@ -167,3 +168,8 @@ def query_ip(request):
     else:
         ip = ''
     return render(request, 'tool/query_ip.html', context={'ip': ip})
+
+
+@add_views('tool:linux_timeline', 'Linux 时间线')
+def linux_timeline(request):
+    return render(request, 'tool/linux_timeline.html')

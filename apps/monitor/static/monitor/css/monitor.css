@@ -1,0 +1,96 @@
+.monitor {
+    background-color: var(--izone-background-container);
+}
+
+.monitor > .table > thead > tr > th {
+    border-top: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.monitor > .table > tbody {
+    color: var(--izone-font-default);
+}
+
+.monitor > .table > tbody > tr > td {
+    border-top: .5px solid #dee2e6;
+}
+
+.monitor > .table > tbody > tr > td,
+.monitor > .table > tbody > tr > th {
+    padding: .4rem;
+}
+
+.monitor > .table > tbody > tr.odd > td,
+.monitor > .table > tbody > tr.odd > th {
+    background-color: #FFF;
+}
+
+.monitor > .table > tbody > tr.even > td,
+.monitor > .table > tbody > tr.even > th {
+    background-color: #F9F9F9;
+}
+
+.monitor .status-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.4rem;
+}
+
+.monitor .status-icon {
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+}
+
+.monitor .status-icon.online {
+    background-image: linear-gradient(#9b2522 0, #9b2522 100%);
+}
+
+.monitor td > img {
+    height: 1rem;
+    width: auto;
+    margin-bottom: 2px;
+    margin-right: 2px;
+}
+
+.monitor .progress {
+    height: 1.4rem;
+}
+
+.monitor .progress-bar {
+    text-align: left;
+    padding-left: 4px;
+    color: var(--izone-font-default);
+}
+
+.monitor > .table > tbody > tr:hover > td {
+    background: #E6E6E6 !important;
+}
+
+.monitor tr.even.expandRow > :hover {
+    background: rgb(249, 249, 249) !important;
+}
+
+.monitor tr.odd.expandRow > :hover {
+    background: rgb(255, 255, 255) !important;
+}
+
+.monitor .expandRow > td {
+    text-align: left;
+    padding: 0 !important;
+    border-top: 0 !important;
+}
+
+
+@media (max-width: 992px) {
+    .monitor-none {
+        display: none !important
+    }
+}
+
+@media (min-width: 993px) {
+    .monitor-big-none {
+        display: none !important
+    }
+}

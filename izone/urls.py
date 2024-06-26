@@ -46,8 +46,9 @@ urlpatterns = [
                   path('feed/', AllArticleRssFeed(), name='rss'),  # rss订阅
                   path('resume/', include(('resume.urls', 'resume'), namespace='resume')),  # 个人简历
                   path('nav/', include(('webstack.urls', 'webstack'), namespace='webstack')),
-
                   path('rss/', include(('rsshub.urls', 'rsshub'), namespace='rsshub')),
+                  path('monitor/', include(('monitor.urls', 'monitor'), namespace='monitor')),
+                  path('port/', include(('portinfo.urls', 'portinfo'), namespace='portinfo')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 加入这个才能显示media文件
 
 if settings.API_FLAG:

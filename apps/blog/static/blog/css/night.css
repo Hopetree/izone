@@ -255,6 +255,54 @@ pre {
     color: #333;
 }
 
+/*监控页面-start*/
+.monitor > .table > tbody > tr.odd > td,
+.monitor > .table > tbody > tr.odd > th,
+.monitor > .table > tbody > tr.even > td,
+.monitor > .table > tbody > tr.even > th {
+    color: var(--izone-font-default);
+    background-color: var(--izone-background-container);
+}
+
+.monitor .progress {
+    background: rgb(54, 59, 64);
+}
+
+.monitor .progress-bar {
+    color: var(--izone-font-default);
+}
+
+.monitor > .table > thead > tr > th {
+    border-bottom: 1px solid var(--izone-font-default);
+}
+
+.monitor > .table > tbody > tr:hover > td {
+    background: rgba(47, 46, 46, 0.5) !important;
+}
+
+.monitor tr.even.expandRow > :hover {
+    background: var(--izone-background-container) !important;
+}
+
+.monitor tr.odd.expandRow > :hover {
+    background: var(--izone-background-container) !important;
+}
+
+.monitor > .table > tbody > tr > td {
+    border-top: 1px solid #25303e;
+}
+
+
+/*监控页面-end*/
+
+/*端口信息*/
+#ports-container .pagination a {
+    background-color: #22303f;
+    color: #9caec7;
+}
+
+/*端口信息*/
+
 /*全局样式参数start*/
 .dark-theme, body {
     --izone-layer-golden-1: rgba(209, 171, 97, 0.23);

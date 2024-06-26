@@ -1,0 +1,18 @@
+{% load blog_tags %}
+{% if private_links %}
+    <li class="nav-item dropdown d-xs-block d-sm-none d-lg-block">
+        <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false"
+        >个人外链</a>
+        <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
+             aria-labelledby="navbarDropdown">
+            {% for link_item in private_links %}
+                <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank"
+                   title="{{ link_item.title }}">
+                    <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
+            {% endfor %}
+        </div>
+    </li>
+{% endif %}

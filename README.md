@@ -32,6 +32,10 @@
 
 ![PC 专题页，按文章归类](https://github.com/Hopetree/izone/assets/30201215/c0a828cc-2201-438b-a983-0c6c04a429c4)
 
+- 云监控服务，提供服务器的监控能力，客户端提供 Golang 版本，也可以自行编写 Python 版本的客户端用来上报数据
+
+![20240404_232431 (1)](https://github.com/Hopetree/izone/assets/30201215/038200c3-1ada-4ab2-9ac5-42848a80ee21)
+
 - PC 友情链接页，定时任务自动校验网址有效性
 
 ![PC 友情链接页](https://github.com/Hopetree/izone/assets/30201215/033cdd61-75cf-41b4-bb45-9b45948daf3a)

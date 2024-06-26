@@ -1,3 +1,4 @@
+{% load blog_tags %}
 {% load static oauth_tags comment_tags %}
 <nav class="navbar navbar-expand-md bg-white fixed-top blog-navbar py-md-0">
     <a class="navbar-brand d-md-none d-lg-block" id="site-logo-name" href="{% url 'blog:index' %}">
@@ -31,16 +32,35 @@
                        href="{{ tool_url }}">在线工具</a>
                 </li>
             {% endif %}
-            <li class="nav-item">
+
+            <li class="nav-item dropdown d-xs-block d-sm-none d-lg-block">
                 {% url 'webstack:webstack_index' as webstack_index_url %}
-                <a class="nav-link py-md-3 {% if request.path == webstack_index_url %}active{% endif %}"
-                   href="{{ webstack_index_url }}">网址导航</a>
-            </li>
-            <li class="nav-item">
                 {% url 'blog:feedhub' as feed_hub_url %}
-                <a class="nav-link py-md-3 {% if request.path == feed_hub_url %}active{% endif %}"
-                   href="{{ feed_hub_url }}">Feed Hub</a>
+                {% url 'monitor:demo' as monitor_demo_url %}
+                {% url 'portinfo:index' as portinfo_url %}
+                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == monitor_demo_url %}active{% endif %}"
+                   href="#"
+                   id="more-link"
+                   role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                >扩展功能</a>
+                <div class="dropdown-menu dropdown-menu-left mt-0 border-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item pl-3" href="{{ webstack_index_url }}"
+                       title="个人的导航网站">
+                        <i class="fa fa-fw fa-chrome text-info mr-2"></i>网址导航</a>
+                    <a class="dropdown-item pl-3" href="{{ feed_hub_url }}"
+                       title="个人的内容聚合平台">
+                        <i class="fa fa-fw fa-rss-square text-info mr-2"></i>Feed Hub</a>
+                    <a class="dropdown-item pl-3" href="{{ monitor_demo_url }}"><i
+                                    class="fa fa-fw fa-tachometer text-info mr-2"></i>监控Demo</a>
+                    <a class="dropdown-item pl-3" href="{{ portinfo_url }}"><i
+                                    class="fa fa-fw fa-bullseye text-info mr-2"></i>端口大全</a>
+                </div>
             </li>
+
+
             {% if api_flag %}
                 <li class="nav-item d-xs-block d-sm-none d-lg-block">
                     <a class="nav-link py-md-3" href="{% url 'api:api-root' %}" target="_blank">API</a>
@@ -48,23 +68,8 @@
             {% endif %}
 
             <!-- 个人外链 -->
-            {% if private_links %}
-                <li class="nav-item dropdown d-xs-block d-sm-none d-lg-block">
-                    <a class="nav-link dropdown-toggle py-md-3" href="#" id="more-link" role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false"
-                    >个人外链</a>
-                    <div class="dropdown-menu dropdown-menu-left mt-0 border-0"
-                         aria-labelledby="navbarDropdown">
-                        {% for link_item in private_links %}
-                            <a class="dropdown-item pl-3" href="{{ link_item.link }}" target="_blank"
-                               title="{{ link_item.title }}">
-                                <i class="fa fa-fw {{ link_item.icon }} text-info mr-2"></i>{{ link_item.name }}</a>
-                        {% endfor %}
-                    </div>
-                </li>
-            {% endif %}
+            {% load_menu_link %}
+
             <li class="nav-item">
                 {% url 'blog:friend' as friend_url %}
                 <a class="nav-link py-md-3 {% if request.path == friend_url %}active{% endif %}"
@@ -108,7 +113,9 @@
                             <a class="dropdown-item pl-3" href="{% url 'admin:index' %}"><i
                                     class="fa fa-fw fa-key text-info mr-2"></i>后台管理</a>
                             <a class="dropdown-item pl-3" href="{% url 'blog:dashboard' %}"><i
-                                    class="fa fa-fw fa-tachometer text-info mr-2"></i>网站看板</a>
+                                    class="fa fa-fw fa-line-chart text-info mr-2"></i>网站看板</a>
+                            <a class="dropdown-item pl-3" href="{% url 'monitor:index' %}"><i
+                                    class="fa fa-fw fa-tachometer text-info mr-2"></i>监控面板</a>
                             <a class="dropdown-item pl-3" href="{% url 'admin:blog_article_add' %}"><i
                                     class="fa fa-fw fa-plus text-info mr-2"></i>新增文章</a>
                         {% endif %}

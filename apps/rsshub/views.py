@@ -1,9 +1,9 @@
-import requests
-from django.shortcuts import render
 from django.core.cache import cache
+from django.shortcuts import render
 
 from .utils import (get_juejin_hot,
-                    get_cnblogs_pick)
+                    get_cnblogs_pick,
+                    get_github_issues)
 
 
 # Create your views here.
@@ -62,5 +62,19 @@ def cnblogs_pick(request):
         context = get_cnblogs_pick()
         context['title'] = '博客园 ‧ 精华博文'
         context['link'] = 'https://www.cnblogs.com/pick/'
+        cache.set(redis_key, context, 3600 * 2)
+    return render(request, 'rsshub/rss.xml', context=context, content_type='application/xml')
+
+
+def github_issues_ryf(request):
+    issues_url = 'https://github.com/ruanyf/weekly/issues'
+    redis_key = f'rss:github-issues:ruanyf:weekly'
+    redis_value = cache.get(redis_key)
+    if redis_value:
+        context = redis_value
+    else:
+        context = get_github_issues(issues_url)
+        context['title'] = '阮一峰周刊 issues'
+        context['link'] = 'https://github.com/ruanyf/weekly/issues'
         cache.set(redis_key, context, 3600 * 2)
     return render(request, 'rsshub/rss.xml', context=context, content_type='application/xml')

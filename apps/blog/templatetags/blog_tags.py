@@ -18,7 +18,8 @@ from ..models import (
     FriendLink,
     Timeline,
     Subject,
-    FeedHub
+    FeedHub,
+    MenuLink
 )
 
 register = template.Library()
@@ -277,3 +278,10 @@ def get_feed_list():
                 d['updated'] = datetime.strptime(updated, '%Y%m%d %H:%M:%S')
             feed_list.append(d)
     return feed_list
+
+
+@register.inclusion_tag('blog/tags/menulink.html')
+def load_menu_link():
+    """返回菜单外链"""
+    private_links = MenuLink.objects.filter(active=True)
+    return {'private_links': private_links}

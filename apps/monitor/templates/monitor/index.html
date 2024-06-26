@@ -1,0 +1,9 @@
+{% extends 'monitor/base.html' %}
+{% block script %}
+    <script>
+        // 页面打开执行一次
+        get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list' %}");
+        // 每隔3秒执行一次myFunction函数
+        setInterval(() => get_servers("{{ csrf_token }}", "{% url 'monitor:get_server_list' %}"), 3000);
+    </script>
+{% endblock %}
