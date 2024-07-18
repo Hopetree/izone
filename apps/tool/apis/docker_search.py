@@ -17,17 +17,18 @@ class DockerSearch(object):
         self.name = name
         self.url = self.get_url()
         self.results = []
-        self.max_page = 3
+        self.max_page = 2
         self.page_num = 1
         self.next_url = None
         self.code = 200
+        self.parmas = '?page_size=25&page={}&ordering=last_updated'
 
     def get_url(self):
         if '/' not in self.name:
             repo = 'library/' + self.name
         else:
             repo = self.name
-        url = self.base_url.format(repo=repo) + '?page_size=25&page=1&ordering=last_updated'
+        url = self.base_url.format(repo=repo) + self.parmas.format(self.page_num)
         return url
 
     def get_items(self, url):
@@ -46,8 +47,8 @@ class DockerSearch(object):
             if results:
                 self.results.extend(results)
 
-            next_url = data.get('next')
             self.page_num += 1
+            next_url = self.get_url()
             self.next_url = next_url
 
             if self.page_num <= self.max_page and next_url:
