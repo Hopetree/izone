@@ -27,7 +27,7 @@ class DockerSearch(object):
             repo = 'library/' + self.name
         else:
             repo = self.name
-        url = self.base_url.format(repo=repo)
+        url = self.base_url.format(repo=repo) + '?page_size=25&page=1&ordering=last_updated'
         return url
 
     def get_items(self, url):
