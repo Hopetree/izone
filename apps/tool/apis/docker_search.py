@@ -8,7 +8,8 @@ requests.packages.urllib3.disable_warnings()
 
 
 class DockerSearch(object):
-    base_url = 'https://registry.hub.docker.com/v2/repositories/{repo}/tags/'
+    # base_url = 'https://registry.hub.docker.com/v2/repositories/{repo}/tags/'
+    base_url = 'https://cf-workers-docker-io-e7p.pages.dev/v2/repositories/{repo}/tags/'
     STATUS_404 = 404
     STATUS_500 = 500
 
