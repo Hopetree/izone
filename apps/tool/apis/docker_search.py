@@ -15,13 +15,13 @@ class DockerSearch(object):
 
     def __init__(self, name):
         self.name = name
-        self.url = self.get_url()
         self.results = []
         self.max_page = 2
         self.page_num = 1
         self.next_url = None
         self.code = 200
         self.parmas = '?page_size=25&page={}&ordering=last_updated'
+        self.url = self.get_url()
 
     def get_url(self):
         if '/' not in self.name:
