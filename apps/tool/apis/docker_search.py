@@ -17,9 +17,9 @@ class DockerSearch(object):
         self.name = name
         self.max_page = 2
         self.page_num = 1
-        self.next_url = None
         self.code = 200
-        self.parmas = '?page_size=25&page={}&ordering=last_updated'
+        self.page_size = 25
+        self.parmas = '?page_size={}&page={}&ordering=last_updated'
         self.url = self.get_url()
         self.results = []
 
@@ -28,7 +28,7 @@ class DockerSearch(object):
             repo = 'library/' + self.name
         else:
             repo = self.name
-        url = self.base_url.format(repo=repo) + self.parmas.format(self.page_num)
+        url = self.base_url.format(repo=repo) + self.parmas.format(self.page_size, self.page_num)
         return url
 
     def get_items(self, url):
@@ -48,11 +48,9 @@ class DockerSearch(object):
                 self.results.extend(results)
 
             self.page_num += 1
-            next_url = self.get_url()
-            self.next_url = next_url
 
-            if self.page_num <= self.max_page and next_url:
-                self.get_items(next_url)
+            if len(results) >= self.page_size and self.page_num <= self.max_page:
+                self.get_items(self.get_url())
 
     def main(self):
         '''
@@ -69,7 +67,8 @@ class DockerSearch(object):
             else:
                 return {
                     'status': self.code,
-                    'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(self.name)
+                    'error': '镜像仓库没有查询到与 {} 相关的镜像信息，请检查镜像名称后重试！'.format(
+                        self.name)
                 }
         return {
             'status': 200,
