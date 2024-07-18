@@ -73,7 +73,6 @@ class DockerSearch(object):
         return {
             'status': 200,
             'results': self.results,
-            'next_url': self.next_url,
             'total': len(self.results)
         }
 
