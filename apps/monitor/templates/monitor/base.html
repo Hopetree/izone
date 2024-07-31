@@ -16,7 +16,7 @@
 
 {% block base_content %}
     <div class="container">
-        <div class="monitor rounded-6 f-14 p-3">
+        <div class="monitor rounded-6 f-14 p-3" id="monitor-box">
             <table class="table table-striped table-condensed table-hover">
                 <thead>
                 <tr class="text-center">
@@ -123,5 +123,61 @@
 {% block end_file %}
     <script src="{% static 'monitor/js/monitor.js' %}?v=2024061902"></script>
     {% block script %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const myDiv = document.getElementById('monitor-box');
+            const originalPadding = myDiv.style.padding;
+
+            // 监听键盘事件
+            document.addEventListener('keydown', (event) => {
+                // 使用 Ctrl  + m 组合键进入全屏
+                if (event.ctrlKey && event.key === 'm') {
+                    if (myDiv.requestFullscreen) {
+                        myDiv.requestFullscreen().then(() => {
+                            // 设置全屏时的样式
+                            myDiv.style.setProperty('padding', '5rem', 'important');
+                        });
+                    } else if (myDiv.mozRequestFullScreen) { // Firefox
+                        myDiv.mozRequestFullScreen().then(() => {
+                            // 设置全屏时的样式
+                            myDiv.style.setProperty('padding', '5rem', 'important');
+                        });
+                    } else if (myDiv.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                        myDiv.webkitRequestFullscreen().then(() => {
+                            // 设置全屏时的样式
+                            myDiv.style.setProperty('padding', '5rem', 'important');
+                        });
+                    } else if (myDiv.msRequestFullscreen) { // IE/Edge
+                        myDiv.msRequestFullscreen().then(() => {
+                            // 设置全屏时的样式
+                            myDiv.style.setProperty('padding', '5rem', 'important');
+                        });
+                    }
+                }
+
+                // 按ESC键退出全屏
+                if (event.key === 'Escape') {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().then(() => {
+                            myDiv.style.padding = originalPadding;
+                        });
+                    } else if (document.mozCancelFullScreen) { // Firefox
+                        document.mozCancelFullScreen().then(() => {
+                            myDiv.style.padding = originalPadding;
+                        });
+                    } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                        document.webkitExitFullscreen().then(() => {
+                            myDiv.style.padding = originalPadding;
+                        });
+                    } else if (document.msExitFullscreen) { // IE/Edge
+                        document.msExitFullscreen().then(() => {
+                            myDiv.style.padding = originalPadding;
+                        });
+                    }
+                }
+            });
+        });
+
+    </script>
 {% endblock %}
 
