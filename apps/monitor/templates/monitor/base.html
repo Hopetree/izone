@@ -126,8 +126,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const myDiv = document.getElementById('monitor-box');
-            const originalPadding = myDiv.style.padding;
-
             // 监听键盘事件
             document.addEventListener('keydown', (event) => {
                 // 使用 Ctrl  + m 组合键进入全屏
@@ -159,19 +157,19 @@
                 if (event.key === 'Escape') {
                     if (document.exitFullscreen) {
                         document.exitFullscreen().then(() => {
-                            myDiv.style.padding = originalPadding;
+                            myDiv.style.setProperty('padding', '1rem', 'important');
                         });
                     } else if (document.mozCancelFullScreen) { // Firefox
                         document.mozCancelFullScreen().then(() => {
-                            myDiv.style.padding = originalPadding;
+                            myDiv.style.setProperty('padding', '1rem', 'important');
                         });
                     } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
                         document.webkitExitFullscreen().then(() => {
-                            myDiv.style.padding = originalPadding;
+                            myDiv.style.setProperty('padding', '1rem', 'important');
                         });
                     } else if (document.msExitFullscreen) { // IE/Edge
                         document.msExitFullscreen().then(() => {
-                            myDiv.style.padding = originalPadding;
+                            myDiv.style.setProperty('padding', '1rem', 'important');
                         });
                     }
                 }
