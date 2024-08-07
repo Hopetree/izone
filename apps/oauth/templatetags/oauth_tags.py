@@ -18,6 +18,21 @@ def http_to_https(link):
 
 
 @register.simple_tag
+def is_upload(avatar_url):
+    """判断头像是否为上传的"""
+    return avatar_url.startswith("/media/avatar/upload/")
+
+
+@register.simple_tag
+def avatar_media_to_static(avatar_url):
+    """将头像从媒体转成静态/media/avatar/default/default6.png"""
+    if avatar_url.startswith("/media/avatar/default/"):
+        return avatar_url.replace('/media/avatar/default/', '/static/blog/img/avatar/')
+    else:
+        return ""
+
+
+@register.simple_tag
 def get_user_link(user):
     '''
     获取认证用户的link，并判断用户是哪种认证方式（Github，Weibo，邮箱）
