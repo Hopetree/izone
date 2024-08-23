@@ -38,7 +38,7 @@
                 {% url 'blog:feedhub' as feed_hub_url %}
                 {% url 'monitor:demo' as monitor_demo_url %}
                 {% url 'portinfo:index' as portinfo_url %}
-                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == monitor_demo_url %}active{% endif %}"
+                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == monitor_demo_url or request.path == portinfo_url %}active{% endif %}"
                    href="#"
                    id="more-link"
                    role="button"
