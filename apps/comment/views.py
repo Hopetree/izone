@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 from blog.models import Article
 from .models import ArticleComment, Notification, SystemNotification
@@ -10,11 +11,14 @@ from django.shortcuts import get_object_or_404
 
 user_model = settings.AUTH_USER_MODEL
 
+logger = logging.getLogger('django')
 
 @login_required
 @require_POST
 def AddCommentView(request):
     if request.is_ajax() and request.method == "POST":
+        user_agent_string = request.META.get('HTTP_USER_AGENT', 'unknown')
+        logger.info(f'user agent is {user_agent_string}')
         data = request.POST
         new_user = request.user
         new_content = data.get('content')
