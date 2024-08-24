@@ -1,4 +1,5 @@
 import logging
+from user_agents import parse
 from django.shortcuts import render
 from blog.models import Article
 from .models import ArticleComment, Notification, SystemNotification
@@ -19,6 +20,7 @@ def AddCommentView(request):
     if request.is_ajax() and request.method == "POST":
         user_agent_string = request.META.get('HTTP_USER_AGENT', 'unknown')
         logger.info(f'user agent is {user_agent_string}')
+        user_agent = parse(user_agent_string)
         data = request.POST
         new_user = request.user
         new_content = data.get('content')
@@ -31,13 +33,15 @@ def AddCommentView(request):
         if not rep_id:
             new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article,
                                          parent=None,
-                                         rep_to=None)
+                                         rep_to=None,
+                                         user_agent=str(user_agent))
         else:
             new_rep_to = ArticleComment.objects.get(id=rep_id)
             new_parent = new_rep_to.parent if new_rep_to.parent else new_rep_to
             new_comment = ArticleComment(author=new_user, content=new_content, belong=the_article,
                                          parent=new_parent,
-                                         rep_to=new_rep_to)
+                                         rep_to=new_rep_to,
+                                         user_agent=str(user_agent))
         new_comment.save()
         new_point = '#com-' + str(new_comment.id)
         return JsonResponse({'msg': '评论提交成功！', 'new_point': new_point})

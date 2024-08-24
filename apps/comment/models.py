@@ -61,6 +61,9 @@ class Comment(models.Model):
                                verbose_name='评论人', on_delete=models.CASCADE)
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
     content = models.TextField('评论内容')
+    # 记录处理后的user-agent
+    # 格式 PC / Mac OS X 10.15.7 / Chrome 128.0.0，可以使用 / 来拆分
+    user_agent = models.CharField(max_length=255, blank=True, null=True)
     parent = models.ForeignKey('self', verbose_name='父评论', related_name='%(class)s_child_comments',
                                blank=True,
                                null=True, on_delete=models.CASCADE)

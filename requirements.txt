@@ -41,6 +41,7 @@ python-crontab==2.7.1
 python-dateutil==2.8.2
 python3-openid==3.1.0
 pytz==2019.2
+PyYAML=6.0.2
 redis==3.3.8
 requests==2.22.0
 requests-oauthlib==1.2.0
@@ -48,8 +49,10 @@ setuptools-scm==6.0.1
 six==1.12.0
 sqlparse==0.3.0
 supervisor==4.2.5
+ua-parser=0.18.0
 urllib3==1.25.3
 user-agent==0.1.9
+user-agents=2.2.0
 vine==1.3.0
 webencodings==0.5.1
 Whoosh==2.7.4
