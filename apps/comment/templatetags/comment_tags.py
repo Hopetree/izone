@@ -107,7 +107,7 @@ def split_user_agent(user_agent):
     system_dict = {
         'Windows': 'Windows',
         'Mac': 'Mac',
-        'iOS': 'Mac',
+        'iOS': 'iOS',
         'Android': 'Android',
         'Ubuntu': 'Ubuntu',
         'Linux': 'Linux',
