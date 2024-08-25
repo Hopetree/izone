@@ -1,0 +1,11 @@
+{% load static comment_tags %}
+
+{% split_user_agent user_agent as user_agent_dict %}
+<img class="mx-1"
+     src="{% static 'comment/img/'|add:user_agent_dict.browser_img|add:'.png' %}"
+     alt="{{ user_agent_dict.browser_info }}" title="{{ user_agent_dict.browser_info }}"
+     style="display: inline-block;height: 1rem;">
+<img class="mx-0"
+     src="{% static 'comment/img/'|add:user_agent_dict.system_img|add:'.png' %}"
+     alt="{{ user_agent_dict.system_info }}" title="{{ user_agent_dict.system_info }}"
+     style="display: inline-block;height: 1rem;">

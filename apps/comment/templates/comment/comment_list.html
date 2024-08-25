@@ -39,6 +39,9 @@
                         {% elif comment.author == article.author %}
                         <small class="text-info">[作者]</small>
                         {% endif %}
+                        {% if comment.user_agent %}
+                            {% load_user_agent_img comment.user_agent %}
+                        {% endif %}
                     </p>
                     <p class="small text-muted">{{ forloop.revcounter }}&nbsp;楼&nbsp;-&nbsp;{{ comment.create_date|naturaltime }}</p>
                 </div>
