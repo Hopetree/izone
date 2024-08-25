@@ -84,6 +84,9 @@
                             {% endif %}
                             <i class="fa fa-share"></i>
                             @{{ each.rep_to.author.username }}
+                            {% if each.user_agent %}
+                                {% load_user_agent_img each.user_agent %}
+                            {% endif %}
                         </p>
                         <p class="small text-muted">{{ each.create_date|naturaltime }}</p>
                     </div>
