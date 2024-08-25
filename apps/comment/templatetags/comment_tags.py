@@ -122,7 +122,7 @@ def split_user_agent(user_agent):
     }
     system_info, browser_info = 'Unknown', 'Unknown'
     system_img, browser_img = 'other_system', 'other_browser'
-    if user_agent and len(user_agent.split('/')) == 3:
+    if user_agent and len(user_agent.split(' / ')) == 3:
         _, system_info, browser_info = user_agent.split(' / ')
         for k, v in system_dict.items():
             if system_info.strip().startswith(k):
