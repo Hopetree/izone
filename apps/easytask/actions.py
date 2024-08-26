@@ -289,7 +289,7 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
     @return:
     """
     from blog.models import Article
-    filter_rule = json.loads(filter_rule) or {}
+    filter_rule = filter_rule or {}
     data = {}
     for each_id in article_ids:
         article = Article.objects.get(id=int(each_id))
