@@ -296,13 +296,13 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
         if article:
             if article.is_publish is False:
                 article.is_publish = True
-                if filter_rule.get(each_id): # 如果设置了规则，则按照规则发布，否则直接发布
-                    publish_flag = is_current_date_greater_than(filter_rule.get(each_id))
+                if filter_rule.get(str(each_id)): # 如果设置了规则，则按照规则发布，否则直接发布
+                    publish_flag = is_current_date_greater_than(filter_rule.get(str(each_id)))
                     if publish_flag:
                         article.save()
                         data[each_id] = 'Article published successfully'
                     else:
-                        data[each_id] = f'Article need publish on {filter_rule.get(each_id)}'
+                        data[each_id] = f'Article need publish on {filter_rule.get(str(each_id))}'
                 else:
                     article.save()
                     data[each_id] = 'Article published successfully'
