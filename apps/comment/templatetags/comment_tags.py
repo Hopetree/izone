@@ -136,12 +136,12 @@ def split_user_agent(user_agent):
         # 如果开头匹配不到，则使用包含来匹配，开头匹配是优先的
         if system_img == 'other_system':
             for k, v in system_dict.items():
-                if system_info.strip() in k:
+                if k in system_info.strip():
                     system_img = v
                     break
         if browser_img == 'other_browser':
             for k, v in browser_dict.items():
-                if browser_info.strip() in k:
+                if k in browser_info.strip():
                     browser_img = v
                     break
     return {
