@@ -115,6 +115,7 @@ class TimelineAdmin(admin.ModelAdmin):
 @admin.register(Carousel)
 class CarouselAdmin(admin.ModelAdmin):
     list_display = ('number', 'title', 'content', 'img_url', 'url')
+    list_editable = ('number', 'title', 'content', 'img_url', 'url')
 
 
 @admin.register(Silian)
