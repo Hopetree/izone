@@ -112,14 +112,15 @@ def check_navigation_site(white_domain_list=None):
 
 
 @shared_task
-def publish_article_by_task(article_ids):
+def publish_article_by_task(article_ids, filter_rule=None):
     """
     定时将草稿发布出去
     @param article_ids: 需要发布的文章ID
+    @param filter_rule: 发布规则，比如 {140:"0910"} 表示 id为140的文章只有在09月10日之后才发布
     @return:
     """
     response = TaskResponse()
-    result = action_publish_article_by_task(article_ids)
+    result = action_publish_article_by_task(article_ids, filter_rule=filter_rule)
     response.data = result
     return response.as_dict()
 
