@@ -124,6 +124,7 @@ def split_user_agent(user_agent):
     system_img, browser_img = 'other_system', 'other_browser'
     if user_agent and len(user_agent.split(' / ')) == 3:
         _, system_info, browser_info = user_agent.split(' / ')
+        # 优先使用关键字开头匹配
         for k, v in system_dict.items():
             if system_info.strip().startswith(k):
                 system_img = v
@@ -132,6 +133,17 @@ def split_user_agent(user_agent):
             if browser_info.strip().startswith(k):
                 browser_img = v
                 break
+        # 如果开头匹配不到，则使用包含来匹配，开头匹配是优先的
+        if system_img == 'other_system':
+            for k, v in system_dict.items():
+                if system_info.strip() in k:
+                    system_img = v
+                    break
+        if browser_img == 'other_browser':
+            for k, v in browser_dict.items():
+                if browser_info.strip() in k:
+                    browser_img = v
+                    break
     return {
         'system_info': system_info.strip(),
         'browser_info': browser_info.strip(),
