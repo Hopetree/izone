@@ -302,7 +302,7 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
                         article.save()
                         data[each_id] = 'Article published successfully'
                     else:
-                        data[each_id] = f'Article need publish on {filter_rule.get(str(each_id))}'
+                        data[each_id] = f'Article need publish after {filter_rule.get(str(each_id))}'
                 else:
                     article.save()
                     data[each_id] = 'Article published successfully'
