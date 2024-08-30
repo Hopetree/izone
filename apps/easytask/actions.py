@@ -252,30 +252,36 @@ def is_current_date_greater_than(input_date_str):
     current_year = current_date.year
     current_month = current_date.month
     current_day = current_date.day
+    current_hour = current_date.hour
 
     # 根据输入日期的长度判断格式
-    if len(input_date_str) == 8:  # 格式为 YYYYMMDD
+    if len(input_date_str) == 10:  # 格式为 YYYYMMDDHH
         try:
-            input_date = datetime.strptime(input_date_str, "%Y%m%d")
+            input_date = datetime.strptime(input_date_str, "%Y%m%d%H")
+        except ValueError:
+            return False
+    elif len(input_date_str) == 8:  # 格式为 YYYYMMDD
+        try:
+            input_date = datetime.strptime(f'{input_date_str}{current_hour}', "%Y%m%d%H")
         except ValueError:
             return False
     elif len(input_date_str) == 4:  # 格式为 MMDD
         try:
-            input_date = datetime.strptime(f"{current_year}{input_date_str}",
-                                           "%Y%m%d")
+            input_date = datetime.strptime(f"{current_year}{input_date_str}{current_hour}",
+                                           "%Y%m%d%H")
         except ValueError:
             return False
     elif len(input_date_str) == 2:  # 格式为 DD
         try:
-            input_date = datetime.strptime(f"{current_year}{current_month:02d}{input_date_str}",
-                                           "%Y%m%d")
+            input_date = datetime.strptime(f"{current_year}{current_month:02d}{input_date_str}{current_hour}",
+                                           "%Y%m%d%H")
         except ValueError:
             return False
     else:
         return False
 
     # 创建当前日期的datetime对象
-    current_date_only = datetime(current_year, current_month, current_day)
+    current_date_only = datetime(current_year, current_month, current_day, current_hour)
 
     # 比较当前日期和输入日期
     return current_date_only > input_date
