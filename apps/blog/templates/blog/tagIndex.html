@@ -26,6 +26,12 @@
                             <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
                         </li>
                         <li class="breadcrumb-item">标签云</li>
+                        {% if user.is_superuser %}
+                        <li class="breadcrumb-item">
+                            <a class="edit-blog" href="{% url 'admin:blog_tag_add' %}"
+                                   target="_blank" title="新增标签">新增标签</a>
+                        </li>
+                        {% endif %}
                     </ol>
                 </nav>
                 <div class="card rounded-6 border-0 p-3 f-16">
