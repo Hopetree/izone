@@ -31,7 +31,7 @@
                 <div class="card rounded-6 border-0 p-3 f-16">
                     <div class="tag-cloud my-1 print-none">
                         {% for tag in tags %}
-                            <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }} ({{ tag.get_article_list.count }})</a>
+                            <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }}<sup class="mx-1"><strong></strong>{{ tag.get_article_list.count }}</sup></a>
                         {% endfor %}
                     </div>
                 </div>
