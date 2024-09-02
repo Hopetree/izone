@@ -62,10 +62,12 @@ def keywords_to_str(art):
 
 
 @register.simple_tag
-def get_tag_list():
+def get_tag_list(show=2000):
     """返回标签列表"""
-    return Tag.objects.filter(article__is_publish=True).annotate(
+    tags = Tag.objects.filter(article__is_publish=True).annotate(
         total_num=Count('article')).filter(total_num__gt=0)
+    return tags[:show]
+
 
 
 @register.simple_tag

@@ -2,7 +2,7 @@
 from django.urls import path
 from django.conf import settings
 from .views import test_page_view
-from .views import (IndexView, DetailView, CategoryView, TagView, AboutView,
+from .views import (IndexView, DetailView, CategoryView, TagView, AboutView, TagListView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
                     update_article, FriendLinkView, friend_add, SubjectDetailView,
                     SubjectPageDetailView, SubjectListView, dashboard, feed_hub)
@@ -13,6 +13,7 @@ urlpatterns = [
     path('article-edit/<slug:slug>/', DetailEditView.as_view(), name='article_edit'),  # 文章编辑
     path('article-update/', update_article, name='article_update'),  # 文章更新
     path('category/<slug:slug>/', CategoryView.as_view(), name='category'),
+    path('tags/', TagListView.as_view(), name='tags'), # 标签云
     path('tag/<slug:slug>/', TagView.as_view(), name='tag'),
     path('about/', AboutView, name='about'),  # About页面
     path('timeline/', TimelineView.as_view(), name='timeline'),  # timeline页面

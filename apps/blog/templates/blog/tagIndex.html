@@ -1,0 +1,44 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load blog_tags %}
+
+{% block head_title %}标签云清单{% endblock %}
+{% block metas %}
+    <meta name="description" content="标签云清单">
+    <meta name="keywords" content="tags,标签云">
+{% endblock %}
+{% block top-file %}
+    <style>
+    .tag-cloud .tags {
+        margin-bottom: .6rem;
+    }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb" class="print-none">
+                    <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
+                        <li class="breadcrumb-item">
+                            <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                        </li>
+                        <li class="breadcrumb-item">标签云</li>
+                    </ol>
+                </nav>
+                <div class="card rounded-6 border-0 p-3 f-16">
+                    <div class="tag-cloud my-1 print-none">
+                        {% for tag in tags %}
+                            <a class="tags f-16" href="{{ tag.get_absolute_url }}"><i class="fa fa-tags mr-1"></i>{{ tag.name }} ({{ tag.get_article_list.count }})</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% include 'blog/tags/base_right.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

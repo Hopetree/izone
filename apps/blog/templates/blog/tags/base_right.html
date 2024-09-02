@@ -96,11 +96,15 @@
     </div>
     <div class="card-body px-0 py-3">
         <div class="tag-cloud">
-            {% get_tag_list as tag_list %}
+            {% get_tag_list 50 as tag_list %}
             {% for tag in tag_list %}
                 <a href="{{ tag.get_absolute_url }}" class="tags f-16" id="tag-{{ forloop.counter }}"
                    title="【{{ tag.name }}】标签下有{{ tag.total_num }}篇文章">{{ tag.name }}</a>
             {% endfor %}
+            {% if tag_list %}
+                <a href="{% url 'blog:tags' %}" class="tags f-16 py-1 mt-2"
+                   style="width: 98%;border-radius:.4rem;">查看更多 ...</a>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -371,6 +371,12 @@ class SubjectListView(generic.ListView):
     paginate_by = 100
     paginate_orphans = 0
 
+class TagListView(generic.ListView):
+    model = Tag
+    template_name = 'blog/tagIndex.html'
+    context_object_name = 'tags'
+    paginate_by = 500
+    paginate_orphans = 0
 
 # dashboard页面，仅管理员可以访问，其他用户不能访问
 def dashboard(request):
