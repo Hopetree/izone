@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-
+from django.db.models import Q
 
 from oauth.models import Ouser
 from blog.models import Article, Tag, Category, Timeline
 from tool.models import ToolLink
+from webstack.models import NavigationSite
 from .serializers import (UserSerializer, ArticleSerializer,
-                          TimelineSerializer,TagSerializer,CategorySerializer,ToolLinkSerializer)
+                          TimelineSerializer,TagSerializer,
+                          CategorySerializer,ToolLinkSerializer,
+                          NavigationSiteSerializer)
 from rest_framework import viewsets, permissions
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 # from .permissions import IsAdminUserOrReadOnly
@@ -23,6 +26,17 @@ class ArticleListSet(viewsets.ModelViewSet):
 
     def perform_create(self,serializer):
         serializer.save(author=self.request.user)
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        is_publish = self.request.query_params.get('is_publish', None)
+        if is_publish == 'true':
+            queryset = queryset.filter(is_publish=True)
+        elif is_publish == 'false':
+            queryset = queryset.filter(is_publish=False)
+        return queryset
+
 
 class TagListSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
@@ -43,3 +57,18 @@ class ToolLinkListSet(viewsets.ModelViewSet):
     queryset = ToolLink.objects.all()
     serializer_class = ToolLinkSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
+class NavigationSiteListSet(viewsets.ModelViewSet):
+    queryset = NavigationSite.objects.all()
+    serializer_class = NavigationSiteSerializer
+    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        is_show = self.request.query_params.get('is_show', None)
+        if is_show == 'true':
+            queryset = queryset.filter(is_show=True)
+        elif is_show == 'false':
+            queryset = queryset.filter(is_show=False)
+        return queryset

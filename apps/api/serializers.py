@@ -3,6 +3,7 @@ from oauth.models import Ouser
 from rest_framework import serializers
 from blog.models import Article, Tag, Category, Timeline
 from tool.models import ToolLink, ToolCategory
+from webstack.models import NavigationSite
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,7 +28,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    category = CategorySerializer(read_only=True)
+    category = CategorySerializer(
+        many=False,
+        read_only=True,
+    )
     tags = TagSerializer(
         many=True,
         read_only=True,
@@ -41,8 +45,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         # fields = ('id', 'author', 'title', 'views', 'category', 'tags')
-        # fields = '__all__'
-        exclude = ('body',)
+        fields = '__all__'
+        # exclude = ('body',)
 
 
 class TimelineSerializer(serializers.ModelSerializer):
@@ -62,4 +66,11 @@ class ToolLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ToolLink
+        fields = '__all__'
+
+
+class NavigationSiteSerializer(serializers.ModelSerializer):
+    menu = serializers.ReadOnlyField(source='menu.name')
+    class Meta:
+        model = NavigationSite
         fields = '__all__'
