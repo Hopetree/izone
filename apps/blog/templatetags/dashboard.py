@@ -53,11 +53,12 @@ def get_today_views_by_forecast():
         yes_total_views = yes_article_hours['23'] + yes_page_hours['23']  # 昨日总计
         thi_done_views = thi_article_hours[last_hour] + thi_page_hours[last_hour]  # 今日此时总计
         # 上周今日总*今日当前/上周今日当前
-        forecast_views = (last_week_total_views - last_week_yes_total_views) * \
-                         (thi_done_views - yes_total_views) / \
-                         (last_week_done_views - last_week_yes_total_views)
-        last_this_hour_views = last_week_done_views - last_week_yes_total_views
-        result = int(forecast_views), last_this_hour_views
+        if (last_week_done_views - last_week_yes_total_views) != 0:
+            forecast_views = (last_week_total_views - last_week_yes_total_views) * \
+                             (thi_done_views - yes_total_views) / \
+                             (last_week_done_views - last_week_yes_total_views)
+            last_this_hour_views = last_week_done_views - last_week_yes_total_views
+            result = int(forecast_views), last_this_hour_views
     return result
 
 
