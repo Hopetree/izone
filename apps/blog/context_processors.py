@@ -40,4 +40,6 @@ def settings_info(request):
         'site_verification': settings.MY_SITE_VERIFICATION,
         'site_url': site_full_url(),
         'static_version': STATIC_VERSION,
+        'reward_wx': settings.REWARD_WX,
+        'reward_zfb': settings.REWARD_ZFB
     }

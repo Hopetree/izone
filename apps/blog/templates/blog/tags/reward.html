@@ -1,4 +1,5 @@
 {% load static %}
+{% if reward_wx and reward_zfb %}
 <div class="text-center print-none">
     <button class="btn btn-danger" data-toggle="collapse" data-target=".multi-collapse"
             aria-expanded="false" aria-controls="sponsor-zfb sponsor-wx"
@@ -12,13 +13,14 @@
     <div class="col text-center">
         <div class="collapse multi-collapse" id="sponsor-wx">
             <div class="p-1 text-success">微信</div>
-            <img class="w-75" src="{% static 'blog/img/reward_wx.png' %}">
+            <img class="w-75" src="{{ reward_wx }}" alt="微信打赏">
         </div>
     </div>
     <div class="col text-center">
         <div class="collapse multi-collapse" id="sponsor-zfb">
             <div class="p-1 text-primary">支付宝</div>
-            <img class="w-75" src="{% static 'blog/img/reward_zfb.png' %}">
+            <img class="w-75" src="{{ reward_zfb }}" alt="支付宝打赏">
         </div>
     </div>
 </div>
+{% endif %}
