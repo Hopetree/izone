@@ -179,8 +179,11 @@ def check_host_status(recipient_list=None, times=None, ignore_hours=None):
     response.data = {'msg': msg}
     return response.as_dict()
 
-
-@shared_task
+# name: 指定任务的名称。
+# max_retries: 设置任务的最大重试次数
+# default_retry_delay: 设置任务重试的默认延迟时间（单位为秒）
+# retry_kwargs: 允许为重试指定额外的关键字参数
+@shared_task(max_retries=2, default_retry_delay=10)
 def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
                       token, owner, repo, max_num=10, msg=None):
     """
