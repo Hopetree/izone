@@ -22,6 +22,8 @@ from monitor.actions import (
 
 from blog.templatetags.blog_tags import get_blog_infos
 
+from .oss_sync import action_qiniu_sync_github
+
 
 @shared_task
 def simple_task(x, y):
@@ -175,4 +177,29 @@ def check_host_status(recipient_list=None, times=None, ignore_hours=None):
     msg = action_check_host_status(recipient_list=recipient_list, times=times,
                                    ignore_hours=ignore_hours)
     response.data = {'msg': msg}
+    return response.as_dict()
+
+
+@shared_task
+def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
+                      token, owner, repo, max_num=10, msg=None):
+    """
+    七牛云空间同步到GitHub，空间到项目
+    @param access_key: 七牛密钥
+    @param secret_key: 七牛密钥
+    @param bucket_name: 七牛空间名，如blog-img
+    @param private_domain: 七牛空间私有域名，如pic.tendcode.com
+    @param token: GitHub token
+    @param owner: GitHub 用户名，如Hopetree
+    @param repo: GitHub 项目名，如img
+    @param max_num: 每次同步的数量，如果要一次同步所以则设置大一点就行
+    @param msg: GitHub 上传文件时候的 commit 信息，不填则按照默认信息
+    @return:
+    """
+    response = TaskResponse()
+    result = action_qiniu_sync_github(
+        access_key, secret_key, bucket_name, private_domain,
+        token, owner, repo, max_num, msg
+    )
+    response.data = result
     return response.as_dict()
