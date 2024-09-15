@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404, render, reverse, redirect
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.views import generic
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
@@ -371,12 +372,14 @@ class SubjectListView(generic.ListView):
     paginate_by = 100
     paginate_orphans = 0
 
+
 class TagListView(generic.ListView):
     model = Tag
     template_name = 'blog/tagIndex.html'
     context_object_name = 'tags'
     paginate_by = 500
     paginate_orphans = 0
+
 
 # dashboard页面，仅管理员可以访问，其他用户不能访问
 def dashboard(request):
@@ -388,3 +391,28 @@ def dashboard(request):
 # feed hub
 def feed_hub(request):
     return render(request, 'blog/feedhub.html')
+
+@csrf_exempt
+def vitepress_subject_view(request):
+    data = {'code': 0, 'error': '', 'data': []}
+    subjects = Subject.objects.all()
+    for subject in subjects:
+        subject_data = {
+            'name': subject.name,
+            'description': subject.description,
+            'pk': str(subject.pk),
+            'items': []
+        }
+        for topic in subject.get_topics():
+            topic_data = {
+                'name': topic.name,
+                'items': []
+            }
+            for article in topic.get_articles():
+                topic_data['items'].append({
+                    'title': article.title,
+                    'slug': article.slug
+                })
+            subject_data['items'].append(topic_data)
+        data['data'].append(subject_data)
+    return JsonResponse(data)

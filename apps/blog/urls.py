@@ -5,7 +5,8 @@ from .views import test_page_view
 from .views import (IndexView, DetailView, CategoryView, TagView, AboutView, TagListView,
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
                     update_article, FriendLinkView, friend_add, SubjectDetailView,
-                    SubjectPageDetailView, SubjectListView, dashboard, feed_hub)
+                    SubjectPageDetailView, SubjectListView, dashboard, feed_hub,
+                    vitepress_subject_view)
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
@@ -31,6 +32,9 @@ urlpatterns = [
     path('subject/<int:pk>/', SubjectPageDetailView.as_view(), name='subject_page'),
     # 专题文章内容页
     path('subject/article/<slug:slug>/', SubjectDetailView.as_view(), name='subject_detail'),
+
+    # vitepress
+    path('vitepress/subjects/', vitepress_subject_view, name='vitepress_subject_view'),
 
 ]
 
