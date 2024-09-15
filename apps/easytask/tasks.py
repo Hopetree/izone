@@ -199,7 +199,7 @@ def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
     response = TaskResponse()
     result = action_qiniu_sync_github(
         access_key, secret_key, bucket_name, private_domain,
-        token, owner, repo, max_num, msg
+        token, owner, repo, int(max_num), msg
     )
     response.data = result
     return response.as_dict()
