@@ -1,5 +1,6 @@
 import json
 import base64
+import re
 from datetime import datetime
 
 import requests
@@ -167,6 +168,9 @@ class GitHubManager:
 
 
 class BlogManager:
+    source_media_url = 'https://tendcode.com/cdn/'
+    target_media_url = 'https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/'
+
     def __init__(self, base_url, github_manager, prefix='blog',
                  target=None, full=False, white_list=None):
         """
@@ -276,8 +280,7 @@ class BlogManager:
         else:
             self.result['github']['upload_failed'] += 1
 
-    @staticmethod
-    def deal_with_body(body, title=None):
+    def deal_with_body(self, body, title=None):
         """
         处理文章内容
         1. 替换图床地址
@@ -289,6 +292,25 @@ class BlogManager:
         # 添加标题
         if title:
             body = f"# {title}\n\n" + body
+
+        # 处理绝对路径的媒体文件
+        pattern = r'!\[.*?\]\(\s*({url}.*?)\s*(?:"|\))'.format(url=self.source_media_url)
+        media_list = re.findall(pattern, body)
+        if media_list:
+            for old_url in media_list:
+                new_url = old_url.replace(self.source_media_url, self.target_media_url)
+                body = body.replace(old_url, new_url)
+
+        # 处理相对路径的媒体文件
+        pattern = r'!\[.*?\]\(\s*(/cdn/.*?)\s*(?:"|\))'
+        media_list = re.findall(pattern, body)
+        if media_list:
+            for old_url in media_list:
+                new_url = old_url.replace('/cdn/', self.target_media_url)
+                body = body.replace(old_url, new_url)
+
+        # 处理markdown个性化语法: 消息块
+        body = body.replace('::: primary', '::: tip')
 
         return body
 
