@@ -1,0 +1,387 @@
+import json
+import base64
+from datetime import datetime
+
+import requests
+import yaml
+
+"""
+同步博客文章到GitHub思路：
+1. 查询出GitHub中指定目录中文章清单，文章统一会放到这里
+2. 查询出博客中所有文章，得到一个清单
+3. 判断是不是全量同步，如果是，则全量上传所有文章（先查询sha，然后拿着sha上传就是更新），否则增量上传
+4. 更新index.md
+5. 更新config.ts
+关键点：vitepress的action中设置好规则，只有config.ts变动才触发发布操作
+"""
+
+
+class GitHubManager:
+    def __init__(self, token, owner, repo, upload_msg=None):
+        """
+        初始化 GitHubManager 类
+        :param token: GitHub 的个人访问令牌 (Personal Access Token)
+        :param owner: 仓库的所有者（GitHub 用户名）
+        :param repo: 仓库名称
+        :param upload_msg: 文件上传的commit
+        """
+        self.token = token
+        self.owner = owner
+        self.repo = repo
+        self.upload_msg = upload_msg or 'Upload file via API'
+        self.api_base_url = f"https://api.github.com/repos/{owner}/{repo}"
+
+    def _get_headers(self):
+        """
+        获取 HTTP 请求头，包含认证信息
+        :return: 带有授权信息的 headers
+        """
+        return {
+            'Authorization': f'token {self.token}',
+            'Content-Type': 'application/json'
+        }
+
+    def _list_files_in_directory(self, path=''):
+        """
+        列举 GitHub 仓库中指定目录下的所有文件和子目录
+        :param path: 要查询的文件路径，默认为仓库根目录
+        :return: 文件和子目录列表
+        """
+        url = f"{self.api_base_url}/contents/{path}"
+        headers = self._get_headers()
+
+        response = requests.get(url, headers=headers, timeout=20)
+
+        if response.status_code == 200:
+            # 返回文件和目录的列表
+            return response.json()
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            return None
+
+    def list_all_files(self, path=''):
+        """
+        递归列举 GitHub 仓库中的所有文件
+        :param path: 要查询的文件路径，默认为仓库根目录
+        :return: 所有文件路径列表
+        """
+        files_list = []
+
+        # 获取当前目录下的文件和目录
+        items = self._list_files_in_directory(path)
+
+        if items is None:
+            return []
+
+        for item in items:
+            if item['type'] == 'file':
+                # 如果是文件，保存文件的路径
+                files_list.append(item['path'])
+            elif item['type'] == 'dir':
+                # 如果是目录，递归列举该目录下的文件
+                files_list.extend(self.list_all_files(item['path']))
+
+        return files_list
+
+    def get_file_sha(self, file_path):
+        """
+        获取 GitHub 上已有文件的 SHA 值
+        :param file_path: 文件路径，相对于仓库根目录
+        :return: 文件的 SHA 值，如果文件不存在，返回 None
+        """
+        url = f"{self.api_base_url}/contents/{file_path}"
+        headers = self._get_headers()
+
+        response = requests.get(url, headers=headers, timeout=20)
+
+        if response.status_code == 200:
+            file_info = response.json()
+            return file_info['sha']
+        elif response.status_code == 404:
+            print(f"File {file_path} does not exist.")
+            return None
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            return None
+
+    def get_file_content(self, file_path):
+        """
+        获取 GitHub 上已有文件的内容
+        :param file_path: 文件路径，相对于仓库根目录
+        :return: 文件的内容，如果文件不存在，返回 None
+        """
+        url = f"{self.api_base_url}/contents/{file_path}"
+        headers = self._get_headers()
+
+        response = requests.get(url, headers=headers, timeout=20)
+
+        if response.status_code == 200:
+            file_info = response.json()
+            file_content = file_info['content']
+            # GitHub 返回的是 base64 编码后的文件内容，所以需要解码
+            decoded_content = base64.b64decode(file_content).decode('utf-8')
+            return decoded_content
+        elif response.status_code == 404:
+            print(f"File {file_path} does not exist.")
+            return None
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            return None
+
+    def upload_file(self, file_path, content, sha=None):
+        """
+        上传文件到 GitHub 仓库
+        :param file_path: 上传文件的路径（包括文件名），相对于仓库根目录
+        :param content: 文件的内容（字节或字符串）
+        :param sha: 文件sha，已存在的时候可以更新
+        """
+        # 将内容编码为 base64 格式
+        if isinstance(content, str):
+            content_bytes = content.encode('utf-8')
+        else:
+            content_bytes = content
+
+        encoded_content = base64.b64encode(content_bytes).decode('utf-8')
+
+        url = f"{self.api_base_url}/contents/{file_path}"
+        headers = self._get_headers()
+
+        # 数据 payload，包含文件的 base64 编码内容和提交信息
+        data = {
+            "message": self.upload_msg,
+            "content": encoded_content,
+            "sha": sha
+        }
+
+        response = requests.put(url, json=data, headers=headers, timeout=20)
+
+        if response.status_code == 201:
+            print(f"File {file_path} uploaded successfully.")
+            return response.json()
+        elif response.status_code == 200:
+            print(f"File {file_path} updated successfully.")
+            return response.json()
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            return None
+
+
+class BlogManager:
+    def __init__(self, base_url, github_manager, prefix='blog',
+                 target=None, full=False, white_list=None):
+        """
+
+        @param base_url:
+        @param github_manager:
+        @param prefix:
+        @param target: 目标清单
+        @param full: 是否全量同步
+        @param white_list: 同步白名单，有白名单则直接同步
+        """
+        self.base_url = base_url
+        self.article_start_url = self.base_url + '/api/v1/articles/'
+        self.subject_url = self.base_url + '/vitepress/subjects/'
+        self.github_manager = github_manager
+        self.prefix = prefix
+        self.target = target or []
+        self.full = full
+        self.white_list = white_list or []
+        self.result = {
+            'blog': {
+                'total': 0,
+                'subject': 0,
+                'need_download': 0,
+            },
+            'github': {
+                'total': len(self.target),
+                'upload_success': 0,
+                'upload_failed': 0
+            }
+        }
+
+    def upload_all_articles(self, url):
+        """
+        递归请求接口上传所有文章
+        @param url:
+        @return:
+        """
+        resp = requests.get(url, timeout=10)
+        results = resp.json()['results']
+        for item in results:
+            self.result['blog']['total'] += 1
+            self.upload_article(item)
+        if resp.json()['next']:
+            self.upload_all_articles(resp.json()['next'])
+
+    def upload_article(self, item):
+        """
+        上传一篇文章
+        1. 有主题的传到主题pk下的路径中
+        2. 没有主题的直接放到前缀下面
+        @param item:
+        @return:
+        """
+        if not item.get('subject'):
+            file_path = f'{self.prefix}/{item["slug"]}.md'
+        else:
+            file_path = f'{self.prefix}/{item["subject"]}/{item["slug"]}.md'
+
+        # ******************* 过滤器 *******************
+        # 全量更新则直接进入更新逻辑
+        # 增量更新，要判断是否在白名单，当有白名单则强制更新白名单的，否则只添加新文件
+        if not self.full:
+            if self.white_list:
+                if item['slug'] not in self.white_list:
+                    return
+            else:
+                if file_path in self.target:
+                    return
+        # ******************* 过滤器 *******************
+
+        # 能走到这里说明是要提交的文件，需要判断是否已经存在，存在则获取sha来更新
+        self.result['blog']['need_download'] += 1
+        if file_path in self.target:
+            sha = self.github_manager.get_file_sha(file_path)
+        else:
+            sha = None
+
+        body = self.deal_with_body(item['body'], title=item['title'])
+        response = self.github_manager.upload_file(file_path, body, sha=sha)
+        if response:
+            self.result['github']['upload_success'] += 1
+        else:
+            self.result['github']['upload_failed'] += 1
+
+    def upload_subject_index(self, subject_path, subject_content):
+        """
+        更新或提交一个专题的index.md文件
+        @param subject_path:
+        @param subject_content:
+        @return:
+        """
+        if not self.full:
+            if subject_path in self.target:
+                return
+
+        self.result['blog']['need_download'] += 1
+        if subject_path in self.target:
+            subject_index_sha = self.github_manager.get_file_sha(subject_path)
+        else:
+            subject_index_sha = None
+
+        response = self.github_manager.upload_file(subject_path, subject_content,
+                                                   subject_index_sha)
+        if response:
+            self.result['github']['upload_success'] += 1
+        else:
+            self.result['github']['upload_failed'] += 1
+
+    @staticmethod
+    def deal_with_body(body, title=None):
+        """
+        处理文章内容
+        1. 替换图床地址
+        2. 替换个性化的markdown语法
+        @param title:
+        @param body:
+        @return:
+        """
+        # 添加标题
+        if title:
+            body = f"# {title}\n\n" + body
+
+        return body
+
+    def upload_features_and_sidebar(self):
+        features = {'features': []}
+        sidebar = {}
+        data = requests.get(self.subject_url, timeout=10).json()['data']
+        for subject in data:
+            features['features'].append({
+                'title': subject['name'],
+                'details': subject['description'],
+                'link': f'/{self.prefix}/{subject["pk"]}/',
+                'linkText': '查看主题文章',
+                'icon': '📚'
+            })
+
+            sidebar[f'/{self.prefix}/{subject["pk"]}/'] = []
+            for topic in subject['items']:
+                topic_data = {'text': topic['name'], 'collapsed': False, 'items': []}
+                for article in topic['items']:
+                    topic_data['items'].append({
+                        'text': article['title'],
+                        'link': f'/{self.prefix}/{subject["pk"]}/{article["slug"]}'
+                    })
+                sidebar[f'/{self.prefix}/{subject["pk"]}/'].append(topic_data)
+
+            # 创建专题index.md文件，全量更新则全部更新，否则只新增
+            self.result['blog']['subject'] += 1
+            subject_path = f'{self.prefix}/{subject["pk"]}/index.md'
+            subject_content = f"# {subject['name']}\n\n{subject['description']}"
+            self.upload_subject_index(subject_path, subject_content)
+
+        # 补齐内容，保证每行4个
+        if len(data) % 4 != 0:
+            for i in range(4 - len(data) % 4):
+                features['features'].append({
+                    'title': '待完成',
+                    'details': '未完待续',
+                    'icon': '📒'
+                })
+
+        # 使用模板写入index.md
+        index_tpl_content = self.github_manager.get_file_content('index.md.tpl')
+        features_yaml_text = yaml.dump(features, default_flow_style=False, allow_unicode=True)
+        index_content = index_tpl_content.replace('{{features}}', features_yaml_text)
+        index_sha = self.github_manager.get_file_sha('index.md')
+        # print(index_content)
+        response = self.github_manager.upload_file('index.md', index_content, index_sha)
+        if response:
+            self.result['github']['upload_index'] = True
+        else:
+            self.result['github']['upload_index'] = False
+
+        # 使用模板写入config.ts
+        config_tpl_content = self.github_manager.get_file_content('.vitepress/config.ts.tpl')
+        sidebar_json_text = json.dumps(sidebar, ensure_ascii=False, indent=2)
+        update_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        save_content = config_tpl_content.replace('{{sidebar}}', sidebar_json_text)
+        save_content = save_content.replace("{{date}}", update_date)
+        config_sha = self.github_manager.get_file_sha('.vitepress/config.ts')
+        # print(save_content)
+        response = self.github_manager.upload_file('.vitepress/config.ts', save_content, config_sha)
+        if response:
+            self.result['github']['config'] = True
+        else:
+            self.result['github']['config'] = False
+
+
+def action_article_to_github(base_url, token, owner, repo, msg='Upload file via API',
+                             full=False, white_list=None, prefix='blog'):
+    """
+    @param base_url:
+    @param token:
+    @param owner:
+    @param repo:
+    @param msg:
+    @param full:
+    @param white_list:
+    @param prefix:
+    @return:
+    """
+    white_list = white_list or []
+    github_manager = GitHubManager(token, owner, repo, msg)
+    # 1. 查询GitHub中所有文件
+    github_files = github_manager.list_all_files(path=prefix)
+
+    blog_manager = BlogManager(base_url, github_manager, prefix,
+                               target=github_files,
+                               full=full, white_list=white_list)
+
+    # 2. 全量/增量/白名单同步文章
+    blog_manager.upload_all_articles(blog_manager.article_start_url)
+    # 3. 更新主页文件和左侧导航文件
+    blog_manager.upload_features_and_sidebar()
+
+    return blog_manager.result

@@ -23,6 +23,7 @@ from monitor.actions import (
 from blog.templatetags.blog_tags import get_blog_infos
 
 from .oss_sync import action_qiniu_sync_github
+from .article_sync import action_article_to_github
 
 
 @shared_task
@@ -179,6 +180,7 @@ def check_host_status(recipient_list=None, times=None, ignore_hours=None):
     response.data = {'msg': msg}
     return response.as_dict()
 
+
 # name: 指定任务的名称。
 # max_retries: 设置任务的最大重试次数
 # default_retry_delay: 设置任务重试的默认延迟时间（单位为秒）
@@ -202,7 +204,19 @@ def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
     response = TaskResponse()
     result = action_qiniu_sync_github(
         access_key, secret_key, bucket_name, private_domain,
-        token, owner, repo, int(max_num), msg
+        token, owner, repo, max_num, msg
+    )
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task(max_retries=2, default_retry_delay=10)
+def article_to_github(base_url, token, owner, repo, msg='Sync from blog task',
+                      full=False, white_list=None, prefix='blog'):
+    response = TaskResponse()
+    result = action_article_to_github(
+        base_url, token, owner, repo,
+        msg, full, white_list, prefix
     )
     response.data = result
     return response.as_dict()
