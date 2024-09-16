@@ -407,3 +407,12 @@ def action_article_to_github(base_url, token, owner, repo, msg='Upload file via 
     blog_manager.upload_features_and_sidebar()
 
     return blog_manager.result
+
+
+if __name__ == '__main__':
+    import json
+
+    keyword_arguments = '{}'
+    data = json.loads(keyword_arguments)
+    r = action_article_to_github(**data)
+    print(r)
