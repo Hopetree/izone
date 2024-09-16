@@ -27,15 +27,9 @@ class ArticleListSet(viewsets.ModelViewSet):
     def perform_create(self,serializer):
         serializer.save(author=self.request.user)
 
-    def filter_queryset(self, queryset):
-        queryset = super().filter_queryset(queryset)
-
-        is_publish = self.request.query_params.get('is_publish', None)
-        if is_publish == 'true':
-            queryset = queryset.filter(is_publish=True)
-        elif is_publish == 'false':
-            queryset = queryset.filter(is_publish=False)
-        return queryset
+    def get_queryset(self):
+        # 仅返回 is_publish=True 的数据
+        return Article.objects.filter(is_publish=True)
 
 
 class TagListSet(viewsets.ModelViewSet):
