@@ -28,6 +28,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
+    subject = serializers.ReadOnlyField(source='topic.subject.pk')
     category = CategorySerializer(
         many=False,
         read_only=True,
