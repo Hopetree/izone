@@ -189,6 +189,8 @@ class BlogManager:
         self.target = target or []
         self.full = full
         self.white_list = white_list or []
+        self.free_articles = []  # 无专题文章
+        self.free_path = 'free'  # 无专题文章子目录
         self.result = {
             'blog': {
                 'total': 0,
@@ -225,7 +227,8 @@ class BlogManager:
         @return:
         """
         if not item.get('subject'):
-            file_path = f'{self.prefix}/{item["slug"]}.md'
+            file_path = f'{self.prefix}/{self.free_path}/{item["slug"]}.md'
+            self.free_articles.append((item['title'], item['slug']))
         else:
             file_path = f'{self.prefix}/{item["subject"]}/{item["slug"]}.md'
 
@@ -344,13 +347,35 @@ class BlogManager:
             subject_content = f"# {subject['name']}\n\n{subject['description']}"
             self.upload_subject_index(subject_path, subject_content)
 
+        # 添加无专题文章的左侧导航
+        sidebar[f'/{self.prefix}/{self.free_path}/'] = []
+        self.result['blog']['subject'] += 1
+        free_subject_path = f'{self.prefix}/{self.free_path}/index.md'
+        free_subject_content = f"# 无专题文章"
+        self.upload_subject_index(free_subject_path, free_subject_content)
+        for article_title, article_slug in self.free_articles:
+            sidebar[f'/{self.prefix}/{self.free_path}/'].append({
+                'text': article_title,
+                'link': f'/{self.prefix}/{self.free_path}/{article_slug}'
+            })
+
+        # 添加一个无专题文章块
+        features['features'].append({
+            'title': '其他文章',
+            'details': '未分类文章',
+            'link': f'/{self.prefix}/{self.free_path}/',
+            'linkText': '查看其他文章',
+            'icon': '📘'
+        })
+
         # 补齐内容，保证每行4个
-        if len(data) % 4 != 0:
-            for i in range(4 - len(data) % 4):
+        features_count = len(features['features'])
+        if features_count % 4 != 0:
+            for i in range(4 - features_count % 4):
                 features['features'].append({
                     'title': '待完成',
                     'details': '未完待续',
-                    'icon': '📒'
+                    'icon': '📝'
                 })
 
         # 使用模板写入index.md
