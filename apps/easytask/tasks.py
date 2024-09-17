@@ -211,11 +211,28 @@ def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
 
 
 @shared_task(max_retries=2, default_retry_delay=10)
-def article_to_github(base_url, token, owner, repo, msg='Sync from blog task',
+def article_to_github(base_url, token, owner, repo,
+                      source_media_url, target_media_url,
+                      msg='Sync from blog task',
                       full=False, white_list=None, prefix='blog'):
+    """
+    同步文章到GitHub
+    @param base_url: 博客接口地址，如https://tendcode.com
+    @param token: GitHub token
+    @param owner: GitHub 用户名，如Hopetree
+    @param repo: GitHub 项目名，如img
+    @param source_media_url: 媒体文件源地址前缀，如https://tendcode.com/cdn/
+    @param target_media_url: 媒体文件替换后地址前缀，如https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/
+    @param msg: GitHub 提交信息，如Upload file via API
+    @param full: 是否全量同步，布尔值，默认False
+    @param white_list: 白名单，list，文章的slug
+    @param prefix: GitHub中文章保存路径，如blog
+    @return:
+    """
     response = TaskResponse()
     result = action_article_to_github(
         base_url, token, owner, repo,
+        source_media_url, target_media_url,
         msg, full, white_list, prefix
     )
     response.data = result

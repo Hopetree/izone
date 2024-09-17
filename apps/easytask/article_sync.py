@@ -1,4 +1,3 @@
-import json
 import base64
 import re
 from datetime import datetime
@@ -168,11 +167,9 @@ class GitHubManager:
 
 
 class BlogManager:
-    source_media_url = 'https://tendcode.com/cdn/'
-    target_media_url = 'https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/'
 
-    def __init__(self, base_url, github_manager, prefix='blog',
-                 target=None, full=False, white_list=None):
+    def __init__(self, base_url, github_manager, source_media_url, target_media_url,
+                 prefix='blog', target=None, full=False, white_list=None):
         """
 
         @param base_url:
@@ -187,6 +184,8 @@ class BlogManager:
         self.subject_url = self.base_url + '/vitepress/subjects/'
         self.github_manager = github_manager
         self.prefix = prefix
+        self.source_media_url = source_media_url
+        self.target_media_url = target_media_url
         self.target = target or []
         self.full = full
         self.white_list = white_list or []
@@ -310,7 +309,9 @@ class BlogManager:
                 body = body.replace(old_url, new_url)
 
         # 处理markdown个性化语法: 消息块
-        body = body.replace('::: primary', '::: tip')
+        if ':::' in body:
+            for _key in ['primary', 'secondary', 'success', 'info']:
+                body = body.replace(f'::: {_key}', '::: tip')
 
         return body
 
@@ -379,9 +380,13 @@ class BlogManager:
             self.result['github']['config'] = False
 
 
-def action_article_to_github(base_url, token, owner, repo, msg='Upload file via API',
+def action_article_to_github(base_url, token, owner, repo,
+                             source_media_url, target_media_url,
+                             msg='Upload file via API',
                              full=False, white_list=None, prefix='blog'):
     """
+    @param target_media_url:
+    @param source_media_url:
     @param base_url:
     @param token:
     @param owner:
@@ -397,7 +402,8 @@ def action_article_to_github(base_url, token, owner, repo, msg='Upload file via 
     # 1. 查询GitHub中所有文件
     github_files = github_manager.list_all_files(path=prefix)
 
-    blog_manager = BlogManager(base_url, github_manager, prefix,
+    blog_manager = BlogManager(base_url, github_manager,
+                               source_media_url, target_media_url, prefix,
                                target=github_files,
                                full=full, white_list=white_list)
 
@@ -412,7 +418,10 @@ def action_article_to_github(base_url, token, owner, repo, msg='Upload file via 
 if __name__ == '__main__':
     import json
 
-    keyword_arguments = '{}'
-    data = json.loads(keyword_arguments)
-    r = action_article_to_github(**data)
+    # source_media_url = 'https://tendcode.com/cdn/'
+    # target_media_url = 'https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/'
+
+    keyword_arguments = '{"base_url":"https://tendcode.com","token":"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","owner":"Hopetree","repo":"hopetree.github.io","source_media_url":"https://tendcode.com/cdn/","target_media_url":"https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/","msg":"Sync from blog task","full":false,"white_list":["qiniu-sync-to-github","python-markdown-extensions"],"prefix":"blog"}'
+    task_args = json.loads(keyword_arguments)
+    r = action_article_to_github(**task_args)
     print(r)
