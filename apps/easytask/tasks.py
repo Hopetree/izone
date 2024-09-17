@@ -210,7 +210,7 @@ def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
     return response.as_dict()
 
 
-@shared_task(max_retries=2, default_retry_delay=10)
+@shared_task(max_retries=2, default_retry_delay=30)
 def article_to_github(base_url, token, owner, repo,
                       source_media_url, target_media_url,
                       msg='Sync from blog task',
