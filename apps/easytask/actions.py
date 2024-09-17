@@ -273,8 +273,9 @@ def is_current_date_greater_than(input_date_str):
             return False
     elif len(input_date_str) == 2:  # 格式为 DD
         try:
-            input_date = datetime.strptime(f"{current_year}{current_month:02d}{input_date_str}{current_hour}",
-                                           "%Y%m%d%H")
+            input_date = datetime.strptime(
+                f"{current_year}{current_month:02d}{input_date_str}{current_hour}",
+                "%Y%m%d%H")
         except ValueError:
             return False
     else:
@@ -297,12 +298,16 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
     from blog.models import Article
     filter_rule = filter_rule or {}
     data = {}
+    for x in filter_rule.keys():
+        if x.isdigit():
+            if int(x) not in article_ids:
+                article_ids.append(int(x))
     for each_id in article_ids:
         article = Article.objects.get(id=int(each_id))
         if article:
             if article.is_publish is False:
                 article.is_publish = True
-                if filter_rule.get(str(each_id)): # 如果设置了规则，则按照规则发布，否则直接发布
+                if filter_rule.get(str(each_id)):  # 如果设置了规则，则按照规则发布，否则直接发布
                     publish_flag = is_current_date_greater_than(filter_rule.get(str(each_id)))
                     if publish_flag:
                         article.save()
