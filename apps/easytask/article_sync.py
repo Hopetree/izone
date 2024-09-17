@@ -421,7 +421,7 @@ if __name__ == '__main__':
     # source_media_url = 'https://tendcode.com/cdn/'
     # target_media_url = 'https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/'
 
-    keyword_arguments = '{"base_url":"https://tendcode.com","token":"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","owner":"Hopetree","repo":"hopetree.github.io","source_media_url":"https://tendcode.com/cdn/","target_media_url":"https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/","msg":"Sync from blog task","full":false,"white_list":["qiniu-sync-to-github","python-markdown-extensions"],"prefix":"blog"}'
+    keyword_arguments = '{}'
     task_args = json.loads(keyword_arguments)
     r = action_article_to_github(**task_args)
     print(r)
