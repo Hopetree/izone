@@ -195,6 +195,7 @@ class BlogManager:
         self.result = {
             'blog': {
                 'total': 0,
+                'article': 0,
                 'subject': 0,
                 'need_download': 0,
             },
@@ -215,6 +216,7 @@ class BlogManager:
         results = resp.json()['results']
         for item in results:
             self.result['blog']['total'] += 1
+            self.result['blog']['article'] += 1
             self.upload_article(item)
         if resp.json()['next']:
             self.upload_all_articles(resp.json()['next'])
@@ -344,6 +346,7 @@ class BlogManager:
 
             # 创建专题index.md文件，全量更新则全部更新，否则只新增
             self.result['blog']['subject'] += 1
+            self.result['blog']['total'] += 1
             subject_path = f'{self.prefix}/{subject["pk"]}/index.md'
             subject_content = f"# {subject['name']}\n\n{subject['description']}"
             self.upload_subject_index(subject_path, subject_content)
@@ -351,6 +354,7 @@ class BlogManager:
         # 添加无专题文章的左侧导航
         sidebar[f'/{self.prefix}/{self.free_path}/'] = []
         self.result['blog']['subject'] += 1
+        self.result['blog']['total'] += 1
         free_subject_path = f'{self.prefix}/{self.free_path}/index.md'
         free_subject_content = f"# 无专题文章"
         self.upload_subject_index(free_subject_path, free_subject_content)
