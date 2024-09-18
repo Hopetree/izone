@@ -448,5 +448,5 @@ if __name__ == '__main__':
 
     keyword_arguments = '{}'
     task_args = json.loads(keyword_arguments)
-    r = action_article_to_github(**task_args)
-    print(r)
+    task_result = action_article_to_github(**task_args)
+    print(json.dumps(task_result, indent=2, ensure_ascii=False))
