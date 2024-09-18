@@ -1,3 +1,4 @@
+import json
 import base64
 import re
 from datetime import datetime
@@ -441,8 +442,6 @@ def action_article_to_github(base_url, token, owner, repo,
 
 
 if __name__ == '__main__':
-    import json
-
     # source_media_url = 'https://tendcode.com/cdn/'
     # target_media_url = 'https://cdn.jsdelivr.net/gh/Hopetree/blog-img@main/'
 
