@@ -352,14 +352,16 @@ class BlogManager:
             self.upload_subject_index(subject_path, subject_content)
 
         # 添加无专题文章的左侧导航
-        sidebar[f'/{self.prefix}/{self.free_path}/'] = []
+        sidebar[f'/{self.prefix}/{self.free_path}/'] = [
+            {'text': '无分类文章', "collapsed": False, 'items': []}
+        ]
         self.result['blog']['subject'] += 1
         self.result['blog']['total'] += 1
         free_subject_path = f'{self.prefix}/{self.free_path}/index.md'
         free_subject_content = f"# 无专题文章"
         self.upload_subject_index(free_subject_path, free_subject_content)
         for article_title, article_slug in self.free_articles:
-            sidebar[f'/{self.prefix}/{self.free_path}/'].append({
+            sidebar[f'/{self.prefix}/{self.free_path}/'][0]['items'].append({
                 'text': article_title,
                 'link': f'/{self.prefix}/{self.free_path}/{article_slug}'
             })
@@ -383,6 +385,30 @@ class BlogManager:
                     'icon': '📝'
                 })
 
+        # 生成 README.md 中文章导航，更新README.md文件
+        subject_dict = {f['link']: f['title'] for f in features['features'] if f.get('link')}
+        toc_dict = {subject_dict[k]: v for k, v in sidebar.items()}
+        # print(json.dumps(toc_dict, indent=2, ensure_ascii=False))
+        toc_markdown = '## 文章导航\n'
+        for k, v in toc_dict.items():
+            subject_toc = f'\n- **{k}**'
+            for topic in v:
+                topic_toc = f'\n\t- {topic["text"]}'
+                for article in topic['items']:
+                    article_toc = f'\n\t\t- [{article["text"]}]({article["link"]}.md)'
+                    topic_toc += article_toc
+                subject_toc += topic_toc
+            toc_markdown += subject_toc
+        # print(toc_markdown)
+        readme_tpl_content = self.github_manager.get_file_content('README.md.tpl')
+        readme_sha = self.github_manager.get_file_sha('README.md')
+        readme_content = readme_tpl_content.replace('{{article_toc}}', toc_markdown)
+        response = self.github_manager.upload_file('README.md', readme_content, readme_sha)
+        if response:
+            self.result['github']['README.md'] = True
+        else:
+            self.result['github']['README.md'] = False
+
         # 使用模板写入index.md
         index_tpl_content = self.github_manager.get_file_content('index.md.tpl')
         features_yaml_text = yaml.dump(features, default_flow_style=False, allow_unicode=True)
@@ -391,9 +417,9 @@ class BlogManager:
         # print(index_content)
         response = self.github_manager.upload_file('index.md', index_content, index_sha)
         if response:
-            self.result['github']['upload_index'] = True
+            self.result['github']['index.md'] = True
         else:
-            self.result['github']['upload_index'] = False
+            self.result['github']['index.md'] = False
 
         # 使用模板写入config.ts
         config_tpl_content = self.github_manager.get_file_content('.vitepress/config.ts.tpl')
@@ -405,9 +431,9 @@ class BlogManager:
         # print(save_content)
         response = self.github_manager.upload_file('.vitepress/config.ts', save_content, config_sha)
         if response:
-            self.result['github']['config'] = True
+            self.result['github']['config.ts'] = True
         else:
-            self.result['github']['config'] = False
+            self.result['github']['config.ts'] = False
 
 
 def action_article_to_github(base_url, token, owner, repo,
