@@ -18,7 +18,7 @@ import yaml
 
 
 class GitHubManager:
-    def __init__(self, token, owner, repo, upload_msg=None):
+    def __init__(self, token, owner, repo, upload_msg=None, branch='main'):
         """
         初始化 GitHubManager 类
         :param token: GitHub 的个人访问令牌 (Personal Access Token)
@@ -29,6 +29,7 @@ class GitHubManager:
         self.token = token
         self.owner = owner
         self.repo = repo
+        self.branch = branch
         self.upload_msg = upload_msg or 'Upload file via API'
         self.api_base_url = f"https://api.github.com/repos/{owner}/{repo}"
 
@@ -83,6 +84,30 @@ class GitHubManager:
                 files_list.extend(self.list_all_files(item['path']))
 
         return files_list
+
+    def list_all_files_v2(self, path=''):
+        """
+        获取一个目录下所有文件，使用tree接口，而不是递归
+        @param path:
+        @return:
+        """
+        files = []
+        url = f"https://api.github.com/repos/{self.owner}/{self.repo}/git/trees/{self.branch}?recursive=1"
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        response = requests.get(url, headers=headers, timeout=20)
+        if response.status_code == 200:
+            # 解析响应
+            result = response.json()
+            for item in result["tree"]:
+                if item["path"].startswith(path) and item["type"] == "blob":
+                    files.append(item["path"])
+            return files
+        else:
+            raise Exception(
+                f"Query failed with status code {response.status_code}: {response.text}")
 
     def get_file_sha(self, file_path):
         """
@@ -456,7 +481,7 @@ def action_article_to_github(base_url, token, owner, repo,
     white_list = white_list or []
     github_manager = GitHubManager(token, owner, repo, msg)
     # 1. 查询GitHub中所有文件
-    github_files = github_manager.list_all_files(path=prefix)
+    github_files = github_manager.list_all_files_v2(path=prefix)
 
     blog_manager = BlogManager(base_url, github_manager,
                                source_media_url, target_media_url, prefix,

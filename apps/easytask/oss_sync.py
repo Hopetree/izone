@@ -80,7 +80,7 @@ class QiniuManager:
 
 
 class GitHubManager:
-    def __init__(self, token, owner, repo, upload_msg=None):
+    def __init__(self, token, owner, repo, upload_msg=None, branch='main'):
         """
         初始化 GitHubManager 类
         :param token: GitHub 的个人访问令牌 (Personal Access Token)
@@ -91,6 +91,7 @@ class GitHubManager:
         self.token = token
         self.owner = owner
         self.repo = repo
+        self.branch = branch
         self.upload_msg = upload_msg or 'Upload file via API'
         self.api_base_url = f"https://api.github.com/repos/{owner}/{repo}"
 
@@ -146,6 +147,30 @@ class GitHubManager:
 
         return files_list
 
+    def list_all_files_v2(self, path=''):
+        """
+        获取一个目录下所有文件，使用tree接口，而不是递归
+        @param path:
+        @return:
+        """
+        files = []
+        url = f"https://api.github.com/repos/{self.owner}/{self.repo}/git/trees/{self.branch}?recursive=1"
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        response = requests.get(url, headers=headers, timeout=20)
+        if response.status_code == 200:
+            # 解析响应
+            result = response.json()
+            for item in result["tree"]:
+                if item["path"].startswith(path) and item["type"] == "blob":
+                    files.append(item["path"])
+            return files
+        else:
+            raise Exception(
+                f"Query failed with status code {response.status_code}: {response.text}")
+
     def get_file_sha(self, file_path):
         """
         获取 GitHub 上已有文件的 SHA 值
@@ -160,6 +185,30 @@ class GitHubManager:
         if response.status_code == 200:
             file_info = response.json()
             return file_info['sha']
+        elif response.status_code == 404:
+            print(f"File {file_path} does not exist.")
+            return None
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+            return None
+
+    def get_file_content(self, file_path):
+        """
+        获取 GitHub 上已有文件的内容
+        :param file_path: 文件路径，相对于仓库根目录
+        :return: 文件的内容，如果文件不存在，返回 None
+        """
+        url = f"{self.api_base_url}/contents/{file_path}"
+        headers = self._get_headers()
+
+        response = requests.get(url, headers=headers, timeout=20)
+
+        if response.status_code == 200:
+            file_info = response.json()
+            file_content = file_info['content']
+            # GitHub 返回的是 base64 编码后的文件内容，所以需要解码
+            decoded_content = base64.b64decode(file_content).decode('utf-8')
+            return decoded_content
         elif response.status_code == 404:
             print(f"File {file_path} does not exist.")
             return None
@@ -248,7 +297,7 @@ def action_qiniu_sync_github(access_key, secret_key, bucket_name, private_domain
     # print(qiniu_files)
 
     # 2. 查询GitHub项目中所有文件
-    github_files = github_manager.list_all_files()
+    github_files = github_manager.list_all_files_v2()
     result['github']['total'] = len(github_files)
     # print(github_files)
 
