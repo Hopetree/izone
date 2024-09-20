@@ -216,6 +216,6 @@ class SiteConfigViewAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == 'config_data':  # 替换为你的 TextField 字段名
             kwargs['widget'] = widgets.AdminTextareaWidget(attrs={
-                'style': 'min-height: 30rem;',  # 设置最小高度
+                'style': 'min-height: 40rem;',  # 设置最小高度
             })
         return super().formfield_for_dbfield(db_field, request, **kwargs)
