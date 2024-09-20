@@ -329,9 +329,8 @@ class BlogManager:
         if media_list:
             for old_url in media_list:
                 new_url = old_url.replace(self.source_media_url, self.target_media_url)
-                # URL编码：将括号编码为其对应的URL编码
-                if '(' in new_url and ')' in new_url:
-                    new_url = new_url.replace('(', '%28').replace(')', '%29')
+                # URL编码：将空格编码为其对应的URL编码
+                new_url = new_url.replace(' ', '%20')
                 body = body.replace(old_url, new_url)
 
         # 处理相对路径的媒体文件
@@ -340,9 +339,8 @@ class BlogManager:
         if media_list:
             for old_url in media_list:
                 new_url = old_url.replace('/cdn/', self.target_media_url)
-                # URL编码：将括号编码为其对应的URL编码
-                if '(' in new_url and ')' in new_url:
-                    new_url = new_url.replace('(', '%28').replace(')', '%29')
+                # URL编码：将空格编码为其对应的URL编码
+                new_url = new_url.replace(' ', '%20')
                 body = body.replace(old_url, new_url)
 
         # 处理markdown个性化语法: 消息块
