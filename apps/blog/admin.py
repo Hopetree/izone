@@ -196,6 +196,7 @@ class SiteConfigViewAdmin(admin.ModelAdmin):
                 "<p>请按照以下格式提供JSON配置数据：</p>"
                 "<ul>"
                 "<li><strong>site_logo_name</strong> (字符串) - 必填，网站LOGO显示内容，例如：\"TendCode\"</li>"
+                "<li><strong>site_base_title</strong> (字符串) - 必填，网站主页默认标题，例如：\"一个Django博客网站\"</li>"
                 "<li><strong>site_end_title</strong> (字符串) - 必填，网站标题结尾内容，例如：\"izone\"</li>"
                 "<li><strong>site_description</strong> (字符串) - 必填，网站描述，例如：\"这是一个个人博客\"</li>"
                 "<li><strong>site_keywords</strong> (字符串) - 必填，网站关键词，多个用英文逗号拼接，例如：\"Django博客,个人博客\"</li>"

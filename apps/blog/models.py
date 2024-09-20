@@ -501,7 +501,8 @@ class SiteConfig(models.Model):
             raise ValidationError(f"无效的JSON格式: {e}")
 
         # 校验必填键
-        required_keys = ["site_logo_name", "site_end_title", "site_description", "site_keywords",
+        required_keys = ["site_logo_name", "site_base_title",
+                         "site_end_title", "site_description", "site_keywords",
                          "site_create_date"]
         for key in required_keys:
             if key not in json_data:
