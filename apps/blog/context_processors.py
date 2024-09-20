@@ -29,9 +29,8 @@ def settings_info(request):
     @return:
     """
     # 尝试获取唯一的 SiteConfig 实例，如果不存在则返回 None
-    try:
-        site_config = SiteConfig.objects.first()
-    except SiteConfig.DoesNotExist:
+    site_config = SiteConfig.objects.first()
+    if site_config is None:
         config_data = {}
     else:
         config_data = json.loads(site_config.config_data)
