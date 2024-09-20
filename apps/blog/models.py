@@ -1,12 +1,16 @@
+import re
 import json
 from datetime import datetime
+
 from django.db import models
+from django.db.utils import IntegrityError
 from django.conf import settings
 from django.shortcuts import reverse
+from django.core.exceptions import ValidationError
+
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 import markdown
-import re
 
 
 # Create your models here.
@@ -477,3 +481,52 @@ class MenuLink(models.Model):
         verbose_name = "菜单外链"
         verbose_name_plural = verbose_name
         ordering = ['sort_order']
+
+
+class SiteConfig(models.Model):
+    config_data = models.TextField(
+        "配置数据",
+        help_text="配置项作为全局上下文使用，上下文的具体定义见 apps/blog/context_processors.py 文件"
+    )
+
+    class Meta:
+        verbose_name = "网站配置"
+        verbose_name_plural = verbose_name
+
+    def clean(self):
+        # 检查config_data是否是合法的JSON格式
+        try:
+            json_data = json.loads(self.config_data)
+        except json.JSONDecodeError as e:
+            raise ValidationError(f"无效的JSON格式: {e}")
+
+        # 校验必填键
+        required_keys = ["site_logo_name", "site_end_title", "site_description", "site_keywords",
+                         "site_create_date"]
+        for key in required_keys:
+            if key not in json_data:
+                raise ValidationError(f"缺少配置项: {key}")
+
+        # 校验格式，除了指定的字段，其他都必须是字符串
+        not_str_keys = []
+        for key in json_data:
+            if key not in not_str_keys and not isinstance(key, str):
+                raise ValidationError(f"配置项必须是字符串: {key}")
+
+        # 校验 site_create_date 是否符合 %Y-%m-%d 格式
+        try:
+            site_create_date = json_data.get('site_create_date')
+            datetime.strptime(site_create_date, '%Y-%m-%d')
+        except (ValueError, TypeError):
+            raise ValidationError("site_create_date 必须是 %Y-%m-%d 格式的日期")
+
+        # 校验 site_http_type 只能是 http 或 https
+        if json_data.get('site_http_type'):
+            if json_data.get('site_http_type').lower() not in ['http', 'https']:
+                raise ValidationError("site_http_type 必须是 http 或 https")
+
+    def save(self, *args, **kwargs):
+        # 确保只存在一个配置实例
+        if SiteConfig.objects.exists() and not self.pk:
+            raise IntegrityError("只能存在一个网站配置实例")
+        super().save(*args, **kwargs)

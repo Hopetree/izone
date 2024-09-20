@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.admin import widgets
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
                      AboutBlog, Subject, Topic, ArticleView,
-                     PageView, FeedHub, MenuLink)
+                     PageView, FeedHub, MenuLink, SiteConfig)
 
 
 @admin.register(Subject)
@@ -183,3 +184,38 @@ class MenuLinkViewAdmin(admin.ModelAdmin):
     list_display = ('name', 'icon', 'link', 'title', 'active', 'sort_order')
     ordering = ('sort_order',)
     list_editable = ('active', 'sort_order')
+
+
+@admin.register(SiteConfig)
+class SiteConfigViewAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('config_data',),
+            'description': (
+                "<h4>网站配置项说明</h3>"
+                "<p>请按照以下格式提供JSON配置数据：</p>"
+                "<ul>"
+                "<li><strong>site_logo_name</strong> (字符串) - 必填，网站LOGO显示内容，例如：\"TendCode\"</li>"
+                "<li><strong>site_end_title</strong> (字符串) - 必填，网站标题结尾内容，例如：\"izone\"</li>"
+                "<li><strong>site_description</strong> (字符串) - 必填，网站描述，例如：\"这是一个个人博客\"</li>"
+                "<li><strong>site_keywords</strong> (字符串) - 必填，网站关键词，多个用英文逗号拼接，例如：\"Django博客,个人博客\"</li>"
+                "<li><strong>site_create_date</strong> (字符串) - 必填，网站创建日期，必须是 %Y-%m-%d 格式，例如：\"2023-09-20\"</li>"
+                "<li><strong>site_github</strong> (字符串) - 建议填，个人 Github 地址，例如：\"https://github.com/Hopetree\"</li>"
+                "<li><strong>site_http_type</strong> (字符串) - 建议填，使用 http 还是 https，例如：\"https\"</li>"
+                "<li><strong>site_icp_number</strong> (字符串) - 选填，备案号，例如：\"京ICP备XXXX号\"</li>"
+                "<li><strong>site_cnzz_protocol</strong> (字符串) - 选填，站长统计（友盟）代码，例如：\"&lt;script xxx &lt;/script&gt;\"</li>"
+                "<li><strong>site_la51_protocol</strong> (字符串) - 选填，站长统计（51.la）代码，例如：\"&lt;script xxx &lt;/script&gt;\"</li>"
+                "<li><strong>site_verification</strong> (字符串) - 选填，站长推送，例如：\"&lt;meta xxx /&gt;\"</li>"
+                "<li><strong>site_reward_wx</strong> (字符串) - 选填，文章页面的微信打赏二维码图片地址，例如：\"https://xxxx.xxx\"</li>"
+                "<li><strong>site_reward_zfb</strong> (字符串) - 选填，文章页面的支付宝打赏二维码图片地址，例如：\"https://xxxx.xxx\"</li>"
+                "</ul>"
+            ),
+        }),
+    )
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == 'config_data':  # 替换为你的 TextField 字段名
+            kwargs['widget'] = widgets.AdminTextareaWidget(attrs={
+                'style': 'min-height: 30rem;',  # 设置最小高度
+            })
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
