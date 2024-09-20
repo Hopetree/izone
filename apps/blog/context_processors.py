@@ -43,6 +43,7 @@ def settings_info(request):
         'site_create_year': site_create_date_info[1],
 
         'site_logo_name': config_data.get('site_logo_name', settings.SITE_LOGO_NAME),
+        'site_base_title': config_data.get('site_base_title', "一个使用Django搭建的网站"),
         'site_end_title': config_data.get('site_end_title', settings.SITE_END_TITLE),
         'site_description': config_data.get('site_description', settings.SITE_DESCRIPTION),
         'site_keywords': config_data.get('site_keywords', settings.SITE_KEYWORDS),
