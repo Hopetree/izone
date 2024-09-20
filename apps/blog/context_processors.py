@@ -31,9 +31,10 @@ def settings_info(request):
     # 尝试获取唯一的 SiteConfig 实例，如果不存在则返回 None
     try:
         site_config = SiteConfig.objects.first()
-        config_data = json.loads(site_config.config_data)
     except SiteConfig.DoesNotExist:
         config_data = {}
+    else:
+        config_data = json.loads(site_config.config_data)
 
     site_create_date = config_data.get('site_create_date', settings.SITE_CREATE_DATE)
     site_create_date_info = get_site_create_day(site_create_date)
