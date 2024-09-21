@@ -255,7 +255,7 @@ class GitHubManager:
 
 
 def action_qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
-                      token, owner, repo, max_num=10, msg=None):
+                             token, owner, repo, max_num=10, msg=None):
     """
     @param access_key: 七牛密钥
     @param secret_key: 七牛密钥
@@ -320,3 +320,12 @@ def action_qiniu_sync_github(access_key, secret_key, bucket_name, private_domain
             else:
                 result['qiniu']['download_failed'] += 1
     return result
+
+
+if __name__ == '__main__':
+    import json
+
+    keyword_arguments = '{}'
+    task_args = json.loads(keyword_arguments)
+    task_result = action_qiniu_sync_github(**task_args)
+    print(json.dumps(task_result, indent=2, ensure_ascii=False))
