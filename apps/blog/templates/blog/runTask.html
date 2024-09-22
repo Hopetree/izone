@@ -47,11 +47,11 @@
 
                         <!-- Args Input -->
                         <label for="args">Args (JSON Format)</label>
-                        <textarea class="form-control" id="args" name="args" rows="3">[]</textarea>
+                        <textarea class="form-control" id="args" name="args" rows="2">[]</textarea>
 
                         <!-- Kwargs Input -->
                         <label for="kwargs">Kwargs (JSON Format)</label>
-                        <textarea class="form-control" id="kwargs" name="kwargs" rows="3">{}</textarea>
+                        <textarea class="form-control" id="kwargs" name="kwargs" rows="6">{}</textarea>
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary my-1">执行任务</button>
@@ -70,6 +70,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // 自动伸缩输入框
+            const textarea = document.getElementById('kwargs');
+            textarea.addEventListener('input', function () {
+                // 重置高度，以便根据内容调整
+                this.style.height = 'auto';
+                // 设置新的高度
+                this.style.height = this.scrollHeight + 'px';
+            });
             // 任务管理地址
             const taskAdminLink = "{% url 'admin:django_celery_results_taskresult_changelist' %}";
             // 获取任务选择下拉菜单
