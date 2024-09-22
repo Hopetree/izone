@@ -108,10 +108,10 @@
                                     class="fa fa-fw fa-line-chart text-info mr-2"></i>网站看板</a>
                             <a class="dropdown-item pl-3" href="{% url 'monitor:index' %}"><i
                                     class="fa fa-fw fa-tachometer text-info mr-2"></i>监控面板</a>
-                            <a class="dropdown-item pl-3" href="{% url 'admin:blog_article_add' %}"><i
-                                    class="fa fa-fw fa-plus text-info mr-2"></i>新增文章</a>
                             <a class="dropdown-item pl-3" href="{% url 'blog:task_run' %}"><i
                                     class="fa fa-fw fa-tasks text-info mr-2"></i>执行任务</a>
+                            <a class="dropdown-item pl-3" href="{% url 'admin:blog_article_add' %}"><i
+                                    class="fa fa-fw fa-plus text-info mr-2"></i>新增文章</a>
                         {% endif %}
                         {% url 'comment:notification_no_read' as no_read_url %}
                         {% url 'comment:notification' as read_url %}
