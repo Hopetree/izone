@@ -13,7 +13,7 @@ def is_admin(user):
 
 @user_passes_test(is_admin)
 def run_task(request):
-    tasks = PeriodicTask.objects.filter(enabled=True)
+    tasks = PeriodicTask.objects.all()
     context = {'tasks': tasks}
     return render(request, 'blog/runTask.html', context=context)
 
