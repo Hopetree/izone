@@ -1,0 +1,133 @@
+{% extends 'blog/base.html' %}
+{% load static blog_tags %}
+
+{% block head_title %}执行任务{% endblock %}
+
+{% block metas %}
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="定时任务">
+{% endblock %}
+
+{% block top-file %}
+    <style>
+        #task-result a {
+            color: #ea6f5a;
+            text-decoration: none;
+        }
+
+        #task-result a:hover {
+            color: #ea6f5a;
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="card rounded-6 border-0 p-3 f-16">
+                    <!-- 表单，用于提交任务 -->
+                    <form id="task-form" method="POST" action="{% url 'blog:task_execute' %}">
+                        {% csrf_token %}
+
+                        <!-- Task Selector -->
+                        <label class="my-1 mr-2" for="taskSelect">选择任务</label>
+                        <select class="custom-select my-1 mr-sm-2" id="taskSelect" name="task_name">
+                            <option value="">Select a task</option>
+                            {% for task in tasks %}
+                                <!-- 使用 data- 属性来存储 args 和 kwargs -->
+                                <option value="{{ task.task }}" data-args="{{ task.args }}"
+                                        data-kwargs="{{ task.kwargs }}">
+                                    {{ task.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <!-- Args Input -->
+                        <label for="args">Args (JSON Format)</label>
+                        <textarea class="form-control" id="args" name="args" rows="3">[]</textarea>
+
+                        <!-- Kwargs Input -->
+                        <label for="kwargs">Kwargs (JSON Format)</label>
+                        <textarea class="form-control" id="kwargs" name="kwargs" rows="3">{}</textarea>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary my-1">执行任务</button>
+                    </form>
+
+                    <!-- 显示任务ID和超链接 -->
+                    <div id="task-result" style="margin-top: 20px; display: none;">
+                        <p>任务已提交，任务ID为：
+                            <a id="task-link" href="#" target="_blank">点击这里查看任务详情</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 任务管理地址
+            const taskAdminLink = "{% url 'admin:django_celery_results_taskresult_changelist' %}";
+            // 获取任务选择下拉菜单
+            const taskSelect = document.getElementById('taskSelect');
+
+            // 获取 args 和 kwargs 的文本区域
+            const argsTextarea = document.getElementById('args');
+            const kwargsTextarea = document.getElementById('kwargs');
+
+            // 监听下拉菜单变化
+            taskSelect.addEventListener('change', function () {
+                // 获取选中的 option 元素
+                const selectedOption = taskSelect.options[taskSelect.selectedIndex];
+
+                // 获取 data-args 和 data-kwargs 属性
+                const args = selectedOption.getAttribute('data-args');
+                const kwargs = selectedOption.getAttribute('data-kwargs');
+
+                // 如果有值，填充到对应的文本框中，否则使用默认值
+                argsTextarea.value = args ? args : '[]';
+                kwargsTextarea.value = kwargs ? kwargs : '{}';
+            });
+
+            // 监听表单提交，防止页面刷新，动态显示任务ID和链接
+            const form = document.getElementById('task-form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // 阻止表单默认提交行为
+
+                // 提交表单数据的异步请求
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                    .then(response => response.json()) // 假设返回JSON格式
+                    .then(data => {
+                        if (data.task_id) {
+                            // 生成任务链接，并显示任务ID
+                            const taskLink = document.getElementById('task-link');
+                            taskLink.href = taskAdminLink + `?q=${data.task_id}`;
+                            taskLink.textContent = data.task_id;
+
+                            // 显示任务结果区域
+                            const taskResultDiv = document.getElementById('task-result');
+                            taskResultDiv.style.display = 'block';
+                        } else {
+                            alert('任务提交失败');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('任务提交失败');
+                    });
+            });
+        });
+    </script>
+{% endblock %}

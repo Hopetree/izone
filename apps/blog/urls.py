@@ -8,13 +8,15 @@ from .views import (IndexView, DetailView, CategoryView, TagView, AboutView, Tag
                     SubjectPageDetailView, SubjectListView, dashboard, feed_hub,
                     vitepress_subject_view)
 
+from .task_views import run_task, execute_task
+
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),  # 主页，自然排序
     path('article/<slug:slug>/', DetailView.as_view(), name='detail'),  # 文章内容页
     path('article-edit/<slug:slug>/', DetailEditView.as_view(), name='article_edit'),  # 文章编辑
     path('article-update/', update_article, name='article_update'),  # 文章更新
     path('category/<slug:slug>/', CategoryView.as_view(), name='category'),
-    path('tags/', TagListView.as_view(), name='tags'), # 标签云
+    path('tags/', TagListView.as_view(), name='tags'),  # 标签云
     path('tag/<slug:slug>/', TagView.as_view(), name='tag'),
     path('about/', AboutView, name='about'),  # About页面
     path('timeline/', TimelineView.as_view(), name='timeline'),  # timeline页面
@@ -35,6 +37,10 @@ urlpatterns = [
 
     # vitepress
     path('vitepress/subjects/', vitepress_subject_view, name='vitepress_subject_view'),
+
+    # celery task
+    path('task/run/', run_task, name='task_run'),
+    path('task/execute/', execute_task, name='task_execute'),
 
 ]
 
