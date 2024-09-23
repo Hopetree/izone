@@ -7,6 +7,7 @@ from django.core.management import call_command
 from .utils import TaskResponse
 from .actions import (
     action_update_article_cache,
+    action_check_friend_links,
     action_clear_notification,
     action_cleanup_task_result,
     action_baidu_push,
@@ -23,8 +24,6 @@ from blog.templatetags.blog_tags import get_blog_infos
 
 from .oss_sync import action_qiniu_sync_github
 from .article_sync import action_article_to_github
-
-from action.friend_links import action_check_friend_links
 
 
 @shared_task
