@@ -51,7 +51,7 @@
 
                         <!-- Kwargs Input -->
                         <label for="kwargs">Kwargs (JSON Format)</label>
-                        <textarea class="form-control" id="kwargs" name="kwargs" rows="6">{}</textarea>
+                        <textarea class="form-control" id="kwargs" name="kwargs" rows="3">{}</textarea>
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary my-1">执行任务</button>
@@ -75,13 +75,14 @@
             // 自动伸缩输入框
             const textarea = document.getElementById('kwargs');
             textarea.addEventListener('input', function () {
-                // 重置高度，以便根据内容调整
+                // 自动伸缩高度：重置高度后根据内容调整
                 this.style.height = 'auto';
-                // 设置新的高度
                 this.style.height = this.scrollHeight + 'px';
             });
+
             // 任务管理地址
             const taskAdminLink = "{% url 'admin:django_celery_results_taskresult_changelist' %}";
+
             // 获取任务选择下拉菜单
             const taskSelect = document.getElementById('taskSelect');
 
@@ -101,7 +102,21 @@
                 // 如果有值，填充到对应的文本框中，否则使用默认值
                 argsTextarea.value = args ? args : '[]';
                 kwargsTextarea.value = kwargs ? kwargs : '{}';
+
+                // 自动调整 kwargsTextarea 的行数
+                adjustTextareaRows(kwargsTextarea);
             });
+
+            // 调整文本框行数的函数
+            function adjustTextareaRows(textarea) {
+                // 计算 kwargs 内容的行数
+                const lines = textarea.value.split('\n').length;
+                // 根据行数动态设置 rows 属性，最少为 3 行
+                textarea.rows = Math.max(3, lines);
+                // 重置并动态设置高度
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            }
 
             // 监听表单提交，防止页面刷新，动态显示任务ID和链接
             const form = document.getElementById('task-form');
