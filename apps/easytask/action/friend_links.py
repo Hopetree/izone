@@ -4,6 +4,23 @@ import aiohttp
 from blog.models import FriendLink
 
 
+async def get_link_status(session, url, timeout=5):
+    """
+    异步获取链接状态码和网页内容
+    :param session: aiohttp 的 session 实例
+    :param url: 需要请求的 URL
+    :param timeout: 请求超时时间
+    :return: 状态码和网页文本内容
+    """
+    try:
+        async with session.get(url, timeout=timeout) as response:
+            code = response.status
+            text = await response.text()
+            return code, text
+    except Exception as e:
+        return None, str(e)
+
+
 class LinkChecker:
     def __init__(self, site_link=None, white_list=None):
         """
@@ -19,21 +36,6 @@ class LinkChecker:
             'version': '20240924.04'
         }
         self.lock = asyncio.Lock()  # 创建一个锁，用于保护共享数据
-
-    async def get_link_status(self, session, url):
-        """
-        异步获取链接状态码和网页内容
-        :param session: aiohttp 的 session 实例
-        :param url: 需要请求的 URL
-        :return: 状态码和网页文本内容
-        """
-        try:
-            async with session.get(url, timeout=5) as response:
-                code = response.status
-                text = await response.text()
-                return code, text
-        except Exception as e:
-            return None, str(e)
 
     async def check_link(self, session, active_friend):
         """
@@ -57,7 +59,7 @@ class LinkChecker:
             self.result['active_num'] += 1
 
         if active_friend.is_show:
-            code, text = await self.get_link_status(session, active_friend.link)
+            code, text = await get_link_status(session, active_friend.link)
             if code != 200:
                 active_friend.is_show = False
                 active_friend.not_show_reason = f'网页请求返回{code}'
@@ -70,7 +72,7 @@ class LinkChecker:
                     self.result['to_not_show'] += 1
             active_friend.save(update_fields=['is_show', 'not_show_reason'])
         else:
-            code, text = await self.get_link_status(session, active_friend.link)
+            code, text = await get_link_status(session, active_friend.link)
             if code == 200:
                 if not self.site_link or re.findall(self.site_link, text):
                     active_friend.is_show = True
