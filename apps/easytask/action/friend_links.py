@@ -15,8 +15,10 @@ class LinkChecker:
         self.result = {
             'active_num': 0,
             'to_not_show': 0,
-            'to_show': 0
+            'to_show': 0,
+            'version': '20240924.01'
         }
+        self.lock = asyncio.Lock()  # 创建一个锁，用于保护共享数据
 
     async def get_link_status(self, session, url):
         """
@@ -43,17 +45,22 @@ class LinkChecker:
         if active_friend.name in self.white_list:
             return
 
-        self.result['active_num'] += 1
+        # 使用锁保护对共享数据 result 的操作
+        async with self.lock:
+            self.result['active_num'] += 1
+
         if active_friend.is_show:
             code, text = await self.get_link_status(session, active_friend.link)
             if code != 200:
                 active_friend.is_show = False
                 active_friend.not_show_reason = f'网页请求返回{code}'
-                self.result['to_not_show'] += 1
+                async with self.lock:
+                    self.result['to_not_show'] += 1
             elif self.site_link and not re.findall(self.site_link, text):
                 active_friend.is_show = False
                 active_friend.not_show_reason = f'网站未设置本站外链'
-                self.result['to_not_show'] += 1
+                async with self.lock:
+                    self.result['to_not_show'] += 1
             active_friend.save(update_fields=['is_show', 'not_show_reason'])
         else:
             code, text = await self.get_link_status(session, active_friend.link)
@@ -61,7 +68,8 @@ class LinkChecker:
                 if not self.site_link or re.findall(self.site_link, text):
                     active_friend.is_show = True
                     active_friend.not_show_reason = ''
-                    self.result['to_show'] += 1
+                    async with self.lock:
+                        self.result['to_show'] += 1
                     active_friend.save(update_fields=['is_show', 'not_show_reason'])
 
     async def check_all_links(self):
