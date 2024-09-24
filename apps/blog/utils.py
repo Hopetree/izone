@@ -147,22 +147,28 @@ class RedisKeys:
 
 def check_request_headers(headers_obj):
     """
-    校验请求头信息，比如识别User-Agent，从而过滤掉该请求
+    校验请求头信息，识别User-Agent过滤掉不合法的请求
     @param headers_obj: request.headers对象
-    @return:
+    @return: True 表示请求合法，False 表示请求被过滤
     use: flag = check_request_headers(request.headers)
     """
-    # 常见的搜索引擎爬虫的请求头，还有Python的
-    # 无请求头或者请求头里面包含爬虫信息则返回False，否则返回True
-    user_agent_black_keys = ['spider', 'bot', 'python']
-    if not headers_obj.get('user-agent'):
+    # 常见爬虫和自动化工具的黑名单
+    user_agent_black_keys = {'spider', 'bot', 'python', 'go-http-client', 'curl', 'yahoo'}
+
+    user_agent = headers_obj.get('user-agent')
+
+    # 如果没有 User-Agent 或 User-Agent 为空，直接返回 False
+    if not user_agent:
         return False
-    else:
-        user_agent = str(headers_obj.get('user-agent')).lower()
-        for key in user_agent_black_keys:
-            if key in user_agent:
-                logger.warning(f'Bot/Spider request user-agent：{user_agent}')
-                return False
+
+    # 转为小写以便进行不区分大小写的匹配
+    user_agent = user_agent.lower()
+
+    # 判断是否包含黑名单中的关键字
+    if any(key in user_agent for key in user_agent_black_keys):
+        logger.warning(f'Bot/Spider request user-agent：{user_agent}')
+        return False
+
     return True
 
 
