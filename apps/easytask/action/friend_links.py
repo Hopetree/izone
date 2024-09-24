@@ -16,7 +16,7 @@ class LinkChecker:
             'active_num': 0,
             'to_not_show': 0,
             'to_show': 0,
-            'version': '20240924.03'
+            'version': '20240924.04'
         }
         self.lock = asyncio.Lock()  # 创建一个锁，用于保护共享数据
 
@@ -88,17 +88,28 @@ class LinkChecker:
             tasks = [self.check_link(session, friend) for friend in active_friend_list]
             await asyncio.gather(*tasks)
 
+        # 返回结果
+        return self.result
+
     def run(self):
         """
         启动异步任务，检查友链
         """
-        asyncio.run(self.check_all_links())
-        return self.result
+        try:
+            # 获取当前事件循环，如果没有则创建一个新的
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            # 在非主线程中运行时可能没有默认的事件循环，因此需要手动创建一个
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
+        # 使用事件循环执行任务并返回结果
+        return loop.run_until_complete(self.check_all_links())
 
 
 def action_check_friend_links(site_link=None, white_list=None):
     checker = LinkChecker(site_link, white_list)
-    result = checker.run()
+    result = checker.run()  # 正确返回 result
     return result
 
 
