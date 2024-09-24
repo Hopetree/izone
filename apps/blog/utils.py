@@ -162,10 +162,10 @@ def check_request_headers(headers_obj):
         return False
 
     # 转为小写以便进行不区分大小写的匹配
-    user_agent = user_agent.lower()
+    user_agent_lower = user_agent.lower()
 
     # 判断是否包含黑名单中的关键字
-    if any(key in user_agent for key in user_agent_black_keys):
+    if any(key in user_agent_lower for key in user_agent_black_keys):
         logger.warning(f'Bot/Spider request user-agent：{user_agent}')
         return False
 
