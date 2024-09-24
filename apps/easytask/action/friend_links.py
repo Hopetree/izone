@@ -16,7 +16,7 @@ class LinkChecker:
             'active_num': 0,
             'to_not_show': 0,
             'to_show': 0,
-            'version': '20240924.01'
+            'version': '20240924.03'
         }
         self.lock = asyncio.Lock()  # 创建一个锁，用于保护共享数据
 
@@ -42,7 +42,14 @@ class LinkChecker:
         :param active_friend: FriendLink 模型实例
         :return: None
         """
+        # 白名单友链直接设置成可访问
         if active_friend.name in self.white_list:
+            if not active_friend.is_show:
+                active_friend.is_show = True
+                active_friend.not_show_reason = ''
+                async with self.lock:
+                    self.result['to_show'] += 1
+                active_friend.save(update_fields=['is_show', 'not_show_reason'])
             return
 
         # 使用锁保护对共享数据 result 的操作
