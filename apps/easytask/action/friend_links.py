@@ -45,10 +45,10 @@ class LinkChecker:
         # 白名单友链直接设置成可访问
         if active_friend.name in self.white_list:
             if not active_friend.is_show:
-                active_friend.is_show = True
-                active_friend.not_show_reason = ''
                 async with self.lock:
                     self.result['to_show'] += 1
+                active_friend.is_show = True
+                active_friend.not_show_reason = ''
                 active_friend.save(update_fields=['is_show', 'not_show_reason'])
             return
 
