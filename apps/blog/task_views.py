@@ -27,6 +27,9 @@ def execute_task(request):
         args = request.POST.get('args', '[]')  # args 应该是 JSON 格式的字符串
         kwargs = request.POST.get('kwargs', '{}')  # kwargs 应该是 JSON 格式的字符串
 
+        if not task_name:
+            return JsonResponse({'error': 'Task name is required'}, status=400)
+
         try:
             # 将 JSON 字符串转换为 Python 对象
             args = json.loads(args)
@@ -34,17 +37,14 @@ def execute_task(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format for args or kwargs'}, status=400)
 
-        if task_name:
-            # 使用 send_task 动态执行任务
-            result = current_app.send_task(task_name, args=args, kwargs=kwargs)
+        # 使用 send_task 动态执行任务
+        result = current_app.send_task(task_name, args=args, kwargs=kwargs)
 
-            # 返回任务 ID 和状态
-            return JsonResponse({
-                'message': 'Task executed',
-                'task_id': result.id,
-                'task_status': result.status
-            })
-
-        return JsonResponse({'error': 'Task name is required'}, status=400)
+        # 返回任务 ID 和状态
+        return JsonResponse({
+            'message': 'Task executed',
+            'task_id': result.id,
+            'task_status': result.status
+        })
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
