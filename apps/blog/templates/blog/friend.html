@@ -39,7 +39,7 @@
                         <h2>失联友链</h2>
                         <div class="friend-list not-show-friend">
                             {% for friend in not_show_friends %}
-                                <a>
+                                <a href="{{ friend.get_home_url }}" style="pointer-events: none;" target="_blank">
                                     <div class="friend-container"
                                          style='background-image: url("{{ friend.logo.url }}");'>
                                         <div class="friend-img">
