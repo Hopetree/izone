@@ -206,7 +206,7 @@ class BlogManager:
         @param white_list: 同步白名单，有白名单则直接同步
         """
         self.base_url = base_url
-        self.article_start_url = self.base_url + '/api/v1/articles/'
+        self.article_start_url = self.base_url + '/openapi/v1/articles/'
         self.subject_url = self.base_url + '/vitepress/subjects/'
         self.github_manager = github_manager
         self.prefix = prefix

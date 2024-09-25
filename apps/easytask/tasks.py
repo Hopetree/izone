@@ -22,9 +22,8 @@ from monitor.actions import (
 
 from blog.templatetags.blog_tags import get_blog_infos
 
-from .oss_sync import action_qiniu_sync_github
-from .article_sync import action_article_to_github
-
+from .action.oss_sync import action_qiniu_sync_github
+from .action.article_sync import action_article_to_github
 from .action.friend_links import action_check_friend_links
 
 @shared_task

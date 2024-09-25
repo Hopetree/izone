@@ -54,7 +54,7 @@ urlpatterns = [
 if settings.API_FLAG:
     from api.urls import router
 
-    urlpatterns.append(path('api/v1/', include((router.urls, router.root_view_name),
+    urlpatterns.append(path('openapi/v1/', include((router.urls, router.root_view_name),
                                                namespace='api')))  # restframework
 
 if settings.TOOL_FLAG:
