@@ -37,6 +37,9 @@ def execute_task(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format for args or kwargs'}, status=400)
 
+        if not isinstance(args, list) or not isinstance(kwargs, dict):
+            return JsonResponse({'error': 'Invalid type args or kwargs'}, status=400)
+
         # 使用 send_task 动态执行任务
         result = current_app.send_task(task_name, args=args, kwargs=kwargs)
 
