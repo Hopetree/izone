@@ -65,7 +65,7 @@ def keywords_to_str(art):
 def get_tag_list(show=2000):
     """返回标签列表"""
     tags = Tag.objects.filter(article__is_publish=True).annotate(
-        total_num=Count('article')).filter(total_num__gt=0)
+        total_num=Count('article')).filter(total_num__gt=0).order_by('-total_num')
     return tags[:show]
 
 

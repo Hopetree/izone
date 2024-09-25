@@ -380,6 +380,9 @@ class TagListView(generic.ListView):
     paginate_by = 500
     paginate_orphans = 0
 
+    def get_ordering(self):
+        return 'name',
+
 
 # dashboard页面，仅管理员可以访问，其他用户不能访问
 def dashboard(request):
@@ -391,6 +394,7 @@ def dashboard(request):
 # feed hub
 def feed_hub(request):
     return render(request, 'blog/feedhub.html')
+
 
 @csrf_exempt
 def vitepress_subject_view(request):
