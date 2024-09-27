@@ -303,7 +303,7 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
             if int(x) not in article_ids:
                 article_ids.append(int(x))
     for each_id in article_ids:
-        article = Article.objects.get(id=int(each_id))
+        article = Article.objects.get(id=int(each_id)) or Article.objects.get(slug=str(each_id))
         if article:
             if article.is_publish is False:
                 article.is_publish = True
