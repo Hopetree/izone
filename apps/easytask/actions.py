@@ -303,7 +303,7 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
         if x not in article_ids:
             article_ids.append(x)
     for each_id in article_ids:
-        if each_id.isdigit():
+        if isinstance(each_id, int) or each_id.isdigit():
             article = Article.objects.get(id=int(each_id))
         else:
             article = Article.objects.get(slug=str(each_id))
