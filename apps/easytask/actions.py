@@ -297,13 +297,16 @@ def action_publish_article_by_task(article_ids, filter_rule=None):
     """
     from blog.models import Article
     filter_rule = filter_rule or {}
+    article_ids = article_ids or []
     data = {}
     for x in filter_rule.keys():
-        if x.isdigit():
-            if int(x) not in article_ids:
-                article_ids.append(int(x))
+        if x not in article_ids:
+            article_ids.append(x)
     for each_id in article_ids:
-        article = Article.objects.get(id=int(each_id)) or Article.objects.get(slug=str(each_id))
+        if each_id.isdigit():
+            article = Article.objects.get(id=int(each_id))
+        else:
+            article = Article.objects.get(slug=str(each_id))
         if article:
             if article.is_publish is False:
                 article.is_publish = True
