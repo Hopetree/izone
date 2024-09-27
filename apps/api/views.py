@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
-from django.db.models import Q
 
-from oauth.models import Ouser
-from blog.models import Article, Tag, Category, Timeline
-from tool.models import ToolLink
+from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly, IsAdminUser
 from webstack.models import NavigationSite
+
+from blog.models import Article, Tag, Category, Timeline
+from oauth.models import Ouser
+from tool.models import ToolLink
 from .serializers import (UserSerializer, ArticleSerializer,
-                          TimelineSerializer,TagSerializer,
-                          CategorySerializer,ToolLinkSerializer,
+                          TimelineSerializer, TagSerializer,
+                          CategorySerializer, ToolLinkSerializer,
                           NavigationSiteSerializer)
-from rest_framework import viewsets, permissions
-from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+
+
 # from .permissions import IsAdminUserOrReadOnly
 
 # RESEful API VIEWS
@@ -19,12 +22,17 @@ class UserListSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
 
+
 class ArticleListSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
 
-    def perform_create(self,serializer):
+    # 指定当前视图的认证方案，不使用全局认证方案
+    authentication_classess = [BasicAuthentication, SessionAuthentication]
+    # 指定当前视图的权限控制方案，不使用全局权限控制方案
+    permission_classes = (IsAdminUser,)
+
+    def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
     def get_queryset(self):
@@ -37,20 +45,24 @@ class TagListSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
 
+
 class CategoryListSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
 
 class TimelineListSet(viewsets.ModelViewSet):
     queryset = Timeline.objects.all()
     serializer_class = TimelineSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
 
+
 class ToolLinkListSet(viewsets.ModelViewSet):
     queryset = ToolLink.objects.all()
     serializer_class = ToolLinkSerializer
     permission_classes = (DjangoModelPermissionsOrAnonReadOnly,)
+
 
 class NavigationSiteListSet(viewsets.ModelViewSet):
     queryset = NavigationSite.objects.all()

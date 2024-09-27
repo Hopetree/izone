@@ -26,6 +26,7 @@ from .action.oss_sync import action_qiniu_sync_github
 from .action.article_sync import action_article_to_github
 from .action.friend_links import action_check_friend_links
 
+
 @shared_task
 def simple_task(x, y):
     time.sleep(2)
@@ -211,13 +212,14 @@ def qiniu_sync_github(access_key, secret_key, bucket_name, private_domain,
 
 
 @shared_task(max_retries=2, default_retry_delay=30)
-def article_to_github(base_url, token, owner, repo,
+def article_to_github(base_url, base64_string, token, owner, repo,
                       source_media_url, target_media_url,
                       msg='Sync from blog task',
                       full=False, white_list=None, prefix='blog'):
     """
     同步文章到GitHub
     @param base_url: 博客接口地址，如https://tendcode.com
+    @param base64_string: 管理员用户密码base64值
     @param token: GitHub token
     @param owner: GitHub 用户名，如Hopetree
     @param repo: GitHub 项目名，如img
@@ -231,7 +233,7 @@ def article_to_github(base_url, token, owner, repo,
     """
     response = TaskResponse()
     result = action_article_to_github(
-        base_url, token, owner, repo,
+        base_url, base64_string, token, owner, repo,
         source_media_url, target_media_url,
         msg, full, white_list, prefix
     )

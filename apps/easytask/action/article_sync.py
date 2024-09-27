@@ -194,11 +194,12 @@ class GitHubManager:
 
 class BlogManager:
 
-    def __init__(self, base_url, github_manager, source_media_url, target_media_url,
+    def __init__(self, base_url, base64_string, github_manager, source_media_url, target_media_url,
                  prefix='blog', target=None, full=False, white_list=None):
         """
 
         @param base_url:
+        @param base64_string: 管理员用户密码base64值，用来做接口认证，这个接口只能管理员访问
         @param github_manager:
         @param prefix:
         @param target: 目标清单
@@ -206,6 +207,7 @@ class BlogManager:
         @param white_list: 同步白名单，有白名单则直接同步
         """
         self.base_url = base_url
+        self.api_headers = {'Authorization': f'Basic {base64_string}'}
         self.article_start_url = self.base_url + '/openapi/v1/articles/'
         self.subject_url = self.base_url + '/vitepress/subjects/'
         self.github_manager = github_manager
@@ -237,7 +239,7 @@ class BlogManager:
         @param url:
         @return:
         """
-        resp = requests.get(url, timeout=10)
+        resp = requests.get(url, headers=self.api_headers, timeout=10)
         results = resp.json()['results']
         for item in results:
             self.result['blog']['total'] += 1
@@ -465,11 +467,12 @@ class BlogManager:
             self.result['github']['config.ts'] = False
 
 
-def action_article_to_github(base_url, token, owner, repo,
+def action_article_to_github(base_url, base64_string, token, owner, repo,
                              source_media_url, target_media_url,
                              msg='Upload file via API',
                              full=False, white_list=None, prefix='blog'):
     """
+    @param base64_string:
     @param target_media_url:
     @param source_media_url:
     @param base_url:
@@ -487,7 +490,7 @@ def action_article_to_github(base_url, token, owner, repo,
     # 1. 查询GitHub中所有文件
     github_files = github_manager.list_all_files_v2(path=prefix)
 
-    blog_manager = BlogManager(base_url, github_manager,
+    blog_manager = BlogManager(base_url, base64_string, github_manager,
                                source_media_url, target_media_url, prefix,
                                target=github_files,
                                full=full, white_list=white_list)
