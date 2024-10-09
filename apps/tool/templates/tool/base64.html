@@ -1,0 +1,119 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}Base64编码/解码工具{% endblock %}
+{% block metas %}
+    <meta name="description" content="Base64编码和解码工具，便捷在线转换">
+    <meta name="keywords" content="Base64,编码,解码,在线工具">
+{% endblock %}
+
+{% block tool_name %}Base64编码/解码工具{% endblock %}
+{% block left_content %}
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">使用场景：</h3>
+        <ul>
+            <li>Base64编码：<span class="text-muted">将文本内容转换为Base64编码格式</span></li>
+            <li>Base64解码：<span class="text-muted">将Base64编码的内容转换回原始文本</span></li>
+        </ul>
+    </div>
+
+    <!-- 原始文本输入框 -->
+    <h4>输入文本</h4>
+    <div class="input-group mb-3">
+        <textarea class="form-control" id="input_text" rows="5" placeholder="请输入需要编码或解码的文本"></textarea>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-info btn-sm f-16" id="encode_button">Base64编码</button>
+        <button type="button" class="btn btn-info btn-sm f-16" id="decode_button">Base64解码</button>
+        <button type="button" class="btn btn-warning btn-sm f-16" id="swap_button">交换内容</button>
+        <button type="button" class="btn btn-secondary btn-sm f-16" id="clear_button">清空内容</button>
+        <button type="button" class="btn btn-success btn-sm f-16" id="copy_button">复制结果</button>
+    </div>
+
+    <!-- 结果显示文本框 -->
+    <h4>结果文本</h4>
+    <div class="input-group mb-3">
+        <textarea class="form-control" id="output_text" rows="10" readonly placeholder="编码或解码结果显示在此"></textarea>
+    </div>
+
+{% endblock %}
+
+{% block end_f %}
+<script>
+    // Base64编码函数
+    document.getElementById('encode_button').addEventListener('click', function() {
+        const inputText = document.getElementById('input_text').value;  // 获取输入文本
+        if (inputText === "") {
+            alert('请输入文本进行编码');
+            return;
+        }
+
+        // 使用 JavaScript 的 btoa() 函数进行 Base64 编码
+        try {
+              // 编码
+            document.getElementById('output_text').value = btoa(inputText);  // 将结果显示在结果文本框
+        } catch (error) {
+            alert('编码失败，请确保输入的文本是有效的');
+        }
+    });
+
+    // Base64解码函数
+    document.getElementById('decode_button').addEventListener('click', function() {
+        const inputText = document.getElementById('input_text').value;  // 获取输入文本
+        if (inputText === "") {
+            alert('请输入Base64文本进行解码');
+            return;
+        }
+
+        // 验证输入的内容是否为有效的Base64编码
+        const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*?(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
+        if (!base64Regex.test(inputText)) {
+            alert('请输入有效的Base64编码进行解码');
+            return;
+        }
+
+        // 使用 JavaScript 的 atob() 函数进行 Base64 解码
+        try {
+              // 解码
+            document.getElementById('output_text').value = atob(inputText);  // 将结果显示在结果文本框
+        } catch (error) {
+            alert('解码失败，请确保输入的Base64格式正确');
+        }
+    });
+
+    // 交换内容函数
+    document.getElementById('swap_button').addEventListener('click', function() {
+        const inputText = document.getElementById('input_text').value;  // 获取输入文本
+          // 获取结果文本
+        // 交换内容
+        document.getElementById('input_text').value = document.getElementById('output_text').value;
+        document.getElementById('output_text').value = inputText;
+    });
+
+    // 清空内容函数
+    document.getElementById('clear_button').addEventListener('click', function() {
+        // 清空输入框和结果框
+        document.getElementById('input_text').value = "";
+        document.getElementById('output_text').value = "";
+    });
+
+    // 复制结果函数
+    document.getElementById('copy_button').addEventListener('click', function() {
+        const outputText = document.getElementById('output_text').value;  // 获取结果文本框的内容
+        if (outputText === "") {
+            alert('没有结果可复制');
+            return;
+        }
+
+        // 使用 navigator.clipboard API 复制文本
+        navigator.clipboard.writeText(outputText).then(function() {
+            alert('结果已复制到剪贴板！');  // 提示用户
+        }).catch(function(err) {
+            console.error('复制失败：', err);  // 如果失败，输出错误
+            alert('复制失败，请手动复制内容');
+        });
+    });
+</script>
+{% endblock %}

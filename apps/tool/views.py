@@ -175,5 +175,10 @@ def linux_timeline(request):
     return render(request, 'tool/linux_timeline.html')
 
 
+@add_views('tool:interest_rate', '利率计算器')
 def interest_rate(request):
     return render(request, 'tool/interest_rate.html')
+
+@add_views('tool:base64', 'Base64编码/解码工具')
+def base64(request):
+    return render(request, 'tool/base64.html')

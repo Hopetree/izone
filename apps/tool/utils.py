@@ -72,6 +72,11 @@ IZONE_TOOLS = {
             'url': 'tool:regex',
             'img': 'blog/img/regex.png',
             'desc': '正则表达式在线工具，使用正则表达式的规则提取信息，所有语言规则通用'
+        }, {
+            'name': 'Base64编码/解码',
+            'url': 'tool:base64',
+            'img': 'tool/img/base64_128.png',
+            'desc': 'Base64编码和解码工具，便捷在线转换'
         }]
     },
     'web': {

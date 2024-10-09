@@ -4,7 +4,7 @@ from .views import (Toolview, BD_pushview, BD_pushview_site,
                     regexview, useragent_view, html_characters,
                     docker_search_view, editor_view, word_cloud,
                     json2go, tax, query_ip, linux_timeline,
-                    interest_rate,
+                    interest_rate, base64,
                     )
 
 urlpatterns = [
@@ -22,4 +22,5 @@ urlpatterns = [
     path('ip/', query_ip, name='ip'),  # 查询IP
     path('linux-timeline/', linux_timeline, name='linux_timeline'),
     path('interest-rate/', interest_rate, name='interest_rate'),
+    path('base64/', base64, name='base64'),
 ]
