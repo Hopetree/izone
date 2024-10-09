@@ -16,7 +16,7 @@ STATIC_VERSION = {
     'js_blog_article': '20240115.01',
     'js_blog_code': '20240129.02',
 
-    'css_tool_tool': '20240115.01',
+    'css_tool_tool': '20241009.01',
     'js_tool_tool': '20240115.01',
 }
 

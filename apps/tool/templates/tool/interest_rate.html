@@ -1,0 +1,138 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}利率计算器_在线工具{% endblock %}
+{% block metas %}
+    <meta name="description" content="年利率计算，年利息计算">
+    <meta name="keywords" content="利率计算,利息计算,在线工具">
+{% endblock %}
+
+{% block tool_name %}利率计算器{% endblock %}
+{% block left_content %}
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">使用场景：</h3>
+        <ul>
+            <li>计算利息收益：<span class="text-muted">已知本金和年利率的情况下预估到期收益，例如银行定期存款根据给定年利率预估到期收益</span></li>
+            <li>计算年化收益率：<span class="text-muted">已知本金和利息的情况下计算年利率，例如支付宝短期存款根据7日利息计算年利率</span></li>
+        </ul>
+    </div>
+
+    <!-- 利息收益计算部分 -->
+    <h4 class="text-center">计算利息收益</h4>
+    <!-- 本金输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">本金</span></div>
+        <input type="number" step="0.01" class="form-control" id="principal" placeholder="输入本金">
+        <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
+    </div>
+
+    <!-- 年利率输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">年利率(%)</span></div>
+        <input type="number" step="0.01" class="form-control" id="annual_rate" placeholder="输入年利率">
+        <div class="input-group-append"><span class="input-group-text f-16">%</span></div>
+    </div>
+
+    <!-- 存款天数输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">存款天数</span></div>
+        <input type="number" step="1" class="form-control" id="deposit_days" placeholder="输入存款天数">
+        <div class="input-group-append"><span class="input-group-text f-16">天</span></div>
+    </div>
+
+    <!-- 利息收入显示框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">利息收入</span></div>
+        <input type="number" step="0.01" class="form-control" id="interest_income" readonly placeholder="点击计算后显示">
+        <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
+    </div>
+
+    <!-- 计算利息收益按钮 -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-info btn-sm f-16" id="calculate_interest">开始计算</button>
+    </div>
+
+
+
+    <!-- 年化收益率计算部分 -->
+    <h4 class="text-center mt-3">计算年化收益率</h4>
+    <!-- 本金输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">本金</span></div>
+        <input type="number" step="0.01" class="form-control" id="principal_for_rate" placeholder="输入本金">
+        <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
+    </div>
+
+    <!-- 存款天数输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">存款天数</span></div>
+        <input type="number" step="1" class="form-control" id="deposit_days_for_rate" placeholder="输入存款天数">
+        <div class="input-group-append"><span class="input-group-text f-16">天</span></div>
+    </div>
+
+    <!-- 利息收入输入框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">利息收入</span></div>
+        <input type="number" step="0.01" class="form-control" id="interest_income_for_rate" placeholder="输入利息收入">
+        <div class="input-group-append"><span class="input-group-text f-16">.00</span></div>
+    </div>
+
+    <!-- 年化利率显示框 -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend"><span class="input-group-text f-16">年利率(%)</span></div>
+        <input type="number" step="0.01" class="form-control" id="annual_rate_result" readonly placeholder="点击计算后显示">
+        <div class="input-group-append"><span class="input-group-text f-16">%</span></div>
+    </div>
+
+    <!-- 计算年化收益率按钮 -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-info btn-sm f-16" id="calculate_annual_rate">开始计算</button>
+    </div>
+
+{% endblock %}
+
+{% block end_f %}
+<script>
+    // 计算利息收益
+    document.getElementById('calculate_interest').addEventListener('click', function() {
+        const principal = parseFloat(document.getElementById('principal').value);  // 本金
+        const annualRate = parseFloat(document.getElementById('annual_rate').value) / 100;  // 年利率
+        const depositDays = parseInt(document.getElementById('deposit_days').value);  // 存款天数
+
+        // 检查输入有效性
+        if (isNaN(principal) || isNaN(annualRate) || isNaN(depositDays)) {
+            alert('请输入有效的数值');
+            return;
+        }
+
+        // 计算利息收入，公式：利息 = 本金 × 年利率 × (存款天数 / 365)
+        const interestIncome = principal * annualRate * (depositDays / 365);
+
+        // 将利息收入显示在输入框中，并设为只读
+        const interestIncomeField = document.getElementById('interest_income');
+        interestIncomeField.value = interestIncome.toFixed(2);
+        interestIncomeField.readOnly = true;
+    });
+
+    // 计算年化收益率
+    document.getElementById('calculate_annual_rate').addEventListener('click', function() {
+        const principal = parseFloat(document.getElementById('principal_for_rate').value);  // 本金
+        const depositDays = parseInt(document.getElementById('deposit_days_for_rate').value);  // 存款天数
+        const interestIncome = parseFloat(document.getElementById('interest_income_for_rate').value);  // 利息收入
+
+        // 检查输入有效性
+        if (isNaN(principal) || isNaN(depositDays) || isNaN(interestIncome)) {
+            alert('请输入有效的数值');
+            return;
+        }
+
+        // 计算年化利率，公式：年化利率 = (利息收入 / 本金) × (365 / 存款天数) × 100
+        const annualRate = (interestIncome / principal) * (365 / depositDays) * 100;
+
+        // 将年化利率显示在输入框中，并设为只读
+        const annualRateField = document.getElementById('annual_rate_result');
+        annualRateField.value = annualRate.toFixed(2);
+        annualRateField.readOnly = true;
+    });
+</script>
+{% endblock %}

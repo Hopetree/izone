@@ -173,3 +173,7 @@ def query_ip(request):
 @add_views('tool:linux_timeline', 'Linux 时间线')
 def linux_timeline(request):
     return render(request, 'tool/linux_timeline.html')
+
+
+def interest_rate(request):
+    return render(request, 'tool/interest_rate.html')
