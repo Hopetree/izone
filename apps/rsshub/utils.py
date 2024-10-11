@@ -60,10 +60,11 @@ def get_cnblogs_pick():
     url = 'https://www.cnblogs.com/pick/'
     try:
         response = requests.get(url, timeout=5, verify=False)
+        text = response.text
     except:
-        response = ''
+        text = ''
     article_list = re.findall('<a class="post-item-title" href="(.*?)" target="_blank">(.*?)</a>',
-                              response.text)
+                              text)
     rss = RSSResponse()
     items = []
     for link, title in article_list:
