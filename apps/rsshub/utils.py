@@ -75,11 +75,12 @@ def get_cnblogs_pick():
 def get_github_issues(url):
     try:
         response = requests.get(url, timeout=10, verify=False)
+        text = response.text
     except:
-        response = ''
+        text = ''
     issues = re.findall(
         r'data-hovercard-type="issue" data-hovercard-url=".*?" href="(.*?)">(.*?)</a>',
-        response.text)
+        text)
     rss = RSSResponse()
     items = []
     for link, title in issues:
