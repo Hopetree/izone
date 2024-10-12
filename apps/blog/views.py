@@ -421,5 +421,6 @@ def vitepress_subject_view(request):
         data['data'].append(subject_data)
     return JsonResponse(data)
 
+@add_views('blog:health', '慢跑看板')
 def health(request):
     return render(request, 'blog/health.html')
