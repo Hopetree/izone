@@ -5,7 +5,7 @@ from django.contrib.admin import widgets
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
                      AboutBlog, Subject, Topic, ArticleView,
-                     PageView, FeedHub, MenuLink, SiteConfig)
+                     PageView, FeedHub, MenuLink, SiteConfig, Fitness)
 
 
 @admin.register(Subject)
@@ -220,3 +220,23 @@ class SiteConfigViewAdmin(admin.ModelAdmin):
                 'style': 'min-height: 40rem;',  # 设置最小高度
             })
         return super().formfield_for_dbfield(db_field, request, **kwargs)
+
+
+@admin.register(Fitness)
+class FitnessAdmin(admin.ModelAdmin):
+    date_hierarchy = 'run_date'
+    ordering = ['-run_date']
+    list_display = ('run_date', 'training_duration', 'distance', 'average_cadence', 'total_kcal',
+                    'average_pace', 'average_heart_rate', 'average_stride_length', 'bottom_time')
+    fieldsets = (
+        ('基本信息', {'fields': ('run_date',)}),
+        ('详细信息', {'fields': (('training_duration', 'distance'),
+                                 ('active_kcal', 'total_kcal'),
+                                 ('total_elevation_gain', 'average_power'),
+                                 ('average_cadence', 'average_pace'),
+                                 ('average_heart_rate', 'average_stride_length'),
+                                 ('bottom_time', 'vertical_amplitude'))}),
+        ('5段数据', {'fields': (('five_pace', 'five_heart_rate'),
+                                ('five_power', 'five_cadence'))}),
+        ('心率区间分布', {'fields': ('heart_rate',)}),
+    )

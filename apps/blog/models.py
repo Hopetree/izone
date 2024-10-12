@@ -531,3 +531,46 @@ class SiteConfig(models.Model):
         if SiteConfig.objects.exists() and not self.pk:
             raise IntegrityError("只能存在一个网站配置实例")
         super().save(*args, **kwargs)
+
+
+class Fitness(models.Model):
+    run_date = models.DateTimeField('跑步时间', help_text='跑步开始时间')
+    # 详细信息
+    training_duration = models.CharField('训练时长', max_length=7, help_text='如：0:35:12')
+    distance = models.FloatField('距离(公里)', help_text='如：5.03')
+    active_kcal = models.IntegerField('动态千卡', help_text='如：301')
+    total_kcal = models.IntegerField('总千卡数', help_text='如：352')
+    total_elevation_gain = models.IntegerField('总爬升高度(米)', help_text='如：2')
+    average_power = models.IntegerField('平均功率(瓦)', help_text='如：117')
+    average_cadence = models.IntegerField('平均步频(步/分)', help_text='如：180')
+    average_pace = models.CharField('平均配速', max_length=7, help_text='如：8:23')
+    average_heart_rate = models.IntegerField('平均心率(次/分)', help_text='如：142')
+    average_stride_length = models.FloatField('平均步长(米)', help_text='如：0.7')
+    bottom_time = models.IntegerField('触底时间(毫秒)', help_text='如：267')
+    vertical_amplitude = models.FloatField('垂直振幅(厘米)', help_text='如：7.9')
+    # 5段数据，用逗号分割
+    five_pace = models.CharField('5段配速', max_length=50, help_text='如：8:23,8:23,8:23,8:23,8:23')
+    five_heart_rate = models.CharField('5段心率', max_length=50, help_text='如：142,145,150,156,160')
+    five_power = models.CharField('5段功率', max_length=50, help_text='如：117,117,114,113,112')
+    five_cadence = models.CharField('5段步频', max_length=50, help_text='如：180,180,178,178,178')
+    # 心率区间分布，用逗号分割
+    heart_rate = models.CharField('心率区间分布', max_length=50,
+                                  help_text='如：04:47,34:22,02:54,00:00,00:00')
+
+    def __str__(self):
+        return self.run_date.strftime('%Y-%m-%d %H:%M')
+
+    class Meta:
+        verbose_name = "健身"
+        verbose_name_plural = verbose_name
+        ordering = ['run_date']
+
+    def clean(self):
+        if len(self.training_duration.split(':')) != 3:
+            raise ValidationError("训练时长格式应该是 0:35:12 这种")
+        if len(self.average_pace.split(':')) != 2:
+            raise ValidationError("平均配速格式应该是 5:12 这种")
+        for value in [self.five_pace, self.five_heart_rate, self.five_power, self.five_cadence,
+                      self.heart_rate]:
+            if len(value.split(',')) != 5:
+                raise ValidationError(f"{value} 不满足5段数据格式")
