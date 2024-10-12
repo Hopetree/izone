@@ -420,3 +420,6 @@ def vitepress_subject_view(request):
             subject_data['items'].append(topic_data)
         data['data'].append(subject_data)
     return JsonResponse(data)
+
+def health(request):
+    return render(request, 'blog/health.html')

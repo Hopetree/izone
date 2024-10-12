@@ -1,0 +1,510 @@
+{% extends 'blog/base.html' %}
+{% load static blog_tags %}
+{% load health %}
+
+{% block head_title %}网站看板_Dashboard{% endblock %}
+
+{% block metas %}
+    <meta name="description"
+          content="本网站是一个采用django+bootstrap4搭建的个人博客，本着学习和分享的精神，博客项目开源，源代码可以到我的Github中查看，网站建站历程可以查看页面Timeline内容。">
+    <meta name="keywords" content="dashboard,看板,访问量统计,统计看板">
+{% endblock %}
+
+{% block top-file %}
+    <script src="{% static 'blog/js/echarts/5.4.3/echarts.min.js' %}"></script>
+    <!--设置默认的主题颜色为亮色-->
+    <script>
+        var baseEchartsColor = {
+            backgroundColor: '#fff',
+            titleColor: '#464646'
+        }
+        var nightEchartsColor = {
+            backgroundColor: '#1a222c',
+            titleColor: '#d5d3d3'
+        }
+        var echartsTheme = baseEchartsColor
+    </script>
+    <!--根据cookies判断是否启用暗色主题-->
+    {% if not request.COOKIES.toggleTheme %}
+        {% now_hour as hour %}
+        {% if hour < 6 or hour > 18 %}
+            <script>
+                var echartsTheme = nightEchartsColor
+            </script>
+        {% endif %}
+    {% else %}
+        {% if request.COOKIES.toggleTheme == "dark" %}
+            <script>
+                var echartsTheme = nightEchartsColor
+            </script>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="mb-3" id="year_data_box" style="width: 100%;height:260px;"></div>
+            {% get_year_data as year_data %}
+            <div id="year_data_data"
+                 style="display: none;">{{ year_data|json_script:"year_data" }}</div>
+            <script type="text/javascript">
+                const myRunYearData = JSON.parse(document.getElementById("year_data").textContent);
+                const myRunYearChart = echarts.init(document.getElementById('year_data_box'));
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    title: {
+                        text: myRunYearData.year + '年跑量日历图',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {},
+                    visualMap: {
+                        color: ['#f2ca6b', '#5a6fc0', '#85bedb', '#9eca7f', '#de6e6a'],
+                        textStyle: {color: echartsTheme.titleColor},
+                        min: 3000,
+                        max: 8000,
+                        type: 'piecewise',
+                        orient: 'horizontal',
+                        left: 'center',
+                        top: 20
+                    },
+                    calendar: {
+                        top: 100,
+                        left: 30,
+                        right: 30,
+                        cellSize: ['auto', 13],
+                        range: myRunYearData.year,
+                        itemStyle: {
+                            borderWidth: 1
+                        },
+                        yearLabel: {show: false}
+                    },
+                    series: {
+                        type: 'heatmap',
+                        coordinateSystem: 'calendar',
+                        data: myRunYearData.rawData
+                    }
+                };
+                myRunYearChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="heart_rate_interval_box" style="width: 100%;height:300px;"></div>
+            {% get_heart_rate_interval 15 as heart_rate_interval_data %}
+            <div id="heart_rate_interval_data"
+                 style="display: none;">{{ heart_rate_interval_data|json_script:"heart_rate_interval_data" }}</div>
+            <script type="text/javascript">
+                const myHeartRateintervalData = JSON.parse(document.getElementById("heart_rate_interval_data").textContent);
+                const myHeartRateintervalChart = echarts.init(document.getElementById('heart_rate_interval_box'));
+                // There should not be negative values in rawData
+                const rawData = myHeartRateintervalData.rawData;
+                const totalData = [];
+                for (let i = 0; i < rawData[0].length; ++i) {
+                    let sum = 0;
+                    for (let j = 0; j < rawData.length; ++j) {
+                        sum += rawData[j][i];
+                    }
+                    totalData.push(sum);
+                }
+                const grid = {
+                    left: 100,
+                    right: 100,
+                    top: 50,
+                    bottom: 50
+                };
+                const series = [
+                    '<134次/分',
+                    '135-147次/分',
+                    '148-159次/分',
+                    '160-171次/分',
+                    '172+次/分'
+                ].map((name, sid) => {
+                    return {
+                        name,
+                        type: 'bar',
+                        stack: 'total',
+                        barWidth: '60%',
+                        label: {
+                            show: true,
+                            formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
+                        },
+                        data: rawData[sid].map((d, did) =>
+                            totalData[did] <= 0 ? 0 : d / totalData[did]
+                        )
+                    };
+                });
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    color: ['#5a6fc0', '#85bedb', '#9eca7f', '#f2ca6b', '#de6e6a'],
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    legend: {
+                        selectedMode: false
+                    },
+                    title: {
+                        text: '心率区间分布',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    grid,
+                    yAxis: {
+                        type: 'value'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: myHeartRateintervalData.xData
+                    },
+                    series
+                };
+                myHeartRateintervalChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="heart_box" style="width: 100%;height:340px;"></div>
+            {% get_heart_rate_trend 30 as heart_rate_trend %}
+            <div id="heart_data" style="display: none;">{{ heart_rate_trend|json_script:"heart_rate_trend" }}</div>
+            <script type="text/javascript">
+                const myHeartData = JSON.parse(document.getElementById("heart_data").textContent);
+                const myHeartChart = echarts.init(document.getElementById('heart_box'));
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    {#color: ['#3ba272', '#9a60b4', '#f38b53', '#fac858'],#}
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {type: ['line', 'bar']},
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    title: {
+                        text: '心率趋势图(次/分钟)',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    legend: {
+                        data: ['第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均心率'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
+                    dataset: {
+                        source: [['product', '第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均心率']].concat(myHeartData.rawData)
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value', min: 130},
+                    series: [
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myHeartChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="pace_trend_box" style="width: 100%;height:340px;"></div>
+            {% get_pace_trend 30 as pace_trend %}
+            <div id="pace_trend_data" style="display: none;">{{ pace_trend|json_script:"pace_trend" }}</div>
+            <script type="text/javascript">
+                const myPaceData = JSON.parse(document.getElementById("pace_trend_data").textContent);
+                const myPaceChart = echarts.init(document.getElementById('pace_trend_box'));
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    {#color: ['#3ba272', '#9a60b4', '#f38b53', '#fac858'],#}
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {type: ['line', 'bar']},
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    title: {
+                        text: '配速趋势图(分钟/公里)',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    legend: {
+                        data: ['第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均配速'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
+                    dataset: {
+                        source: [['product', '第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均配速']].concat(myPaceData.rawData)
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value', min: 5},
+                    series: [
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myPaceChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3" id="cadence_trend_box" style="width: 100%;height:340px;"></div>
+            {% get_cadence_trend 30 as cadence_trend %}
+            <div id="cadence_trend_data" style="display: none;">{{ cadence_trend|json_script:"cadence_trend" }}</div>
+            <script type="text/javascript">
+                const myCadenceData = JSON.parse(document.getElementById("cadence_trend_data").textContent);
+                const myCadenceChart = echarts.init(document.getElementById('cadence_trend_box'));
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    {#color: ['#3ba272', '#9a60b4', '#f38b53', '#fac858'],#}
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            magicType: {type: ['line', 'bar']},
+                            saveAsImage: {}
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    title: {
+                        text: '步频趋势图(步/分钟)',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    legend: {
+                        data: ['第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均步频'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
+                    dataset: {
+                        source: [['product', '第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均步频']].concat(myCadenceData.rawData)
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value', min: 150},
+                    series: [
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myCadenceChart.setOption(option);
+            </script>
+        </div>
+    </div>
+{% endblock %}
