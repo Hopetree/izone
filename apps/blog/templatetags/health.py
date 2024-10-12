@@ -49,7 +49,7 @@ def get_year_data():
     data['rawData'] = rawData
     data['year'] = this_year
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
 
 
@@ -62,6 +62,7 @@ def get_heart_rate_interval(num=14):
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.heart_rate_interval.format(date=this_date_str)
+    redis_key = f'{redis_key}_{num}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
@@ -78,7 +79,7 @@ def get_heart_rate_interval(num=14):
     data['rawData'] = rawData
     data['xData'] = xData
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
 
 
@@ -91,6 +92,7 @@ def get_heart_rate_trend(num=14):
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.heart_rate_trend.format(date=this_date_str)
+    redis_key = f'{redis_key}_{num}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
@@ -105,7 +107,7 @@ def get_heart_rate_trend(num=14):
         rawData.append(heart_data)
     data['rawData'] = rawData
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
 
 
@@ -118,6 +120,7 @@ def get_pace_trend(num=14):
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.pace_trend.format(date=this_date_str)
+    redis_key = f'{redis_key}_{num}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
@@ -132,7 +135,7 @@ def get_pace_trend(num=14):
         rawData.append(pace_data)
     data['rawData'] = rawData
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
 
 
@@ -145,6 +148,7 @@ def get_cadence_trend(num=14):
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.cadence_trend.format(date=this_date_str)
+    redis_key = f'{redis_key}_{num}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
@@ -159,5 +163,5 @@ def get_cadence_trend(num=14):
         rawData.append(cadence_data)
     data['rawData'] = rawData
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
