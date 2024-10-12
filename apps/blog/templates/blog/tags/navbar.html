@@ -38,7 +38,8 @@
                 {% url 'blog:feedhub' as feed_hub_url %}
                 {% url 'monitor:demo' as monitor_demo_url %}
                 {% url 'portinfo:index' as portinfo_url %}
-                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == monitor_demo_url or request.path == portinfo_url %}active{% endif %}"
+                {% url 'blog:health' as health_url %}
+                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == health_url or request.path == monitor_demo_url or request.path == portinfo_url %}active{% endif %}"
                    href="#"
                    id="more-link"
                    role="button"
@@ -55,6 +56,8 @@
                         <i class="fa fa-fw fa-rss-square text-info mr-2"></i>Feed Hub</a>
                     <a class="dropdown-item pl-3" href="{{ monitor_demo_url }}"><i
                                     class="fa fa-fw fa-tachometer text-info mr-2"></i>监控Demo</a>
+                    <a class="dropdown-item pl-3" href="{{ health_url }}"><i
+                                    class="fa fa-fw fa-street-view text-info mr-2"></i>慢跑看板</a>
                     <a class="dropdown-item pl-3" href="{{ portinfo_url }}"><i
                                     class="fa fa-fw fa-bullseye text-info mr-2"></i>端口大全</a>
                 </div>
