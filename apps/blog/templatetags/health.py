@@ -101,7 +101,7 @@ def get_heart_rate_interval_v2(num=14):
         rawData.append(heart_rate_interval)
     data['rawData'] = rawData
     # print(data)
-    # cache.set(redis_key, data, 3600 * 2)
+    cache.set(redis_key, data, 3600 * 2)
     return data
 
 
