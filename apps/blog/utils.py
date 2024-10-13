@@ -146,7 +146,7 @@ class RedisKeys:
 
     # 健康相关
     health_year_data = 'health.year_data.{date}'  # 当年数据，日历图
-    heart_rate_interval = 'health.rate_interval_v2.{date}'  # 心率区间分布
+    heart_rate_interval = 'health.rate_interval_v3.{date}'  # 心率区间分布
     heart_rate_trend = 'health.heart_rate_trend.{date}'  # 心率趋势
     pace_trend = 'health.pace_trend.{date}'  # 配速趋势
     cadence_trend = 'health.cadence_trend.{date}'  # 步频趋势

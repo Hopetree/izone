@@ -29,22 +29,27 @@ def time_to_minutes(time_str):
 
 def heart_to_list(heart_str):
     """
-    心率区间分别输出成百分比，保证整体和为100%，所以最后一个直接用100减去其他
+    心率区间分别输出成百分比，先计算后四个区间，最后一个区间（第一个心率区间）通过减法保证总和为100%
     @param heart_str: 逗号分隔的心率区间字符串，格式类似 "12:30, 15:45, 8:20, 10:15, 7:30"
     @return: 每个心率区间的百分比列表
     """
     # 将心率时间转换为秒
-    h1, h2, h3, h4, h5 = [time_to_seconds(x) for x in heart_str.split(',')]
-    # 总时间
-    total_time = h1 + h2 + h3 + h4 + h5
-    # 计算每个心率区间的百分比，保留一位小数
-    p1 = round(h1 / total_time * 100, 1)
-    p2 = round(h2 / total_time * 100, 1)
-    p3 = round(h3 / total_time * 100, 1)
-    p4 = round(h4 / total_time * 100, 1)
-    # 最后一个百分比是 100 减去前四个的和
-    p5 = round(100 - (p1 + p2 + p3 + p4), 1)
-    return [p1, p2, p3, p4, p5]
+    heart_rates = [time_to_seconds(x) for x in heart_str.split(',')]
+
+    # 计算总时间
+    total_time = sum(heart_rates)
+
+    # 计算后四个心率区间的百分比，不进行舍入
+    percentages = [(rate / total_time) * 100 for rate in heart_rates[1:]]
+
+    # 对后四个百分比进行舍入并保留一位小数
+    rounded_percentages = [round(p, 1) for p in percentages]
+
+    # 第一个心率区间的百分比是 100 - 后四个百分比的和
+    first_percentage = round(100 - sum(rounded_percentages), 1)
+
+    # 返回第一个百分比 + 后四个舍入后的百分比
+    return [first_percentage] + rounded_percentages
 
 
 @register.simple_tag
@@ -96,7 +101,7 @@ def get_heart_rate_interval_v2(num=14):
         rawData.append(heart_rate_interval)
     data['rawData'] = rawData
     # print(data)
-    cache.set(redis_key, data, 3600 * 2)
+    # cache.set(redis_key, data, 3600 * 2)
     return data
 
 
