@@ -96,60 +96,31 @@
             </script>
         </div>
         <div class="row justify-content-center">
-            <div class="mb-3" id="heart_rate_interval_box" style="width: 100%;height:300px;"></div>
-            {% get_heart_rate_interval 15 as heart_rate_interval_data %}
-            <div id="heart_rate_interval_data"
-                 style="display: none;">{{ heart_rate_interval_data|json_script:"heart_rate_interval_data" }}</div>
+            <div class="mb-3" id="heart_interval_box" style="width: 100%;height:340px;"></div>
+            {% get_heart_rate_interval_v2 15 as heart_interval_data %}
+            <div id="heart_interval_data"
+                 style="display: none;">{{ heart_interval_data|json_script:"heart_interval_data" }}</div>
             <script type="text/javascript">
-                const myHeartRateintervalData = JSON.parse(document.getElementById("heart_rate_interval_data").textContent);
-                const myHeartRateintervalChart = echarts.init(document.getElementById('heart_rate_interval_box'));
-                // There should not be negative values in rawData
-                const rawData = myHeartRateintervalData.rawData;
-                const totalData = [];
-                for (let i = 0; i < rawData[0].length; ++i) {
-                    let sum = 0;
-                    for (let j = 0; j < rawData.length; ++j) {
-                        sum += rawData[j][i];
-                    }
-                    totalData.push(sum);
-                }
-                const grid = {
-                    left: 100,
-                    right: 100,
-                    top: 50,
-                    bottom: 50
-                };
-                const series = [
-                    '<134次/分',
-                    '135-147次/分',
-                    '148-159次/分',
-                    '160-171次/分',
-                    '172+次/分'
-                ].map((name, sid) => {
-                    return {
-                        name,
-                        type: 'bar',
-                        stack: 'total',
-                        barWidth: '60%',
-                        label: {
-                            show: true,
-                            formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
-                        },
-                        data: rawData[sid].map((d, did) =>
-                            totalData[did] <= 0 ? 0 : d / totalData[did]
-                        )
-                    };
-                });
+                // 基于准备好的dom，初始化echarts实例
+                const myHeartIntervalData = JSON.parse(document.getElementById("heart_interval_data").textContent);
+                const myHeartIntervalChart = echarts.init(document.getElementById('heart_interval_box'));
+
+                // 指定图表的配置项和数据
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
-                    color: ['#5a6fc0', '#85bedb', '#9eca7f', '#f2ca6b', '#de6e6a'],
+                    color: ['#5470c6', '#91cc75', '#73c0de', '#fac858', '#fc8452', '#3ba272', '#fac858', '#ee6666', '#9a60b4', '#ea7ccc'],
                     toolbox: {
+                        show: true,
                         feature: {
+                            magicType: {type: ['line', 'bar']},
                             saveAsImage: {}
                         }
                     },
-                    legend: {
-                        selectedMode: false
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
                     },
                     title: {
                         text: '心率区间分布',
@@ -157,18 +128,95 @@
                         y: 'bottom',
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}
                     },
-                    grid,
-                    yAxis: {
-                        type: 'value',
-                        max: 1
+                    legend: {
+                        textStyle: {color: echartsTheme.titleColor}
                     },
-                    xAxis: {
-                        type: 'category',
-                        data: myHeartRateintervalData.xData
+                    dataset: {
+                        source: [['product', '<134次/分', '135-147次/分', '148-159次/分', '160-171次/分', '172+次/分']].concat(myHeartIntervalData.rawData)
                     },
-                    series
+                    xAxis: {type: 'category'},
+                    yAxis: {type: 'value', axisLabel: {formatter: '{value} %'}},
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '64%',
+                            label: {
+                                show: true,  // 显示标签
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[1] === 0 ? '' : params.data[1] + '%';
+                                },
+                            },
+                            stack: '单次',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '64%',
+                            label: {
+                                show: true,  // 显示标签
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[2] === 0 ? '' : params.data[2] + '%';
+                                },
+                            },
+                            stack: '单次',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '64%',
+                            label: {
+                                show: true,  // 显示标签
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[3] === 0 ? '' : params.data[3] + '%';
+                                },
+                            },
+                            stack: '单次',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '64%',
+                            label: {
+                                show: true,  // 显示标签
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[4] === 0 ? '' : params.data[4] + '%';
+                                },
+                            },
+                            stack: '单次',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '64%',
+                            label: {
+                                show: true,  // 显示标签
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[5] === 0 ? '' : params.data[5] + '%';
+                                },
+                            },
+                            stack: '单次',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        }
+                    ]
                 };
-                myHeartRateintervalChart.setOption(option);
+
+                // 使用刚指定的配置项和数据显示图表。
+                myHeartIntervalChart.setOption(option);
             </script>
         </div>
         <div class="row justify-content-center">

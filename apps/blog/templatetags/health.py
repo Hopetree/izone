@@ -27,6 +27,26 @@ def time_to_minutes(time_str):
     return f'{total_minutes:.1f}'
 
 
+def heart_to_list(heart_str):
+    """
+    心率区间分别输出成百分比，保证整体和为100%，所以最后一个直接用100减去其他
+    @param heart_str: 逗号分隔的心率区间字符串，格式类似 "12:30, 15:45, 8:20, 10:15, 7:30"
+    @return: 每个心率区间的百分比列表
+    """
+    # 将心率时间转换为秒
+    h1, h2, h3, h4, h5 = [time_to_seconds(x) for x in heart_str.split(',')]
+    # 总时间
+    total_time = h1 + h2 + h3 + h4 + h5
+    # 计算每个心率区间的百分比，保留一位小数
+    p1 = round(h1 / total_time * 100, 1)
+    p2 = round(h2 / total_time * 100, 1)
+    p3 = round(h3 / total_time * 100, 1)
+    p4 = round(h4 / total_time * 100, 1)
+    # 最后一个百分比是 100 减去前四个的和
+    p5 = round(100 - (p1 + p2 + p3 + p4), 1)
+    return [p1, p2, p3, p4, p5]
+
+
 @register.simple_tag
 def get_year_data():
     """
@@ -54,7 +74,7 @@ def get_year_data():
 
 
 @register.simple_tag
-def get_heart_rate_interval(num=14):
+def get_heart_rate_interval_v2(num=14):
     """
     获取心率区间分布
     @param num: 获取最新num条数据
@@ -69,15 +89,12 @@ def get_heart_rate_interval(num=14):
     data = {}
     objs = Fitness.objects.order_by('-run_date')[:num]
     objs = list(objs)[::-1]
-    tData = []
-    xData = []
+    rawData = []
     for obj in objs:
-        xData.append(obj.run_date.strftime('%m-%d'))
-        heart_rate_interval = [time_to_seconds(t) for t in obj.heart_rate.split(',')]
-        tData.append(heart_rate_interval)
-    rawData = [list(x) for x in zip(*tData)]
+        heart_rate_interval = [obj.run_date.strftime('%m-%d')]
+        heart_rate_interval.extend(heart_to_list(obj.heart_rate))
+        rawData.append(heart_rate_interval)
     data['rawData'] = rawData
-    data['xData'] = xData
     # print(data)
     cache.set(redis_key, data, 3600 * 2)
     return data
