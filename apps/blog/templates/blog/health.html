@@ -252,7 +252,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="heart_box" style="width: 100%;height:340px;"></div>
-            {% get_heart_rate_trend 30 as heart_rate_trend %}
+            {% get_heart_rate_trend 15 as heart_rate_trend %}
             <div id="heart_data" style="display: none;">{{ heart_rate_trend|json_script:"heart_rate_trend" }}</div>
             <script type="text/javascript">
                 const myHeartData = JSON.parse(document.getElementById("heart_data").textContent);
@@ -364,7 +364,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="pace_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_pace_trend 30 as pace_trend %}
+            {% get_pace_trend 15 as pace_trend %}
             <div id="pace_trend_data" style="display: none;">{{ pace_trend|json_script:"pace_trend" }}</div>
             <script type="text/javascript">
                 // 将浮点数转换为分秒格式
@@ -521,7 +521,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="cadence_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_cadence_trend 30 as cadence_trend %}
+            {% get_cadence_trend 15 as cadence_trend %}
             <div id="cadence_trend_data" style="display: none;">{{ cadence_trend|json_script:"cadence_trend" }}</div>
             <script type="text/javascript">
                 const myCadenceData = JSON.parse(document.getElementById("cadence_trend_data").textContent);
