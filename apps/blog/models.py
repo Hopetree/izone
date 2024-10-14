@@ -574,3 +574,5 @@ class Fitness(models.Model):
                       self.heart_rate]:
             if len(value.split(',')) != 5:
                 raise ValidationError(f"{value} 不满足5段数据格式")
+    def get_absolute_url(self):
+        return reverse('blog:health')
