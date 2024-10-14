@@ -24,7 +24,7 @@ def time_to_minutes(time_str):
     minutes, seconds = map(int, time_str.split(':'))
     # 将秒转换为分钟，并加上分钟部分
     total_minutes = minutes + seconds / 60
-    return f'{total_minutes:.2f}'
+    return f'{total_minutes:.4f}'
 
 
 def heart_to_list(heart_str):
