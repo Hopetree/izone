@@ -150,6 +150,7 @@ class RedisKeys:
     heart_rate_trend = 'health.heart_rate_trend.{date}'  # 心率趋势
     pace_trend = 'health.pace_trend.{date}'  # 配速趋势
     cadence_trend = 'health.cadence_trend.{date}'  # 步频趋势
+    total_data_trend = 'health.total_data_trend.{date}'  # 整体趋势
 
 
 def check_request_headers(headers_obj):

@@ -117,6 +117,177 @@
             </script>
         </div>
         <div class="row justify-content-center">
+            <div class="mb-3" id="total_data_box" style="width: 100%;height:340px;"></div>
+            {% get_total_data_trend 15 as total_data_trend %}
+            <div id="total_data" style="display: none;">{{ total_data_trend|json_script:"total_data_trend" }}</div>
+            <script type="text/javascript">
+                const myTotalData = JSON.parse(document.getElementById("total_data").textContent);
+                const myTotalChart = echarts.init(document.getElementById('total_data_box'));
+                // 指定图表的配置项和数据
+                // 将浮点数转换为分秒格式
+                function floatToMinutesSeconds(value) {
+                    const minutes = Math.floor(value);  // 整数部分为分钟
+                    const seconds = Math.round((value - minutes) * 60);  // 小数部分转为秒并四舍五入
+                    return minutes + "'" + (seconds < 10 ? '0' : '') + seconds + "''";  // 格式化输出
+                }
+
+                const colors = ['#5470c6', '#91cc75', '#de6e6a', '#9a60b4', '#73c0de', '#3ba272'];
+                option = {
+                    backgroundColor: echartsTheme.backgroundColor,
+                    color: colors,
+                    title: {
+                        text: '整体数据趋势图',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {fontSize: 18, color: echartsTheme.titleColor}
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross'
+                        },
+                        formatter: function (params) {
+                            let result = params[0].axisValue + '<br/>';
+                            params.forEach(function (item, index) {
+                                result += item.marker + item.seriesName +
+                                    '<span style="float:right;margin-left: 1rem;font-weight: bold;">';
+
+                                // 当 index 等于 3（第四个项）时，调用 floatToMinutesSeconds 函数处理值
+                                if (index === 3) {
+                                    result += floatToMinutesSeconds(item.value);
+                                } else {
+                                    result += item.value;
+                                }
+
+                                result += '</span><br/>';
+                            });
+                            return result;
+                        }
+                    },
+                    toolbox: {
+                        feature: {
+                            dataView: {show: true, readOnly: false},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend: {
+                        data: ['步频', '心率', '配速'],
+                        textStyle: {color: echartsTheme.titleColor}
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+                            // prettier-ignore
+                            data: myTotalData.dateData,
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '距离',
+                            position: 'left',
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[0]
+                                }
+                            },
+                            min: 3,
+                            axisLabel: {
+                                formatter: '{value} km'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '步频',
+                            min: 140,
+                            position: 'right',
+                            alignTicks: true,
+                            offset: 60,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[1]
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} 步'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '心率',
+                            min: 120,
+                            position: 'right',
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[2]
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} 次'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '配速',
+                            min: 5,
+                            position: 'left',
+                            offset: 60,
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[3]
+                                }
+                            },
+                            axisLabel: {
+                                formatter: function (value) {
+                                    return floatToMinutesSeconds(value); // 将 Y 轴标签格式化为分秒
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '距离',
+                            type: 'bar',
+                            data: myTotalData.distanceData
+                        },
+                        {
+                            name: '步频',
+                            type: 'line',
+                            yAxisIndex: 1,
+                            data: myTotalData.cadenceData
+                        },
+                        {
+                            name: '心率',
+                            type: 'line',
+                            yAxisIndex: 2,
+                            data: myTotalData.heartData
+                        },
+                        {
+                            name: '配速',
+                            type: 'line',
+                            yAxisIndex: 3,
+                            data: myTotalData.paceData
+                        }
+                    ]
+                };
+
+
+                // 使用刚指定的配置项和数据显示图表。
+                myTotalChart.setOption(option);
+            </script>
+        </div>
+        <div class="row justify-content-center">
             <div class="mb-3" id="heart_interval_box" style="width: 100%;height:340px;"></div>
             {% get_heart_rate_interval_v2 15 as heart_interval_data %}
             <div id="heart_interval_data"
@@ -129,7 +300,7 @@
                 // 指定图表的配置项和数据
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
-                    color: ['#5470c6', '#91cc75', '#73c0de', '#fac858', '#fc8452', '#3ba272', '#fac858', '#ee6666', '#9a60b4', '#ea7ccc'],
+                    color: ['#5470c6', '#91cc75', '#73c0de', '#fac858', '#ee6666', '#3ba272', '#fac858', '#ee6666', '#9a60b4', '#ea7ccc'],
                     toolbox: {
                         show: true,
                         feature: {
@@ -275,7 +446,7 @@
                         }
                     },
                     title: {
-                        text: '心率趋势图(次/分钟)',
+                        text: '五公里心率趋势图(次/分钟)',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}
@@ -404,7 +575,7 @@
                         }
                     },
                     title: {
-                        text: '配速趋势图(分钟/公里)',
+                        text: '五公里配速趋势图(分钟/公里)',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}
@@ -544,7 +715,7 @@
                         }
                     },
                     title: {
-                        text: '步频趋势图(步/分钟)',
+                        text: '五公里步频趋势图(步/分钟)',
                         x: 'center',
                         y: 'bottom',
                         textStyle: {fontSize: 18, color: echartsTheme.titleColor}

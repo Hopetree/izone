@@ -187,3 +187,40 @@ def get_cadence_trend(num=14):
     # print(data)
     cache.set(redis_key, data, 3600 * 2)
     return data
+
+
+@register.simple_tag
+def get_total_data_trend(num=14):
+    """
+    获取整体数据趋势，多Y轴视图
+    @param num: 获取最新num条数据
+    @return:
+    """
+    this_date_str = datetime.today().strftime('%Y%m%d')
+    redis_key = RedisKeys.total_data_trend.format(date=this_date_str)
+    redis_key = f'{redis_key}_{num}'
+    redis_data = cache.get(redis_key)
+    if redis_data:
+        return redis_data
+    data = {}
+    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = list(objs)[::-1]
+    dateData = []
+    distanceData = []
+    cadenceData = []
+    heartData = []
+    paceData = []
+    for obj in objs:
+        dateData.append(obj.run_date.strftime('%m-%d'))
+        distanceData.append(obj.distance)
+        cadenceData.append(obj.average_cadence)
+        heartData.append(obj.average_heart_rate)
+        paceData.append(time_to_minutes(obj.average_pace))
+    data['dateData'] = dateData
+    data['distanceData'] = distanceData
+    data['cadenceData'] = cadenceData
+    data['heartData'] = heartData
+    data['paceData'] = paceData
+    # print(data)
+    cache.set(redis_key, data, 3600 * 2)
+    return data
