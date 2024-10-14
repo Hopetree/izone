@@ -25,6 +25,7 @@ from blog.templatetags.blog_tags import get_blog_infos
 from .action.oss_sync import action_qiniu_sync_github
 from .action.article_sync import action_article_to_github
 from .action.friend_links import action_check_friend_links
+from .action.clear_redis_keys import action_clear_cache_with_prefix
 
 
 @shared_task
@@ -237,5 +238,18 @@ def article_to_github(base_url, base64_string, token, owner, repo,
         source_media_url, target_media_url,
         msg, full, white_list, prefix
     )
+    response.data = result
+    return response.as_dict()
+
+
+@shared_task
+def clear_cache_with_prefix(pattern_keys):
+    """
+    清理指定匹配规则的redis keys
+    @param pattern_keys: health.*
+    @return:
+    """
+    response = TaskResponse()
+    result = action_clear_cache_with_prefix(pattern_keys)
     response.data = result
     return response.as_dict()
