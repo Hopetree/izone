@@ -16,11 +16,15 @@
     <script>
         var baseEchartsColor = {
             backgroundColor: '#fff',
-            titleColor: '#464646'
+            titleColor: '#464646',
+            borderColor: '#555555',
+            borderColor1: '#cccccc'
         }
         var nightEchartsColor = {
             backgroundColor: '#1a222c',
-            titleColor: '#d5d3d3'
+            titleColor: '#d5d3d3',
+            borderColor: '#9a9393',
+            borderColor1: '#4f525a'
         }
         var echartsTheme = baseEchartsColor
     </script>
@@ -44,7 +48,7 @@
 {% block base_content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="mb-3" id="year_data_box" style="width: 100%;height:260px;"></div>
+            <div class="mb-3" id="year_data_box" style="width: 100%;height:320px;"></div>
             {% get_year_data as year_data %}
             <div id="year_data_data"
                  style="display: none;">{{ year_data|json_script:"year_data" }}</div>
@@ -77,12 +81,29 @@
                     },
                     calendar: {
                         top: 100,
-                        left: 30,
-                        right: 30,
-                        cellSize: ['auto', 13],
+                        left: 40,
+                        right: 40,
+                        cellSize: ['auto', 20],
                         range: myRunYearData.year,
+                        splitLine: {
+                            lineStyle: {
+                                color: echartsTheme.borderColor,
+                                width: 1
+                            }
+                        },
                         itemStyle: {
+                            color: echartsTheme.backgroundColor,
+                            borderColor: echartsTheme.borderColor1,
                             borderWidth: 1
+                        },
+                        monthLabel: {
+                            show: true,
+                            color: echartsTheme.titleColor,
+                            nameMap: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                        },
+                        dayLabel: {
+                            color: echartsTheme.titleColor,
+                            nameMap: ['日', '一', '二', '三', '四', '五', '六']
                         },
                         yearLabel: {show: false}
                     },
@@ -119,7 +140,17 @@
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
-                            type: 'shadow'
+                            type: 'shadow'  // 鼠标悬停时显示阴影
+                        },
+                        formatter: function (params) {
+                            let result = params[0].axisValue + '<br/>';
+                            params.forEach(function (item) {
+                                // 使用 span 并添加样式来实现右对齐
+                                result +=
+                                    item.marker + item.seriesName +
+                                    '<span style="float:right;margin-left: 1rem;font-weight: bold;">' + item.value[item.seriesIndex + 1] + '%' + '</span><br/>';
+                            });
+                            return result;
                         }
                     },
                     title: {
@@ -135,7 +166,7 @@
                         source: [['product', '<134次/分', '135-147次/分', '148-159次/分', '160-171次/分', '172+次/分']].concat(myHeartIntervalData.rawData)
                     },
                     xAxis: {type: 'category'},
-                    yAxis: {type: 'value', axisLabel: {formatter: '{value} %'}},
+                    yAxis: {type: 'value', axisLabel: {formatter: '{value}%'}},
                     series: [
                         {
                             type: 'bar',
@@ -336,6 +367,13 @@
             {% get_pace_trend 30 as pace_trend %}
             <div id="pace_trend_data" style="display: none;">{{ pace_trend|json_script:"pace_trend" }}</div>
             <script type="text/javascript">
+                // 将浮点数转换为分秒格式
+                function floatToMinutesSeconds(value) {
+                    const minutes = Math.floor(value);  // 整数部分为分钟
+                    const seconds = Math.round((value - minutes) * 60);  // 小数部分转为秒并四舍五入
+                    return minutes + "'" + (seconds < 10 ? '0' : '') + seconds + "''";  // 格式化输出
+                }
+
                 const myPaceData = JSON.parse(document.getElementById("pace_trend_data").textContent);
                 const myPaceChart = echarts.init(document.getElementById('pace_trend_box'));
                 // 指定图表的配置项和数据
@@ -352,7 +390,17 @@
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
-                            type: 'shadow'
+                            type: 'shadow'  // 鼠标悬停时显示阴影
+                        },
+                        formatter: function (params) {
+                            let result = params[0].axisValue + '<br/>';
+                            params.forEach(function (item) {
+                                // 使用 span 并添加样式来实现右对齐
+                                result +=
+                                    item.marker + item.seriesName +
+                                    '<span style="float:right;margin-left: 1rem;font-weight: bold;">' + floatToMinutesSeconds(item.value[item.seriesIndex + 1]) + '</span><br/>';
+                            });
+                            return result;
                         }
                     },
                     title: {
@@ -369,7 +417,15 @@
                         source: [['product', '第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均配速']].concat(myPaceData.rawData)
                     },
                     xAxis: {type: 'category'},
-                    yAxis: {type: 'value', min: 5},
+                    yAxis: {
+                        type: 'value',
+                        min: 5,
+                        axisLabel: {
+                            formatter: function (value) {
+                                return floatToMinutesSeconds(value); // 将 Y 轴标签格式化为分秒
+                            }
+                        }
+                    },
                     series: [
                         {
                             type: 'line',
@@ -379,6 +435,10 @@
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[1] === 0 ? '' : floatToMinutesSeconds(params.data[1]);
                                 }
                             }
                         },
@@ -390,6 +450,25 @@
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[2] === 0 ? '' : floatToMinutesSeconds(params.data[2]);
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[3] === 0 ? '' : floatToMinutesSeconds(params.data[3]);
                                 }
                             }
                         },
@@ -412,17 +491,10 @@
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[4] === 0 ? '' : floatToMinutesSeconds(params.data[4]);
                                 }
                             }
                         },
@@ -433,6 +505,10 @@
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[5] === 0 ? '' : floatToMinutesSeconds(params.data[5]);
                                 }
                             }
                         }
