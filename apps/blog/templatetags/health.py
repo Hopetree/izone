@@ -214,17 +214,23 @@ def get_total_data_trend(num=14):
     cadenceData = []
     heartData = []
     paceData = []
+    kcalData = []
+    powerData = []
     for obj in objs:
         dateData.append(obj.run_date.strftime('%m-%d'))
         distanceData.append(obj.distance)
         cadenceData.append(obj.average_cadence)
         heartData.append(obj.average_heart_rate)
         paceData.append(time_to_minutes(obj.average_pace))
+        kcalData.append(obj.total_kcal)
+        powerData.append(obj.average_power)
     data['dateData'] = dateData
     data['distanceData'] = distanceData
     data['cadenceData'] = cadenceData
     data['heartData'] = heartData
     data['paceData'] = paceData
+    data['kcalData'] = kcalData
+    data['powerData'] = powerData
     # print(data)
     cache.set(redis_key, data, 3600 * 2)
     return data

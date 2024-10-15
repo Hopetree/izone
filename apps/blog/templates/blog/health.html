@@ -148,8 +148,8 @@
                     '#91cc75',
                     '#de6e6a',
                     '#9a60b4',
-                    '#73c0de',
-                    '#3ba272'
+                    '#3ba272',
+                    '#ea7ccc'
                 ];
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
@@ -191,7 +191,7 @@
                         }
                     },
                     legend: {
-                        data: ['步频', '心率', '配速'],
+                        data: ['步频', '心率', '配速', '总千卡', '功率'],
                         textStyle: {color: echartsTheme.titleColor}
                     },
                     xAxis: [
@@ -272,6 +272,33 @@
                                     return floatToMinutesSeconds(value); // 将 Y 轴标签格式化为分秒
                                 }
                             }
+                        },
+                        {
+                            type: 'value',
+                            name: '总千卡',
+                            position: 'left',
+                            show: false,
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[4]
+                                }
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '功率',
+                            min: 100,
+                            position: 'left',
+                            show: false,
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[5]
+                                }
+                            }
                         }
                     ],
                     series: [
@@ -302,6 +329,18 @@
                             type: 'line',
                             yAxisIndex: 3,
                             data: myTotalData.paceData
+                        },
+                        {
+                            name: '总千卡',
+                            type: 'line',
+                            yAxisIndex: 4,
+                            data: myTotalData.kcalData
+                        },
+                        {
+                            name: '功率',
+                            type: 'line',
+                            yAxisIndex: 5,
+                            data: myTotalData.powerData
                         }
                     ]
                 };
