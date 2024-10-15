@@ -216,6 +216,7 @@ def get_total_data_trend(num=14):
     paceData = []
     kcalData = []
     powerData = []
+    strideLengthData = []
     for obj in objs:
         dateData.append(obj.run_date.strftime('%m-%d'))
         distanceData.append(obj.distance)
@@ -224,6 +225,7 @@ def get_total_data_trend(num=14):
         paceData.append(time_to_minutes(obj.average_pace))
         kcalData.append(obj.total_kcal)
         powerData.append(obj.average_power)
+        strideLengthData.append(obj.average_stride_length)
     data['dateData'] = dateData
     data['distanceData'] = distanceData
     data['cadenceData'] = cadenceData
@@ -231,6 +233,7 @@ def get_total_data_trend(num=14):
     data['paceData'] = paceData
     data['kcalData'] = kcalData
     data['powerData'] = powerData
+    data['strideLengthData'] = strideLengthData
     # print(data)
     cache.set(redis_key, data, 3600 * 2)
     return data

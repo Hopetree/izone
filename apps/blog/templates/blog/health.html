@@ -149,7 +149,8 @@
                     '#de6e6a',
                     '#9a60b4',
                     '#3ba272',
-                    '#ea7ccc'
+                    '#ea7ccc',
+                    '#fac858'
                 ];
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
@@ -191,7 +192,7 @@
                         }
                     },
                     legend: {
-                        data: ['步频', '心率', '配速', '总千卡', '功率'],
+                        data: ['步频', '心率', '配速', '总千卡', '功率', '步长'],
                         textStyle: {color: echartsTheme.titleColor}
                     },
                     xAxis: [
@@ -224,7 +225,8 @@
                         {
                             type: 'value',
                             name: '步频',
-                            min: 140,
+                            min: 150,
+                            max: 200,
                             position: 'right',
                             alignTicks: true,
                             offset: 60,
@@ -241,7 +243,8 @@
                         {
                             type: 'value',
                             name: '心率',
-                            min: 120,
+                            min: 130,
+                            max: 180,
                             position: 'right',
                             alignTicks: true,
                             axisLine: {
@@ -290,6 +293,7 @@
                             type: 'value',
                             name: '功率',
                             min: 100,
+                            max: 160,
                             position: 'left',
                             show: false,
                             alignTicks: true,
@@ -297,6 +301,21 @@
                                 show: true,
                                 lineStyle: {
                                     color: colors[5]
+                                }
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '步长',
+                            min: 0,
+                            max: 1.2,
+                            position: 'left',
+                            show: false,
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: colors[6]
                                 }
                             }
                         }
@@ -341,6 +360,12 @@
                             type: 'line',
                             yAxisIndex: 5,
                             data: myTotalData.powerData
+                        },
+                        {
+                            name: '步长',
+                            type: 'line',
+                            yAxisIndex: 6,
+                            data: myTotalData.strideLengthData
                         }
                     ]
                 };
@@ -539,61 +564,61 @@
                             type: 'line',
                             lineStyle: {type: 'dashed'},
                             label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            label: {
                                 show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            label: {
-                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
@@ -679,7 +704,7 @@
                             type: 'line',
                             lineStyle: {type: 'dashed'},
                             label: {
-                                show: true,
+                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
@@ -694,7 +719,7 @@
                             type: 'line',
                             lineStyle: {type: 'dashed'},
                             label: {
-                                show: true,
+                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
@@ -749,7 +774,7 @@
                         {
                             type: 'line',
                             label: {
-                                show: false,
+                                show: true,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
@@ -811,61 +836,61 @@
                             type: 'line',
                             lineStyle: {type: 'dashed'},
                             label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            lineStyle: {type: 'dashed'},
+                            label: {
+                                show: false,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        {
+                            type: 'line',
+                            label: {
                                 show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: true,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            lineStyle: {type: 'dashed'},
-                            label: {
-                                show: false,
-                                position: 'top',
-                                textStyle: {
-                                    fontSize: 12
-                                }
-                            }
-                        },
-                        {
-                            type: 'line',
-                            label: {
-                                show: false,
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
