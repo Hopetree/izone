@@ -68,7 +68,13 @@
                             saveAsImage: {}
                         }
                     },
-                    tooltip: {},
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (params) {
+                            // params.name 是日期，params.value[1] 是对应的值
+                            return params.value[0] + '<br/>' + params.marker + '<span style="float:right;font-weight: bold;">' + params.value[1] + ' 米' + '</span><br/>';
+                        }
+                    },
                     visualMap: {
                         color: ['#f2ca6b', '#5a6fc0', '#85bedb', '#9eca7f', '#de6e6a'],
                         textStyle: {color: echartsTheme.titleColor},
@@ -545,6 +551,9 @@
             <script type="text/javascript">
                 // 将浮点数转换为分秒格式
                 function floatToMinutesSeconds(value) {
+                    if (value === "") {
+                        return "-"
+                    }
                     const minutes = Math.floor(value);  // 整数部分为分钟
                     const seconds = Math.round((value - minutes) * 60);  // 小数部分转为秒并四舍五入
                     return minutes + "'" + (seconds < 10 ? '0' : '') + seconds + "''";  // 格式化输出

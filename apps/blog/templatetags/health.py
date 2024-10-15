@@ -12,6 +12,8 @@ register = template.Library()
 
 
 def time_to_seconds(time_str):
+    if not time_str:
+        return time_str
     # 分割时间字符串
     minutes, seconds = map(int, time_str.split(':'))
     # 转换为秒
@@ -20,6 +22,8 @@ def time_to_seconds(time_str):
 
 
 def time_to_minutes(time_str):
+    if not time_str:
+        return time_str
     # 分割时间字符串，得到分钟和秒
     minutes, seconds = map(int, time_str.split(':'))
     # 将秒转换为分钟，并加上分钟部分
@@ -124,7 +128,7 @@ def get_heart_rate_trend(num=14):
     rawData = []
     for obj in objs:
         heart_data = [obj.run_date.strftime('%m-%d')]
-        heart_data.extend([int(x) for x in obj.five_heart_rate.split(',')])
+        heart_data.extend([x for x in obj.five_heart_rate.split(',')])
         heart_data.append(obj.average_heart_rate)
         rawData.append(heart_data)
     data['rawData'] = rawData
@@ -180,7 +184,7 @@ def get_cadence_trend(num=14):
     rawData = []
     for obj in objs:
         cadence_data = [obj.run_date.strftime('%m-%d')]
-        cadence_data.extend([int(x) for x in obj.five_cadence.split(',')])
+        cadence_data.extend([x for x in obj.five_cadence.split(',')])
         cadence_data.append(obj.average_cadence)
         rawData.append(cadence_data)
     data['rawData'] = rawData
