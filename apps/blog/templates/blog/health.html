@@ -76,7 +76,13 @@
                         }
                     },
                     visualMap: {
-                        color: ['#f2ca6b', '#5a6fc0', '#85bedb', '#9eca7f', '#de6e6a'],
+                        color: [
+                            '#9a60b4',
+                            '#5a6fc0',
+                            '#85bedb',
+                            '#749f83',
+                            '#9eca7f'
+                        ],
                         textStyle: {color: echartsTheme.titleColor},
                         min: 3000,
                         max: 8000,
@@ -137,7 +143,14 @@
                     return minutes + "'" + (seconds < 10 ? '0' : '') + seconds + "''";  // 格式化输出
                 }
 
-                const colors = ['#5470c6', '#91cc75', '#de6e6a', '#9a60b4', '#73c0de', '#3ba272'];
+                const colors = [
+                    '#5470c6',
+                    '#91cc75',
+                    '#de6e6a',
+                    '#9a60b4',
+                    '#73c0de',
+                    '#3ba272'
+                ];
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
                     color: colors,
@@ -311,7 +324,18 @@
                 // 指定图表的配置项和数据
                 option = {
                     backgroundColor: echartsTheme.backgroundColor,
-                    color: ['#5470c6', '#91cc75', '#73c0de', '#fac858', '#ee6666', '#3ba272', '#fac858', '#ee6666', '#9a60b4', '#ea7ccc'],
+                    color: [
+                        '#5470c6',
+                        '#91cc75',
+                        '#73c0de',
+                        '#fac858',
+                        '#ee6666',
+                        '#3ba272',
+                        '#fac858',
+                        '#ee6666',
+                        '#9a60b4',
+                        '#ea7ccc'
+                    ],
                     toolbox: {
                         show: true,
                         feature: {
