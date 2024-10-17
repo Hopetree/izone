@@ -182,3 +182,7 @@ def interest_rate(request):
 @add_views('tool:base64', 'Base64编码/解码工具')
 def base64(request):
     return render(request, 'tool/base64.html')
+
+@add_views('tool:json2yaml', 'JSON/YAML互转工具')
+def json2yaml(request):
+    return render(request, 'tool/json2yaml.html')

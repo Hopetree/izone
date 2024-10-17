@@ -1,0 +1,127 @@
+{% extends "tool/base_tool.html" %}
+{% load static %}
+
+{% block head_title %}JSON/YAML互相转换工具{% endblock %}
+{% block metas %}
+    <meta name="description" content="JSON与YAML互相转换工具，便捷在线格式转换">
+    <meta name="keywords" content="JSON, YAML, 转换,在线工具">
+{% endblock %}
+
+{% block tool_name %}JSON/YAML互相转换工具{% endblock %}
+{% block left_content %}
+    <div class="card-body p-0">
+        <h3 class="card-title pl-2 title-info">使用场景：</h3>
+        <ul>
+            <li>JSON转YAML：<span class="text-muted">将JSON格式内容转换为YAML格式</span></li>
+            <li>YAML转JSON：<span class="text-muted">将YAML格式内容转换为JSON格式</span></li>
+        </ul>
+    </div>
+
+    <!-- 原始文本输入框 -->
+    <h4>输入文本</h4>
+    <div class="input-group mb-3">
+        <textarea class="form-control" id="input_text" rows="7" placeholder="请输入JSON或YAML格式的文本"></textarea>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-info btn-sm f-16" id="json_to_yaml_button">JSON转YAML</button>
+        <button type="button" class="btn btn-info btn-sm f-16" id="yaml_to_json_button">YAML转JSON</button>
+        <button type="button" class="btn btn-warning btn-sm f-16" id="swap_button">交换内容</button>
+        <button type="button" class="btn btn-secondary btn-sm f-16" id="clear_button">清空内容</button>
+        <button type="button" class="btn btn-success btn-sm f-16" id="copy_button">复制结果</button>
+    </div>
+
+    <!-- 结果显示文本框 -->
+    <h4>结果文本</h4>
+    <div class="input-group mb-3">
+        <textarea class="form-control" id="output_text" rows="7" readonly placeholder="转换结果显示在此"></textarea>
+    </div>
+    <p class="small">注：请确保输入的内容为有效的JSON或YAML格式</p>
+
+{% endblock %}
+
+{% block end_f %}
+    <script src="{% static 'tool/js/json2yaml/js-yaml.min.js' %}?v=4.0.0"></script>
+    <script>
+        // 自动调整textarea高度
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto'; // 先将高度设置为auto以获取scrollHeight
+            textarea.style.height = textarea.scrollHeight + 'px'; // 根据内容调整高度
+        }
+
+        // 将JSON转换为YAML
+        document.getElementById('json_to_yaml_button').addEventListener('click', function () {
+            const inputText = document.getElementById('input_text').value;
+            if (inputText === "") {
+                alert('请输入JSON格式的文本进行转换');
+                return;
+            }
+            try {
+                const jsonData = JSON.parse(inputText);  // 解析JSON
+                const yamlText = jsyaml.dump(jsonData);  // JSON转YAML
+                const outputTextarea = document.getElementById('output_text');
+                outputTextarea.value = yamlText;
+                autoResizeTextarea(outputTextarea);  // 调整高度
+            } catch (error) {
+                alert('JSON解析失败，请确保输入的内容为有效的JSON格式');
+            }
+        });
+
+        // 将YAML转换为JSON
+        document.getElementById('yaml_to_json_button').addEventListener('click', function () {
+            const inputText = document.getElementById('input_text').value;
+            if (inputText === "") {
+                alert('请输入YAML格式的文本进行转换');
+                return;
+            }
+            try {
+                const yamlData = jsyaml.load(inputText);  // 解析YAML
+                const jsonText = JSON.stringify(yamlData, null, 2);  // YAML转JSON并格式化
+                const outputTextarea = document.getElementById('output_text');
+                outputTextarea.value = jsonText;
+                autoResizeTextarea(outputTextarea);  // 调整高度
+            } catch (error) {
+                alert('YAML解析失败，请确保输入的内容为有效的YAML格式');
+            }
+        });
+
+        // 交换输入框和输出框的内容
+        document.getElementById('swap_button').addEventListener('click', function () {
+            const inputText = document.getElementById('input_text').value;
+            const outputText = document.getElementById('output_text').value;
+            document.getElementById('input_text').value = outputText;
+            document.getElementById('output_text').value = inputText;
+            autoResizeTextarea(document.getElementById('output_text'));  // 调整高度
+        });
+
+        // 清空输入框和输出框的内容
+        document.getElementById('clear_button').addEventListener('click', function () {
+            document.getElementById('input_text').value = "";
+            const outputTextarea = document.getElementById('output_text');
+            outputTextarea.value = "";
+            autoResizeTextarea(outputTextarea);  // 调整高度
+        });
+
+        // 复制结果到剪贴板
+        document.getElementById('copy_button').addEventListener('click', function () {
+            const outputText = document.getElementById('output_text').value;
+            if (outputText === "") {
+                alert('没有结果可复制');
+                return;
+            }
+            navigator.clipboard.writeText(outputText).then(function () {
+                alert('结果已复制到剪贴板！');
+            }).catch(function (err) {
+                console.error('复制失败：', err);
+                alert('复制失败，请手动复制内容');
+            });
+        });
+
+        // 初始化时自动调整高度
+        document.addEventListener("DOMContentLoaded", function () {
+            const outputTextarea = document.getElementById('output_text');
+            autoResizeTextarea(outputTextarea);  // 初次加载时调整
+        });
+    </script>
+{% endblock %}

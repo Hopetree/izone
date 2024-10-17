@@ -28,12 +28,12 @@ IZONE_TOOLS = {
             'url': 'tool:tax',
             'img': 'tool/img/tax128.png',
             'desc': '个人所得税综合所得年度汇算，在线计算，提前预知个人退税情况，对比两种方案退税差异'
-        },{
+        }, {
             'name': '利率计算器',
             'url': 'tool:interest_rate',
             'img': 'tool/img/interest_rate.png',
             'desc': '根据本金和年利率预估到期收益；根据本金和利息计算年利率，方便评估理财产品'
-        },{
+        }, {
             'name': 'IP地址查询',
             'url': 'tool:ip',
             'img': 'tool/img/query_ip.png',
@@ -77,6 +77,11 @@ IZONE_TOOLS = {
             'url': 'tool:base64',
             'img': 'tool/img/base64_128.png',
             'desc': 'Base64编码和解码工具，便捷在线转换'
+        }, {
+            'name': 'JSON/YAML互转',
+            'url': 'tool:json2yaml',
+            'img': 'tool/img/json2yaml.png',
+            'desc': '在线JSON/YAML互转工具，轻松实现JSON转YAML，YAML转JSON'
         }]
     },
     'web': {
