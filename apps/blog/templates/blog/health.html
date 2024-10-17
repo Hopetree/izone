@@ -754,6 +754,10 @@
                                 position: 'top',
                                 textStyle: {
                                     fontSize: 12
+                                },
+                                formatter: function (params) {
+                                    // 判断是否为0，如果是0则不显示标签
+                                    return params.data[4] === 0 ? '' : floatToMinutesSeconds(params.data[4]);
                                 }
                             }
                         },
@@ -768,7 +772,7 @@
                                 },
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
-                                    return params.data[4] === 0 ? '' : floatToMinutesSeconds(params.data[4]);
+                                    return params.data[5] === 0 ? '' : floatToMinutesSeconds(params.data[5]);
                                 }
                             }
                         },
@@ -782,7 +786,7 @@
                                 },
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
-                                    return params.data[5] === 0 ? '' : floatToMinutesSeconds(params.data[5]);
+                                    return params.data[6] === 0 ? '' : floatToMinutesSeconds(params.data[6]);
                                 }
                             }
                         }
