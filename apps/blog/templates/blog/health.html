@@ -137,7 +137,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="total_data_box" style="width: 100%;height:340px;"></div>
-            {% get_total_data_trend 15 as total_data_trend %}
+            {% get_total_data_trend 20 as total_data_trend %}
             <div id="total_data" style="display: none;">{{ total_data_trend|json_script:"total_data_trend" }}</div>
             <script type="text/javascript">
                 const myTotalData = JSON.parse(document.getElementById("total_data").textContent);
@@ -331,7 +331,7 @@
                                 position: 'top',
                             },
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             data: myTotalData.distanceData
                         },
                         {
@@ -380,7 +380,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="heart_interval_box" style="width: 100%;height:340px;"></div>
-            {% get_heart_rate_interval_v2 15 as heart_interval_data %}
+            {% get_heart_rate_interval_v2 20 as heart_interval_data %}
             <div id="heart_interval_data"
                  style="display: none;">{{ heart_interval_data|json_script:"heart_interval_data" }}</div>
             <script type="text/javascript">
@@ -443,9 +443,10 @@
                     series: [
                         {
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             label: {
                                 show: true,  // 显示标签
+                                fontSize: 11,
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
                                     return params.data[1] === 0 ? '' : params.data[1] + '%';
@@ -458,9 +459,10 @@
                         },
                         {
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             label: {
                                 show: true,  // 显示标签
+                                fontSize: 11,
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
                                     return params.data[2] === 0 ? '' : params.data[2] + '%';
@@ -473,9 +475,10 @@
                         },
                         {
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             label: {
                                 show: true,  // 显示标签
+                                fontSize: 11,
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
                                     return params.data[3] === 0 ? '' : params.data[3] + '%';
@@ -488,9 +491,10 @@
                         },
                         {
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             label: {
                                 show: true,  // 显示标签
+                                fontSize: 11,
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
                                     return params.data[4] === 0 ? '' : params.data[4] + '%';
@@ -503,9 +507,10 @@
                         },
                         {
                             type: 'bar',
-                            barWidth: '64%',
+                            barWidth: '72%',
                             label: {
                                 show: true,  // 显示标签
+                                fontSize: 11,
                                 formatter: function (params) {
                                     // 判断是否为0，如果是0则不显示标签
                                     return params.data[5] === 0 ? '' : params.data[5] + '%';
@@ -525,7 +530,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="heart_box" style="width: 100%;height:340px;"></div>
-            {% get_heart_rate_trend 15 as heart_rate_trend %}
+            {% get_heart_rate_trend 20 as heart_rate_trend %}
             <div id="heart_data" style="display: none;">{{ heart_rate_trend|json_script:"heart_rate_trend" }}</div>
             <script type="text/javascript">
                 const myHeartData = JSON.parse(document.getElementById("heart_data").textContent);
@@ -637,7 +642,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="pace_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_pace_trend 15 as pace_trend %}
+            {% get_pace_trend 20 as pace_trend %}
             <div id="pace_trend_data" style="display: none;">{{ pace_trend|json_script:"pace_trend" }}</div>
             <script type="text/javascript">
                 // 将浮点数转换为分秒格式
@@ -801,7 +806,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="cadence_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_cadence_trend 15 as cadence_trend %}
+            {% get_cadence_trend 20 as cadence_trend %}
             <div id="cadence_trend_data" style="display: none;">{{ cadence_trend|json_script:"cadence_trend" }}</div>
             <script type="text/javascript">
                 const myCadenceData = JSON.parse(document.getElementById("cadence_trend_data").textContent);
