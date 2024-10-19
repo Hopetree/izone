@@ -253,6 +253,8 @@
                             name: '心率',
                             min: 130,
                             position: 'right',
+                            inverse: true,
+                            nameLocation: 'start',
                             alignTicks: true,
                             axisLine: {
                                 show: true,
@@ -570,7 +572,7 @@
                         source: [['product', '第1公里', '第2公里', '第3公里', '第4公里', '第5公里', '平均心率']].concat(myHeartData.rawData)
                     },
                     xAxis: {type: 'category'},
-                    yAxis: {type: 'value', min: 130},
+                    yAxis: {type: 'value', min: 130, inverse: true,},
                     series: [
                         {
                             type: 'line',
