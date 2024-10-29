@@ -4,10 +4,15 @@
     <img class="avatar" src="{{ user.avatar.url }}" alt="{{ user }}-自定义图像">
 {% elif user.socialaccount_set.exists %}
     {% if ".sinaimg.cn" in user.socialaccount_set.all.0.get_avatar_url %}
-        {% avatar_media_to_static user.avatar.url as static_avatar_url %}
-        <img class="avatar" src="{{ static_avatar_url }}" alt="{{ user }}-默认图像">
+        <img class="avatar" src="{{ user.avatar.url }}" alt="{{ user }}-第三方图像">
     {% else %}
-        <img class="avatar" src="{% http_to_https user.socialaccount_set.all.0.get_avatar_url %}" alt="{{ user }}-第三方图像">
+        {% is_default_media user.socialaccount_set.all.0.get_avatar_url as default_avatar_url %}
+        {% if default_avatar_url %}
+            {% avatar_media_to_static user.avatar.url as static_avatar_url %}
+            <img class="avatar" src="{{ static_avatar_url }}" alt="{{ user }}-默认图像">
+        {% else %}
+            <img class="avatar" src="{% http_to_https user.socialaccount_set.all.0.get_avatar_url %}" alt="{{ user }}-第三方图像">
+        {% endif %}
     {% endif %}
 {% else %}
     {% avatar_media_to_static user.avatar.url as static_avatar_url %}

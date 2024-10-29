@@ -22,6 +22,10 @@ def is_upload(avatar_url):
     """判断头像是否为上传的"""
     return avatar_url.startswith("/media/avatar/upload/")
 
+@register.simple_tag
+def is_default_media(avatar_url):
+    """判断头像是否为上传的"""
+    return avatar_url.startswith("/media/avatar/default/")
 
 @register.simple_tag
 def avatar_media_to_static(avatar_url):
