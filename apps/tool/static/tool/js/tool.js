@@ -36,7 +36,11 @@ function push_spider(CSRF, URL) {
         alert('接口地址和网址链接内容都不能为空！');
         return false
     }
-    ;
+    // 判断 URL 是否以 'http://data.zz.baidu.com/urls' 开头
+    if (!url.startsWith('http://data.zz.baidu.com/urls')) {
+        alert('接口地址是非法的百度推送地址！');
+        return false;
+    }
     $.ajaxSetup({
         data: {
             csrfmiddlewaretoken: CSRF
@@ -65,7 +69,11 @@ function site_push_spider(CSRF, URL) {
         alert('接口地址和sitemap地址内容都不能为空！');
         return false
     }
-    ;
+    // 判断 URL 是否以 'http://data.zz.baidu.com/urls' 开头
+    if (!url.startsWith('http://data.zz.baidu.com/urls')) {
+        alert('接口地址是非法的百度推送地址！');
+        return false;
+    }
     $.ajaxSetup({
         data: {
             csrfmiddlewaretoken: CSRF
