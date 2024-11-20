@@ -209,6 +209,7 @@ class SiteConfigViewAdmin(admin.ModelAdmin):
                 "<li><strong>site_verification</strong> (字符串) - 选填，站长推送，例如：\"&lt;meta xxx /&gt;\"</li>"
                 "<li><strong>site_reward_wx</strong> (字符串) - 选填，文章页面的微信打赏二维码图片地址，例如：\"https://xxxx.xxx\"</li>"
                 "<li><strong>site_reward_zfb</strong> (字符串) - 选填，文章页面的支付宝打赏二维码图片地址，例如：\"https://xxxx.xxx\"</li>"
+                "<li><strong>site_show_register</strong> (布尔值) - 选填，是否显示注册，默认为true，例如：false</li>"
                 "</ul>"
             ),
         }),

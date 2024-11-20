@@ -54,6 +54,7 @@ def settings_info(request):
         'site_verification': config_data.get('site_verification', settings.MY_SITE_VERIFICATION),
         'reward_wx': config_data.get('site_reward_wx', settings.REWARD_WX),
         'reward_zfb': config_data.get('site_reward_zfb', settings.REWARD_ZFB),
+        'show_register': config_data.get('site_show_register', True),
 
         'site_url': site_full_url(),
         'static_version': STATIC_VERSION,
