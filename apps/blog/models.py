@@ -509,10 +509,16 @@ class SiteConfig(models.Model):
                 raise ValidationError(f"缺少配置项: {key}")
 
         # 校验格式，除了指定的字段，其他都必须是字符串
-        not_str_keys = []
-        for key in json_data:
-            if key not in not_str_keys and not isinstance(key, str):
-                raise ValidationError(f"配置项必须是字符串: {key}")
+        key_type_dict = {
+            'site_show_register': bool
+        }
+        for key, value in json_data.items():
+            if key in key_type_dict:
+                if not isinstance(value, key_type_dict[key]):
+                    raise ValidationError(f"配置项{key}必须是{key_type_dict[key]}类型")
+            else:
+                if not isinstance(value, str):
+                    raise ValidationError(f"配置项{key}必须是字符串")
 
         # 校验 site_create_date 是否符合 %Y-%m-%d 格式
         try:
