@@ -74,7 +74,8 @@ def get_year_data():
     for obj in objs:
         run_date = obj.run_date.strftime('%Y-%m-%d')
         distance = obj.distance * 1000
-        rawData.append([run_date, distance])
+        location = getattr(obj, 'location', '')
+        rawData.append({'date': run_date, 'value': distance, 'location': location})
     data['rawData'] = rawData
     data['year'] = this_year
     # print(data)

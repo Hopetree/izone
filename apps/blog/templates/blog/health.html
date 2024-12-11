@@ -74,7 +74,11 @@
                         trigger: 'item',
                         formatter: function (params) {
                             // params.name 是日期，params.value[1] 是对应的值
-                            return params.value[0] + '<br/>' + params.marker + '<span style="float:right;font-weight: bold;">' + params.value[1] + ' 米' + '</span><br/>';
+                            // console.log(params)
+                            const date = params.value[0];
+                            const value = params.value[1];
+                            const location = myRunYearData.rawData.find(item => item.date === date)?.location || '';
+                            return date + ' ' + location + '<br/>' + params.marker + '<span style="float:right;font-weight: bold;">' + value + ' 米' + '</span><br/>';
                         }
                     },
                     visualMap: {
@@ -131,7 +135,7 @@
                     series: {
                         type: 'heatmap',
                         coordinateSystem: 'calendar',
-                        data: myRunYearData.rawData
+                        data: myRunYearData.rawData.map(item => [item.date, item.value])
                     }
                 };
                 myRunYearChart.setOption(option);

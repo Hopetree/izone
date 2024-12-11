@@ -540,20 +540,21 @@ class SiteConfig(models.Model):
 
 
 class Fitness(models.Model):
+    location = models.CharField('位置', max_length=50, default='深圳')
     run_date = models.DateTimeField('跑步时间', help_text='跑步开始时间')
     # 详细信息
     training_duration = models.CharField('训练时长', max_length=7, help_text='如：0:35:12')
     distance = models.FloatField('距离(公里)', help_text='如：5.03')
     active_kcal = models.IntegerField('动态千卡', help_text='如：301')
     total_kcal = models.IntegerField('总千卡数', help_text='如：352')
-    total_elevation_gain = models.IntegerField('总爬升高度(米)', help_text='如：2')
+    total_elevation_gain = models.IntegerField('总爬升高度(米)', default=2, help_text='如：2')
     average_power = models.IntegerField('平均功率(瓦)', help_text='如：117')
     average_cadence = models.IntegerField('平均步频(步/分)', help_text='如：180')
     average_pace = models.CharField('平均配速', max_length=7, help_text='如：8:23')
     average_heart_rate = models.IntegerField('平均心率(次/分)', help_text='如：142')
-    average_stride_length = models.FloatField('平均步长(米)', help_text='如：0.7')
+    average_stride_length = models.FloatField('平均步长(米)', default=0.7, help_text='如：0.7')
     bottom_time = models.IntegerField('触底时间(毫秒)', help_text='如：267')
-    vertical_amplitude = models.FloatField('垂直振幅(厘米)', help_text='如：7.9')
+    vertical_amplitude = models.FloatField('垂直振幅(厘米)', default=7.9, help_text='如：7.9')
     # 5段数据，用逗号分割
     five_pace = models.CharField('5段配速', max_length=50, help_text='如：8:23,8:23,8:23,8:23,8:23')
     five_heart_rate = models.CharField('5段心率', max_length=50, help_text='如：142,145,150,156,160')

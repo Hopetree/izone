@@ -230,7 +230,7 @@ class FitnessAdmin(admin.ModelAdmin):
     list_display = ('run_date', 'training_duration', 'distance', 'average_cadence', 'total_kcal',
                     'average_pace', 'average_heart_rate', 'average_stride_length', 'bottom_time')
     fieldsets = (
-        ('基本信息', {'fields': ('run_date',)}),
+        ('基本信息', {'fields': (('location', 'run_date'),)}),
         ('详细信息', {'fields': (('training_duration', 'distance'),
                                  ('active_kcal', 'total_kcal'),
                                  ('total_elevation_gain', 'average_power'),
