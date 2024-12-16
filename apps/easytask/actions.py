@@ -537,6 +537,10 @@ def action_get_feed_data():
             feed_parser = feedparser.parse(feed.url, request_headers=headers)
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
+            # 如果没有内容就不要去更新之前的数据，避免把数据清空
+            if not entries:
+                result[feed.name] = 'nok'
+                continue
             data['entries'] = entries
             update_time = updated_time(feed_parser.feed)
             if update_time:
