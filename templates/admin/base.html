@@ -13,7 +13,7 @@
   <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/datetime_widget.css' %}" />
 
-{% block extrastyle %}{% endblock %}
+{% block extrastyle %}<style>.form-row label.required:after {content: ' *';color: red;}</style>{% endblock %}
 
 {% if LANGUAGE_BIDI %}
   {# PUT HERE YOUR CUSTOM RTL STYLESHEET #}
