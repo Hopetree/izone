@@ -452,7 +452,7 @@ def get_year_list():
 
 @add_views('blog:health', '慢跑看板')
 def health(request):
-    year = request.GET.get('year', None)
+    current_year = request.GET.get('year', datetime.today().year)
     year_list = get_year_list()
-    context = {'year': year, 'year_list': year_list}
+    context = {'current_year': int(current_year), 'year_list': year_list}
     return render(request, 'blog/health.html', context)
