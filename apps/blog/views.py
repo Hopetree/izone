@@ -423,4 +423,5 @@ def vitepress_subject_view(request):
 
 @add_views('blog:health', '慢跑看板')
 def health(request):
-    return render(request, 'blog/health.html')
+    year = request.GET.get('year', None)
+    return render(request, 'blog/health.html', {'year': year})

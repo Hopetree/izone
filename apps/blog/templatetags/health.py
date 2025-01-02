@@ -57,14 +57,14 @@ def heart_to_list(heart_str):
 
 
 @register.simple_tag
-def get_year_data():
+def get_year_data(this_year=None):
     """
     获取当年所有跑步数据，日历图
     @return:
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
-    this_year = datetime.today().year
-    redis_key = RedisKeys.health_year_data.format(date=this_date_str)
+    this_year = this_year or datetime.today().year
+    redis_key = f'{this_year}_{RedisKeys.health_year_data.format(date=this_date_str)}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data

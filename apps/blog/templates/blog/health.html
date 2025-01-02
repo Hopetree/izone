@@ -49,7 +49,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="mb-3" id="year_data_box" style="width: 100%;height:320px;"></div>
-            {% get_year_data as year_data %}
+            {% get_year_data year as year_data %}
             <div id="year_data_data"
                  style="display: none;">{{ year_data|json_script:"year_data" }}</div>
             <script type="text/javascript">
