@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 import markdown
 from django.conf import settings
@@ -16,12 +17,23 @@ from django.utils.text import slugify
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.db.models.functions import ExtractYear
 from haystack.generic_views import SearchView  # 导入搜索视图
 from haystack.query import SearchQuerySet
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 
-from .models import Article, Tag, Category, Timeline, Silian, AboutBlog, FriendLink, Subject
+from .models import (
+    Article,
+    Tag,
+    Category,
+    Timeline,
+    Silian,
+    AboutBlog,
+    FriendLink,
+    Subject,
+    Fitness
+)
 from .utils import (site_full_url,
                     CustomHtmlFormatter,
                     ApiResponse,
@@ -421,7 +433,26 @@ def vitepress_subject_view(request):
         data['data'].append(subject_data)
     return JsonResponse(data)
 
+
+def get_year_list():
+    this_year = datetime.today().year
+    # 从Fitness模型中提取年份
+    years = (
+        Fitness.objects
+        .annotate(year=ExtractYear('run_date'))  # 从run_date中提取年份
+        .values_list('year', flat=True)  # 仅获取年份字段
+        .distinct()  # 去重
+    )
+    years = sorted(list(set(years)))
+    if this_year not in years:
+        years.append(this_year)
+    # 转换为列表并排序
+    return sorted(list(set(years)), reverse=True)
+
+
 @add_views('blog:health', '慢跑看板')
 def health(request):
     year = request.GET.get('year', None)
-    return render(request, 'blog/health.html', {'year': year})
+    year_list = get_year_list()
+    context = {'year': year, 'year_list': year_list}
+    return render(request, 'blog/health.html', context)
