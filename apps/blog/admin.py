@@ -81,6 +81,7 @@ class ArticleAdmin(admin.ModelAdmin):
                 kwargs['queryset'] = User.objects.filter(is_staff=True, is_active=True)
             else:
                 kwargs['queryset'] = User.objects.filter(id=request.user.id)
+            kwargs['initial'] = request.user
         return super(ArticleAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
