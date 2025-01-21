@@ -55,3 +55,4 @@
 ## 运行指导
 - 由于本项目分为几个不同的分支，每个分支的功能是一样的，但是运行的方式不同，所以需要根据分支查看对应的运行wiki
 - 指导 wiki：https://github.com/Hopetree/izone/wiki
+- 部署指导完整步骤：https://tendcode.com/subject/article/izone-install-docs/
