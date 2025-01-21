@@ -27,8 +27,6 @@ from blog.views import robots
 # 网站地图
 sitemaps = {
     'articles': ArticleSitemap,
-    'tags': TagSitemap,
-    'categories': CategorySitemap
 }
 
 urlpatterns = [
