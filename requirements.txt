@@ -2,7 +2,7 @@ amqp==2.6.1
 billiard==3.6.4.0
 bleach==3.3.0
 bootstrap-admin==0.4.3
-celery==4.4.2
+celery==5.2.2
 certifi==2022.12.7
 chardet==3.0.4
 defusedxml==0.6.0
