@@ -447,7 +447,7 @@ def get_year_list():
     if this_year not in years:
         years.append(this_year)
     # 转换为列表并排序
-    return sorted(list(set(years)), reverse=True)
+    return sorted(list(set(years)))
 
 
 @add_views('blog:health', '慢跑看板')
