@@ -82,7 +82,7 @@ INSTALLED_APPS = [
     'rsshub',  # RSSHub，自定义第三方rss订阅
     'monitor',  # 服务监控
     'portinfo',  # 端口信息
-
+    'flow',  # 流程图服务
 ]
 
 # 自定义用户model

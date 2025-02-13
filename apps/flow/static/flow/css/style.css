@@ -1,0 +1,329 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 默认容器样式（用于 index 页面） */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 全屏容器样式（用于编辑和查看页面） */
+.container-fullscreen {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background-color: #ffffff;
+}
+
+/* 编辑和创建页面的网格背景 */
+.container-fullscreen.with-grid {
+    background-image: radial-gradient(#e3e3e3 0.5px, transparent 0.5px);
+    background-size: 10px 10px;
+    overflow: hidden;
+}
+
+.container-fullscreen #canvas {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+/* 保持原有的 .actions 样式不变，用于其他页面 */
+.actions {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    pointer-events: none;
+}
+
+/* 添加 index 页面特定的样式 */
+.index-actions {
+    position: static;
+    margin-bottom: 20px;
+    pointer-events: auto;
+}
+
+/* 按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: rgba(250, 250, 250, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+    pointer-events: auto; /* 恢复按钮的鼠标事件 */
+}
+
+.btn:hover {
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+}
+
+.process-list {
+    margin-top: 20px;
+}
+
+#canvas {
+    width: 100%;
+    height: 800px;
+    border: 1px solid #ccc;
+}
+
+.process-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.process-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* 确保 BPMN.js 的画布正确显示 */
+.djs-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.djs-palette {
+    top: 20px !important;
+    left: 20px !important;
+}
+.process-info {
+    flex: 1;
+}
+
+.process-tags {
+    margin-top: 5px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tag {
+    background-color: #f1f5f9;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+}
+
+.tag-text {
+    position: relative;
+    z-index: 1;
+}
+
+.tag-delete {
+    display: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #dc2626;
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: color 0.2s ease;
+}
+
+.tag:hover .tag-delete {
+    display: flex;
+}
+
+.tag:hover .tag-delete:hover {
+    color: #b91c1c;
+}
+
+.add-tag-btn {
+    background: none;
+    border: 1px dashed #ccc;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    padding: 0;
+}
+
+.add-tag-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #aaa;
+}
+/* 列表头部布局 */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.list-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+/* index 页面的按钮容器 */
+.container .actions.index-actions {
+    position: static;
+    margin: 0;
+    pointer-events: auto;
+}
+
+/* index 页面的按钮样式 */
+/* 创建按钮（主要操作）使用蓝色 */
+/* 创建按钮使用较柔和的蓝色 */
+.container .actions.index-actions .btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+}
+
+.container .actions.index-actions .btn:hover {
+    background-color: #3367d6;
+}
+
+/* 查看按钮使用较柔和的绿色 */
+.process-actions .btn-view {
+    background-color: #0f9d58;
+    color: white;
+    border: none;
+}
+
+.process-actions .btn-view:hover {
+    background-color: #0b8043;
+}
+
+/* 编辑按钮使用较柔和的橙色，文字改为深色 */
+.process-actions .btn-edit {
+    background-color: #fbbc04;
+    color: #202124;
+    border: none;
+}
+
+.process-actions .btn-edit:hover {
+    background-color: #f29900;
+}
+
+/* 删除按钮使用较柔和的红色 */
+.btn-danger {
+    background-color: #ea4335;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #d93025;
+}
+.process-name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.name-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.name-text:hover {
+    color: #4285f4;
+}
+
+.create-time {
+    font-size: 13px;
+    color: #666;
+    margin-left: 8px;
+}
+
+/* 删除所有 tag-edit 相关样式 */
+.process-name .tag-edit {
+    cursor: pointer;
+    font-size: 12px;
+    color: #0d6efd;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1); /* 添加水平镜像效果 */
+    display: none;
+    transition: color 0.2s ease;
+}
+
+.name-text:hover .tag-edit {
+    display: inline;
+}
+
+.name-text:hover .tag-edit:hover {
+    color: #0a58ca;
+}
+.create-time {
+    font-size: 13px;
+    color: #666;
+    margin-left: 8px;  /* 改为固定间距，不再使用 auto */
+}
+
+.process-name .tag-edit {
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 12px;
+    padding: 0 2px;
+    margin-left: 8px;
+    color: #0d6efd;
+}
+
+.process-name .tag-edit:hover {
+    opacity: 1;
+}

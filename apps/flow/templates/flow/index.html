@@ -1,0 +1,33 @@
+{% load static tool_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <!-- TDK and ICO -->
+    <title>流程图设计在线_TendCode</title>
+    <meta name="description" content="流程图在线编辑器">
+    <meta name="keywords" content="流程图,在线工具,bmpm.js">
+    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}">
+</head>
+<body>
+    {% load_github_corners "right" "#3b78f6" "https://github.com/Hopetree/FlowDesigner" %}
+    <div class="container">
+        <h1>BPMN 流程管理</h1>
+        <div class="list-header">
+            <h2>流程列表</h2>
+            <div class="actions index-actions">
+                <a href="{% url 'flow:create' %}" class="btn index-btn">新建流程</a>
+            </div>
+        </div>
+        <div class="process-list">
+            <div id="processList">
+                <!-- 流程列表将通过 JS 动态加载 -->
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'flow/js/index.js' %}"></script>
+</body>
+</html>

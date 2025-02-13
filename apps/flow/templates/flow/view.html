@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <!-- TDK and ICO -->
+    <title>查看流程-BMPN_TendCode</title>
+    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/diagram-js.css' %}">
+    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/bpmn.css' %}">
+    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}">
+</head>
+<body>
+    <div class="container-fullscreen view-container">
+        <div id="canvas"></div>
+        <div class="actions">
+            <button id="exportBtn" class="btn">导出BPMN</button>
+            <button id="exportSvgBtn" class="btn">导出SVG</button>
+            <a href="{% url 'flow:index' %}" class="btn">返回</a>
+        </div>
+    </div>
+    <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-viewer.development.js' %}"></script>
+    <script src="{% static 'flow/js/view.js' %}"></script>
+</body>
+</html>
