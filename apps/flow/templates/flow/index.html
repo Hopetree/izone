@@ -11,23 +11,58 @@
     <meta name="description" content="流程图在线编辑器">
     <meta name="keywords" content="流程图,在线工具,bmpm.js">
     <link rel="stylesheet" href="{% static 'flow/css/style.css' %}">
+    <style>
+        /* 悬浮按钮样式 */
+        .floating-button {
+            position: fixed;
+            bottom: 26px;
+            right: 26px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .floating-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
-    {% load_github_corners "right" "#3b78f6" "https://github.com/Hopetree/FlowDesigner" %}
-    <div class="container">
-        <h1>BPMN 流程管理</h1>
-        <div class="list-header">
-            <h2>流程列表</h2>
-            <div class="actions index-actions">
-                <a href="{% url 'flow:create' %}" class="btn index-btn">新建流程</a>
-            </div>
-        </div>
-        <div class="process-list">
-            <div id="processList">
-                <!-- 流程列表将通过 JS 动态加载 -->
-            </div>
+{% load_github_corners "right" "#3b78f6" "https://github.com/Hopetree/FlowDesigner" %}
+<div class="container">
+    <h1>BPMN 流程管理</h1>
+    <div class="list-header">
+        <h2>流程列表</h2>
+        <div class="actions index-actions">
+            <a href="{% url 'flow:create' %}" class="btn index-btn">新建流程</a>
         </div>
     </div>
-    <script src="{% static 'flow/js/index.js' %}"></script>
+    <div class="process-list">
+        <div id="processList">
+            <!-- 流程列表将通过 JS 动态加载 -->
+        </div>
+    </div>
+</div>
+<button class="floating-button" onclick="goHome()">
+    <svg x="1739422394960" class="icon" viewBox="0 0 1249 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4167" width="20" height="20"><path d="M186.72 1024c-0.064-143.008-0.224-285.952 0-428.928 0-4.16 2.336-9.536 5.44-12.256 141.28-122.464 282.816-244.704 424.32-366.912 0.896-0.768 2.016-1.312 4.224-2.688 3.648 3.072 7.616 6.272 11.456 9.664 138.048 123.136 276 246.336 414.208 369.312 5.984 5.344 8.352 10.656 8.352 18.624-0.16 137.696-0.032 275.424 0 413.152-84.864 0-169.728 0-254.56 0 0-66.208 0.448-132.448-0.128-198.656-0.864-101.6-84.16-181.024-185.632-177.856-92.704 2.944-170.688 77.664-172.8 168.16-1.632 69.376-0.288 138.88-0.256 208.32-84.896 0.032-169.728 0.032-254.592 0.032z" fill="#fff" p-id="4168"></path><path d="M0.032 558.496c5.824-18.88 18.944-31.904 33.44-44.576 192.192-168.096 384.128-336.448 576.128-504.704 3.328-2.88 6.752-5.632 11.04-9.184 83.328 72.96 166.336 145.696 252.064 220.704 0-9.344 0.512-15.264-0.128-21.056-1.248-11.552 4.256-19.104 14.432-22.272 13.376-4.192 27.104-8.32 40.96-9.888 33.856-3.872 67.744-3.872 100.928 5.632 22.208 6.368 25.696 11.36 25.664 33.984-0.032 54.144 0.064 108.256-0.224 162.4-0.032 7.488 1.984 12.544 7.84 17.6 53.152 46.016 106.016 92.32 158.88 138.624 24.16 21.152 26.656 56.512 5.792 80.32-21.216 24.288-56.576 26.592-81.312 4.896-73.248-64.16-146.368-128.448-219.52-192.608-99.328-87.072-198.688-174.144-298.048-261.184-2.112-1.856-4.352-3.552-7.264-5.92-2.784 2.112-5.664 4.096-8.256 6.4-168.064 147.2-336.096 294.432-504.064 441.664-4.256 3.744-8.224 7.808-12.448 11.552-30.112 26.848-76.032 16.288-91.424-20.992-1.344-3.232-3.008-6.368-4.512-9.536 0-7.264 0-14.56 0-21.824z" fill="#fff" p-id="4169"></path></svg>
+</button>
+
+<script>
+    function goHome() {
+        window.location.href = "/";
+    }
+</script>
+<script src="{% static 'flow/js/index.js' %}"></script>
 </body>
 </html>
