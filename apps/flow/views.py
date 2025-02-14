@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from blog.utils import add_views
 
 # Create your views here.
 
+@add_views('flow:index', '流程设计')
 def index(request):
     return render(request, 'flow/index.html')
 
