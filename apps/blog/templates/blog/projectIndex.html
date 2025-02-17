@@ -1,0 +1,53 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block head_title %}AI 项目展示{% endblock %}
+{% block metas %}
+    <meta name="description" content="AI 项目展示">
+    <meta name="keywords" content="AI,项目展示,个人项目,AI项目">
+{% endblock %}
+{% block top-file %}
+    <style>
+        .card-text {
+            height: 4.5em;
+            line-height: 1.5;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+
+{% block base_content %}
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <h2 class="text-center mb-4">AI 项目展示</h2>
+
+        <div class="row">
+            <!-- 项目卡片 1 -->
+            {% for project in projects %}
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <img src="{{ project.cover_image }}" class="card-img-top" alt="项目图片">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.name }}</h5>
+                        <p class="card-text">{{ project.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ project.link }}" class="btn btn-primary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

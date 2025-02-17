@@ -6,7 +6,7 @@ from .views import (IndexView, DetailView, CategoryView, TagView, AboutView, Tag
                     SilianView, MySearchView, ArchiveView, TimelineView, DetailEditView,
                     update_article, FriendLinkView, friend_add, SubjectDetailView,
                     SubjectPageDetailView, SubjectListView, dashboard, feed_hub,
-                    vitepress_subject_view, health)
+                    vitepress_subject_view, health, ProjectListView)
 
 from .task_views import run_task, execute_task
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),  # 看板
     path('feed-hub/', feed_hub, name='feedhub'),  # feed hub
     path('health/', health, name='health'),  # 健康
+    path('project/', ProjectListView.as_view(), name='project'),  # 项目
 
     # 专题列表页
     path('subject/', SubjectListView.as_view(), name='subject_index'),

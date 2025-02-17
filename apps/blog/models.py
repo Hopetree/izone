@@ -590,3 +590,24 @@ class Fitness(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:health')
+
+class Project(models.Model):
+    name = models.CharField('项目名称', max_length=50)
+    description = models.CharField('描述', max_length=250)
+    link = models.URLField('跳转地址', help_text='请填写http或https开头的完整形式地址')
+    sort_order = models.IntegerField('排序', default=99)
+    create_date = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    cover_image = ProcessedImageField(upload_to='subject/upload/project/%Y/%m/%d/',
+                                      default='subject/default/default.png',
+                                      verbose_name='封面图',
+                                      processors=[ResizeToFill(250, 150)],
+                                      help_text='上传图片大小建议使用5:3的宽高比，为了清晰度原始图片宽度应该超过250px'
+                                      )
+    class Meta:
+        verbose_name = '项目'
+        verbose_name_plural = verbose_name
+        ordering = ['sort_order']
+
+    def __str__(self):
+        return self.name

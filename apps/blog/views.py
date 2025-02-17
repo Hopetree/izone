@@ -32,7 +32,8 @@ from .models import (
     AboutBlog,
     FriendLink,
     Subject,
-    Fitness
+    Fitness,
+    Project
 )
 from .utils import (site_full_url,
                     CustomHtmlFormatter,
@@ -456,3 +457,11 @@ def health(request):
     year_list = get_year_list()
     context = {'current_year': int(current_year), 'year_list': year_list}
     return render(request, 'blog/health.html', context)
+
+
+class ProjectListView(generic.ListView):
+    model = Project
+    template_name = 'blog/projectIndex.html'
+    context_object_name = 'projects'
+    paginate_by = 100
+    paginate_orphans = 0

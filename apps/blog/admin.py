@@ -5,7 +5,7 @@ from django.contrib.admin import widgets
 from .models import (Article, Tag, Category, Timeline,
                      Carousel, Silian, Keyword, FriendLink,
                      AboutBlog, Subject, Topic, ArticleView,
-                     PageView, FeedHub, MenuLink, SiteConfig, Fitness)
+                     PageView, FeedHub, MenuLink, SiteConfig, Fitness, Project)
 
 
 @admin.register(Subject)
@@ -242,3 +242,12 @@ class FitnessAdmin(admin.ModelAdmin):
                                 ('five_power', 'five_cadence'))}),
         ('心率区间分布', {'fields': ('heart_rate',)}),
     )
+
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'link', 'sort_order')
+    date_hierarchy = 'create_date'
+
+    # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
+    list_editable = ('sort_order', )
