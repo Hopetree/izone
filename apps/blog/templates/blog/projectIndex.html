@@ -37,7 +37,7 @@
             {% for project in projects %}
             <div class="col-12 col-md-6 col-lg-3 mb-4">
                 <div class="card h-100">
-                    <img src="{{ project.cover_image }}" class="card-img-top" alt="项目图片">
+                    <img src="{{ project.cover_image.url }}" class="card-img-top" alt="项目图片">
                     <div class="card-body">
                         <h5 class="card-title">{{ project.name }}</h5>
                         <p class="card-text">{{ project.description }}</p>
