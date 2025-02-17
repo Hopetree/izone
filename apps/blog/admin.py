@@ -250,4 +250,4 @@ class ProjectAdmin(admin.ModelAdmin):
     date_hierarchy = 'create_date'
 
     # 允许直接编辑的字段，对于布尔值的字段，这个非常有用
-    list_editable = ('sort_order', )
+    list_editable = ('name', 'link', 'sort_order')
