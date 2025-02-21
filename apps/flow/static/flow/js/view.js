@@ -46,13 +46,11 @@ if (processId) {
 // 导出 BPMN 文件
 document.getElementById('exportBtn').addEventListener('click', async () => {
     try {
-        const xml = localStorage.getItem(processId);
-        if (!xml) throw new Error('流程数据不存在');
-        
+        const { xml } = await bpmnViewer.saveXML({ format: true });
         const blob = new Blob([xml], { type: 'application/xml' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `process_${Date.now()}.bpmn`;
+        link.download = `process_${Date.now()}.xml`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -23,13 +23,13 @@
         <div class="actions">
             <input type="file" id="importFile" accept=".bpmn,.xml" style="display: none;">
             <button id="importBtn" class="btn">导入</button>
-            <button id="exportBtn" class="btn">导出BPMN</button>
+            <button id="exportBtn" class="btn">导出XML</button>
             <button id="exportSvgBtn" class="btn">导出SVG</button>
             <button id="saveBtn" class="btn">保存</button>
             <a href="{% url 'flow:index' %}" class="btn">返回</a>
         </div>
     </div>
     <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-modeler.development.js' %}"></script>
-    <script src="{% static 'flow/js/edit.js' %}"></script>
+    <script src="{% static 'flow/js/edit.js' %}?v=20250221.01"></script>
 </body>
 </html>

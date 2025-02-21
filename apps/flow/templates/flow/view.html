@@ -21,12 +21,12 @@
     <div class="container-fullscreen view-container">
         <div id="canvas"></div>
         <div class="actions">
-            <button id="exportBtn" class="btn">导出BPMN</button>
+            <button id="exportBtn" class="btn">导出XML</button>
             <button id="exportSvgBtn" class="btn">导出SVG</button>
             <a href="{% url 'flow:index' %}" class="btn">返回</a>
         </div>
     </div>
     <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-viewer.development.js' %}"></script>
-    <script src="{% static 'flow/js/view.js' %}"></script>
+    <script src="{% static 'flow/js/view.js' %}?v=20250221.01"></script>
 </body>
 </html>
