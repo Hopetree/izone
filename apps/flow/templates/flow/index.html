@@ -63,6 +63,12 @@
         window.location.href = "/";
     }
 </script>
-<script src="{% static 'flow/js/index.js' %}?v=20250221.01"></script>
+{% csrf_token %}
+<script>
+    window.isAdmin = {{ is_admin|lower }};
+</script>
+<script src="{% static 'flow/js/admin/api.js' %}?v=20240221"></script>
+<script src="{% static 'flow/js/admin/storage.js' %}?v=20240221"></script>
+<script src="{% static 'flow/js/index.js' %}?v=20240221"></script>
 </body>
 </html>

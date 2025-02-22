@@ -9,7 +9,7 @@ const processId = urlParams.get('id');
 // 加载流程图
 async function loadDiagram(processId) {
     try {
-        const processData = JSON.parse(localStorage.getItem(processId));
+        const processData = await window.storage.getProcess(processId);
         if (processData && processData.xml) {
             await bpmnViewer.importXML(processData.xml);
             const canvas = bpmnViewer.get('canvas');
@@ -33,6 +33,8 @@ async function loadDiagram(processId) {
         }
     } catch (err) {
         console.error('加载流程图失败', err);
+        alert('加载失败');
+        window.location.href = '/flow/';
     }
 }
 
@@ -40,7 +42,7 @@ async function loadDiagram(processId) {
 if (processId) {
     loadDiagram(processId);
 } else {
-    window.location.href = '/flow/';
+    window.location.href = '../';  // 修改为相对路径
 }
 
 // 导出 BPMN 文件

@@ -19,15 +19,16 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
         if (!processName) return;  // 如果用户取消或未输入，则不保存
 
         const { xml } = await bpmnModeler.saveXML({ format: true });
-        const processId = 'bpmn_' + Date.now();
         const processData = {
-            xml: xml,
             name: processName,
+            xml: xml,
+            tags: [],
             createTime: Date.now()
         };
-        localStorage.setItem(processId, JSON.stringify(processData));
+        
+        await window.storage.saveProcess(processData);
         alert('保存成功');
-        window.location.href = '/flow/';
+        window.location.href = '../';  // 修改为相对路径
     } catch (err) {
         console.error('保存失败', err);
         alert('保存失败');

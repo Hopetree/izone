@@ -9,7 +9,7 @@ const processId = urlParams.get('id');
 // 加载流程图
 async function loadDiagram(processId) {
     try {
-        const processData = JSON.parse(localStorage.getItem(processId));
+        const processData = await window.storage.getProcess(processId);
         if (processData && processData.xml) {
             await bpmnModeler.importXML(processData.xml);
         } else {
@@ -18,18 +18,25 @@ async function loadDiagram(processId) {
         }
     } catch (err) {
         console.error('加载流程图失败', err);
+        alert('加载失败');
+        window.location.href = '/flow/';
     }
 }
 
 // 保存流程图
 document.getElementById('saveBtn').addEventListener('click', async () => {
+    if (!processId) {
+        alert('流程ID不存在');
+        window.location.href = '../';
+        return;
+    }
     try {
         const { xml } = await bpmnModeler.saveXML({ format: true });
-        const processData = JSON.parse(localStorage.getItem(processId));
+        const processData = await window.storage.getProcess(processId);
         processData.xml = xml;
-        localStorage.setItem(processId, JSON.stringify(processData));
+        await window.storage.updateProcess(processId, processData);
         alert('保存成功');
-        window.location.href = '/flow/';
+        window.location.href = '../';  // 修改为相对路径
     } catch (err) {
         console.error('保存失败', err);
         alert('保存失败');
@@ -62,7 +69,7 @@ document.getElementById('importFile').addEventListener('change', async (e) => {
 if (processId) {
     loadDiagram(processId);
 } else {
-    window.location.href = '/flow/';
+    window.location.href = '../';  // 修改为相对路径
 }
 
 // 导出 BPMN 文件

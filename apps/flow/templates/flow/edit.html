@@ -8,9 +8,9 @@
     <meta name="referrer" content="origin">
     <!-- TDK and ICO -->
     <title>编辑流程-BMPN_TendCode</title>
-    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/diagram-js.css' %}">
-    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/bpmn.css' %}">
-    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/diagram-js.css' %}?v=20240221">
+    <link rel="stylesheet" href="{% static 'flow/css/bpmn-js@18.2.0/bpmn.css' %}?v=20240221">
+    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}?v=20240221">
     <style>
         .bjs-powered-by {
             display: none;
@@ -29,7 +29,13 @@
             <a href="{% url 'flow:index' %}" class="btn">返回</a>
         </div>
     </div>
-    <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-modeler.development.js' %}"></script>
-    <script src="{% static 'flow/js/edit.js' %}?v=20250221.01"></script>
+    {% csrf_token %}
+    <script>
+        window.isAdmin = {{ is_admin|lower }};
+    </script>
+    <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-modeler.development.js' %}?v=20240221"></script>
+    <script src="{% static 'flow/js/admin/api.js' %}?v=20240221"></script>
+    <script src="{% static 'flow/js/admin/storage.js' %}?v=20240221"></script>
+    <script src="{% static 'flow/js/edit.js' %}?v=20240221"></script>
 </body>
 </html>
