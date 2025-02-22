@@ -28,7 +28,7 @@
     </div>
     {% csrf_token %}
     <script>
-        window.isAdmin = {{ is_admin|lower }};
+        window.isAdmin = "{{ is_admin|lower }}" === "true";
     </script>
     <script src="{% static 'flow/js/bpmn-js@18.2.0/bpmn-viewer.development.js' %}?v=20240221"></script>
     <script src="{% static 'flow/js/admin/api.js' %}?v=20240221"></script>
