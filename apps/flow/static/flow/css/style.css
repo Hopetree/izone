@@ -327,3 +327,53 @@ body {
 .process-name .tag-edit:hover {
     opacity: 1;
 }
+
+/* 搜索框容器样式 */
+.search-box {
+    position: relative;
+    width: 224px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    width: calc(100% - 36px);
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #ddd;
+    box-shadow: none;
+}
+
+.search-box .search-btn {
+    position: absolute;
+    right: 36px;  /* 改回36px */
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    pointer-events: none;
+}
+
+.search-box .search-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    pointer-events: none;
+}

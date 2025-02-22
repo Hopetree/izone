@@ -10,7 +10,7 @@
     <title>流程图设计在线_TendCode</title>
     <meta name="description" content="流程图在线编辑器">
     <meta name="keywords" content="流程图,在线工具,bmpm.js">
-    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'flow/css/style.css' %}?v=20231207">
     <style>
         /* 悬浮按钮样式 */
         .floating-button {
@@ -43,7 +43,17 @@
 <div class="container">
     <h1>BPMN 流程管理</h1>
     <div class="list-header">
-        <h2>流程列表</h2>
+        <div class="header-left">
+            <h2>流程列表</h2>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索流程名称或标签">
+            <button class="search-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
         <div class="actions index-actions">
             <a href="{% url 'flow:create' %}" class="btn index-btn">新建流程</a>
         </div>
@@ -69,6 +79,6 @@
 </script>
 <script src="{% static 'flow/js/admin/api.js' %}?v=20240221"></script>
 <script src="{% static 'flow/js/admin/storage.js' %}?v=20240221"></script>
-<script src="{% static 'flow/js/index.js' %}?v=20240221"></script>
+<script src="{% static 'flow/js/index.js' %}?v=20231207"></script>
 </body>
 </html>
