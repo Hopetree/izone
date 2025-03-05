@@ -75,8 +75,15 @@ def get_cnblogs_pick():
 
 def get_github_issues(api_url):
     try:
-        response = requests.get(api_url, timeout=10, verify=False)
-        issues = response.json()
+        headers = {
+            'User-Agent': 'Awesome-Octocat-App',
+            'Accept': 'application/vnd.github+json'
+        }
+        response = requests.get(api_url, timeout=10, verify=False, headers=headers)
+        if response.status_code == 200 and isinstance(response.json(), list):
+            issues = response.json()
+        else:
+            issues = []
     except:
         issues = []
     rss = RSSResponse()
