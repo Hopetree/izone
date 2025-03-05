@@ -67,13 +67,13 @@ def cnblogs_pick(request):
 
 
 def github_issues_ryf(request):
-    issues_url = 'https://github.com/ruanyf/weekly/issues'
+    api_issues_url = 'https://api.github.com/repos/ruanyf/weekly/issues'
     redis_key = f'rss:github-issues:ruanyf:weekly'
     redis_value = cache.get(redis_key)
     if redis_value:
         context = redis_value
     else:
-        context = get_github_issues(issues_url)
+        context = get_github_issues(api_issues_url)
         context['title'] = '阮一峰周刊 issues'
         context['link'] = 'https://github.com/ruanyf/weekly/issues'
         cache.set(redis_key, context, 3600 * 2)

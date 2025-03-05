@@ -73,18 +73,20 @@ def get_cnblogs_pick():
     return rss.as_dict()
 
 
-def get_github_issues(url):
+def get_github_issues(api_url):
     try:
-        response = requests.get(url, timeout=10, verify=False)
-        text = response.text
+        response = requests.get(api_url, timeout=10, verify=False)
+        issues = response.json()
     except:
-        text = ''
-    issues = re.findall(
-        r'data-hovercard-type="issue" data-hovercard-url=".*?" href="(.*?)">(.*?)</a>',
-        text)
+        issues = []
     rss = RSSResponse()
     items = []
-    for link, title in issues:
-        items.append({'title': title.strip(), 'link': 'https://github.com' + link})
+    for issue in issues:
+        items.append({'title': issue['title'], 'link': issue['html_url']})
     rss.items = items
     return rss.as_dict()
+
+
+if __name__ == '__main__':
+    f = get_github_issues('https://api.github.com/repos/ruanyf/weekly/issues')
+    print(f)
