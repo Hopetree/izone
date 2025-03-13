@@ -1,3 +1,4 @@
+import re
 import time
 from datetime import datetime
 
@@ -49,6 +50,30 @@ from utils.markdown_ext import (
     CodeGroupExtension
 )
 
+
+def preprocess_mermaid_blocks(md_content):
+    """
+    处理 Markdown 内容，将 mermaid 代码块转换为 HTML div，并判断是否包含 mermaid 代码块。
+
+    :param md_content: str，原始 Markdown 文本
+    :return: (str, bool) -> 处理后的 Markdown 内容 & 是否包含 mermaid 代码块
+    """
+    # 允许 mermaid 代码块前有 0 个或多个空格 + 可选的换行
+    mermaid_pattern = re.compile(r'^\s*```mermaid\s*\n(.*?)\n```', re.DOTALL | re.MULTILINE)
+
+    has_mermaid = False  # 是否包含 mermaid 代码块
+
+    def replace_mermaid_block(match):
+        nonlocal has_mermaid
+        content = match.group(1).strip()
+        if content:  # 仅转换非空 Mermaid 代码块
+            has_mermaid = True
+            return f"<div class='mermaid'>\n{content}\n</div>"
+        return match.group(0)  # 保留原始 Markdown
+
+    processed_content = mermaid_pattern.sub(replace_mermaid_block, md_content)
+
+    return processed_content, has_mermaid
 
 def make_markdown():
     md = markdown.Markdown(extensions=[
@@ -146,12 +171,14 @@ class BaseDetailView(generic.DetailView):
         md_key = self.context_object_name + ':markdown:{}:{}'.format(obj.id, ud)
         cache_md = cache.get(md_key)
         if cache_md and settings.DEBUG is False:
-            obj.body, obj.toc = cache_md
+            obj.body, obj.toc, obj.has_mermaid = cache_md
         else:
             md = make_markdown()
-            obj.body = md.convert(obj.body)
+            processed_content, has_mermaid = preprocess_mermaid_blocks(obj.body)
+            obj.body = md.convert(processed_content)
+            obj.has_mermaid = has_mermaid
             obj.toc = md.toc
-            cache.set(md_key, (obj.body, obj.toc), 3600 * 24 * 7)
+            cache.set(md_key, (obj.body, obj.toc, obj.has_mermaid), 3600 * 24 * 7)
         return obj
 
 

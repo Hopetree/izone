@@ -56,6 +56,7 @@
         #article-print:hover {
             cursor: pointer;
         }
+        .mermaid {text-align: center;margin-top: 1.5rem;margin-bottom: 1.5rem;}
     </style>
 {% endblock %}
 
@@ -235,5 +236,9 @@
                 document.body.addEventListener('input', POWERMODE)
             }
         </script>
+    {% endif %}
+    {% if article.has_mermaid %}
+        <script src="{% static 'blog/js/mermaid/10.2.3/mermaid.min.js' %}"></script>
+        <script>mermaid.initialize({ startOnLoad: true });</script>
     {% endif %}
 {% endblock %}

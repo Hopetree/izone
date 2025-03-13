@@ -33,6 +33,7 @@
     <link href="{% static 'blog/css/detail.css' %}?v={{ static_version.css_blog_detail }}" rel="stylesheet">
     <link href="{% static 'blog/css/monokai-3.css' %}?v=20241202.1" rel="stylesheet">
     <link href="{% static 'comment/css/base_comment.css' %}?v=20190114.554" rel="stylesheet">
+    <style>.mermaid {text-align: center;margin-top: 1.5rem;margin-bottom: 1.5rem;}</style>
 {% endblock %}
 
 {% block base_content %}
@@ -157,5 +158,9 @@
                 document.body.addEventListener('input', POWERMODE)
             }
         </script>
+    {% endif %}
+    {% if article.has_mermaid %}
+        <script src="{% static 'blog/js/mermaid/10.2.3/mermaid.min.js' %}"></script>
+        <script>mermaid.initialize({ startOnLoad: true });</script>
     {% endif %}
 {% endblock %}
