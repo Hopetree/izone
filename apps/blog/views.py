@@ -68,7 +68,7 @@ def preprocess_mermaid_blocks(md_content):
         content = match.group(1).strip()
         if content:  # 仅转换非空 Mermaid 代码块
             has_mermaid = True
-            return f"<div class='mermaid'>\n{content}\n</div>"
+            return f"<pre class='mermaid'>\n{content}\n</pre>"
         return match.group(0)  # 保留原始 Markdown
 
     processed_content = mermaid_pattern.sub(replace_mermaid_block, md_content)
