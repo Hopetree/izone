@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.12-slim
 
 # 国内用户构建命令参考
 # DOCKER_BUILDKIT=0 docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ --build-arg pip_trusted_host=mirrors.aliyun.com --build-arg debian_host=mirrors.ustc.edu.cn -f Dockerfile-slim -t hopetree/izone:lts .
