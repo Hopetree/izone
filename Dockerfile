@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.9
 
 # 国内用户构建命令参考
 # DOCKER_BUILDKIT=0 docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ --build-arg pip_trusted_host=mirrors.aliyun.com -t hopetree/izone:lts .
