@@ -259,7 +259,7 @@ def clear_cache_with_prefix(pattern_keys):
     return response.as_dict()
 
 @shared_task
-def execute_task(script_name):
+def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="/usr/bin/bash"):
     """执行数据库中的 Python/Shell 代码，并注入环境变量"""
     response = TaskResponse()
     try:
