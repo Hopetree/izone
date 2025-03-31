@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import os
 import time
+import subprocess
+import tempfile
 
 from celery import shared_task
 from django.core.management import call_command
@@ -21,6 +24,7 @@ from monitor.actions import (
 )
 
 from blog.templatetags.blog_tags import get_blog_infos
+from .models import TaskScript, EnvironmentVariable
 
 from .action.oss_sync import action_qiniu_sync_github
 from .action.article_sync import action_article_to_github
@@ -252,4 +256,40 @@ def clear_cache_with_prefix(pattern_keys):
     response = TaskResponse()
     result = action_clear_cache_with_prefix(pattern_keys)
     response.data = result
+    return response.as_dict()
+
+@shared_task
+def execute_task(script_name):
+    """执行数据库中的 Python/Shell 代码，并注入环境变量"""
+    response = TaskResponse()
+    try:
+        script_obj = TaskScript.objects.get(name=script_name)
+        script_code = script_obj.script
+        script_type = script_obj.script_type
+
+        # 获取所有环境变量
+        env_vars = {env.key: env.value for env in EnvironmentVariable.objects.all()}
+
+        # 确定文件后缀
+        file_suffix = ".py" if script_type == "python" else ".sh"
+
+        with tempfile.NamedTemporaryFile(suffix=file_suffix, delete=False) as temp_script:
+            temp_script.write(script_code.encode("utf-8"))
+            temp_script_path = temp_script.name  # 获取文件路径
+
+        # 设置环境变量
+        process_env = os.environ.copy()
+        process_env.update(env_vars)
+
+        # 执行脚本
+        if script_type == "python":
+            result = subprocess.run(["python3", temp_script_path], capture_output=True, text=True, env=process_env)
+        else:
+            result = subprocess.run(["bash", temp_script_path], capture_output=True, text=True, env=process_env)
+
+        response.data = {"script_name":script_name, "temp_script_path":temp_script_path, "stdout": result.stdout, "stderr": result.stderr}
+
+    except TaskScript.DoesNotExist:
+        response.data = {"script_name":script_name, "error": "Script not found"}
+
     return response.as_dict()
