@@ -284,7 +284,8 @@ def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="
             temp_script_path = temp_script.name  # 获取文件路径
 
         # 设置环境变量
-        process_env = os.environ.copy()
+        # process_env = os.environ.copy()
+        process_env = {}
         process_env.update(env_vars)
 
         # 执行脚本
