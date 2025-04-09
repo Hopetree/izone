@@ -259,7 +259,7 @@ def clear_cache_with_prefix(pattern_keys):
     return response.as_dict()
 
 @shared_task
-def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="/usr/bin/bash"):
+def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="/usr/bin/bash", **kwargs):
     """执行数据库中的 Python/Shell 代码，并注入环境变量"""
     response = TaskResponse()
     try:
@@ -269,6 +269,12 @@ def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="
 
         # 获取所有环境变量
         env_vars = {env.key: env.value for env in EnvironmentVariable.objects.all()}
+
+        # 更新参数中的变量
+        env_vars.update({
+            str(k): str(v) for k, v in kwargs.items() if
+            isinstance(k, str) and isinstance(v, (str, int, float))
+        })
 
         # 确定文件后缀
         file_suffix = ".py" if script_type == "python" else ".sh"
@@ -283,9 +289,9 @@ def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="
 
         # 执行脚本
         if script_type == "python":
-            result = subprocess.run(["python3", temp_script_path], capture_output=True, text=True, env=process_env)
+            result = subprocess.run([python_path, temp_script_path], capture_output=True, text=True, env=process_env)
         else:
-            result = subprocess.run(["bash", temp_script_path], capture_output=True, text=True, env=process_env)
+            result = subprocess.run([shell_path, temp_script_path], capture_output=True, text=True, env=process_env)
 
         response.data = {"script_name":script_name, "temp_script_path":temp_script_path, "stdout": result.stdout, "stderr": result.stderr}
 
