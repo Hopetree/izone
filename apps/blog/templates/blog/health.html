@@ -148,7 +148,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="total_data_box" style="width: 100%;height:340px;"></div>
-            {% get_total_data_trend 20 as total_data_trend %}
+            {% get_total_data_trend 20 current_year as total_data_trend %}
             <div id="total_data" style="display: none;">{{ total_data_trend|json_script:"total_data_trend" }}</div>
             <script type="text/javascript">
                 const myTotalData = JSON.parse(document.getElementById("total_data").textContent);
@@ -395,7 +395,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="heart_interval_box" style="width: 100%;height:340px;"></div>
-            {% get_heart_rate_interval_v2 20 as heart_interval_data %}
+            {% get_heart_rate_interval_v2 20 current_year as heart_interval_data %}
             <div id="heart_interval_data"
                  style="display: none;">{{ heart_interval_data|json_script:"heart_interval_data" }}</div>
             <script type="text/javascript">
@@ -545,7 +545,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="heart_box" style="width: 100%;height:340px;"></div>
-            {% get_heart_rate_trend 20 as heart_rate_trend %}
+            {% get_heart_rate_trend 20 current_year as heart_rate_trend %}
             <div id="heart_data" style="display: none;">{{ heart_rate_trend|json_script:"heart_rate_trend" }}</div>
             <script type="text/javascript">
                 const myHeartData = JSON.parse(document.getElementById("heart_data").textContent);
@@ -657,7 +657,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="pace_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_pace_trend 20 as pace_trend %}
+            {% get_pace_trend 20 current_year as pace_trend %}
             <div id="pace_trend_data" style="display: none;">{{ pace_trend|json_script:"pace_trend" }}</div>
             <script type="text/javascript">
                 // 将浮点数转换为分秒格式
@@ -822,7 +822,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="mb-3" id="cadence_trend_box" style="width: 100%;height:340px;"></div>
-            {% get_cadence_trend 20 as cadence_trend %}
+            {% get_cadence_trend 20 current_year as cadence_trend %}
             <div id="cadence_trend_data" style="display: none;">{{ cadence_trend|json_script:"cadence_trend" }}</div>
             <script type="text/javascript">
                 const myCadenceData = JSON.parse(document.getElementById("cadence_trend_data").textContent);

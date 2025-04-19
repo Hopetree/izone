@@ -64,7 +64,8 @@ def get_year_data(this_year=None):
     """
     this_date_str = datetime.today().strftime('%Y%m%d')
     this_year = this_year or datetime.today().year
-    redis_key = f'{this_year}_{RedisKeys.health_year_data.format(date=this_date_str)}'
+    redis_key = RedisKeys.health_year_data.format(date=this_date_str)
+    redis_key = f'{redis_key}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
@@ -84,20 +85,22 @@ def get_year_data(this_year=None):
 
 
 @register.simple_tag
-def get_heart_rate_interval_v2(num=14):
+def get_heart_rate_interval_v2(num=14, this_year=None):
     """
     获取心率区间分布
+    @param this_year:
     @param num: 获取最新num条数据
     @return:
     """
+    this_year = this_year or datetime.today().year
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.heart_rate_interval.format(date=this_date_str)
-    redis_key = f'{redis_key}_{num}'
+    redis_key = f'{redis_key}_{num}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
     data = {}
-    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = Fitness.objects.filter(run_date__year=this_year).order_by('-run_date')[:num]
     objs = list(objs)[::-1]
     rawData = []
     for obj in objs:
@@ -111,20 +114,22 @@ def get_heart_rate_interval_v2(num=14):
 
 
 @register.simple_tag
-def get_heart_rate_trend(num=14):
+def get_heart_rate_trend(num=14, this_year=None):
     """
     获取心率趋势
+    @param this_year:
     @param num: 获取最新num条数据
     @return:
     """
+    this_year = this_year or datetime.today().year
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.heart_rate_trend.format(date=this_date_str)
-    redis_key = f'{redis_key}_{num}'
+    redis_key = f'{redis_key}_{num}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
     data = {}
-    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = Fitness.objects.filter(run_date__year=this_year).order_by('-run_date')[:num]
     objs = list(objs)[::-1]
     rawData = []
     for obj in objs:
@@ -139,20 +144,22 @@ def get_heart_rate_trend(num=14):
 
 
 @register.simple_tag
-def get_pace_trend(num=14):
+def get_pace_trend(num=14, this_year=None):
     """
     获取配速趋势
+    @param this_year:
     @param num: 获取最新num条数据
     @return:
     """
+    this_year = this_year or datetime.today().year
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.pace_trend.format(date=this_date_str)
-    redis_key = f'{redis_key}_{num}'
+    redis_key = f'{redis_key}_{num}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
     data = {}
-    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = Fitness.objects.filter(run_date__year=this_year).order_by('-run_date')[:num]
     objs = list(objs)[::-1]
     rawData = []
     for obj in objs:
@@ -167,20 +174,22 @@ def get_pace_trend(num=14):
 
 
 @register.simple_tag
-def get_cadence_trend(num=14):
+def get_cadence_trend(num=14, this_year=None):
     """
     获取步频趋势
+    @param this_year:
     @param num: 获取最新num条数据
     @return:
     """
+    this_year = this_year or datetime.today().year
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.cadence_trend.format(date=this_date_str)
-    redis_key = f'{redis_key}_{num}'
+    redis_key = f'{redis_key}_{num}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
     data = {}
-    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = Fitness.objects.filter(run_date__year=this_year).order_by('-run_date')[:num]
     objs = list(objs)[::-1]
     rawData = []
     for obj in objs:
@@ -195,20 +204,22 @@ def get_cadence_trend(num=14):
 
 
 @register.simple_tag
-def get_total_data_trend(num=14):
+def get_total_data_trend(num=14, this_year=None):
     """
     获取整体数据趋势，多Y轴视图
+    @param this_year:
     @param num: 获取最新num条数据
     @return:
     """
+    this_year = this_year or datetime.today().year
     this_date_str = datetime.today().strftime('%Y%m%d')
     redis_key = RedisKeys.total_data_trend.format(date=this_date_str)
-    redis_key = f'{redis_key}_{num}'
+    redis_key = f'{redis_key}_{num}_{this_year}'
     redis_data = cache.get(redis_key)
     if redis_data:
         return redis_data
     data = {}
-    objs = Fitness.objects.order_by('-run_date')[:num]
+    objs = Fitness.objects.filter(run_date__year=this_year).order_by('-run_date')[:num]
     objs = list(objs)[::-1]
     dateData = []
     distanceData = []
