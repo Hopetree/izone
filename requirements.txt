@@ -41,7 +41,7 @@ python-crontab==2.7.1
 python-dateutil==2.8.2
 python3-openid==3.1.0
 pytz==2019.2
-redis==3.3.8
+redis==4.4.4
 requests==2.22.0
 requests-oauthlib==1.2.0
 setuptools-scm==6.0.1
