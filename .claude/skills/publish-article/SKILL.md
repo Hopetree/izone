@@ -65,8 +65,9 @@ Do not add decorative emoji to article body. Emoji may only be used when:
 To generate and upload a cover image for the article, see [references/cover-design.md](references/cover-design.md) for the full SVG design spec with two layout schemes and color palettes. Quick summary:
 
 - **Size**: 500×300 SVG, server auto-converts to PNG
-- **Scheme A (Icon Row)**: Default — glow + label + 4 icons + title + description. Best for technical articles.
-- **Scheme B (Minimal Title)**: Cleaner — glow + label + larger title + description. Best for essays/notes.
+- **Scheme C (Grid Network)**: **Default/preferred** — grid mesh + glowing nodes + connection lines + title + subtitle + hashtag tags. Best for most technical articles.
+- **Scheme A (Icon Row)**: Alternative — glow + label + icons + title + description. Best when you want icon visuals.
+- **Scheme B (Minimal Title)**: Minimal — glow + label + larger title + description. Best for essays/notes.
 - **MANDATORY font stack**: `'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif'`
 - **MANDATORY no emoji**: cairosvg cannot render emoji/unicode, use SVG paths for icons
 

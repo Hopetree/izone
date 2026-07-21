@@ -150,8 +150,17 @@ class SkillImageUploadView(APIView):
                     if os.path.exists(generated):
                         from PIL import Image
                         img = Image.open(generated)
-                        # qlmanage 输出 500×500，内容在顶部，从顶部裁剪 500×300
-                        img = img.crop((0, 0, 500, 300))
+                        # qlmanage 输出 500×500，内容不一定从顶部开始
+                        # 自动检测内容起始行（非白色像素 >50 视为内容）
+                        pixels = list(img.getdata())
+                        w = img.width
+                        top = 0
+                        for y in range(img.height):
+                            row = pixels[y * w:(y + 1) * w]
+                            if sum(1 for p in row if p[0] < 240 or p[1] < 240 or p[2] < 240) > 50:
+                                top = y
+                                break
+                        img = img.crop((0, top, 500, top + 300))
                         img.save(filepath, 'PNG')
                         os.unlink(generated)
                 finally:

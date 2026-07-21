@@ -144,6 +144,103 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 
 ---
 
+## Scheme C: Grid Network (preferred)
+
+**Default scheme.** A tech-forward cover with a grid mesh, glowing nodes, and neural-network-style connection lines. Best for most article types — AI, deep tech, infrastructure, tutorials, and general technical content.
+
+### Layout
+
+```
+┌─────────────────────────────────────────────┐
+│  ① Grid overlay (50px grid, gradient opacity)│
+│  ② Glowing nodes at grid intersections       │
+│  ③ Connection lines between nodes            │
+│  ④ Central highlight rectangle               │
+│  ⑤ Main title (34px, bold, indigo tint)      │
+│  ⑥ Subtitle (22px, lighter indigo)           │
+│  ⑦ Bottom hashtag tags (13px)                │
+└─────────────────────────────────────────────┘
+```
+
+### Elements
+
+| # | Element | Detail |
+|---|---------|--------|
+| ① | Grid | 50px grid lines, `stroke="url(#gridLine)"`, opacity fades from 0.3 at edges to 0.08 at center |
+| ② | Nodes | 8-12 small circles (r=2.5) at grid intersections, accent color, opacity 0.8 |
+| ③ | Lines | 8-12 connections between nodes. Mix of straight lines and curved bezier paths (`<path d="M... Q..."/>`). Accent color, stroke 0.5-0.8, opacity 0.2-0.4. Vary routing to look organic — a real neural network, not a grid of straight lines. |
+| ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Never a perfect centered rectangle; slight asymmetry adds visual interest. Size: ~300-380 wide, ~100-130 tall. |
+| ⑤ | Title | 36-38px, bold (900), `#e0d4ff`, centered, letter-spacing 4. y≈125 |
+| ⑥ | Subtitle | 20-22px, semi-bold (600), accent-400, centered, letter-spacing 2. y≈title+45 |
+| ⑦ | Tags | `#` separated keywords, 13px, accent-700, centered. y≈260 |
+
+**Vertical centering**: Unlike the reference, content must fill the 300px canvas. Title at y≈125, subtitle at y≈170, tags at y≈260. Grid and nodes cover the full canvas — no empty top half.
+
+### Background gradient
+
+Darker and more dramatic than Scheme A/B. Stops lean toward deep purple/indigo:
+
+```svg
+<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#0a0a1a"/>
+  <stop offset="100%" stop-color="#1a0a2e"/>
+</linearGradient>
+```
+
+### Grid line gradient
+
+Fades from edges toward center for depth:
+
+```svg
+<linearGradient id="gridLine" x1="0" y1="0" x2="0" y2="300">
+  <stop offset="0%" stop-color="accent" stop-opacity="0.3"/>
+  <stop offset="50%" stop-color="accent" stop-opacity="0.08"/>
+  <stop offset="100%" stop-color="accent" stop-opacity="0.3"/>
+</linearGradient>
+```
+
+### Subtitle format
+
+Unlike Scheme A/B's one-line keyword description, Scheme C uses a longer subtitle that reads as a sentence or phrase — like a magazine deck. This fills the space between the large title and the bottom tags.
+
+### Color variants (per palette)
+
+Scheme C must vary colors per article using the palette system. Each palette maps to specific fill/stroke values:
+
+| Element | Maps to | Example (Nebula) |
+|---------|---------|------------------|
+| Background gradient | Palette bg stops | `#0a0a1a` → `#1a0a2e` |
+| Grid lines | accent-500 at low opacity | `#7c3aed` |
+| Nodes | accent-400, opacity 0.8 | `#8b5cf6` |
+| Connection lines | accent-400, opacity 0.3 | `#8b5cf6` |
+| Center rect | accent-500, opacity 0.08 | `#7c3aed` |
+| Title text | `#ffffff` (pure white, same as Scheme A/B) | `#ffffff` |
+| Subtitle text | accent-300 | `#ab8cf3` → varies |
+| Tags text | accent-600 (darker for readability) | `#7c3aed` → varies |
+
+**Color mapping for each palette:**
+
+| Palette | Grid/Node | Title | Subtitle | Tags |
+|----------|-----------|-------|----------|------|
+| Ocean | `#4b8bf1` / `#3b82f6` | `#ffffff` | `#8bb3f4` | `#2563eb` |
+| Nebula | `#7d4bf1` / `#8b5cf6` | `#ffffff` | `#ab8cf3` | `#7c3aed` |
+| Forest | `#51ecb8` / `#10b981` | `#ffffff` | `#8ff0cf` | `#059669` |
+| Sunset | `#f2b54a` / `#f59e0b` | `#ffffff` | `#f4cd8a` | `#d97706` |
+| Aurora | `#48daf4` / `#06b6d4` | `#ffffff` | `#89e5f5` | `#0891b2` |
+| Slate | `#959ba7` / `#6b7280` | `#ffffff` | `#babec4` | `#4b5563` |
+| Earth | `#f5a447` / `#d97706` | `#ffffff` | `#f6c388` | `#b45309` |
+
+The grid aesthetic stays consistent; only the colors change per article.
+
+### When to use
+
+- AI / deep tech / infrastructure articles
+- Tutorials and technical guides
+- Any article where the grid/network aesthetic fits the content
+- **Default** — use unless the article clearly calls for Scheme A or B
+
+---
+
 ## Color & Background
 
 Vary both palette and background style per article. Never reuse the same combination twice in a row.
