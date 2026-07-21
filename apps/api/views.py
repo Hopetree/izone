@@ -88,18 +88,24 @@ from .serializers import SkillCategorySerializer, SkillTagSerializer, SkillTopic
 
 
 class SkillMetaView(APIView):
-    """聚合返回分类、标签、主题列表，供 skill 匹配决策"""
+    """聚合返回分类、标签、主题、专题列表，供 skill 匹配决策"""
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        from blog.models import Subject
         categories = Category.objects.all()
         tags = Tag.objects.all()
         topics = Topic.objects.select_related('subject').all()
+        subjects = Subject.objects.all()
 
         return Response({
             'categories': SkillCategorySerializer(categories, many=True).data,
             'tags': SkillTagSerializer(tags, many=True).data,
             'topics': SkillTopicSerializer(topics, many=True).data,
+            'subjects': [
+                {'id': s.id, 'name': s.name, 'status': s.status}
+                for s in subjects
+            ],
         })
 
 

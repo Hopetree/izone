@@ -6,7 +6,7 @@ Base URL: `$IZONE_API_BASE` (e.g. `http://127.0.0.1:8000/openapi/v1`)
 
 ### GET /skill/meta/
 
-Returns all existing categories, tags, and topics for matching.
+Returns all existing categories, tags, topics, and subjects for matching.
 
 **Auth:** `Authorization: Token <token>`
 
