@@ -63,11 +63,13 @@ A rich cover with geometric icons above the title. Best for technical/tutorial a
 | # | Element | Detail |
 |---|---------|--------|
 | ① | Glow | 2 large circles in corners, r=90-110, opacity 0.04-0.06, accent colors |
-| ② | Label | Pill rect rx=13, 26px tall, accent gradient fill opacity 0.12, 14px mono text |
-| ③ | Icons | 4× `rect` 40×40 rx=9, dark fill + thin stroke, inner geometric paths (1 per icon), 4 different accent colors. 12px label text below each |
-| ④ | Title | White, 36-40px, bold (900), letter-spacing 3, centered |
-| ⑤ | Line | Short gradient line 1.5px + center dot r=3 |
-| ⑥ | Desc | `#94a3b8`, 18px, one line of keywords separated by `·` |
+| ② | Label | Pill rect rx=13, 26px tall, accent gradient fill opacity 0.12, 14px mono text. y≈12 (close to top edge, leaving room for icons below) |
+| ③ | Icons | **3-5** × `rect` 40×40 rx=9, dark fill + thin stroke, inner geometric paths. Each icon a different accent color. 12px label text below. Icons must be centered as a group: `x = (500 - n*40) / (n+1) * (i+1) + 40*i` where n=count, i=0-based index. y≈52 |
+| ④ | Title | White, 36-40px, bold (900), letter-spacing 3, centered. y≈165 (tight gap from icon labels, ~25px) |
+| ⑤ | Line | Short gradient line 1.5px, no dot (same as Scheme B). y≈title_bottom+20 |
+| ⑥ | Desc | `#94a3b8`, 18px, one line of keywords separated by `·`. y≈line+30 |
+
+Key spacing: label(18) → gap(8) → icons(52) → icons_bottom(104) → gap(25) → title(165) → gap(20) → line → gap(20) → desc → bottom padding.
 
 ### Example SVG structure
 
@@ -107,7 +109,7 @@ A rich cover with geometric icons above the title. Best for technical/tutorial a
 
 ## Scheme B: Minimal Title
 
-A cleaner, lighter cover with just title and accent. Best for essays, notes, or articles without distinct technical themes.
+A cleaner cover with just title and accent. Best for essays, notes, or articles without distinct technical themes.
 
 ### Layout
 
@@ -116,7 +118,7 @@ A cleaner, lighter cover with just title and accent. Best for essays, notes, or 
 │  ① Glow circles                              │
 │  ② Top label                                 │
 │                                              │
-│  ③ Main title (40px, bold, centered)         │
+│  ③ Main title (44-48px, bold, centered)      │
 │  ④ Accent line + dot                         │
 │  ⑤ Description                               │
 └─────────────────────────────────────────────┘
@@ -127,12 +129,12 @@ A cleaner, lighter cover with just title and accent. Best for essays, notes, or 
 | # | Element | Detail |
 |---|---------|--------|
 | ① | Glow | Same as Scheme A |
-| ② | Label | Same as Scheme A |
-| ③ | Title | Larger, 40px, may use 3 words max per line |
-| ④ | Line | Same as Scheme A |
-| ⑤ | Desc | Same as Scheme A |
+| ② | Label | Same as Scheme A. y≈18 |
+| ③ | Title | **44-48px**, bold (900), letter-spacing 3, centered. y≈155 — the freed icon space goes entirely to larger title |
+| ④ | Line | Short gradient line 1.5px, **no center dot** (cleaner than Scheme A). y≈title_bottom+20 |
+| ⑤ | Desc | Same as Scheme A. y≈line+30 |
 
-No icon row — the extra vertical space goes to larger title and more breathing room.
+No icon row — title grows from 38px to 46px and shifts upward to fill the space. The entire content block (label + title + line + desc) is vertically centered in the 300px canvas.
 
 ### When to use
 
@@ -142,25 +144,90 @@ No icon row — the extra vertical space goes to larger title and more breathing
 
 ---
 
-## Color Palettes
+## Color & Background
 
-Vary per article. Pick one background shade + 2-3 accent colors.
+Vary both palette and background style per article. Never reuse the same combination twice in a row.
 
-### Background shades
+### Color Palettes (7 themes, WCAG verified)
 
-| Name | Stops | Mood |
-|------|-------|------|
-| Navy | `#0f172a` → `#1e293b` | General / tech |
-| Deep Purple | `#1a0f2e` → `#2d1f4e` | Creative / AI |
-| Dark Teal | `#0f1a1f` → `#1a2f33` | DevOps / infra |
-| Warm Dark | `#1f1a0f` → `#332d1a` | Home / lifestyle |
+All backgrounds pass 15:1+ contrast with white text. Generated from brand hex using HSL shade scale.
 
-### Accent colors
+| # | Name | Brand | Background Stops | Accent 400 | Accent 300 | Accent 200 | Mood |
+|---|------|-------|-----------------|------------|------------|------------|------|
+| 1 | Ocean | `#3B82F6` | `#000529` → `#02184b` | `#4b8bf1` | `#8bb3f4` | `#c4d8f7` | 技术 / 后端 |
+| 2 | Nebula | `#8B5CF6` | `#160029` → `#1e024b` | `#7d4bf1` | `#ab8cf3` | `#d4c5f7` | AI / 创新 |
+| 3 | Forest | `#10B981` | `#012824` → `#044837` | `#51ecb8` | `#8ff0cf` | `#c6f5e6` | DevOps / 运维 |
+| 4 | Sunset | `#F59E0B` | `#292400` → `#4b3601` | `#f2b54a` | `#f4cd8a` | `#f8e5c4` | 笔记 / 生活 |
+| 5 | Aurora | `#06B6D4` | `#001829` → `#003a4c` | `#48daf4` | `#89e5f5` | `#c3f0f8` | 全栈 / 前端 |
+| 6 | Slate | `#6B7280` | `#111118` → `#21242c` | `#959ba7` | `#babec4` | `#dbdde1` | 工具 / 效率 |
+| 7 | Earth | `#D97706` | `#292000` → `#4d2f00` | `#f5a447` | `#f6c388` | `#f9e0c3` | NAS / 硬件 |
 
-| Color | Hex | Pairs well with |
-|-------|-----|-----------------|
-| Blue | `#3b82f6` / `#60a5fa` | Indigo, Cyan |
-| Indigo | `#8b5cf6` / `#a78bfa` | Cyan, Blue |
-| Cyan | `#06b6d4` / `#22d3ee` | Indigo, Green |
-| Green | `#10b981` / `#34d399` | Cyan, Amber |
-| Amber | `#f59e0b` / `#fbbf24` | Green, Blue |
+**How to use**: Pick accent-400 or accent-300 for the icon row and label gradient. Use accent-200 for glow circles at low opacity (0.04-0.06). White (`#ffffff`) for title text, `#94a3b8` for description (same across all palettes).
+
+### Background Styles (rotate between these)
+
+#### Style 1: Diagonal Gradient (default)
+
+The standard diagonal gradient. Angle varies slightly each time.
+
+```svg
+<linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="start"/>
+  <stop offset="100%" stop-color="end"/>
+</linearGradient>
+```
+
+#### Style 2: Horizontal Split
+
+Top half lighter, bottom half darker. Adds a subtle horizon line.
+
+```svg
+<linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+  <stop offset="0%" stop-color="start"/>
+  <stop offset="40%" stop-color="start"/>
+  <stop offset="100%" stop-color="end"/>
+</linearGradient>
+<!-- Optional: subtle line at the split point -->
+<line x1="0" y1="120" x2="500" y2="120" stroke="accent" stroke-width="0.5" opacity="0.08"/>
+```
+
+#### Style 3: Radial Burst
+
+Gradient radiates from a corner, creating a spotlight effect.
+
+```svg
+<radialGradient id="bgGrad" cx="30%" cy="20%" r="80%">
+  <stop offset="0%" stop-color="lighter_variant"/>
+  <stop offset="100%" stop-color="end"/>
+</radialGradient>
+```
+
+#### Style 4: Geometric Accent
+
+Diagonal gradient + 1-2 subtle geometric shapes (large low-opacity triangles or rectangles).
+
+```svg
+<!-- Diagonal gradient bg -->
+<rect width="500" height="300" fill="url(#bgGrad)"/>
+<!-- Subtle geometric overlay -->
+<polygon points="500,0 500,200 300,300" fill="accent1" opacity="0.04"/>
+<circle cx="450" cy="250" r="150" fill="accent2" opacity="0.03"/>
+```
+
+#### Style 5: Dot Grid
+
+Gradient with a faint dot pattern overlay for a tech/dashboard feel.
+
+```svg
+<pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
+  <circle cx="8" cy="8" r="0.8" fill="#ffffff" opacity="0.06"/>
+</pattern>
+<rect width="500" height="300" fill="url(#bgGrad)"/>
+<rect width="500" height="300" fill="url(#dots)"/>
+```
+
+### Choosing
+
+1. Pick a **palette** based on article category/tone
+2. Pick a **background style**, rotate through them (don't use same style twice in a row)
+3. Pick 2-3 **accent colors** from the palette for icons and label
