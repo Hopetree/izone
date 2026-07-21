@@ -215,11 +215,11 @@ curl -s -H "Authorization: Token $IZONE_API_TOKEN" "$IZONE_API_BASE/skill/meta/"
 
 ### Step 5: Match and Assemble
 
-**Category** — Required. Infer → match against meta → ask user if no match.
+**分类** — Required. 根据内容推断 → 匹配已有 → 匹配不到则询问用户。
 
-**Tags** — Required (≥1). Match against meta. Reuse existing or create new. Ask user if none clear.
+**标签** — Required (≥1)。匹配已有或新建。推断不出则询问用户。
 
-**Topic** — Required. Match against meta. If no match, create new under an existing subject via `{"name": "...", "subject_id": <id>}`. **Subjects can never be created** — only topics.
+**主题** — Required. 与已有主题匹配，匹配不到则在已有专题下新建（`{"name": "...", "subject_id": <id>}`）。**专题不能新建**，只能使用已有专题。
 
 See [references/api-spec.md](references/api-spec.md) for full payload structure and field constraints.
 
