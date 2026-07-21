@@ -162,7 +162,25 @@ All backgrounds pass 15:1+ contrast with white text. Generated from brand hex us
 | 6 | Slate | `#6B7280` | `#111118` → `#21242c` | `#959ba7` | `#babec4` | `#dbdde1` | 工具 / 效率 |
 | 7 | Earth | `#D97706` | `#292000` → `#4d2f00` | `#f5a447` | `#f6c388` | `#f9e0c3` | NAS / 硬件 |
 
-**How to use**: Pick accent-400 or accent-300 for the icon row and label gradient. Use accent-200 for glow circles at low opacity (0.04-0.06). White (`#ffffff`) for title text, `#94a3b8` for description (same across all palettes).
+**How to use**:
+- **Icon background**: Always `#1e293b` (neutral dark slate).
+- **Icon colors**: Each icon gets a DIFFERENT accent color. Do NOT reuse the same accent for multiple icons in one cover. Pull from the full accent pool below — mix across palettes to get 3-5 distinct colors per cover.
+- **Icon labels**: Uniform color — use the current palette's accent-300 for all labels. Labels do NOT follow the icon colors; they stay consistent across the row.
+- **Label gradient + glow**: Use the current palette's accent-300 and accent-400.
+
+**Accent color pool** (pick 3-5 distinct colors per cover, one per icon):
+
+| Color | Hex | Tone |
+|-------|-----|------|
+| Blue | `#4b8bf1` | Cool, tech |
+| Indigo | `#7d4bf1` | Rich, creative |
+| Cyan | `#48daf4` | Fresh, modern |
+| Green | `#51ecb8` | Natural, stable |
+| Amber | `#f2b54a` | Warm, friendly |
+| Rose | `#fb7185` | Vibrant, bold |
+| Slate | `#959ba7` | Neutral, tool-like |
+
+**Per-cover selection rule**: Pick 3-5 colors from the pool for the icon row. The background palette suggests which colors feel most natural (e.g. Ocean→Blue+Cyan, Nebula→Indigo+Rose, Forest→Green+Amber), but the exact mix varies per article. Never use fewer than 3 distinct icon colors.
 
 ### Background Styles (rotate between these)
 
