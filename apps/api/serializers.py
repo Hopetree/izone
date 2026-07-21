@@ -114,7 +114,7 @@ class TagItemField(serializers.DictField):
 
 
 class TopicField(serializers.DictField):
-    """主题字段：接收 {id?, name?}"""
+    """主题字段：接收 {id?, name?, subject_id?}"""
     child = serializers.CharField(required=False)
 
 
@@ -230,22 +230,46 @@ class ArticlePublishSerializer(serializers.Serializer):
             return None
         topic_id = value.get('id')
         topic_name = value.get('name', '').strip()
+        subject_id = value.get('subject_id')
 
+        # 按 ID 查已有主题
         if topic_id:
             try:
                 return Topic.objects.get(pk=int(topic_id))
             except (Topic.DoesNotExist, ValueError):
                 pass
 
+        # 按名称查已有主题
         if topic_name:
             topic = Topic.objects.filter(name=topic_name).first()
             if topic:
                 return topic
 
-        available = Topic.objects.values_list('name', flat=True)[:20]
-        available_list = '、'.join(available) if available else '(无)'
+        # 不存在，尝试新建（必须有 subject_id）
+        if topic_name and subject_id:
+            from blog.models import Subject
+            try:
+                subject = Subject.objects.get(pk=int(subject_id))
+            except (Subject.DoesNotExist, ValueError):
+                available = Subject.objects.values_list('name', flat=True)[:20]
+                raise serializers.ValidationError(
+                    f"专题 id={subject_id} 不存在，可用专题: {', '.join(available)}"
+                )
+            # 不需要 slug，Topic 模型没有 slug 字段
+            topic = Topic.objects.create(
+                name=topic_name,
+                subject=subject,
+            )
+            return topic
+
+        # 无法创建，列出可用的
+        available = Topic.objects.select_related('subject')[:30]
+        available_list = ', '.join(
+            f'[{t.subject.name}]{t.name}' for t in available
+        ) if available else '(无)'
         raise serializers.ValidationError(
-            f"主题 '{topic_name or topic_id}' 不存在，可用主题: {available_list}"
+            f"主题 '{topic_name or topic_id}' 不存在。要新建主题请提供 subject_id。"
+            f"可用主题: {available_list}"
         )
 
     def create(self, validated_data):

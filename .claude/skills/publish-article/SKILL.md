@@ -219,7 +219,7 @@ curl -s -H "Authorization: Token $IZONE_API_TOKEN" "$IZONE_API_BASE/skill/meta/"
 
 **Tags** — Required (≥1). Match against meta. Reuse existing or create new. Ask user if none clear.
 
-**Topic** — Required. Match against meta only. If unclear, list options for user. Never create new.
+**Topic** — Required. Match against meta. If no match, create new under an existing subject via `{"name": "...", "subject_id": <id>}`. **Subjects can never be created** — only topics.
 
 See [references/api-spec.md](references/api-spec.md) for full payload structure and field constraints.
 
@@ -264,7 +264,8 @@ payload = json.dumps({
     'category': {'name': '<name>', 'slug': '<cat-slug>', 'description': '<desc>'},
     'tags': [{'name': '<name>', 'slug': '<tag-slug>', 'description': '<desc>'}],
     'keywords': ['<kw1>', '<kw2>'],
-    'topic': {'id': <id>, 'name': '<name>'},
+    'topic': {'id': <id>, 'name': '<name>'},  // 已有主题
+    // 或新建主题: 'topic': {'name': '<新名称>', 'subject_id': <subject_id>},
 }, ensure_ascii=False)
 
 result = subprocess.run([

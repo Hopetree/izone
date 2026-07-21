@@ -152,8 +152,9 @@ All constraints derive from the Django model definitions.
 
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
-| `id` | integer | no | Preferred lookup method |
-| `name` | string | no | Fallback lookup. **Never auto-created.** |
+| `id` | integer | no | Existing topic: provide id to use directly |
+| `name` | string | no | Existing topic: lookup by name. **New topic**: provide name + subject_id to create |
+| `subject_id` | integer | no | Required only when creating a new topic. **Subject itself is never created.** |
 
 ### Keyword
 
@@ -167,11 +168,13 @@ Array of strings, each ≤20 chars. Get-or-create by name.
 - If `name` is new → create with AI-provided `slug` and `description`
 - If `slug` conflicts with an existing different-named record → error
 
-### Topic: Lookup Only
+### Topic: Lookup or Create
 
 - Lookup by `id` first, then by `name`
-- If not found → error with list of available topic names
-- Never auto-created
+- If found → use existing topic
+- If not found AND `subject_id` is provided → create new topic under that subject
+- If not found AND no `subject_id` → error with list of available topics
+- **Subject is never created** — only existing subjects can be used via `subject_id`
 
 ### Keywords: Simple Get-or-Create
 
