@@ -37,6 +37,13 @@ or organizing existing material.
   If unsure or no specific language fits, use `text`.
   Never leave the language field empty — `` ``` `` without a language is not allowed.
 
+### Mermaid Diagrams
+
+- Use ` ```mermaid` code blocks for flowcharts, sequence diagrams, timelines, and architecture diagrams.
+- Blog renders Mermaid client-side — no server-side rendering needed.
+- Use when a diagram makes the concept clearer than text alone. Don't force it — only add when the content benefits from visual explanation.
+- Keep diagrams simple: 5-10 nodes max, avoid deeply nested subgraphs.
+
 ### Spacing
 
 - **Blank line before headings**: Always one blank line before `##` and `###`.
