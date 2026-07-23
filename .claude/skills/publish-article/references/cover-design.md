@@ -157,8 +157,8 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 │  ③ Connection lines between nodes            │
 │  ④ Central highlight rectangle               │
 │  ⑤ Main title (40-42px, bold)                 │
-│  ⑥ Subtitle (22-24px, lighter)                │
-│  ⑦ Bottom hashtag tags (14px)                │
+│  ⑥ Subtitle (29-31px, lighter)                │
+│  ⑦ Bottom hashtag tags (20px, max 3)          │
 └─────────────────────────────────────────────┘
 ```
 
@@ -169,12 +169,12 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 | ① | Grid | 50px grid lines, `stroke="url(#gridLine)"`, opacity fades from 0.3 at edges to 0.08 at center |
 | ② | Nodes | **8-12** small circles (r=2-3) at grid intersections, accent color, opacity 0.7-0.9. **MUST pick different intersections each article** — the grid has ~60 intersections total, randomly select from all of them. Vary the count and distribution. Never reuse the same set of positions. |
 | ③ | Lines | **8-15** connections between nodes. Mix of straight lines (`<line>`) and curved bezier paths (`<path d="M... Q..."/>`). Accent color, stroke 0.5-0.8, opacity 0.15-0.35. **MUST connect different node pairs each article** — vary connections per node (0-1 for leaf, 3-5 for hub) and curve control points. Layout should look different each time. |
-| ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Size: ~300-380 wide, ~110-140 tall, y≈40-180. |
-| ⑤ | Title | **40-42px**, bold (900), `#ffffff`, centered, letter-spacing 3. y≈112 |
-| ⑥ | Subtitle | **22-24px**, semi-bold (600), accent-400, centered, letter-spacing 1. y≈title+50 (≈162) |
-| ⑦ | Tags | `#` separated keywords, **14px**, accent-700, centered. y≈252 |
+| ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Size: ~300-380 wide, ~130-160 tall, y≈30-195. |
+| ⑤ | Title | **40-42px**, bold (900), `#ffffff`, centered, letter-spacing 3. y≈110 |
+| ⑥ | Subtitle | **29-31px**, semi-bold (600), accent-400, centered, letter-spacing 1. y≈title+58 (≈168). **Must be short** — at 30px, max ~14 Chinese chars to avoid horizontal overflow. |
+| ⑦ | Tags | `#` separated keywords, **20px**, `#c8d0dc` (near-white, not palette accent — must contrast against dark background), centered. y≈260. **Max 3 tags** — concise, e.g. `# Python # 异步 # 并发`. |
 
-**Vertical centering**: Content positioned in upper-middle of canvas — title y≈112, subtitle y≈162, tags y≈252. Grid and nodes cover the full 300px. Keep subtitle concise to avoid horizontal overflow with larger fonts.
+**Vertical centering**: Content positioned in upper-middle of canvas — title y≈110, subtitle y≈168, tags y≈260. Grid and nodes cover the full 300px. All fonts significantly larger than before: subtitle must be short, tags limited to 3.
 
 ### Background gradient
 
@@ -216,19 +216,19 @@ Scheme C must vary colors per article using the palette system. Each palette map
 | Center rect | accent-500, opacity 0.08 | `#7c3aed` |
 | Title text | `#ffffff` (pure white, same as Scheme A/B) | `#ffffff` |
 | Subtitle text | accent-300 | `#ab8cf3` → varies |
-| Tags text | accent-600 (darker for readability) | `#7c3aed` → varies |
+| Tags text | `#c8d0dc` (near-white, uniform across all palettes) | `#c8d0dc` |
 
 **Color mapping for each palette:**
 
 | Palette | Grid/Node | Title | Subtitle | Tags |
 |----------|-----------|-------|----------|------|
-| Ocean | `#4b8bf1` / `#3b82f6` | `#ffffff` | `#8bb3f4` | `#2563eb` |
-| Nebula | `#7d4bf1` / `#8b5cf6` | `#ffffff` | `#ab8cf3` | `#7c3aed` |
-| Forest | `#51ecb8` / `#10b981` | `#ffffff` | `#8ff0cf` | `#059669` |
-| Sunset | `#f2b54a` / `#f59e0b` | `#ffffff` | `#f4cd8a` | `#d97706` |
-| Aurora | `#48daf4` / `#06b6d4` | `#ffffff` | `#89e5f5` | `#0891b2` |
-| Slate | `#959ba7` / `#6b7280` | `#ffffff` | `#babec4` | `#4b5563` |
-| Earth | `#f5a447` / `#d97706` | `#ffffff` | `#f6c388` | `#b45309` |
+| Ocean | `#4b8bf1` / `#3b82f6` | `#ffffff` | `#8bb3f4` | `#c8d0dc` |
+| Nebula | `#7d4bf1` / `#8b5cf6` | `#ffffff` | `#ab8cf3` | `#c8d0dc` |
+| Forest | `#51ecb8` / `#10b981` | `#ffffff` | `#8ff0cf` | `#c8d0dc` |
+| Sunset | `#f2b54a` / `#f59e0b` | `#ffffff` | `#f4cd8a` | `#c8d0dc` |
+| Aurora | `#48daf4` / `#06b6d4` | `#ffffff` | `#89e5f5` | `#c8d0dc` |
+| Slate | `#959ba7` / `#6b7280` | `#ffffff` | `#babec4` | `#c8d0dc` |
+| Earth | `#f5a447` / `#d97706` | `#ffffff` | `#f6c388` | `#c8d0dc` |
 
 ### Randomization (MANDATORY)
 
