@@ -67,9 +67,11 @@ Do not add decorative emoji to article body. Emoji may only be used when:
 - Vary sentence length. Mix short direct sentences with longer explanatory ones.
 - Read like a knowledgeable colleague writing notes, not a textbook.
 
-### Cover Image
+### Cover Image (MANDATORY)
 
-To generate and upload a cover image for the article, see [references/cover-design.md](references/cover-design.md) for the full SVG design spec with two layout schemes and color palettes. Quick summary:
+**Every article MUST have a custom cover image generated.** This is not optional — always design and upload a cover for each article. The only acceptable reason to skip cover generation is when the upload API returns an error after at least one retry attempt.
+
+To generate and upload a cover image for the article, see [references/cover-design.md](references/cover-design.md) for the full SVG design spec with three layout schemes and color palettes. Quick summary:
 
 - **Size**: 500×300 SVG, server auto-converts to PNG
 - **Scheme C (Grid Network)**: **Default/preferred** — grid mesh + glowing nodes + connection lines + title + subtitle + hashtag tags. Best for most technical articles.
@@ -78,9 +80,9 @@ To generate and upload a cover image for the article, see [references/cover-desi
 - **MANDATORY font stack**: `'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif'`
 - **MANDATORY no emoji**: cairosvg cannot render emoji/unicode, use SVG paths for icons
 
-**Upload flow (3 steps):**
+**Upload flow (3 steps, always execute all of them):**
 
-**Step 1 — Generate SVG**: Design the cover following the spec above, write to `/tmp/<slug>-cover.svg`.
+**Step 1 — Generate SVG**: Design the cover following the spec above, write to `/tmp/<slug>-cover.svg`. Pick a palette and background style that matches the article's tone. Never reuse the same palette twice in a row.
 
 **Step 2 — Upload**: Server converts SVG to PNG automatically (no local tools needed).
 
@@ -101,7 +103,7 @@ curl -s -X POST -H "Authorization: Token $IZONE_API_TOKEN" \
   "$IZONE_API_BASE/skill/articles/cover/"
 ```
 
-If the article doesn't need a custom cover, omit `img_link` to use the default image.
+**Error handling**: If the upload fails, retry once with a different file name. If it still fails, proceed without a cover and inform the user that the cover upload failed. Never skip cover generation without attempting it first — only omit `img_link` from the payload when the upload API returns an error after retry.
 
 ## Mode 1: Write / Organize
 
@@ -249,7 +251,7 @@ print(result.stdout)
 "
 ```
 
-If a cover image was uploaded, add `'img_link': '<uploaded_path>'` to the payload dict. If no cover, **omit `img_link` from the payload entirely** — do not pass `null`, `\"\"`, or any falsy value. The model will use the default image.
+**Always include `img_link`** — add `'img_link': '<uploaded_path>'` to the payload dict. Cover generation is mandatory (see Cover Image section above). Only omit `img_link` if the upload API returned an error after retry — in that case, **omit the key entirely** from the payload dict (do not pass `null`, `\"\"`, or any falsy value).
 
 ### Step 8: Confirm Result
 
