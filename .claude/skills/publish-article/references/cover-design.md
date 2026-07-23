@@ -156,9 +156,9 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 │  ② Glowing nodes at grid intersections       │
 │  ③ Connection lines between nodes            │
 │  ④ Central highlight rectangle               │
-│  ⑤ Main title (34px, bold, indigo tint)      │
-│  ⑥ Subtitle (22px, lighter indigo)           │
-│  ⑦ Bottom hashtag tags (13px)                │
+│  ⑤ Main title (40-42px, bold)                 │
+│  ⑥ Subtitle (22-24px, lighter)                │
+│  ⑦ Bottom hashtag tags (14px)                │
 └─────────────────────────────────────────────┘
 ```
 
@@ -167,14 +167,14 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 | # | Element | Detail |
 |---|---------|--------|
 | ① | Grid | 50px grid lines, `stroke="url(#gridLine)"`, opacity fades from 0.3 at edges to 0.08 at center |
-| ② | Nodes | 8-12 small circles (r=2.5) at grid intersections, accent color, opacity 0.8 |
-| ③ | Lines | 8-12 connections between nodes. Mix of straight lines and curved bezier paths (`<path d="M... Q..."/>`). Accent color, stroke 0.5-0.8, opacity 0.2-0.4. Vary routing to look organic — a real neural network, not a grid of straight lines. |
-| ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Never a perfect centered rectangle; slight asymmetry adds visual interest. Size: ~300-380 wide, ~100-130 tall. |
-| ⑤ | Title | 36-38px, bold (900), `#e0d4ff`, centered, letter-spacing 4. y≈125 |
-| ⑥ | Subtitle | 20-22px, semi-bold (600), accent-400, centered, letter-spacing 2. y≈title+45 |
-| ⑦ | Tags | `#` separated keywords, 13px, accent-700, centered. y≈260 |
+| ② | Nodes | **8-12** small circles (r=2-3) at grid intersections, accent color, opacity 0.7-0.9. **MUST pick different intersections each article** — the grid has ~60 intersections total, randomly select from all of them. Vary the count and distribution. Never reuse the same set of positions. |
+| ③ | Lines | **8-15** connections between nodes. Mix of straight lines (`<line>`) and curved bezier paths (`<path d="M... Q..."/>`). Accent color, stroke 0.5-0.8, opacity 0.15-0.35. **MUST connect different node pairs each article** — vary connections per node (0-1 for leaf, 3-5 for hub) and curve control points. Layout should look different each time. |
+| ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Size: ~300-380 wide, ~110-140 tall, y≈40-180. |
+| ⑤ | Title | **40-42px**, bold (900), `#ffffff`, centered, letter-spacing 3. y≈112 |
+| ⑥ | Subtitle | **22-24px**, semi-bold (600), accent-400, centered, letter-spacing 1. y≈title+50 (≈162) |
+| ⑦ | Tags | `#` separated keywords, **14px**, accent-700, centered. y≈252 |
 
-**Vertical centering**: Unlike the reference, content must fill the 300px canvas. Title at y≈125, subtitle at y≈170, tags at y≈260. Grid and nodes cover the full canvas — no empty top half.
+**Vertical centering**: Content positioned in upper-middle of canvas — title y≈112, subtitle y≈162, tags y≈252. Grid and nodes cover the full 300px. Keep subtitle concise to avoid horizontal overflow with larger fonts.
 
 ### Background gradient
 
@@ -230,7 +230,20 @@ Scheme C must vary colors per article using the palette system. Each palette map
 | Slate | `#959ba7` / `#6b7280` | `#ffffff` | `#babec4` | `#4b5563` |
 | Earth | `#f5a447` / `#d97706` | `#ffffff` | `#f6c388` | `#b45309` |
 
-The grid aesthetic stays consistent; only the colors change per article.
+### Randomization (MANDATORY)
+
+**Every Scheme C cover must look different.** The node positions and connections are the primary visual differentiator — do NOT copy coordinates from a previous cover. The following MUST be randomized per article:
+
+| Element | What to randomize | How |
+|---------|-------------------|-----|
+| **Node positions** | Which grid intersections get nodes | Randomly pick 8-12 intersections from the full ~60-intersection grid. Vary clustering: corners, spread evenly, or center. Never reuse the same set. |
+| **Node sizes** | r=1.5-3.5 | Vary radii. Some larger (r=3-3.5) as hub nodes, others smaller (r=1.5-2). |
+| **Connection pairs** | Which nodes connect to which | Different node pairs each cover. Leaf nodes 0-1 connections, hub nodes 3-5. Leave some nodes isolated. |
+| **Line types** | Straight vs curved ratio | Vary per article: 80/20 straight/curved one time, 30/70 the next. Random curve control points. |
+| **Grid spacing** | 40-60px (not always 50px) | Denser (40px) = granular; sparser (60px) = open. |
+| **Center glow** | Shape, size, position | Vary between rounded rect (rx 4-12), rotated ellipse, or overlapping offset rects. Shift x/y by ±10px. |
+
+**The goal**: Two articles with the same palette should still be immediately distinguishable by their node/line layout.
 
 ### When to use
 
