@@ -83,6 +83,7 @@ izone/
 │   ├── resume/                # 个人简历
 │   ├── portinfo/              # 端口信息
 │   ├── flow/                  # 流程图服务
+│   ├── scripts/               # 脚本分享（公开下载 + 一键命令）
 │   └── rsshub/                # RSSHub 订阅
 │
 ├── templates/                 # 共享模板
@@ -137,7 +138,7 @@ Django (izone/wsgi.py → urls.py → app views)
     ├── MySQL 数据库
     │   ├── 文章 / 分类 / 标签 / 专题
     │   ├── 用户 / 评论 / 通知
-    │   ├── 友链 / 导航 / 监控
+    │   ├── 友链 / 导航 / 监控 / 脚本
     │   └── Celery 任务结果
     │
     └── Whoosh 搜索索引
@@ -262,3 +263,5 @@ docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ \
 | `IZONE_SITE_KEYWORDS` | 网站关键词 | 内置文本 |
 | `IZONE_EMAIL_*` | 邮件服务器配置 | 163 SMTP 默认值 |
 | `IZONE_PROTOCOL_HTTPS` | HTTP/HTTPS 协议 | `HTTP` |
+
+| — | 2026-07-24 | 根据 commit 2ca6b0b 更新：项目结构新增 scripts 应用，请求处理流程新增脚本数据 |

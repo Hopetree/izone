@@ -1,9 +1,14 @@
 {
-  "last_reviewed_commit": null,
-  "last_reviewed_commit_short": null,
-  "last_review_date": null,
-  "last_review_summary": null,
-  "documents_updated": [],
+  "last_reviewed_commit": "2ca6b0bf415c8bfcb6145418bbaebfecb4df3e2f",
+  "last_reviewed_commit_short": "2ca6b0b",
+  "last_review_date": "2026-07-24",
+  "last_review_summary": "审查最近10次提交：新增 apps/scripts/ 脚本分享应用（模型/视图/模板/路由），publish-article skill 文档更新（Mermaid 支持、封面强制生成、Scheme C 标签随机化）。发现5个问题（1个必须修复：域名硬编码；4个建议/优化）。更新4个文档。",
+  "documents_updated": [
+    "docs/design/01_PRD_产品需求规格说明书.md",
+    "docs/design/02_TDD_架构设计文档.md",
+    "docs/design/03_ERD_数据库设计文档.md",
+    "README.md"
+  ],
   "documents": [
     {
       "path": "docs/design/01_PRD_产品需求规格说明书.md",
@@ -34,6 +39,12 @@
       "type": "README",
       "description": "项目 README，包含技术栈、文档索引和快速开始指南",
       "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/code-review.md",
+      "type": "CODE_REVIEW",
+      "description": "代码审查报告，记录每次 review 发现的问题及处理状态",
+      "created_at": "2026-07-24"
     }
   ]
 }
