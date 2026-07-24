@@ -1,8 +1,8 @@
 # Code Review 报告
 
-**审查范围**：`fbf5608` → `73be2d8`
+**审查范围**：`fbf5608` → `71894f7`
 **日期**：2026-07-24
-**变更文件数**：6 个（新增 create-script skill + scripts DRF API + .gitignore 修复）
+**变更文件数**：11 个（新增 scripts DRF API + create-script skill → izone-publish-script 重命名 + 修复）
 
 ---
 

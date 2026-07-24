@@ -1,9 +1,11 @@
 {
-  "last_reviewed_commit": "fbf56087a9659419da4b622f19dda58d93a26dad",
-  "last_reviewed_commit_short": "fbf5608",
+  "last_reviewed_commit": "71894f74467de11677440d77660191ccaf033de3",
+  "last_reviewed_commit_short": "71894f7",
   "last_review_date": "2026-07-24",
-  "last_review_summary": "审查2次提交：上一轮review的修复（域名动态获取、URL路径修正、去除缓存）和文档同步（PRD/TDD/ERD/README）。均为review产物，无新增问题。",
-  "documents_updated": [],
+  "last_review_summary": "审查9次提交：新增scripts DRF API（SkillScriptQueryView/SkillScriptCreateUpdateView）、create-script技能及重命名为izone-publish-script、.gitignore修复。发现3个问题（is_publish默认值覆盖、DRF imports位置、竞态条件），已全部修复。更新API文档新增6.8 Skill脚本API。",
+  "documents_updated": [
+    "docs/design/04_API_接口文档.md"
+  ],
   "documents": [
     {
       "path": "docs/design/01_PRD_产品需求规格说明书.md",
