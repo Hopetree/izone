@@ -117,4 +117,4 @@ templates/test*.html
 .superpowers/
 
 # log
-log/*.log*memory/
+log/*.log*
