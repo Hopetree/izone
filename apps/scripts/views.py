@@ -2,7 +2,6 @@ import re
 import markdown
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.cache import cache
 from django.http import HttpResponse, Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -92,17 +91,11 @@ class ScriptDetailView(AdminRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         script = self.object
 
-        # 渲染 markdown 说明文档
-        desc_key = f'script:markdown:{script.id}:{script.update_date.timestamp()}'
-        body = cache.get(desc_key)
+        # 渲染 markdown 说明文档（内容少，每次直接渲染）
         md_content, has_mermaid = preprocess_mermaid_blocks(script.description)
         md = make_markdown()
-        if body is None:
-            body = md.convert(md_content)
-            cache.set(desc_key, body, 60 * 60 * 24)
+        context['body'] = md.convert(md_content)
         context['has_mermaid'] = has_mermaid
-
-        context['body'] = body
 
         # 用 markdown 渲染代码块，获得和文章一致的 codehilite + code-wrapper 结构
         lang = 'bash' if script.script_type == 'shell' else 'python'

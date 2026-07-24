@@ -45,7 +45,9 @@ class Script(models.Model):
     @property
     def full_command(self):
         """拼接完整的一键命令"""
-        base = f"curl -o {self.filename} https://tendcode.com{self.get_raw_url()}"
+        from django.contrib.sites.models import Site
+        domain = Site.objects.get_current().domain
+        base = f"curl -o {self.filename} https://{domain}{self.get_raw_url()}"
         if self.run_cmd:
             return f"{base} && {self.run_cmd}"
         return base
