@@ -1,5 +1,5 @@
 ---
-name: izone_publish-article
+name: izone-publish-article
 description: >
   Write, organize, and publish articles to the izone blog. Supports two modes:
   (1) Writing assistance — draft an article from a topic, outline, or raw notes, or

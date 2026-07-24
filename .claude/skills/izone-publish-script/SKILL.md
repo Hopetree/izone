@@ -1,5 +1,5 @@
 ---
-name: izone_create-script
+name: izone-publish-script
 description: >
   Create, update, and publish executable shell or Python scripts to the izone
   blog's script sharing platform. Helps draft script code and documentation,
@@ -69,7 +69,7 @@ This skill has two modes, determined by whether the script already exists:
 If the user references an existing script, query first to see current state:
 
 ```bash
-curl -s -H "Authorization: Token $IZONE_ADMIN_TOKEN" \
+curl -s -H "Authorization: Token $IZONE_API_TOKEN" \
   "$IZONE_API_BASE/skill/scripts/?slug=<slug>" | python3 -m json.tool
 ```
 
@@ -165,7 +165,7 @@ payload = json.dumps({
 
 result = subprocess.run([
     'curl', '-s', '-X', 'POST',
-    '-H', f'Authorization: Token {os.environ[\"IZONE_ADMIN_TOKEN\"]}',
+    '-H', f'Authorization: Token {os.environ[\"IZONE_API_TOKEN\"]}',
     '-H', 'Content-Type: application/json',
     '-d', payload,
     f'{os.environ[\"IZONE_API_BASE\"]}/skill/scripts/save/',
@@ -195,7 +195,7 @@ print(result.stdout)
 
 ## Configuration
 
-Requires `$IZONE_ADMIN_TOKEN` and `$IZONE_API_BASE` environment variables. See [references/config.md](references/config.md).
+Requires `$IZONE_API_TOKEN` and `$IZONE_API_BASE` environment variables. See [references/config.md](references/config.md).
 
 ## Publish Guard
 
