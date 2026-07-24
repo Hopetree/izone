@@ -115,26 +115,14 @@ Present to user:
 
 The endpoint `POST /skill/scripts/save/` handles both creation and update. If the slug exists, it updates; otherwise creates.
 
-```bash
-curl -s -X POST \
-  -H "Authorization: Token $IZONE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "<title>",
-    "slug": "<slug>",
-    "description": "<description>",
-    "code": "<code>",
-    "script_type": "shell|python",
-    "filename": "<filename>",
-    "run_cmd": "<run_cmd>",
-    "is_publish": false
-  }' \
-  "$IZONE_API_BASE/skill/scripts/save/"
-```
+**⚠️ MANDATORY: Write description and code to temporary files first, then read them in Python to build the payload.** Never inline markdown or code in a bash command — shell escaping will corrupt backticks, special characters, and code blocks, causing data loss. This is the same pattern as the article publish skill.
 
-**MANDATORY: Write code to `/tmp/<slug>.sh` or `/tmp/<slug>.py` first, then read from file in Python.** Never inline code in bash — shell escaping will corrupt special characters.
+**Step 4a — Write temp files:**
 
-Use Python to save:
+- Code → `/tmp/<slug>.sh` or `/tmp/<slug>.py` (the script code)
+- Description → `/tmp/<slug>-desc.md` (the markdown description)
+
+**Step 4b — Publish via Python:**
 
 ```bash
 python3 -c "
@@ -142,11 +130,13 @@ import json, subprocess, os
 
 with open('/tmp/<slug>.sh', 'r') as f:
     code = f.read()
+with open('/tmp/<slug>-desc.md', 'r') as f:
+    description = f.read()
 
 payload = json.dumps({
     'title': '<title>',
     'slug': '<slug>',
-    'description': '<description>',
+    'description': description,
     'code': code,
     'script_type': 'shell',
     'filename': '<filename>',
