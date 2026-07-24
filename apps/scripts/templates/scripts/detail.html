@@ -67,19 +67,6 @@
                 </div>
             </div>
 
-            <!-- 说明文档 -->
-            <div class="card rounded-6 border-0 mt-2" id="script-body">
-                <div class="card-body px-2 px-md-3 py-2">
-                    <div class="article-body f-17">
-                        {{ body|safe }}
-                    </div>
-                    {% if has_mermaid %}
-                    <script src="{% static 'blog/mermaid/9.4.0/mermaid.min.js' %}"></script>
-                    <script>mermaid.initialize({startOnLoad:true,theme:'default'});</script>
-                    {% endif %}
-                </div>
-            </div>
-
             {% if not script.is_publish %}
             <div class="alert alert-warning rounded-6 text-center f-15 mt-2" role="alert">
                 <i class="fa fa-exclamation-triangle mr-2"></i>该脚本尚未发布，暂不提供下载。请确认无误后点击发布。
@@ -96,6 +83,19 @@
                 </div>
                 <div class="card-body px-2 px-md-3 pt-0">
                     <pre style="background:#292b30;color:#e6db74;padding:12px 16px;border-radius:8px;font-size:13px;white-space:pre-wrap;word-break:break-all;margin:0;"><code>{{ script.full_command }}</code></pre>
+                </div>
+            </div>
+
+            <!-- 说明文档 -->
+            <div class="card rounded-6 border-0 mt-2" id="script-body">
+                <div class="card-body px-2 px-md-3 py-2">
+                    <div class="article-body f-17">
+                        {{ body|safe }}
+                    </div>
+                    {% if has_mermaid %}
+                    <script src="{% static 'blog/mermaid/9.4.0/mermaid.min.js' %}"></script>
+                    <script>mermaid.initialize({startOnLoad:true,theme:'default'});</script>
+                    {% endif %}
                 </div>
             </div>
 

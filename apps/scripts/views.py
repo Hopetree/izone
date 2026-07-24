@@ -78,7 +78,7 @@ class ScriptListView(AdminRequiredMixin, generic.ListView):
         return qs.order_by('-create_date')
 
 
-class ScriptDetailView(AdminRequiredMixin, generic.DetailView):
+class ScriptDetailView(generic.DetailView):
     model = Script
     template_name = 'scripts/detail.html'
     context_object_name = 'script'
