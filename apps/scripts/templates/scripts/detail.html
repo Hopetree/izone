@@ -1,0 +1,190 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block head_title %}{{ script.title }} - 脚本工具{% endblock %}
+
+{% block top-file %}
+<link href="{% static 'blog/css/detail.css' %}?v={{ static_version.css_blog_detail }}" rel="stylesheet">
+<link href="{% static 'blog/css/monokai-3.css' %}?v=20241202.1" rel="stylesheet">
+{% if not script.is_publish %}
+<style>
+#publish-btn {
+    position: fixed; bottom: 80px; right: 30px; z-index: 999;
+    background: #28a745; color: white; padding: 10px 20px;
+    border-radius: 25px; cursor: pointer; font-size: 15px;
+    box-shadow: 0 2px 12px rgba(40,167,69,.4);
+    transition: all .2s; user-select: none;
+}
+#publish-btn:hover { background: #218838; box-shadow: 0 4px 16px rgba(40,167,69,.6); transform: translateY(-2px); }
+</style>
+{% endif %}
+{% endblock %}
+
+{% block metas %}
+<meta name="description" content="{{ script.description|striptags|truncatechars:200 }}">
+{% endblock %}
+
+{% block base_content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <!-- 面包屑 -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-white border-0 rounded-6 mb-2 py-2 f-15">
+                    <li class="breadcrumb-item">
+                        <i class="fa fa-home mr-1"></i><a href="{% url 'blog:index' %}">首页</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'scripts:list' %}">脚本工具</a>
+                    </li>
+                    <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
+                        <a class="edit-blog" href="{% url 'admin:scripts_script_change' script.id %}" target="_blank" title="编辑脚本">
+                            {{ script.title }}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active d-md-none" aria-current="page">
+                        <a class="edit-blog" href="{% url 'admin:scripts_script_change' script.id %}" target="_blank" title="编辑脚本">当前脚本</a>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- 标题卡片 -->
+            <div class="card rounded-6 border-0" id="script-header">
+                <div class="card-body px-2 px-md-3 pb-0">
+                    <h1 class="card-title text-center font-weight-bold text-info">
+                        {{ script.title }}
+                    </h1>
+                    <div class="text-center f-13 text-muted mb-3">
+                        <span class="badge badge-{% if script.script_type == 'shell' %}success{% else %}primary{% endif %} mr-2">
+                            {{ script.get_script_type_display }}
+                        </span>
+                        {% if not script.is_publish %}
+                        <span class="badge badge-warning mr-2">未发布</span>
+                        {% endif %}
+                        <span><i class="fa fa-clock-o mr-1"></i>{{ script.update_date|date:"Y-m-d H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 说明文档 -->
+            <div class="card rounded-6 border-0 mt-2" id="script-body">
+                <div class="card-body px-2 px-md-3 py-2">
+                    <div class="article-body f-17">
+                        {{ body|safe }}
+                    </div>
+                    {% if has_mermaid %}
+                    <script src="{% static 'blog/mermaid/9.4.0/mermaid.min.js' %}"></script>
+                    <script>mermaid.initialize({startOnLoad:true,theme:'default'});</script>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if not script.is_publish %}
+            <div class="alert alert-warning rounded-6 text-center f-15 mt-2" role="alert">
+                <i class="fa fa-exclamation-triangle mr-2"></i>该脚本尚未发布，暂不提供下载。请确认无误后点击发布。
+            </div>
+            {% endif %}
+
+            <!-- 一键命令 -->
+            <div class="card rounded-6 border-0 mt-2" id="script-cmd">
+                <div class="card-header bg-transparent border-bottom-0 pb-1">
+                    <strong><i class="fa fa-terminal mr-2"></i>一键安装命令</strong>
+                    <button class="btn btn-sm btn-outline-secondary f-12 float-right" id="copy-cmd-btn" onclick="copyCmd()">
+                        <i class="fa fa-clipboard mr-1"></i>复制
+                    </button>
+                </div>
+                <div class="card-body px-2 px-md-3 pt-0">
+                    <pre style="background:#292b30;color:#e6db74;padding:12px 16px;border-radius:8px;font-size:13px;white-space:pre-wrap;word-break:break-all;margin:0;"><code>{{ script.full_command }}</code></pre>
+                </div>
+            </div>
+
+            <!-- 代码块 -->
+            <div class="card rounded-6 border-0 mt-2" id="script-code">
+                <div class="card-header bg-transparent border-bottom-0 pb-1">
+                    <strong><i class="fa fa-file-code-o mr-2"></i>{{ script.filename }}</strong>
+                    <div class="float-right">
+                        <button class="btn btn-sm btn-outline-secondary f-12" onclick="copyCode()">
+                            <i class="fa fa-clipboard mr-1"></i>复制代码
+                        </button>
+                        <a href="{% url 'scripts:raw' script.slug %}" class="btn btn-sm btn-outline-success f-12" download="{{ script.filename }}">
+                            <i class="fa fa-download mr-1"></i>下载
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body px-2 px-md-3 pt-0">
+                    {{ highlighted_code|safe }}
+                </div>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="mt-3 mb-5 text-center">
+                <a href="{% url 'scripts:list' %}" class="btn btn-outline-info btn-sm">
+                    <i class="fa fa-arrow-left mr-1"></i>返回列表
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% if not script.is_publish %}
+<div id="publish-btn" title="一键发布脚本">
+    <i class="fa fa-send"></i> <span>发布</span>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block end_file %}
+{% if not script.is_publish %}
+<script>
+$('#publish-btn').click(function () {
+    if (confirm('确认发布这个脚本吗？')) {
+        var btn = $(this);
+        btn.html('<i class="fa fa-spinner fa-pulse"></i> <span>发布中</span>');
+        $.ajax({
+            url: '{% url "scripts:publish" %}',
+            type: 'POST',
+            data: {
+                'slug': '{{ script.slug }}',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (res) {
+                if (res.code === 0) {
+                    btn.html('<i class="fa fa-check"></i> <span>已发布</span>');
+                    setTimeout(function () { location.reload(); }, 1000);
+                } else {
+                    alert(res.message);
+                    btn.html('<i class="fa fa-send"></i> <span>发布</span>');
+                }
+            },
+            error: function () {
+                alert('发布失败，请重试');
+                btn.html('<i class="fa fa-send"></i> <span>发布</span>');
+            }
+        });
+    }
+});
+</script>
+{% endif %}
+<script>
+function copyCmd() {
+    const text = document.querySelector('#script-cmd code').textContent;
+    navigator.clipboard.writeText(text).then(function() {
+        const btn = document.getElementById('copy-cmd-btn');
+        btn.innerHTML = '<i class="fa fa-check mr-1"></i>已复制';
+        setTimeout(function() { btn.innerHTML = '<i class="fa fa-clipboard mr-1"></i>复制'; }, 2000);
+    });
+}
+function copyCode() {
+    const pre = document.querySelector('#script-code .codehilite pre');
+    if (pre) {
+        navigator.clipboard.writeText(pre.textContent).then(function() {
+            const btn = document.querySelector('#script-code .btn-outline-secondary');
+            btn.innerHTML = '<i class="fa fa-check mr-1"></i>已复制';
+            setTimeout(function() { btn.innerHTML = '<i class="fa fa-clipboard mr-1"></i>复制代码'; }, 2000);
+        });
+    }
+}
+</script>
+{% endblock %}

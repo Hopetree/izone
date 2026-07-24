@@ -1,0 +1,82 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block head_title %}脚本工具{% endblock %}
+
+{% block top-file %}
+<link href="{% static 'blog/css/detail.css' %}?v={{ static_version.css_blog_detail }}" rel="stylesheet">
+{% endblock %}
+
+{% block metas %}
+<meta name="description" content="实用脚本工具集合，支持 Shell 和 Python">
+<meta name="keywords" content="脚本,shell,python,工具">
+{% endblock %}
+
+{% block base_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+
+            <!-- 标题和筛选 -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="text-info font-weight-bold mb-0">
+                    <i class="fa fa-code mr-2"></i>脚本工具
+                </h3>
+                <div class="btn-group btn-group-sm">
+                    <a href="{% url 'scripts:list' %}" class="btn btn-outline-info {% if not request.GET.type %}active{% endif %}">全部</a>
+                    <a href="{% url 'scripts:list' %}?type=shell" class="btn btn-outline-info {% if request.GET.type == 'shell' %}active{% endif %}">
+                        <i class="fa fa-terminal mr-1"></i>Shell
+                    </a>
+                    <a href="{% url 'scripts:list' %}?type=python" class="btn btn-outline-info {% if request.GET.type == 'python' %}active{% endif %}">
+                        <i class="fa fa-code mr-1"></i>Python
+                    </a>
+                </div>
+            </div>
+
+            {% for script in scripts %}
+            <div class="card rounded-6 border-0 mb-2">
+                <div class="card-body px-3 py-2">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">
+                                <a href="{{ script.get_absolute_url }}" class="text-info font-weight-bold text-decoration-none">
+                                    {{ script.title }}
+                                </a>
+                            </h5>
+                            <p class="text-muted f-15 mb-2">{{ script.description|striptags|truncatechars:150 }}</p>
+                            <div class="f-12 text-muted">
+                                <span class="badge badge-{% if script.script_type == 'shell' %}success{% else %}primary{% endif %} mr-2">
+                                    {{ script.get_script_type_display }}
+                                </span>
+                                {% if not script.is_publish %}
+                                <span class="badge badge-warning mr-2">未发布</span>
+                                {% endif %}
+                                <span><i class="fa fa-clock-o mr-1"></i>{{ script.update_date|date:"Y-m-d" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center text-muted py-5">
+                <i class="fa fa-inbox fa-3x mb-3"></i>
+                <p class="f-15">暂无脚本</p>
+            </div>
+            {% endfor %}
+
+            <!-- 分页 -->
+            {% if is_paginated %}
+            <div class="d-none d-md-block">{% load_pages 10 %}</div>
+            <div class="d-md-none">{% load_pages 4 %}</div>
+            {% endif %}
+
+        </div>
+
+        <!-- 侧边栏 -->
+        <div class="col-lg-4">
+            {% include 'blog/tags/base_right.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
