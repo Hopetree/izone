@@ -117,6 +117,56 @@ def script_raw(request, slug):
     return response
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import permissions, serializers as drf_serializers
+
+
+class SkillScriptCreateSerializer(drf_serializers.Serializer):
+    title = drf_serializers.CharField(max_length=150)
+    slug = drf_serializers.SlugField(max_length=50)
+    description = drf_serializers.CharField()
+    code = drf_serializers.CharField()
+    script_type = drf_serializers.ChoiceField(choices=['shell', 'python'])
+    filename = drf_serializers.CharField(max_length=100)
+    run_cmd = drf_serializers.CharField(max_length=500, allow_blank=True)
+    is_publish = drf_serializers.BooleanField(default=False)
+
+
+class SkillScriptCreateView(APIView):
+    """Skill 专用：创建脚本"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = SkillScriptCreateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'success': False, 'error': str(serializer.errors)}, status=400)
+
+        data = serializer.validated_data
+        slug = data['slug']
+
+        if Script.objects.filter(slug=slug).exists():
+            return Response({'success': False, 'error': f'slug "{slug}" 已存在，请换一个'}, status=400)
+
+        script = Script.objects.create(
+            title=data['title'],
+            slug=slug,
+            description=data['description'],
+            code=data['code'],
+            script_type=data['script_type'],
+            filename=data['filename'],
+            run_cmd=data.get('run_cmd', ''),
+            is_publish=data.get('is_publish', False),
+        )
+
+        return Response({
+            'success': True,
+            'id': script.id,
+            'slug': script.slug,
+            'url': script.get_absolute_url(),
+        }, status=201)
+
+
 @staff_member_required
 @require_POST
 def publish_script(request):
