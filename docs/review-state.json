@@ -1,0 +1,45 @@
+{
+  "last_reviewed_commit": "fbf56087a9659419da4b622f19dda58d93a26dad",
+  "last_reviewed_commit_short": "fbf5608",
+  "last_review_date": "2026-07-24",
+  "last_review_summary": "审查2次提交：上一轮review的修复（域名动态获取、URL路径修正、去除缓存）和文档同步（PRD/TDD/ERD/README）。均为review产物，无新增问题。",
+  "documents_updated": [],
+  "documents": [
+    {
+      "path": "docs/design/01_PRD_产品需求规格说明书.md",
+      "type": "PRD",
+      "description": "产品需求规格，包含用户故事和验收标准",
+      "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/design/02_TDD_架构设计文档.md",
+      "type": "TDD",
+      "description": "架构设计，包含技术选型、模块划分和部署架构",
+      "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/design/03_ERD_数据库设计文档.md",
+      "type": "ERD",
+      "description": "数据库设计，包含实体定义和关系说明",
+      "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/design/04_API_接口文档.md",
+      "type": "API",
+      "description": "接口文档，包含各应用的 JSON API 端点",
+      "created_at": "2026-06-25"
+    },
+    {
+      "path": "README.md",
+      "type": "README",
+      "description": "项目 README，包含技术栈、文档索引和快速开始指南",
+      "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/code-review.md",
+      "type": "CODE_REVIEW",
+      "description": "代码审查报告，记录每次 review 发现的问题及处理状态",
+      "created_at": "2026-07-24"
+    }
+  ]
+}

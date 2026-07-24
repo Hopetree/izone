@@ -2,13 +2,15 @@ import re
 import markdown
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse, Http404
-from django.http import JsonResponse
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.views import generic
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import permissions, serializers as drf_serializers
 
 from .models import Script
 
@@ -117,11 +119,6 @@ def script_raw(request, slug):
     return response
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import permissions, serializers as drf_serializers
-
-
 class SkillScriptCreateSerializer(drf_serializers.Serializer):
     title = drf_serializers.CharField(max_length=150)
     slug = drf_serializers.SlugField(max_length=50)
@@ -130,7 +127,7 @@ class SkillScriptCreateSerializer(drf_serializers.Serializer):
     script_type = drf_serializers.ChoiceField(choices=['shell', 'python'])
     filename = drf_serializers.CharField(max_length=100)
     run_cmd = drf_serializers.CharField(max_length=500, allow_blank=True)
-    is_publish = drf_serializers.BooleanField(default=False)
+    is_publish = drf_serializers.BooleanField(required=False)
 
 
 class SkillScriptQueryView(APIView):
@@ -176,38 +173,34 @@ class SkillScriptCreateUpdateView(APIView):
 
         data = serializer.validated_data
         slug = data['slug']
-        existing = Script.objects.filter(slug=slug).first()
-        is_update = existing is not None
 
-        if is_update:
-            existing.title = data['title']
-            existing.description = data['description']
-            existing.code = data['code']
-            existing.script_type = data['script_type']
-            existing.filename = data['filename']
-            existing.run_cmd = data.get('run_cmd', '')
-            existing.is_publish = data.get('is_publish', existing.is_publish)
-            existing.save()
-            script = existing
-        else:
-            script = Script.objects.create(
-                title=data['title'],
-                slug=slug,
-                description=data['description'],
-                code=data['code'],
-                script_type=data['script_type'],
-                filename=data['filename'],
-                run_cmd=data.get('run_cmd', ''),
-                is_publish=data.get('is_publish', False),
-            )
+        script, created = Script.objects.update_or_create(
+            slug=slug,
+            defaults={
+                'title': data['title'],
+                'description': data['description'],
+                'code': data['code'],
+                'script_type': data['script_type'],
+                'filename': data['filename'],
+                'run_cmd': data.get('run_cmd', ''),
+            }
+        )
+
+        # 仅在显式传入时修改发布状态
+        if 'is_publish' in request.data:
+            script.is_publish = data['is_publish']
+            script.save(update_fields=['is_publish'])
+        elif created:
+            script.is_publish = False
+            script.save(update_fields=['is_publish'])
 
         return Response({
             'success': True,
             'id': script.id,
             'slug': script.slug,
             'url': script.get_absolute_url(),
-            'action': 'update' if is_update else 'create',
-        }, status=200 if is_update else 201)
+            'action': 'create' if created else 'update',
+        }, status=201 if created else 200)
 
 
 @staff_member_required
