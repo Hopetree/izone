@@ -114,7 +114,9 @@ def script_raw(request, slug):
         'shell': 'text/x-sh',
         'python': 'text/x-python',
     }.get(script.script_type, 'text/plain')
-    response = HttpResponse(script.code, content_type=f'{content_type}; charset=utf-8')
+    # 统一换行符为 Unix 格式，避免 Windows 的 \r\n 导致 bash 报错
+    code = script.code.replace('\r\n', '\n').replace('\r', '\n')
+    response = HttpResponse(code, content_type=f'{content_type}; charset=utf-8')
     response['Content-Disposition'] = f'attachment; filename="{script.filename}"'
     return response
 
