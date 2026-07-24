@@ -1,5 +1,5 @@
 ---
-name: create-script
+name: izone_create-script
 description: >
   Create, update, and publish executable shell or Python scripts to the izone
   blog's script sharing platform. Helps draft script code and documentation,
