@@ -133,6 +133,38 @@ class SkillScriptCreateSerializer(drf_serializers.Serializer):
     is_publish = drf_serializers.BooleanField(default=False)
 
 
+class SkillScriptQueryView(APIView):
+    """Skill 专用：按 slug 查询脚本完整信息"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        slug = request.query_params.get('slug', '').strip()
+        if not slug:
+            return Response({'success': False, 'error': '请提供 slug 参数'}, status=400)
+
+        try:
+            script = Script.objects.get(slug=slug)
+            return Response({
+                'success': True,
+                'exists': True,
+                'script': {
+                    'id': script.id,
+                    'title': script.title,
+                    'slug': script.slug,
+                    'description': script.description,
+                    'code': script.code,
+                    'script_type': script.script_type,
+                    'filename': script.filename,
+                    'run_cmd': script.run_cmd,
+                    'is_publish': script.is_publish,
+                    'create_date': script.create_date.strftime('%Y-%m-%d %H:%M'),
+                    'update_date': script.update_date.strftime('%Y-%m-%d %H:%M'),
+                }
+            })
+        except Script.DoesNotExist:
+            return Response({'success': True, 'exists': False})
+
+
 class SkillScriptCreateUpdateView(APIView):
     """Skill 专用：创建或更新脚本（slug 已存在则更新）"""
     permission_classes = [permissions.IsAuthenticated]

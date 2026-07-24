@@ -66,14 +66,33 @@ This skill has two modes, determined by whether the script already exists:
 
 ### Step 0: Check if Script Exists
 
-If the user references an existing script ("更新 gomonitor-install 的描述"), query first:
+If the user references an existing script, query first to see current state:
 
 ```bash
 curl -s -H "Authorization: Token $IZONE_API_TOKEN" \
-  "$IZONE_API_BASE/skill/meta/" | python3 -c "import sys,json; print('ok')" 2>/dev/null
+  "$IZONE_API_BASE/skill/scripts/?slug=<slug>" | python3 -m json.tool
 ```
 
-There is no dedicated query endpoint for scripts. Check with user what they want to change, or use `slug` to update via the save endpoint directly.
+Response for existing script:
+```json
+{
+  "success": true,
+  "exists": true,
+  "script": {
+    "title": "...", "slug": "...", "description": "...",
+    "code": "...", "script_type": "shell", "filename": "...",
+    "run_cmd": "...", "is_publish": false,
+    "create_date": "2026-07-24 12:00", "update_date": "2026-07-24 12:00"
+  }
+}
+```
+
+Response when not found: `{"success": true, "exists": false}`
+
+**When updating:**
+- If `exists: true`, confirm with user what fields to change, keep others as-is
+- If user only asks to change one field (e.g. "更新描述"), only modify that field, preserve all others
+- If `exists: false`, proceed as new creation
 
 ### Step 1: Gather Requirements
 
