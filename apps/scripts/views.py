@@ -133,8 +133,8 @@ class SkillScriptCreateSerializer(drf_serializers.Serializer):
     is_publish = drf_serializers.BooleanField(default=False)
 
 
-class SkillScriptCreateView(APIView):
-    """Skill 专用：创建脚本"""
+class SkillScriptCreateUpdateView(APIView):
+    """Skill 专用：创建或更新脚本（slug 已存在则更新）"""
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -144,27 +144,38 @@ class SkillScriptCreateView(APIView):
 
         data = serializer.validated_data
         slug = data['slug']
+        existing = Script.objects.filter(slug=slug).first()
+        is_update = existing is not None
 
-        if Script.objects.filter(slug=slug).exists():
-            return Response({'success': False, 'error': f'slug "{slug}" 已存在，请换一个'}, status=400)
-
-        script = Script.objects.create(
-            title=data['title'],
-            slug=slug,
-            description=data['description'],
-            code=data['code'],
-            script_type=data['script_type'],
-            filename=data['filename'],
-            run_cmd=data.get('run_cmd', ''),
-            is_publish=data.get('is_publish', False),
-        )
+        if is_update:
+            existing.title = data['title']
+            existing.description = data['description']
+            existing.code = data['code']
+            existing.script_type = data['script_type']
+            existing.filename = data['filename']
+            existing.run_cmd = data.get('run_cmd', '')
+            existing.is_publish = data.get('is_publish', existing.is_publish)
+            existing.save()
+            script = existing
+        else:
+            script = Script.objects.create(
+                title=data['title'],
+                slug=slug,
+                description=data['description'],
+                code=data['code'],
+                script_type=data['script_type'],
+                filename=data['filename'],
+                run_cmd=data.get('run_cmd', ''),
+                is_publish=data.get('is_publish', False),
+            )
 
         return Response({
             'success': True,
             'id': script.id,
             'slug': script.slug,
             'url': script.get_absolute_url(),
-        }, status=201)
+            'action': 'update' if is_update else 'create',
+        }, status=200 if is_update else 201)
 
 
 @staff_member_required

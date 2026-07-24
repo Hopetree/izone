@@ -1,15 +1,17 @@
 ---
 name: create-script
 description: >
-  Create and publish executable shell or Python scripts to the izone blog's
-  script sharing platform. Helps draft script code and documentation,
-  then pushes to the server via API. Triggers on: 创建脚本, 新建脚本,
-  写脚本, 分享脚本, 制作脚本, create script, new script.
+  Create, update, and publish executable shell or Python scripts to the izone
+  blog's script sharing platform. Helps draft script code and documentation,
+  then pushes to the server via API. Supports both creating new scripts and
+  updating existing ones (including publish status). Triggers on: 创建脚本,
+  新建脚本, 写脚本, 分享脚本, 制作脚本, 更新脚本, 修改脚本, create script,
+  new script, update script.
 ---
 
-# Script Creation and Publishing
+# Script Creation, Update, and Publishing
 
-Create executable scripts (Shell or Python) and publish them to the blog's script sharing platform.
+Create or update executable scripts (Shell or Python) on the blog's script sharing platform. The API uses slug-based upsert: same slug creates or updates.
 
 ## Script Model
 
@@ -53,7 +55,25 @@ And appends `&& <run_cmd>`. So `run_cmd` should reference the same `filename`:
 - Shell: `sudo /bin/bash install-docker.sh` or `bash setup.sh`
 - Python: `python3 batch-rename.py`
 
+## Modes
+
+This skill has two modes, determined by whether the script already exists:
+
+- **Create** — New script, generate slug and all fields from scratch.
+- **Update** — Existing script, query current state, modify specified fields only.
+
 ## Workflow
+
+### Step 0: Check if Script Exists
+
+If the user references an existing script ("更新 gomonitor-install 的描述"), query first:
+
+```bash
+curl -s -H "Authorization: Token $IZONE_API_TOKEN" \
+  "$IZONE_API_BASE/skill/meta/" | python3 -c "import sys,json; print('ok')" 2>/dev/null
+```
+
+There is no dedicated query endpoint for scripts. Check with user what they want to change, or use `slug` to update via the save endpoint directly.
 
 ### Step 1: Gather Requirements
 
@@ -91,7 +111,9 @@ Present to user:
 确认创建？
 ```
 
-### Step 4: Create via API
+### Step 4: Save via API (Create or Update)
+
+The endpoint `POST /skill/scripts/save/` handles both creation and update. If the slug exists, it updates; otherwise creates.
 
 ```bash
 curl -s -X POST \
@@ -107,12 +129,12 @@ curl -s -X POST \
     "run_cmd": "<run_cmd>",
     "is_publish": false
   }' \
-  "$IZONE_API_BASE/skill/scripts/create/"
+  "$IZONE_API_BASE/skill/scripts/save/"
 ```
 
 **MANDATORY: Write code to `/tmp/<slug>.sh` or `/tmp/<slug>.py` first, then read from file in Python.** Never inline code in bash — shell escaping will corrupt special characters.
 
-Use Python to publish:
+Use Python to save:
 
 ```bash
 python3 -c "
@@ -137,7 +159,7 @@ result = subprocess.run([
     '-H', f'Authorization: Token {os.environ[\"IZONE_API_TOKEN\"]}',
     '-H', 'Content-Type: application/json',
     '-d', payload,
-    f'{os.environ[\"IZONE_API_BASE\"]}/skill/scripts/create/',
+    f'{os.environ[\"IZONE_API_BASE\"]}/skill/scripts/save/',
 ], capture_output=True, text=True)
 print(result.stdout)
 "
@@ -145,16 +167,22 @@ print(result.stdout)
 
 ### Step 5: Result
 
-**Success (201):**
+**Create (201):**
 ```
 ✅ 脚本已创建！
 查看: https://tendcode.com/scripts/<slug>/
-状态: 草稿（需在详情页点击"发布"后用户才能下载）
+状态: 草稿
 
-提示: 访问 https://tendcode.com/scripts/<slug>/ 可预览和发布。
+提示: 访问详情页点击"发布"按钮后用户才能下载。
 ```
 
-**Error:** If slug exists, suggest an alternative slug and retry.
+**Update (200):**
+```
+✅ 脚本已更新！
+查看: https://tendcode.com/scripts/<slug>/
+```
+
+**Error:** Slug conflict or validation error — read the error message and fix.
 
 ## Configuration
 
@@ -162,6 +190,8 @@ Requires `$IZONE_API_TOKEN` and `$IZONE_API_BASE` environment variables. See [re
 
 ## Publish Guard
 
-- Scripts default to `is_publish: false` (draft)
-- Only set `is_publish: true` if user explicitly says "直接发布" or "发布"
-- Unpublished scripts cannot be downloaded by users
+- New scripts default to `is_publish: false` (draft)
+- When updating, preserve existing `is_publish` unless user explicitly asks to change it
+- Only set `is_publish: true` if user explicitly says "发布" or "直接发布"
+- Set `is_publish: false` only if user explicitly says "取消发布" or "下架"
+- Unpublished scripts cannot be downloaded by users (404)
