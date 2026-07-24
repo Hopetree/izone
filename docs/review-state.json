@@ -1,11 +1,9 @@
 {
-  "last_reviewed_commit": "71894f74467de11677440d77660191ccaf033de3",
-  "last_reviewed_commit_short": "71894f7",
+  "last_reviewed_commit": "59e6286ef14d7ac7f607ae3aec64f16bff57048c",
+  "last_reviewed_commit_short": "59e6286",
   "last_review_date": "2026-07-24",
-  "last_review_summary": "审查9次提交：新增scripts DRF API（SkillScriptQueryView/SkillScriptCreateUpdateView）、create-script技能及重命名为izone-publish-script、.gitignore修复。发现3个问题（is_publish默认值覆盖、DRF imports位置、竞态条件），已全部修复。更新API文档新增6.8 Skill脚本API。",
-  "documents_updated": [
-    "docs/design/04_API_接口文档.md"
-  ],
+  "last_review_summary": "审查1次提交：ScriptDetailView公开访问（去掉AdminRequiredMixin），一键命令卡片移到说明文档之前。无新增问题。",
+  "documents_updated": [],
   "documents": [
     {
       "path": "docs/design/01_PRD_产品需求规格说明书.md",
