@@ -118,3 +118,6 @@ templates/test*.html
 
 # log
 log/*.log*
+
+# review state
+docs/review-state.json
