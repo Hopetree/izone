@@ -158,7 +158,7 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 │  ④ Central highlight rectangle               │
 │  ⑤ Main title (40-42px, bold)                 │
 │  ⑥ Subtitle (29-31px, lighter)                │
-│  ⑦ Bottom tags (20px, max 3, dot-separated)   │
+│  ⑦ Tag pills (max 3, with background)         │
 └─────────────────────────────────────────────┘
 ```
 
@@ -172,7 +172,7 @@ No icon row — title grows from 38px to 46px and shifts upward to fill the spac
 | ④ | Center glow | Subtle highlight behind title area, `fill="accent" opacity="0.06-0.10"`. Use irregular shapes — rounded rect with uneven rx, rotated ellipse, or two overlapping offset rects. Size: ~300-380 wide, ~130-160 tall, y≈30-195. |
 | ⑤ | Title | **40-42px**, bold (900), `#ffffff`, centered, letter-spacing 3. y≈110 |
 | ⑥ | Subtitle | **29-31px**, semi-bold (600), accent-400, centered, letter-spacing 1. y≈title+58 (≈168). **Must be short** — at 30px, max ~14 Chinese chars to avoid horizontal overflow. |
-| ⑦ | Tags | `·` (middle dot) separated keywords, **20px**, `#c8d0dc` (near-white, must contrast against dark background), centered. y≈260. **Max 3 tags**, no `#` prefix — use dots like `Python · 异步 · 并发`. |
+| ⑦ | Tags | **Max 3** pill-shaped tag badges, centered as a group. y≈258 (text baseline). Each pill: `<rect>` with `rx=14` height=28, fill=accent-500 opacity 0.15, padding ~10px left/right around text. Text **16px**, `#c8d0dc`. Gap between pills ~12px. No `·` separators — the pill background creates separation. Layout: `<g><rect.../><text.../></g>` per pill. |
 
 **Vertical centering**: Content positioned in upper-middle of canvas — title y≈110, subtitle y≈168, tags y≈260. Grid and nodes cover the full 300px. All fonts significantly larger than before: subtitle must be short, tags limited to 3.
 
