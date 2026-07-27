@@ -18,6 +18,19 @@
     <div class="row">
         <div class="col-lg-8">
 
+            <!-- 分类说明 -->
+            <div class="description bg-white px-3 pt-3 pb-1">
+                <p class="float-right mb-0">共<span class="mx-2 text-info">{{ paginator.count }}</span>篇</p>
+                <h1 class="f-17"><strong>脚本工具</strong></h1>
+                <p class="f-16">提供 Shell 和 Python 实用脚本，支持一键下载执行，覆盖系统运维、开发辅助等场景。</p>
+                {% if user.is_superuser %}
+                <p class="edit-category-tag f-12">
+                    <a href="{% url 'admin:scripts_script_add' %}" target="_blank" title="后台新增脚本">
+                        <i class="fa fa-edit ml-2 mr-1"></i>新增脚本</a>
+                </p>
+                {% endif %}
+            </div>
+
             <!-- 筛选栏 -->
             <div class="text-secondary font-weight-bold py-3 f-15 choice">
                 <a class="pb-2 {% if not request.GET.type %}active{% endif %}" href="{% url 'scripts:list' %}">
