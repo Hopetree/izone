@@ -18,52 +18,45 @@
     <div class="row">
         <div class="col-lg-8">
 
-            <!-- 标题和筛选 -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="text-info font-weight-bold mb-0">
-                    <i class="fa fa-code mr-2"></i>脚本工具
-                </h3>
-                <div class="btn-group btn-group-sm">
-                    <a href="{% url 'scripts:list' %}" class="btn btn-outline-info {% if not request.GET.type %}active{% endif %}">全部</a>
-                    <a href="{% url 'scripts:list' %}?type=shell" class="btn btn-outline-info {% if request.GET.type == 'shell' %}active{% endif %}">
-                        <i class="fa fa-terminal mr-1"></i>Shell
-                    </a>
-                    <a href="{% url 'scripts:list' %}?type=python" class="btn btn-outline-info {% if request.GET.type == 'python' %}active{% endif %}">
-                        <i class="fa fa-code mr-1"></i>Python
-                    </a>
-                </div>
+            <!-- 筛选栏 -->
+            <div class="text-secondary font-weight-bold py-3 f-15 choice">
+                <a class="pb-2 {% if not request.GET.type %}active{% endif %}" href="{% url 'scripts:list' %}">
+                    <i class="fa fa-bars mr-1"></i>全部</a>
+                <a class="pb-2 ml-4 {% if request.GET.type == 'shell' %}active{% endif %}" href="{% url 'scripts:list' %}?type=shell">
+                    <i class="fa fa-terminal mr-1"></i>Shell</a>
+                <a class="pb-2 ml-4 {% if request.GET.type == 'python' %}active{% endif %}" href="{% url 'scripts:list' %}?type=python">
+                    <i class="fa fa-code mr-1"></i>Python</a>
             </div>
 
+            <div class="summary-list">
             {% for script in scripts %}
-            <div class="card rounded-6 border-0 mb-2">
-                <div class="card-body px-3 py-2">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                            <h5 class="mb-1">
-                                <a href="{{ script.get_absolute_url }}" class="text-info font-weight-bold text-decoration-none">
-                                    {{ script.title }}
-                                </a>
-                            </h5>
-                            <p class="text-muted f-15 mb-2">{{ script.description|striptags|truncatechars:150 }}</p>
-                            <div class="f-12 text-muted">
+                <div class="article-block">
+                    <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
+                        <div class="media-body">
+                            <div class="meta-container mb-2 f-12">
                                 <span class="badge badge-{% if script.script_type == 'shell' %}success{% else %}primary{% endif %} mr-2">
                                     {{ script.get_script_type_display }}
                                 </span>
                                 {% if not script.is_publish %}
                                 <span class="badge badge-warning mr-2">未发布</span>
                                 {% endif %}
-                                <span><i class="fa fa-clock-o mr-1"></i>{{ script.update_date|date:"Y-m-d" }}</span>
+                                <span>{{ script.update_date|date:"Y-m-d" }}</span>
                             </div>
+                            <h2 class="mt-0 font-weight-bold text-info f-17">
+                                <a href="{{ script.get_absolute_url }}">{{ script.title }}</a>
+                            </h2>
+                            <p class="d-none d-sm-block mb-2 f-15">{{ script.description|striptags|truncatechars:150 }}</p>
+                            <p class="d-block d-sm-none mb-2 f-15">{{ script.description|striptags|truncatechars:64 }}</p>
                         </div>
                     </div>
                 </div>
-            </div>
             {% empty %}
             <div class="text-center text-muted py-5">
                 <i class="fa fa-inbox fa-3x mb-3"></i>
                 <p class="f-15">暂无脚本</p>
             </div>
             {% endfor %}
+            </div>
 
             <!-- 分页 -->
             {% if is_paginated %}
