@@ -37,11 +37,18 @@ Create or update executable scripts (Shell or Python) on the blog's script shari
 - Test commands like `apt-get` should include `-y` flag for non-interactive use
 - Avoid hardcoding sensitive values (passwords, tokens) — use variables
 - **Target mainland Chinese users**: Scripts must pre-configure China-friendly defaults:
-  - GitHub downloads: provide `-m` mirror option, default mirror `https://ghproxy.net/`
+  - GitHub downloads: provide `-m` mirror option, default mirror `https://gh-proxy.com/`
   - pip sources: default to `https://pypi.tuna.tsinghua.edu.cn/simple`
   - APT sources: suggest Tsinghua/Aliyun mirrors in comments
   - Docker images: suggest registry mirrors for pulling
   - Any foreign-hosted resources should have a mirror parameter or fallback
+
+### Recommended Mirror Options
+
+When writing the description, always include a "推荐镜像" section listing common mirrors for users to choose from:
+
+- **GitHub 加速**：`https://gh-proxy.com/`（推荐）、`https://ghproxy.net/`、`https://mirror.ghproxy.com/`
+- **pip 镜像**：`https://pypi.tuna.tsinghua.edu.cn/simple`（推荐）、`https://mirrors.aliyun.com/pypi/simple/`、`https://pypi.mirrors.ustc.edu.cn/simple/`
 
 ### Description (Markdown)
 
