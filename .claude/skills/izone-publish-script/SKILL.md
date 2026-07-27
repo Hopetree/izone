@@ -17,7 +17,7 @@ Create or update executable scripts (Shell or Python) on the blog's script shari
 
 | Field | Constraint | Description |
 |-------|-----------|-------------|
-| `title` | ≤150 chars | Script title |
+| `title` | ≤30中文字/50英文字母 | Script title, keep it concise |
 | `slug` | ≤50 chars, unique | URL identifier, English/pinyin |
 | `description` | Markdown | Documentation (usage, prerequisites, notes) |
 | `code` | Raw text | The script code itself |
@@ -36,6 +36,12 @@ Create or update executable scripts (Shell or Python) on the blog's script shari
 - Keep scripts self-contained, single-file
 - Test commands like `apt-get` should include `-y` flag for non-interactive use
 - Avoid hardcoding sensitive values (passwords, tokens) — use variables
+- **Target mainland Chinese users**: Scripts must pre-configure China-friendly defaults:
+  - GitHub downloads: provide `-m` mirror option, default mirror `https://ghproxy.net/`
+  - pip sources: default to `https://pypi.tuna.tsinghua.edu.cn/simple`
+  - APT sources: suggest Tsinghua/Aliyun mirrors in comments
+  - Docker images: suggest registry mirrors for pulling
+  - Any foreign-hosted resources should have a mirror parameter or fallback
 
 ### Description (Markdown)
 
