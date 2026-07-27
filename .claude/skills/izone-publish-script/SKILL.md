@@ -147,14 +147,14 @@ Present to user:
 
 The endpoint `POST /skill/scripts/save/` handles both creation and update. If the slug exists, it updates; otherwise creates.
 
-**⚠️ MANDATORY: Write description and code to temporary files first, then read them in Python to build the payload.** Never inline markdown or code in a bash command — shell escaping will corrupt backticks, special characters, and code blocks, causing data loss. This is the same pattern as the article publish skill.
+**Step 4a — Write temp files (MANDATORY, no exceptions):**
 
-**Step 4a — Write temp files:**
+> ⚠️ **HARD RULE**: Both `code` and `description` MUST be written to temporary files using the Write tool, then read from those files in Python. **Never** inline either in a bash command, **never** read from database/ORM, **never** use triple-quoted Python strings containing backticks or URLs. Violation WILL cause data corruption — shell interprets backticks as command substitution, URLs as file paths, and special characters as operators. This has been confirmed multiple times.
 
-- Code → `/tmp/<slug>.sh` or `/tmp/<slug>.py` (the script code)
-- Description → `/tmp/<slug>-desc.md` (the markdown description)
+- Code → `/tmp/<slug>.sh` or `/tmp/<slug>.py` (Write tool)
+- Description → `/tmp/<slug>-desc.md` (Write tool)
 
-**Step 4b — Publish via Python:**
+**Step 4b — Publish via Python (reads from files only):**
 
 ```bash
 python3 -c "
