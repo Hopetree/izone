@@ -63,7 +63,7 @@ class AdminRequiredMixin:
         return super().dispatch(*args, **kwargs)
 
 
-class ScriptListView(AdminRequiredMixin, generic.ListView):
+class ScriptListView(generic.ListView):
     model = Script
     template_name = 'scripts/list.html'
     context_object_name = 'scripts'
@@ -71,11 +71,14 @@ class ScriptListView(AdminRequiredMixin, generic.ListView):
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 3)
 
     def get_queryset(self):
-        qs = Script.objects.all()
+        qs = Script.objects.order_by('-create_date')
+        # 非管理员只显示已发布脚本
+        if not self.request.user.is_superuser:
+            qs = qs.filter(is_publish=True)
         script_type = self.request.GET.get('type')
         if script_type in ('shell', 'python'):
             qs = qs.filter(script_type=script_type)
-        return qs.order_by('-create_date')
+        return qs
 
 
 class ScriptDetailView(generic.DetailView):
