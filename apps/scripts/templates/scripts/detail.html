@@ -6,7 +6,7 @@
 {% block top-file %}
 <link href="{% static 'blog/css/detail.css' %}?v={{ static_version.css_blog_detail }}" rel="stylesheet">
 <link href="{% static 'blog/css/monokai-3.css' %}?v=20241202.1" rel="stylesheet">
-{% if not script.is_publish %}
+{% if not script.is_publish and user.is_superuser %}
 <style>
 #publish-btn {
     position: fixed; bottom: 80px; right: 30px; z-index: 999;
@@ -136,7 +136,7 @@
     </div>
 </div>
 
-{% if not script.is_publish %}
+{% if not script.is_publish and user.is_superuser %}
 <div id="publish-btn" title="一键发布脚本">
     <i class="fa fa-send"></i> <span>发布</span>
 </div>
@@ -144,7 +144,7 @@
 {% endblock %}
 
 {% block end_file %}
-{% if not script.is_publish %}
+{% if not script.is_publish and user.is_superuser %}
 <script>
 $('#publish-btn').click(function () {
     if (confirm('确认发布这个脚本吗？')) {
