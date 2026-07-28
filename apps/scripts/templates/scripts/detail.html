@@ -39,12 +39,20 @@
                         <a href="{% url 'scripts:list' %}">脚本工具</a>
                     </li>
                     <li class="breadcrumb-item active d-none d-md-block" aria-current="page">
+                        {% if user.is_superuser %}
                         <a class="edit-blog" href="{% url 'admin:scripts_script_change' script.id %}" target="_blank" title="编辑脚本">
                             {{ script.title }}
                         </a>
+                        {% else %}
+                            {{ script.title }}
+                        {% endif %}
                     </li>
                     <li class="breadcrumb-item active d-md-none" aria-current="page">
+                        {% if user.is_superuser %}
                         <a class="edit-blog" href="{% url 'admin:scripts_script_change' script.id %}" target="_blank" title="编辑脚本">当前脚本</a>
+                        {% else %}
+                            当前脚本
+                        {% endif %}
                     </li>
                 </ol>
             </nav>
