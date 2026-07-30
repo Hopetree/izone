@@ -144,6 +144,7 @@
 {% endblock %}
 
 {% block end_file %}
+<script src="{% static 'blog/js/code.js' %}?v={{ static_version.js_blog_code }}"></script>
 {% if not script.is_publish and user.is_superuser %}
 <script>
 $('#publish-btn').click(function () {
