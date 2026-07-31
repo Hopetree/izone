@@ -369,6 +369,22 @@ def update_article(request):
 
 
 @require_http_methods(["POST"])
+def delete_article(request):
+    """删除文章，仅管理员和作者可以操作"""
+    if not request.is_ajax():
+        return HttpResponseBadRequest("Invalid request.")
+    article_slug = request.POST.get('article_slug')
+    try:
+        article = Article.objects.get(slug=article_slug)
+        if not request.user.is_superuser and article.author != request.user:
+            return JsonResponse({'message': '无权限操作', 'code': 1}, status=403)
+        article.delete()
+        return JsonResponse({'message': '删除成功', 'code': 0})
+    except Article.DoesNotExist:
+        return JsonResponse({'message': '文章不存在', 'code': 1}, status=404)
+
+
+@require_http_methods(["POST"])
 def publish_article(request):
     """发布文章（将草稿转为已发布），仅管理员和作者可以操作"""
     article_slug = request.POST.get('article_slug')
