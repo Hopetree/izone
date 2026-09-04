@@ -64,7 +64,7 @@ Defined in [izone/urls.py](izone/urls.py). Root paths: `/` (blog index), `/artic
 
 ### Search
 
-Uses django-haystack with a custom Whoosh backend ([blog/whoosh_cn_backend.py](apps/blog/whoosh_cn_backend.py)) that replaces the default analyzer with Jieba's `ChineseAnalyzer` for Chinese word segmentation. Index is at `whoosh_index/`. `RealtimeSignalProcessor` keeps index updated on model save/delete.
+Search uses MySQL FULLTEXT with the n-gram parser (migration `blog.0027_article_fulltext_index` adds a FULLTEXT index on `title, body, summary`). The search view `MySearchView` (apps/blog/views.py) runs `MATCH ... AGAINST (IN BOOLEAN MODE)` plus a per-word substring filter for precision. No separate search index to build or keep in sync.
 
 ### Cache Strategy
 
