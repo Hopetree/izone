@@ -298,7 +298,7 @@ Skill 指令的核心内容（告诉 AI 如何执行发布流程）：
 ### 4.3 交互示例
 
 ```
-用户: 发布 /Users/leizhu/Documents/articles/drf-best-practices.md
+用户: 发布 ~/articles/drf-best-practices.md
 
 AI:
   我解析了这篇文章，请确认以下信息：
