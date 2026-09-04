@@ -327,9 +327,13 @@ class ArticlePublishSerializer(serializers.Serializer):
             tag_objects.append(tag)
 
         # 处理 keywords: get-or-create
+        # 注意：MySQL utf8mb4 默认排序规则大小写不敏感，同名(含大小写差异)记录可能不止一条，
+        # get_or_create 的 get() 会抛 MultipleObjectsReturned，所以这里先 filter 取第一条
         keyword_objects = []
         for kw_name in keywords_data:
-            kw, _ = Keyword.objects.get_or_create(name=kw_name.strip())
+            kw = Keyword.objects.filter(name=kw_name.strip()).first()
+            if kw is None:
+                kw = Keyword.objects.create(name=kw_name.strip())
             keyword_objects.append(kw)
 
         # 创建文章
