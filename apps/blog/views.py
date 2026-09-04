@@ -19,8 +19,6 @@ from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.db.models.functions import ExtractYear
-from haystack.generic_views import SearchView  # 导入搜索视图
-from haystack.query import SearchQuerySet
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension  # 锚点的拓展
 
@@ -310,12 +308,38 @@ class FriendLinkView(generic.ListView):
 
 
 # 重写搜索视图，可以增加一些额外的参数，且可以重新定义名称
-class MySearchView(SearchView):
+# 使用 MySQL FULLTEXT(n-gram) 实现站内搜索，替换原 haystack + whoosh 方案
+class MySearchView(generic.ListView):
     template_name = 'search/blog/search.html'
     context_object_name = 'search_list'
     paginate_by = getattr(settings, 'BASE_PAGE_BY', None)
     paginate_orphans = getattr(settings, 'BASE_ORPHANS', 0)
-    queryset = SearchQuerySet().order_by('-views').filter(is_publish=True)
+
+    def get_queryset(self):
+        self.query = self.request.GET.get('q', '').strip()
+        queryset = Article.objects.filter(is_publish=True)
+        if self.query:
+            # 移除 BOOLEAN MODE 的语法操作符，避免用户输入特殊字符干扰查询语义
+            term = re.sub(r'[+\-<>\\(\\)~*"@\\]', ' ', self.query)
+            term = re.sub(r'\s+', ' ', term).strip()
+            if term:
+                queryset = queryset.extra(
+                    where=["MATCH(title, body, summary) AGAINST (%s IN BOOLEAN MODE)"],
+                    params=[term],
+                )
+                # n-gram 分词对英文会产生宽泛命中(如 django 命中含 ng/go 的文章)，用子串过滤收紧
+                for word in term.split():
+                    queryset = queryset.filter(
+                        Q(title__icontains=word) | Q(body__icontains=word) | Q(summary__icontains=word)
+                    )
+            else:
+                queryset = queryset.none()
+        return queryset.order_by('-views')
+
+    def get_context_data(self, **kwargs):
+        context = super(MySearchView, self).get_context_data(**kwargs)
+        context['query'] = self.query
+        return context
 
 
 def robots(request):

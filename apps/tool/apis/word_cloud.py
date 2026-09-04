@@ -2,8 +2,6 @@ import os
 import re
 from collections import Counter
 
-import jieba
-
 # 只显示前N个词
 from .common import OpenApi
 
@@ -28,6 +26,7 @@ def get_stop_words(stop_text, filename='ChineseStopWords.txt'):
 
 def get_word_count(text, stop_text):
     """精确分词"""
+    import jieba  # 延迟导入，避免所有进程启动时加载分词词典
     words = jieba.lcut(text)
     stop_words = get_stop_words(stop_text)
     new_words = [
