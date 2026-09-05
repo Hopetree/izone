@@ -311,3 +311,67 @@ body {
 .btn-cancel:hover { background: #e5e7eb; }
 .btn-delete { background: none; color: #ef4444; margin-right: auto; padding: 8px 12px; }
 .btn-delete:hover { background: #fef2f2; }
+
+/* ===== 卡片放大查看器(FLIP 平滑放大) ===== */
+.note-card { cursor: zoom-in; }
+.note-content img { max-width: 100%; }
+
+.note-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;  /* 关闭时不拦截页面点击 */
+}
+.note-viewer.active { pointer-events: auto; }
+.note-viewer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+.note-viewer.active .note-viewer-backdrop { opacity: 1; }
+
+.note-viewer-card {
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+    cursor: auto;
+    overflow-wrap: break-word;
+    will-change: transform;
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.note-viewer-card .note-title { font-size: 24px; padding: 32px 36px 14px; }
+.note-viewer-card .note-tags { padding: 0 36px 18px; }
+.note-viewer-card .note-content { padding: 0 32px 32px; font-size: 16.5px; line-height: 1.75; }
+.note-viewer-card .note-edit-btn { display: none; }
+.note-viewer-card .note-edit-btn + * { display: inline; }
+
+.note-viewer-close {
+    position: fixed;
+    top: 22px;
+    right: 26px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.35s ease, background 0.2s;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.note-viewer.active .note-viewer-close { opacity: 1; }
+.note-viewer-close:hover { background: rgba(255,255,255,0.28); }
+
+@media (prefers-reduced-motion: reduce) {
+    .note-viewer-card { transition: none; }
+    .note-viewer-backdrop { transition: none; }
+}

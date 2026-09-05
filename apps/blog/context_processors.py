@@ -10,7 +10,7 @@ from blog.models import SiteConfig
 STATIC_VERSION = {
     'css_blog_base': '20240305.02',
     'css_blog_detail': '20240324.01',
-    'css_blog_night': '20240615.01',
+    'css_blog_night': '20260905.01',
 
     'js_blog_base': '20240305.01',
     'js_blog_article': '20240115.01',

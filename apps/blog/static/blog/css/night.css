@@ -435,3 +435,8 @@ pre {
 .btn-cancel:hover { background: #2b3b4d; }
 .btn-delete { color: #f87171; }
 .btn-delete:hover { background: rgba(239,68,68,0.15); }
+
+/* ===== 便签页卡片放大查看器暗色适配 ===== */
+.note-viewer-backdrop { background: rgba(0,0,0,0.65); }
+.note-viewer-close { background: rgba(255,255,255,0.12); }
+.note-viewer-close:hover { background: rgba(255,255,255,0.25); }
