@@ -7,10 +7,7 @@ body {
     color: #1d1d1f;
     min-height: 100vh;
 }
-
-@media (prefers-color-scheme: dark) {
-    body { background:#000; color:#f5f5f7; }
-}
+/* 暗色样式统一由 night.css 提供，跟随站点主题切换（勿在此用 prefers-color-scheme） */
 
 .app-container {
     /* 在大屏上扩大容器宽度，随视口自适应并设置上限 */
@@ -39,9 +36,6 @@ body {
     background: white;
     box-shadow: 0 10px 40px rgba(0,0,0,0.12);
     outline: none;
-}
-@media (prefers-color-scheme: dark) {
-    #search-input { background:#1c1c1e; box-shadow:0 10px 40px rgba(0,0,0,0.7); }
 }
 
 /* ========= 核心：CSS Columns 实现完美瀑布流 ========= */
@@ -73,14 +67,6 @@ body {
     box-shadow: 0 32px 70px rgba(0,0,0,0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-    .note-card {
-        background: #1c1c1e;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.8);
-    }
-    .note-card:hover { box-shadow: 0 32px 70px rgba(0,0,0,1); }
-}
-
 /* 卡片内部 */
 .note-title {
     font-size: 20px;
@@ -106,11 +92,6 @@ body {
     padding: 0 18px 24px;
     font-size: 16px;
     color: #333;
-}
-@media (prefers-color-scheme: dark) {
-    .tag { background:#38383a; color:#ddd; }
-    .note-title, .note-content { color:#f5f5f7; }
-    .note-content { color:#ddd; }
 }
 
 /* 代码块美化 */
@@ -330,24 +311,3 @@ body {
 .btn-cancel:hover { background: #e5e7eb; }
 .btn-delete { background: none; color: #ef4444; margin-right: auto; padding: 8px 12px; }
 .btn-delete:hover { background: #fef2f2; }
-
-@media (prefers-color-scheme: dark) {
-    .note-edit-btn { color: #888; }
-    .note-edit-btn:hover { color: #60a5fa; border-color: #60a5fa; }
-    .note-modal-content { background: #1c1c1e; color: #f5f5f7; }
-    .note-modal-header h3 { color: #f5f5f7; }
-    .modal-close-btn { color: #888; }
-    .modal-close-btn:hover { color: #eee; }
-    .modal-label { color: #aaa; }
-    .modal-input, .modal-textarea {
-        background: #2c2c2e;
-        border-color: #444;
-        color: #f5f5f7;
-    }
-    .modal-input:focus, .modal-textarea:focus { border-color: #60a5fa; }
-    .modal-checkbox-label { color: #aaa; }
-    .btn-cancel { background: #2c2c2e; color: #ccc; }
-    .btn-cancel:hover { background: #3a3a3c; }
-    .btn-delete { color: #f87171; }
-    .btn-delete:hover { background: rgba(239,68,68,0.15); }
-}
