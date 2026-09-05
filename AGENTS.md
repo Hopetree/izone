@@ -73,6 +73,7 @@ izone 是一个基于 **Django 2.2 + Bootstrap 4** 的个人博客站点，除�
 ## Git 工作流
 
 - 主分支 `latest`；仓库有两个 remote（origin 为部署构建源）
+- **改完代码默认只保留在本地：不要主动 push 到远程，更不要主动部署生产。推送和部署只在用户明确要求时执行。**
 - commit message 遵循 conventional 格式 + 中文描述，如 `feat(blog): ...`、`fix(scripts): ...`、`perf(deploy): ...`、`chore(search): ...`
 
 ## 内容发布（技能）
