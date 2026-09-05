@@ -347,7 +347,6 @@ body {
 .note-viewer-card .note-tags { padding: 0 36px 18px; }
 .note-viewer-card .note-content { padding: 0 32px 32px; font-size: 16.5px; line-height: 1.75; }
 .note-viewer-card .note-edit-btn { display: none; }
-.note-viewer-card .note-edit-btn + * { display: inline; }
 
 .note-viewer-close {
     position: fixed;

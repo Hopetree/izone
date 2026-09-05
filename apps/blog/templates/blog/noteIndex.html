@@ -163,9 +163,35 @@
         const viewerCard = viewer.querySelector('.note-viewer-card');
         let viewerSource = null;
         let viewerIsOpen = false;
+        let cleanupTimer = null;
+
+        function cleanupViewer() {
+            if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
+            viewer.classList.remove('active');
+            viewerCard.innerHTML = '';
+            viewerCard.style.transform = '';
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+        }
+
+        function layoutViewer() {
+            // 最终位置：居中、大宽度、限高滚动
+            const width = Math.min(860, window.innerWidth * 0.92);
+            const height = Math.min(window.innerHeight * 0.86, 820);
+            viewerCard.style.width = width + 'px';
+            viewerCard.style.maxHeight = height + 'px';
+            viewerCard.style.left = (window.innerWidth - width) / 2 + 'px';
+            viewerCard.style.top = Math.max(24, (window.innerHeight - height) / 2) + 'px';
+        }
 
         function openViewer(card) {
             if (viewerIsOpen) return;
+            if (viewer.classList.contains('active')) {  // 上一次关闭动画未结束，先同步清理
+                viewerCard.style.transition = 'none';
+                cleanupViewer();
+                viewerCard.getBoundingClientRect();
+                viewerCard.style.transition = '';
+            }
             viewerIsOpen = true;
             viewerSource = card;
 
@@ -187,13 +213,7 @@
             viewerCard.innerHTML = '';
             while (clone.firstChild) viewerCard.appendChild(clone.firstChild);
 
-            // 计算最终位置：居中、大宽度、限高滚动
-            const width = Math.min(860, window.innerWidth * 0.92);
-            const height = Math.min(window.innerHeight * 0.86, 820);
-            viewerCard.style.width = width + 'px';
-            viewerCard.style.maxHeight = height + 'px';
-            viewerCard.style.left = (window.innerWidth - width) / 2 + 'px';
-            viewerCard.style.top = Math.max(24, (window.innerHeight - height) / 2) + 'px';
+            layoutViewer();
 
             // 锁定页面滚动，补偿滚动条宽度避免布局跳动
             const scrollbar = window.innerWidth - document.documentElement.clientWidth;
@@ -215,14 +235,7 @@
 
         function closeViewer() {
             if (!viewerIsOpen) return;
-            const restore = () => {
-                viewer.classList.remove('active');
-                viewerCard.innerHTML = '';
-                viewerCard.style.transform = '';
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
-                viewerIsOpen = false;
-            };
+            viewerIsOpen = false;  // 立即置 false：防重入，且关闭动画期间允许重新打开
             const source = viewerSource;
             viewerSource = null;
             // 原路缩回源卡片位置(源卡片可能因搜索被重绘，找不到就淡出)
@@ -231,9 +244,9 @@
                 const last = viewerCard.getBoundingClientRect();
                 viewerCard.style.transform =
                     `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${first.width / last.width})`;
-                setTimeout(restore, 440);
+                cleanupTimer = setTimeout(cleanupViewer, 440);
             } else {
-                restore();
+                cleanupViewer();
             }
         }
 
@@ -244,7 +257,12 @@
         });
         viewer.querySelector('.note-viewer-backdrop').addEventListener('click', closeViewer);
         viewer.querySelector('.note-viewer-close').addEventListener('click', closeViewer);
+        window.addEventListener('resize', () => {
+            if (viewerIsOpen) layoutViewer();
+        });
         document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('note-modal');
+            if (modal && modal.classList.contains('active')) return;  // 编辑弹窗打开时不作用于查看器
             if (e.key === 'Escape' && viewerIsOpen) closeViewer();
         });
 

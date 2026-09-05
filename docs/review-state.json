@@ -1,9 +1,13 @@
 {
-  "last_reviewed_commit": "59e6286ef14d7ac7f607ae3aec64f16bff57048c",
-  "last_reviewed_commit_short": "59e6286",
-  "last_review_date": "2026-07-24",
-  "last_review_summary": "审查1次提交：ScriptDetailView公开访问（去掉AdminRequiredMixin），一键命令卡片移到说明文档之前。无新增问题。",
-  "documents_updated": [],
+  "last_reviewed_commit": "7aa89f23330384e3974e094903c53b2a2459df89",
+  "last_reviewed_commit_short": "7aa89f2",
+  "last_review_date": "2026-09-05",
+  "last_review_summary": "审查最近7次提交(f87b772..7aa89f2)：便签暗色适配、卡片放大查看器、导航清理、关键词修复、日志轮转、文档约束。发现4个🟡+2个🟢问题，#4-#8已直接修复，#9保持现状。更新02_TDD架构文档(搜索/Celery/日志)与01_PRD(便签放大查看)。",
+  "documents_updated": [
+    "docs/design/02_TDD_架构设计文档.md",
+    "docs/design/01_PRD_产品需求规格说明书.md",
+    "docs/code-review.md"
+  ],
   "documents": [
     {
       "path": "docs/design/01_PRD_产品需求规格说明书.md",
