@@ -11,8 +11,8 @@
 | 后端框架 | Django 2.2 + Python 3.9 |
 | 数据库 | MySQL（utf8mb4） |
 | 缓存 / 消息队列 | Redis |
-| 异步任务 | Celery 4.4（Worker + Beat） |
-| 搜索引擎 | Whoosh + Jieba 中文分词 + django-haystack |
+| 异步任务 | Celery 4.4（Worker + Beat 合并单进程） |
+| 搜索引擎 | MySQL FULLTEXT（n-gram 中文分词） |
 | 前端 | Bootstrap 4 + jQuery |
 | 容器化 | Docker + Gunicorn + Supervisord |
 
@@ -43,12 +43,13 @@
 | [数据库设计文档](docs/design/03_ERD_数据库设计文档.md) | 实体定义、关系说明、设计决策 |
 | [API 接口文档](docs/design/04_API_接口文档.md) | 各应用 JSON API 端点 |
 | [Code Review 报告](docs/code-review.md) | 代码审查与问题追踪 |
+| [AGENTS.md](AGENTS.md) | 项目工作指南（架构速览、提交规范、构建约束） |
 
 ## 功能
 
 - Django 后台管理系统，方便管理文章、用户及其他动态内容
 - 文章分类、标签、专题（Subject → Topic → Article）层级结构
-- 全文搜索（Whoosh + Jieba 中文分词，实时索引更新）
+- 全文搜索（MySQL FULLTEXT n-gram 中文分词，直接查询实时数据）
 - 文章评论系统（二级回复、微博表情、Markdown）、评论通知
 - 用户认证（Django 用户系统 + OAuth 微博/GitHub 第三方登录）
 - 浏览量统计（爬虫过滤、session 去重、每日快照）
@@ -96,15 +97,11 @@ python manage.py migrate
 # 创建管理员
 python manage.py createsuperuser
 
-# 构建搜索索引
-python manage.py rebuild_index
-
 # 启动开发服务器
 python manage.py runserver
 
-# 启动 Celery（可选，异步任务需要）
-celery -A izone worker -l info
-celery -A izone beat -l info
+# 启动 Celery（可选，异步任务需要；Worker 与 Beat 单进程）
+celery -A izone worker -l info -B --pool=solo
 ```
 
 ## 环境变量
@@ -118,7 +115,7 @@ celery -A izone beat -l info
 | `IZONE_MYSQL_PASSWORD` | 数据库密码 | `python` |
 | `IZONE_REDIS_HOST` | Redis 主机 | `127.0.0.1` |
 | `IZONE_TOOL_FLAG` | 启用在线工具 | `True` |
-| `IZONE_API_FLAG` | 启用 REST API | `False` |
+| `IZONE_API_FLAG` | 启用 REST API | `True` |
 
 ## 项目结构
 
@@ -146,3 +143,4 @@ izone/
 [MIT License](LICENSE)
 
 | — | 2026-07-24 | 根据 commit 2ca6b0b 更新：文档索引新增 Code Review 报告，功能列表新增脚本工具分享 |
+| — | 2026-09-05 | 搜索切换为 MySQL FULLTEXT（移除 haystack/Whoosh）；Celery Worker 与 Beat 合并单进程；新增 AGENTS.md |

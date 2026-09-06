@@ -79,7 +79,7 @@ REST_FRAMEWORK = {
 - [ ] **Step 3: 运行 migrate 创建 Token 表**
 
 ```bash
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate && python manage.py migrate
+cd ~/izone && source env/bin/activate && python manage.py migrate
 ```
 
 ---
@@ -266,7 +266,7 @@ if settings.API_FLAG:
 
 ```bash
 # 先确保有 Token（后面 Task 5 会正式创建，这里用 manage.py 临时测试）
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate
+cd ~/izone && source env/bin/activate
 python manage.py shell -c "
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
@@ -588,7 +588,7 @@ skill_urlpatterns = [
 
 ```bash
 # 启动开发服务器
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate && python manage.py runserver &
+cd ~/izone && source env/bin/activate && python manage.py runserver &
 
 # 测试发布文章
 curl -X POST http://127.0.0.1:8000/openapi/v1/skill/articles/publish/ \
@@ -654,7 +654,7 @@ curl -X POST http://127.0.0.1:8000/openapi/v1/skill/articles/publish/ \
 - [ ] **Step 6: 删除测试文章（清理数据库）**
 
 ```bash
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate
+cd ~/izone && source env/bin/activate
 python manage.py shell -c "
 from blog.models import Article
 Article.objects.filter(slug__startswith='test-').delete()
@@ -695,7 +695,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 - [ ] **Step 1: 为用户生成 Token**
 
 ```bash
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate
+cd ~/izone && source env/bin/activate
 python manage.py shell -c "
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
@@ -951,7 +951,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 - [ ] **Step 1: 启动开发服务器**
 
 ```bash
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate && python manage.py runserver &
+cd ~/izone && source env/bin/activate && python manage.py runserver &
 ```
 
 ---
@@ -994,7 +994,7 @@ curl -s -X POST "$BASE/skill/articles/publish/" \
 - [ ] **Step 3: 清理测试数据**
 
 ```bash
-cd /Users/leizhu/Documents/Private/izone && source env/bin/activate
+cd ~/izone && source env/bin/activate
 python manage.py shell -c "
 from blog.models import Article, Category, Tag, Keyword
 Article.objects.filter(slug__in=['e2e-test-article','test-article-001']).delete()

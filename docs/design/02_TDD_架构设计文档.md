@@ -14,8 +14,8 @@
 | 数据库 | MySQL（utf8mb4） | - |
 | 缓存 | Redis（django-redis） | 4.10 |
 | 消息队列 | Redis（Celery Broker） | - |
-| 异步任务 | Celery + django-celery-beat + django-celery-results | 4.4 |
-| 搜索引擎 | Whoosh + Jieba 中文分词 + django-haystack | 2.7 / 2.8 |
+| 异步任务 | Celery + django-celery-beat + django-celery-results（Worker 与 Beat 合并单进程） | 4.4 |
+| 搜索引擎 | MySQL FULLTEXT（n-gram 中文分词，随数据实时更新） | 5.7 |
 | Web 服务器 | Gunicorn + supervisord | 19.9 / 4.2 |
 | 容器化 | Docker | - |
 | 前端 | Bootstrap 4 + jQuery | - |
@@ -43,9 +43,7 @@ izone/
 │   │   ├── views.py           # 视图（CBV 为主）
 │   │   ├── urls.py            # 路由
 │   │   ├── admin.py           # 后台注册
-│   │   ├── search_indexes.py  # 搜索索引定义
-│   │   ├── whoosh_cn_backend.py # 自定义 Whoosh 后端（Jieba 分词）
-│   │   ├── context_processors.py # 全局模板上下文
+│   │   ├── context_processors.py # 全局模板上下文（含静态文件版本号管理）
 │   │   ├── utils.py           # 工具函数（浏览量装饰器、RedisKeys、API 响应类等）
 │   │   ├── task_views.py      # Celery 任务手动触发视图
 │   │   ├── feeds.py           # RSS Feed
@@ -96,7 +94,6 @@ izone/
 │
 ├── media/                     # 用户上传媒体文件
 ├── static/                    # collectstatic 收集目录
-├── whoosh_index/              # 全文搜索索引文件
 ├── locale/                    # 国际化翻译文件
 ├── log/                       # 日志文件目录
 │
@@ -105,7 +102,7 @@ izone/
 ├── Dockerfile                 # Docker 标准镜像
 ├── Dockerfile-slim            # Docker slim 镜像（含编译依赖）
 ├── entrypoint.sh              # 容器入口（migrate + collectstatic → supervisord）
-└── supervisord.conf           # 进程管理配置
+└── supervisord.conf           # 进程管理配置（含日志轮转 20MB×5）
 ```
 
 ---
@@ -141,8 +138,8 @@ Django (izone/wsgi.py → urls.py → app views)
     │   ├── 友链 / 导航 / 监控 / 脚本
     │   └── Celery 任务结果
     │
-    └── Whoosh 搜索索引
-        └── Jieba 中文分词 → 实时索引更新
+    └── MySQL FULLTEXT 全文索引
+        └── blog_article(title, body, summary) WITH PARSER n-gram，随数据实时更新
 ```
 
 ### 3.2 异步任务架构
@@ -160,7 +157,7 @@ Celery Beat (DatabaseScheduler)
     ├── clear_expired_sessions → 过期 Session 清理
     └── check_host_status      → 服务监控节点状态检查
 
-Celery Worker
+Celery Worker（与 Beat 合并单进程：celery worker -B --pool=solo，Beat 以子进程运行）
     │
     └── Redis Broker (db 1) → 消费任务
     └── 结果存储：django-db（MySQL）
@@ -205,18 +202,14 @@ Article.body (原始 Markdown)
 │  └──────────────┬──────────────────┘    │
 │                 ▼                        │
 │  ┌────────── supervisord ──────────┐    │
-│  │  ┌─────────────────────────┐    │    │
-│  │  │ Gunicorn :8000          │    │    │
-│  │  │ (Django WSGI)           │    │    │
-│  │  └─────────────────────────┘    │    │
-│  │  ┌─────────────────────────┐    │    │
-│  │  │ Celery Worker           │    │    │
-│  │  │ (异步任务执行)            │    │    │
-│  │  └─────────────────────────┘    │    │
-│  │  ┌─────────────────────────┐    │    │
-│  │  │ Celery Beat             │    │    │
-│  │  │ (定时任务调度)            │    │    │
-│  │  └─────────────────────────┘    │    │
+│  │  ┌───────────────────────────┐  │    │
+│  │  │ Gunicorn :8000            │  │    │
+│  │  │ --workers 1 --max-requests│  │    │
+│  │  └───────────────────────────┘  │    │
+│  │  ┌───────────────────────────┐  │    │
+│  │  │ Celery (worker -B solo)   │  │    │
+│  │  │ 异步执行+定时调度单进程      │  │    │
+│  │  └───────────────────────────┘  │    │
 │  └────────────────────────────────┘    │
 └─────────────────────────────────────────┘
           │              │
@@ -265,3 +258,4 @@ docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ \
 | `IZONE_PROTOCOL_HTTPS` | HTTP/HTTPS 协议 | `HTTP` |
 
 | — | 2026-07-24 | 根据 commit 2ca6b0b 更新：项目结构新增 scripts 应用，请求处理流程新增脚本数据 |
+| — | 2026-09-05 | 根据 commit f7b1c7e 更新：搜索引擎切换为 MySQL FULLTEXT(n-gram)，移除 haystack/Whoosh；Celery Worker 与 Beat 合并单进程；supervisord 日志轮转；删除 whoosh_index 相关内容 |

@@ -402,3 +402,41 @@ pre {
 
 /*全局样式参数end*/
 
+
+/* ===== 便签页(note)暗色适配：跟随站点主题切换 ===== */
+#search-input {
+    background: #18222d;
+    color: #ccc;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+}
+.note-card {
+    background: #18222d;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+}
+.note-card:hover { box-shadow: 0 32px 70px rgba(0,0,0,1); }
+.note-title { color: #ccc; }
+.note-content { color: #9caec7; }
+.note-tags .tag { background: #2b3b4d; color: #9caec7; }
+.note-edit-btn { color: #738292; }
+.note-edit-btn:hover { color: #60a5fa; border-color: #60a5fa; }
+.note-modal-content { background: #18222d; color: #ccc; }
+.note-modal-header h3 { color: #ccc; }
+.modal-close-btn { color: #738292; }
+.modal-close-btn:hover { color: #ccc; }
+.modal-label { color: #9caec7; }
+.modal-input, .modal-textarea {
+    background: #22303f;
+    border-color: #3a4a5c;
+    color: #ccc;
+}
+.modal-input:focus, .modal-textarea:focus { border-color: #60a5fa; }
+.modal-checkbox-label { color: #9caec7; }
+.btn-cancel { background: #22303f; color: #9caec7; }
+.btn-cancel:hover { background: #2b3b4d; }
+.btn-delete { color: #f87171; }
+.btn-delete:hover { background: rgba(239,68,68,0.15); }
+
+/* ===== 便签页卡片放大查看器暗色适配 ===== */
+.note-viewer-backdrop { background: rgba(0,0,0,0.65); }
+.note-viewer-close { background: rgba(255,255,255,0.12); }
+.note-viewer-close:hover { background: rgba(255,255,255,0.25); }

@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.urls import reverse
 
-from .models import FriendLink
+from .models import Article, FriendLink
 from comment.models import SystemNotification
 from oauth.models import Ouser
 
@@ -27,6 +27,29 @@ def friend_link_create_signal(sender, instance, created, **kwargs):
                   f'描述：{instance.description}，待管理员审核！！！</a></p>'
         new_notify = SystemNotification(title=title, content=content)
         new_notify.save()  # 保存实例
+
+        # 在保存实例后，将关联对象添加到多对多关系中
+        new_notify.get_p.set(superuser)
+
+
+@receiver(post_save, sender=Article)
+def article_create_signal(sender, instance, created, **kwargs):
+    """
+    创建新文章且状态为未发布时，给管理员推送通知
+    @param sender:
+    @param instance:
+    @param created:
+    @param kwargs:
+    @return:
+    """
+    if created and not instance.is_publish:
+        superuser = Ouser.objects.filter(is_superuser=True)
+        title = f'新草稿文章：{instance.title}'
+        article_url = instance.get_absolute_url()
+        content = f'<p><a href="{article_url}">文章《{instance.title}》已创建为草稿，' \
+                  f'待管理员审核发布。</a></p>'
+        new_notify = SystemNotification(title=title, content=content)
+        new_notify.save()
 
         # 在保存实例后，将关联对象添加到多对多关系中
         new_notify.get_p.set(superuser)

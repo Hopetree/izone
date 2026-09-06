@@ -179,6 +179,24 @@ def my_highlight(text, q):
 
 
 @register.simple_tag
+def my_snippet(text_html, q, max_length=130):
+    """从渲染后的文章HTML中截取包含关键词的片段并高亮，替换原 haystack 的 highlight 标签"""
+    text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', text_html or ''))
+    ql = re.escape((q or '').strip())
+    snippet = text[:max_length]
+    if len(ql) > 1:
+        idx = text.lower().find(q.lower().strip())
+        if idx >= 0:
+            start = max(0, idx - max_length // 3)
+            snippet = text[start:start + max_length]
+            if start > 0:
+                snippet = '…' + snippet
+        snippet = re.sub(ql, lambda a: '<span class="highlighted">{}</span>'.format(a.group()),
+                         snippet, flags=re.IGNORECASE)
+    return mark_safe(snippet)
+
+
+@register.simple_tag
 def get_request_param(request, param, default=None):
     """获取请求的参数"""
     return request.POST.get(param) or request.GET.get(param, default)

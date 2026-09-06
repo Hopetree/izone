@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'blog/highlight/11.9.0/css/atom-one-dark.min.css' %}">
     <script src="{% static 'blog/highlight/11.9.0/js/highlight.min.js' %}"></script>
 
-    <link rel="stylesheet" href="{% static 'blog/css/note.css' %}?v=20260629.1">
+    <link rel="stylesheet" href="{% static 'blog/css/note.css' %}?v=20260905.4">
 {% endblock %}
 
 {% block base_content %}
@@ -150,6 +150,121 @@
                 render(filtered);
             });
         }
+
+        // ---- 卡片放大查看器(FLIP 平滑放大) ----
+        const viewer = document.createElement('div');
+        viewer.className = 'note-viewer';
+        viewer.innerHTML = `
+            <div class="note-viewer-backdrop"></div>
+            <div class="note-card note-viewer-card"></div>
+            <button class="note-viewer-close" title="关闭 (Esc)">&times;</button>
+        `;
+        document.body.appendChild(viewer);
+        const viewerCard = viewer.querySelector('.note-viewer-card');
+        let viewerSource = null;
+        let viewerIsOpen = false;
+        let cleanupTimer = null;
+
+        function cleanupViewer() {
+            if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
+            viewer.classList.remove('active');
+            viewerCard.innerHTML = '';
+            viewerCard.style.transform = '';
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+        }
+
+        function layoutViewer() {
+            // 最终位置：居中、大宽度、限高滚动
+            const width = Math.min(860, window.innerWidth * 0.92);
+            const height = Math.min(window.innerHeight * 0.86, 820);
+            viewerCard.style.width = width + 'px';
+            viewerCard.style.maxHeight = height + 'px';
+            viewerCard.style.left = (window.innerWidth - width) / 2 + 'px';
+            viewerCard.style.top = Math.max(24, (window.innerHeight - height) / 2) + 'px';
+        }
+
+        function openViewer(card) {
+            if (viewerIsOpen) return;
+            if (viewer.classList.contains('active')) {  // 上一次关闭动画未结束，先同步清理
+                viewerCard.style.transition = 'none';
+                cleanupViewer();
+                viewerCard.getBoundingClientRect();
+                viewerCard.style.transition = '';
+            }
+            viewerIsOpen = true;
+            viewerSource = card;
+
+            // 克隆卡片内容(去掉编辑按钮)，重新绑定复制按钮
+            const clone = card.cloneNode(true);
+            const editBtn = clone.querySelector('.note-edit-btn');
+            if (editBtn) editBtn.remove();
+            clone.querySelectorAll('.copy-btn').forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                btn.replaceWith(newBtn);
+                const code = newBtn.closest('.code-wrapper').querySelector('code');
+                newBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(code.innerText).then(() => {
+                        newBtn.textContent = '已复制';
+                        setTimeout(() => newBtn.textContent = '复制', 2000);
+                    });
+                });
+            });
+            viewerCard.innerHTML = '';
+            while (clone.firstChild) viewerCard.appendChild(clone.firstChild);
+
+            layoutViewer();
+
+            // 锁定页面滚动，补偿滚动条宽度避免布局跳动
+            const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.overflow = 'hidden';
+            if (scrollbar > 0) document.body.style.paddingRight = scrollbar + 'px';
+
+            // FLIP：先把大卡片反向变换到源卡片的位置和尺寸，再过渡到最终状态
+            const first = card.getBoundingClientRect();
+            viewer.classList.add('active');
+            const last = viewerCard.getBoundingClientRect();
+            viewerCard.style.transition = 'none';
+            viewerCard.style.transformOrigin = 'top left';
+            viewerCard.style.transform =
+                `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${first.width / last.width})`;
+            viewerCard.getBoundingClientRect(); // 强制重排，提交初始状态
+            viewerCard.style.transition = '';
+            requestAnimationFrame(() => { viewerCard.style.transform = ''; });
+        }
+
+        function closeViewer() {
+            if (!viewerIsOpen) return;
+            viewerIsOpen = false;  // 立即置 false：防重入，且关闭动画期间允许重新打开
+            const source = viewerSource;
+            viewerSource = null;
+            // 原路缩回源卡片位置(源卡片可能因搜索被重绘，找不到就淡出)
+            if (source && document.body.contains(source)) {
+                const first = source.getBoundingClientRect();
+                const last = viewerCard.getBoundingClientRect();
+                viewerCard.style.transform =
+                    `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${first.width / last.width})`;
+                cleanupTimer = setTimeout(cleanupViewer, 440);
+            } else {
+                cleanupViewer();
+            }
+        }
+
+        grid.addEventListener('click', (e) => {
+            if (e.target.closest('.note-edit-btn') || e.target.closest('.copy-btn') || e.target.closest('a')) return;
+            const card = e.target.closest('.note-card');
+            if (card) openViewer(card);
+        });
+        viewer.querySelector('.note-viewer-backdrop').addEventListener('click', closeViewer);
+        viewer.querySelector('.note-viewer-close').addEventListener('click', closeViewer);
+        window.addEventListener('resize', () => {
+            if (viewerIsOpen) layoutViewer();
+        });
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('note-modal');
+            if (modal && modal.classList.contains('active')) return;  // 编辑弹窗打开时不作用于查看器
+            if (e.key === 'Escape' && viewerIsOpen) closeViewer();
+        });
 
         // ---- 编辑弹窗 ----
         {% if user.is_staff %}
