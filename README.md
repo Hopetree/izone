@@ -42,6 +42,7 @@
 | [架构设计文档](docs/design/02_TDD_架构设计文档.md) | 技术选型、模块划分、部署架构 |
 | [数据库设计文档](docs/design/03_ERD_数据库设计文档.md) | 实体定义、关系说明、设计决策 |
 | [API 接口文档](docs/design/04_API_接口文档.md) | 各应用 JSON API 端点 |
+| [Code Review 报告](docs/code-review.md) | 代码审查与问题追踪 |
 
 ## 功能
 
@@ -54,7 +55,7 @@
 - 友链管理（在线申请、定时自动校链）
 - RSS 订阅、Sitemap 网站地图、百度 SEO 推送
 - RESTful API（条件启用，DRF DefaultRouter）
-- 在线工具（条件启用）、服务监控、导航网站、流程图
+- 在线工具（条件启用）、服务监控、导航网站、流程图、脚本工具分享
 - 响应式设计（PC / iPad / 手机），暗色主题支持
 - Redis 缓存系统，Celery 定时任务调度
 
@@ -143,3 +144,5 @@ izone/
 ## 许可
 
 [MIT License](LICENSE)
+
+| — | 2026-07-24 | 根据 commit 2ca6b0b 更新：文档索引新增 Code Review 报告，功能列表新增脚本工具分享 |

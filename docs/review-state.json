@@ -1,8 +1,8 @@
 {
-  "last_reviewed_commit": null,
-  "last_reviewed_commit_short": null,
-  "last_review_date": null,
-  "last_review_summary": null,
+  "last_reviewed_commit": "59e6286ef14d7ac7f607ae3aec64f16bff57048c",
+  "last_reviewed_commit_short": "59e6286",
+  "last_review_date": "2026-07-24",
+  "last_review_summary": "审查1次提交：ScriptDetailView公开访问（去掉AdminRequiredMixin），一键命令卡片移到说明文档之前。无新增问题。",
   "documents_updated": [],
   "documents": [
     {
@@ -34,6 +34,12 @@
       "type": "README",
       "description": "项目 README，包含技术栈、文档索引和快速开始指南",
       "created_at": "2026-06-25"
+    },
+    {
+      "path": "docs/code-review.md",
+      "type": "CODE_REVIEW",
+      "description": "代码审查报告，记录每次 review 发现的问题及处理状态",
+      "created_at": "2026-07-24"
     }
   ]
 }

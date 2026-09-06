@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'monitor',  # 服务监控
     'portinfo',  # 端口信息
     'flow',  # 流程图服务
+    'scripts',  # 脚本分享
 ]
 
 # 自定义用户model

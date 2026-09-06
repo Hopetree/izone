@@ -45,7 +45,8 @@
                 {% url 'portinfo:index' as portinfo_url %}
                 {% url 'blog:health' as health_url %}
                 {% url 'flow:index' as flow_url %}
-                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == health_url or request.path == monitor_demo_url or request.path == portinfo_url %}active{% endif %}"
+                {% url 'scripts:list' as scripts_url %}
+                <a class="nav-link dropdown-toggle py-md-3 {% if request.path == webstack_index_url or request.path == feed_hub_url or request.path == health_url or request.path == monitor_demo_url or request.path == portinfo_url or request.path == scripts_url %}active{% endif %}"
                    href="#"
                    id="more-link"
                    role="button"
@@ -68,6 +69,8 @@
                                     class="fa fa-fw fa-bullseye text-info mr-2"></i>端口大全</a>
                     <a class="dropdown-item pl-3" href="{{ flow_url }}"><i
                                     class="fa fa-fw fa-exchange text-info mr-2"></i>流程设计</a>
+                    <a class="dropdown-item pl-3" href="{{ scripts_url }}"><i
+                                    class="fa fa-fw fa-code text-info mr-2"></i>脚本工具</a>
                 </div>
             </li>
             <!-- 个人外链 -->

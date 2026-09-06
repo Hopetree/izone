@@ -380,6 +380,96 @@ DELETE /openapi/v1/navigation/{id}/
 | 全局默认权限 | `AllowAny` |
 | 启用条件 | 环境变量 `IZONE_API_FLAG=True` |
 
+### 6.8 Skill 脚本 API
+
+供 `izone-publish-script` 技能调用的专用接口，挂载于 `/openapi/v1/skill/scripts/`。
+
+#### 6.8.1 查询脚本
+
+```
+GET /openapi/v1/skill/scripts/?slug=<slug>
+```
+
+| 项目 | 说明 |
+|------|------|
+| 请求方式 | GET |
+| 鉴权 | Token 认证（`Authorization: Token <token>`） |
+| 权限 | `IsAuthenticated` |
+
+**响应（脚本存在）**：
+```json
+{
+  "success": true,
+  "exists": true,
+  "script": {
+    "id": 1,
+    "title": "脚本标题",
+    "slug": "script-slug",
+    "description": "Markdown 说明文档",
+    "code": "#!/bin/bash\n...",
+    "script_type": "shell",
+    "filename": "install-docker.sh",
+    "run_cmd": "sudo bash install-docker.sh",
+    "is_publish": false,
+    "create_date": "2026-07-24 12:00",
+    "update_date": "2026-07-24 12:00"
+  }
+}
+```
+
+**响应（不存在）**：
+```json
+{ "success": true, "exists": false }
+```
+
+#### 6.8.2 创建/更新脚本
+
+```
+POST /openapi/v1/skill/scripts/save/
+```
+
+| 项目 | 说明 |
+|------|------|
+| 请求方式 | POST |
+| 鉴权 | Token 认证 |
+| 权限 | `IsAuthenticated` |
+| Content-Type | `application/json` |
+
+**请求参数**：
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| title | string | 是 | 脚本标题（≤150 字符） |
+| slug | string | 是 | URL 标识（≤50 字符，唯一） |
+| description | string | 是 | Markdown 说明文档 |
+| code | string | 是 | 脚本代码 |
+| script_type | string | 是 | `shell` 或 `python` |
+| filename | string | 是 | 下载文件名（≤100 字符） |
+| run_cmd | string | 否 | 下载后执行命令（≤500 字符） |
+| is_publish | bool | 否 | 是否发布（仅显式传入时生效，更新时省略则保留原值） |
+
+**slug 已存在时更新，不存在则创建。创建响应（201）**：
+```json
+{
+  "success": true,
+  "id": 1,
+  "slug": "script-slug",
+  "url": "/scripts/script-slug/",
+  "action": "create"
+}
+```
+
+**更新响应（200）**：
+```json
+{
+  "success": true,
+  "id": 1,
+  "slug": "script-slug",
+  "url": "/scripts/script-slug/",
+  "action": "update"
+}
+```
+
 ---
 
 ## 7. 通用说明
@@ -400,3 +490,5 @@ DELETE /openapi/v1/navigation/{id}/
 ### AJAX 要求
 
 大部分 POST 接口要求请求头包含 `X-Requested-With: XMLHttpRequest`（Django `is_ajax()` 方法检测）。
+
+| — | 2026-07-24 | 根据 commit 71894f7 更新：新增 6.8 Skill 脚本 API（查询/创建更新） |

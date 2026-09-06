@@ -9,6 +9,7 @@ from .views import (UserListSet, ArticleListSet, TagListSet,
                     SkillMetaView, SkillPublishView,
                     SkillArticleQueryView, SkillImageUploadView,
                     SkillArticleCoverView)
+from scripts.views import SkillScriptCreateUpdateView, SkillScriptQueryView
 
 router = DefaultRouter()
 # router.register(r'users', UserListSet)
@@ -26,4 +27,6 @@ skill_urlpatterns = [
     path('skill/articles/', SkillArticleQueryView.as_view(), name='skill-article-query'),
     path('skill/articles/publish/', SkillPublishView.as_view(), name='skill-publish'),
     path('skill/articles/cover/', SkillArticleCoverView.as_view(), name='skill-article-cover'),
+    path('skill/scripts/', SkillScriptQueryView.as_view(), name='skill-script-query'),
+    path('skill/scripts/save/', SkillScriptCreateUpdateView.as_view(), name='skill-script-save'),
 ]

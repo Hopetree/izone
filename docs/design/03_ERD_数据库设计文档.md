@@ -259,6 +259,26 @@ Category Tag Keyword Topic ─── Subject
 
 ---
 
+### 2.6 脚本分享（scripts 应用）
+
+#### Script（脚本）
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| title | VARCHAR(150) | 标题 |
+| slug | SlugField (unique) | URL 标识符 |
+| description | TEXT | 说明文档（Markdown） |
+| code | TEXT | 脚本代码 |
+| script_type | CHAR(10) | 脚本类型：shell / python |
+| filename | VARCHAR(100) | 下载文件名（如 install-docker.sh） |
+| run_cmd | VARCHAR(500) | 下载后的执行命令 |
+| is_publish | BooleanField | 是否发布（仅已发布可通过公开端点下载） |
+| create_date | DateTimeField | 创建时间 |
+| update_date | DateTimeField | 修改时间 |
+
+**说明**：Script 为独立实体，无外键关联。通过 `full_command` 属性动态拼接 `curl -o {filename} {raw_url} && {run_cmd}` 一键命令。公开下载端点仅返回 `is_publish=True` 的脚本内容。
+
+---
+
 ## 3. 关键数据库设计决策
 
 ### 3.1 不使用外键时区（USE_TZ = False）
@@ -282,3 +302,5 @@ Category Tag Keyword Topic ─── Subject
 
 ### 3.6 评论模型使用抽象基类
 `Comment` 为抽象基类，`ArticleComment` 继承并添加 `belong`（FK→Article）关系，便于扩展（如未来添加其他类型的评论）。
+
+| — | 2026-07-24 | 根据 commit 2ca6b0b 更新：新增 2.6 Script 实体定义（scripts 应用） |
