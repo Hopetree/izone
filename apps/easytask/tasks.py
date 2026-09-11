@@ -47,8 +47,8 @@ def update_cache():
     response = TaskResponse()
     article_result = action_update_article_cache()
     response.data['article'] = article_result
-    # 博客统计信息
-    blog_info_result = get_blog_infos()
+    # 博客统计信息（refresh=True：忽略缓存重新统计并回写，否则只是读缓存，刷新无效）
+    blog_info_result = get_blog_infos(refresh=True)
     response.data['blog_infos'] = blog_info_result
     return response.as_dict()
 

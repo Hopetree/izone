@@ -567,6 +567,9 @@ class SiteConfig(models.Model):
         if SiteConfig.objects.exists() and not self.pk:
             raise IntegrityError("只能存在一个网站配置实例")
         super().save(*args, **kwargs)
+        # 站点配置每个请求都会用到，改完后立刻清掉上下文里的缓存，避免长时间不生效
+        from django.core.cache import cache
+        cache.delete('blog:site_config_data')
 
 
 class Fitness(models.Model):

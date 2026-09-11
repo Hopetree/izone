@@ -25,6 +25,25 @@ from ..models import (
 register = template.Library()
 
 
+# 侧边栏统计类缓存：内容变化时需要整体失效（见 blog/signals.py 的 clear_sidebar_cache 调用）
+BLOG_INFO_CACHE_KEY = 'blog:blog_info:sum'
+TAG_LIST_CACHE_KEY = 'blog:tag_list'
+CATEGORY_LIST_CACHE_KEY = 'blog:category_list'
+MENU_LINK_CACHE_KEY = 'blog:menu_link'
+SIDEBAR_CACHE_TTL = 3600
+SIDEBAR_CACHE_KEYS = (
+    BLOG_INFO_CACHE_KEY,
+    TAG_LIST_CACHE_KEY,
+    CATEGORY_LIST_CACHE_KEY,
+    MENU_LINK_CACHE_KEY,
+)
+
+
+def clear_sidebar_cache():
+    """文章/标签/分类/菜单变化时清掉侧边栏缓存，避免统计数字长时间不更新"""
+    cache.delete_many(SIDEBAR_CACHE_KEYS)
+
+
 # 文章相关标签函数
 @register.simple_tag
 def get_article_list(sort=None, num=None):
@@ -63,18 +82,24 @@ def keywords_to_str(art):
 
 @register.simple_tag
 def get_tag_list(show=2000):
-    """返回标签列表"""
-    tags = Tag.objects.filter(article__is_publish=True).annotate(
-        total_num=Count('article')).filter(total_num__gt=0).order_by('-total_num')
+    """返回标签列表（带缓存；文章/标签变化时由 signals 清缓存）"""
+    tags = cache.get(TAG_LIST_CACHE_KEY)
+    if tags is None:
+        tags = list(Tag.objects.filter(article__is_publish=True).annotate(
+            total_num=Count('article')).filter(total_num__gt=0).order_by('-total_num'))
+        cache.set(TAG_LIST_CACHE_KEY, tags, SIDEBAR_CACHE_TTL)
     return tags[:show]
-
 
 
 @register.simple_tag
 def get_category_list():
-    """返回分类列表"""
-    return Category.objects.filter(article__is_publish=True).annotate(
-        total_num=Count('article')).filter(total_num__gt=0)
+    """返回分类列表（带缓存；文章/分类变化时由 signals 清缓存）"""
+    categories = cache.get(CATEGORY_LIST_CACHE_KEY)
+    if categories is None:
+        categories = list(Category.objects.filter(article__is_publish=True).annotate(
+            total_num=Count('article')).filter(total_num__gt=0))
+        cache.set(CATEGORY_LIST_CACHE_KEY, categories, SIDEBAR_CACHE_TTL)
+    return categories
 
 
 @register.inclusion_tag('blog/tags/article_list.html')
@@ -260,25 +285,30 @@ def my_slice(value, arg):
         return value
 
 
+def compute_blog_infos():
+    """实际统计博客信息（4 次 count）"""
+    return {
+        'article': Article.objects.filter(is_publish=True).count(),
+        'subject': Subject.objects.count(),
+        'tag': Tag.objects.count(),
+        'comment': ArticleComment.objects.count()
+    }
+
+
 @register.simple_tag
-def get_blog_infos():
+def get_blog_infos(refresh=False):
     """
-    获取博客的文章、专题、标签、评论总数，优先从缓存从获取
-    @return:
+    获取博客的文章、专题、标签、评论总数，优先从缓存获取。
+
+    refresh=True 时忽略缓存重新统计并回写，供定时任务预热使用
+    （原来任务里直接调用本函数只是读缓存，刷新其实是无效的）。
     """
-    cache_key = 'blog:blog_info:sum'
-    cache_value = cache.get(cache_key)
+    cache_value = None if refresh else cache.get(BLOG_INFO_CACHE_KEY)
     if cache_value:
         return cache_value
-    else:
-        value = {
-            'article': Article.objects.filter(is_publish=True).count(),
-            'subject': Subject.objects.count(),
-            'tag': Tag.objects.count(),
-            'comment': ArticleComment.objects.count()
-        }
-        cache.set(cache_key, value, 3600 * 2)
-        return value
+    value = compute_blog_infos()
+    cache.set(BLOG_INFO_CACHE_KEY, value, SIDEBAR_CACHE_TTL)
+    return value
 
 
 @register.simple_tag
@@ -286,22 +316,28 @@ def get_feed_list():
     feed_list = []
     feed_items = FeedHub.objects.filter(is_active=True)
     for feed in feed_items:
-        # 只显示有文章的
-        if feed.data and json.loads(feed.data) and json.loads(feed.data).get('entries'):
-            d = {
-                'name': feed.name,
-                'icon': feed.icon,
-                'data': json.loads(feed.data)
-            }
-            if json.loads(feed.data).get('updated'):
-                updated = json.loads(feed.data).get('updated')
-                d['updated'] = datetime.strptime(updated, '%Y%m%d %H:%M:%S')
-            feed_list.append(d)
+        # 只显示有文章的；feed.data 只解析一次，避免每条解析 3 次
+        if not feed.data:
+            continue
+        data = json.loads(feed.data)
+        if not data.get('entries'):
+            continue
+        d = {
+            'name': feed.name,
+            'icon': feed.icon,
+            'data': data
+        }
+        if data.get('updated'):
+            d['updated'] = datetime.strptime(data['updated'], '%Y%m%d %H:%M:%S')
+        feed_list.append(d)
     return feed_list
 
 
 @register.inclusion_tag('blog/tags/menulink.html')
 def load_menu_link():
-    """返回菜单外链"""
-    private_links = MenuLink.objects.filter(active=True)
+    """返回菜单外链（带缓存；菜单变化时由 signals 清缓存）"""
+    private_links = cache.get(MENU_LINK_CACHE_KEY)
+    if private_links is None:
+        private_links = list(MenuLink.objects.filter(active=True))
+        cache.set(MENU_LINK_CACHE_KEY, private_links, SIDEBAR_CACHE_TTL)
     return {'private_links': private_links}

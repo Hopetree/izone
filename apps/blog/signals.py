@@ -1,11 +1,40 @@
 # -*- coding: utf-8 -*-
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.urls import reverse
 
-from .models import Article, FriendLink
-from comment.models import SystemNotification
+from .models import Article, FriendLink, Tag, Category, MenuLink
+from comment.models import SystemNotification, ArticleComment
 from oauth.models import Ouser
+
+
+def _clear_sidebar_cache():
+    # 延迟导入，避免 app 加载期的循环依赖
+    from .templatetags.blog_tags import clear_sidebar_cache
+    clear_sidebar_cache()
+
+
+@receiver([post_save, post_delete], sender=Article)
+def article_change_clear_sidebar_cache(sender, instance, **kwargs):
+    """
+    文章增删改后清掉侧边栏统计缓存。
+
+    仅浏览量变化时跳过：update_views 每次浏览都会 save(update_fields=['views'])，
+    若也清缓存会导致缓存形同虚设。
+    """
+    update_fields = kwargs.get('update_fields')
+    if update_fields and set(update_fields) <= {'views'}:
+        return
+    _clear_sidebar_cache()
+
+
+@receiver([post_save, post_delete], sender=Tag)
+@receiver([post_save, post_delete], sender=Category)
+@receiver([post_save, post_delete], sender=MenuLink)
+@receiver([post_save, post_delete], sender=ArticleComment)
+def related_change_clear_sidebar_cache(sender, instance, **kwargs):
+    """标签/分类/菜单/评论变化后清掉侧边栏统计缓存"""
+    _clear_sidebar_cache()
 
 
 @receiver(post_save, sender=FriendLink)

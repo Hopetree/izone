@@ -240,6 +240,8 @@ DATABASES = {
         'PASSWORD': izone_mysql_pwd,  # 数据库的密码
         'HOST': izone_mysql_host,
         'PORT': izone_mysql_port,
+        # 复用数据库连接（秒），避免每个请求都重新建连+认证
+        'CONN_MAX_AGE': 60,
         'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True, 'connect_timeout': 30}
     }
 }
@@ -269,6 +271,9 @@ CACHES = {
     }
 }
 # *************************************** 缓存配置结束 ***************************************
+
+# session 读写走 cached_db（读 Redis、写同时落库），避免每个请求都查一次 session 表
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 
 # *************************************** celery 配置开始 ***************************************
