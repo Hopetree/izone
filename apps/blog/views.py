@@ -95,16 +95,32 @@ def test_page_view(request):
     return render(request, 'test.html')
 
 
+def optimize_article_list(queryset):
+    """
+    文章列表页公共查询优化。
+
+    模板 blog/tags/article_list.html 里每篇文章都会访问 article.category、article.author、
+    article.tags、article.get_absolute_url（依赖 topic），并调 get_comment_count 查评论数；
+    不提前取好就是每篇 4~5 次额外查询。这里一次性取出关联对象并注解评论数，消除 N+1。
+    """
+    return queryset.select_related(
+        'author', 'category', 'topic'
+    ).prefetch_related(
+        'tags', 'author__socialaccount_set'
+    ).annotate(comment_num=Count('article_comments'))
+
+
 class ArchiveView(generic.ListView):
     model = Article
     template_name = 'blog/archive.html'
     context_object_name = 'articles'
-    paginate_by = 200
+    paginate_by = 100
     paginate_orphans = 50
 
     def get_queryset(self, **kwargs):
+        # 归档页模板只用标题/日期/链接，链接依赖 topic，预取 topic 即可，不需要标签和评论数
         queryset = super().get_queryset()
-        return queryset.filter(is_publish=True)
+        return queryset.filter(is_publish=True).select_related('topic')
 
 
 class IndexView(generic.ListView):
@@ -122,10 +138,12 @@ class IndexView(generic.ListView):
         return '-is_top', '-create_date'
 
     def get_queryset(self, **kwargs):
-        queryset = super(IndexView, self).get_queryset().filter(is_publish=True)
+        queryset = optimize_article_list(
+            super(IndexView, self).get_queryset().filter(is_publish=True)
+        )
         sort = self.request.GET.get('sort')
         if sort == 'comment':
-            queryset = queryset.annotate(com=Count('article_comments')).order_by('-com', '-views')
+            queryset = queryset.order_by('-comment_num', '-views')
         return queryset
 
 
@@ -221,16 +239,22 @@ class CategoryView(generic.ListView):
             return '-views', '-update_date', '-id'
         return ordering
 
+    def get_category(self):
+        # get_queryset 和 get_context_data 都要用到分类对象，缓存一次避免重复查询
+        if not hasattr(self, '_category'):
+            self._category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
+        return self._category
+
     def get_queryset(self, **kwargs):
         queryset = super(CategoryView, self).get_queryset()
-        cate = get_object_or_404(Category, slug=self.kwargs.get('slug'))
-        return queryset.filter(category=cate, is_publish=True)
+        return optimize_article_list(
+            queryset.filter(category=self.get_category(), is_publish=True)
+        )
 
     def get_context_data(self, **kwargs):
         context_data = super(CategoryView, self).get_context_data()
-        cate = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         context_data['search_tag'] = '文章分类'
-        context_data['search_instance'] = cate
+        context_data['search_instance'] = self.get_category()
         return context_data
 
 
@@ -249,16 +273,22 @@ class TagView(generic.ListView):
             return '-views', '-update_date', '-id'
         return ordering
 
+    def get_tag(self):
+        # get_queryset 和 get_context_data 都要用到标签对象，缓存一次避免重复查询
+        if not hasattr(self, '_tag'):
+            self._tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        return self._tag
+
     def get_queryset(self, **kwargs):
         queryset = super(TagView, self).get_queryset()
-        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        return queryset.filter(tags=tag, is_publish=True)
+        return optimize_article_list(
+            queryset.filter(tags=self.get_tag(), is_publish=True)
+        )
 
     def get_context_data(self, **kwargs):
         context_data = super(TagView, self).get_context_data()
-        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         context_data['search_tag'] = '文章标签'
-        context_data['search_instance'] = tag
+        context_data['search_instance'] = self.get_tag()
         return context_data
 
 
@@ -479,11 +509,18 @@ class TagListView(generic.ListView):
     model = Tag
     template_name = 'blog/tagIndex.html'
     context_object_name = 'tags'
-    paginate_by = 500
+    paginate_by = 100
     paginate_orphans = 0
 
     def get_ordering(self):
         return 'name',
+
+    def get_queryset(self):
+        # 注解每个标签下已发布文章数，模板直接取 total_num；原模板用 tag.get_article_list.count 是每个标签一次 COUNT
+        queryset = super().get_queryset()
+        return queryset.annotate(
+            total_num=Count('article', filter=Q(article__is_publish=True))
+        )
 
 
 # dashboard页面，仅管理员可以访问，其他用户不能访问

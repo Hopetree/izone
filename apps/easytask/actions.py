@@ -48,8 +48,8 @@ def action_update_article_cache():
     from blog.models import Article
 
     total_num, done_num = 0, 0
-    # 查询到所有缓存的key
-    keys = cache.keys('article:markdown:*')
+    # 查询到所有缓存的key；缓存不可用时（IGNORE_EXCEPTIONS）keys 会返回 None，兜底成空列表
+    keys = cache.keys('article:markdown:*') or []
     for obj in Article.objects.all():
         total_num += 1
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")

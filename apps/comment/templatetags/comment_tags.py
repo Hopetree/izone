@@ -7,9 +7,14 @@ register = template.Library()
 
 @register.simple_tag
 def get_comment_count(entry):
-    """获取一个文章的评论总数"""
-    lis = entry.article_comments.all()
-    return lis.count()
+    """获取一个文章的评论总数。
+
+    列表页视图已注解 comment_num，优先复用避免每篇文章再查一次；其他调用方没有注解时回退到 COUNT。
+    """
+    num = getattr(entry, 'comment_num', None)
+    if num is not None:
+        return num
+    return entry.article_comments.count()
 
 
 @register.simple_tag

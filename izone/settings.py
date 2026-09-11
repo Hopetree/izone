@@ -255,8 +255,16 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://{}:{}/0".format(izone_redis_host, izone_redis_port),
+        # 加前缀避免与 celery 结果/beat 等共用 db0 时 key 冲突
+        "KEY_PREFIX": "izone",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # redis 抖动时读写静默降级（读返回 None、写跳过），而不是让整个请求报错/挂起；
+            # 单 gunicorn worker 下这一点尤其重要，避免 redis 卡住拖垮全站
+            "IGNORE_EXCEPTIONS": True,
+            "SOCKET_CONNECT_TIMEOUT": 2,
+            "SOCKET_TIMEOUT": 3,
+            "CONNECTION_POOL_KWARGS": {"max_connections": 50},
         }
     }
 }
