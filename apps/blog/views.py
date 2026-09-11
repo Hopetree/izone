@@ -153,7 +153,10 @@ class BaseDetailView(generic.DetailView):
 
     def get_queryset(self):
         # 普通用户只能看发布的文章，作者和管理员可以看到未发布的
-        queryset = super().get_queryset()
+        # 预取作者/分类/主题(含所属专题)以及标签/关键词，避免详情页模板逐项回库
+        queryset = super().get_queryset().select_related(
+            'author', 'category', 'topic__subject'
+        ).prefetch_related('tags', 'keywords')
         # 非登录用户可以访问全部发布的文章
         if not self.request.user.is_authenticated:
             return queryset.filter(is_publish=True)
@@ -503,6 +506,13 @@ class SubjectListView(generic.ListView):
     context_object_name = 'subjects'
     paginate_by = 100
     paginate_orphans = 0
+
+    def get_queryset(self):
+        # 注解专题下已发布文章数，替代模板里逐个专题调 subject.get_article_count
+        return super().get_queryset().annotate(
+            article_count=Count('topics__articles',
+                                filter=Q(topics__articles__is_publish=True))
+        )
 
 
 class TagListView(generic.ListView):

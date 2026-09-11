@@ -1,5 +1,6 @@
 from django import template
-from ..models import emoji_info
+from django.db.models import Prefetch
+from ..models import emoji_info, ArticleComment
 
 # 创建了新的tags标签文件后必须重启服务器
 register = template.Library()
@@ -19,27 +20,44 @@ def get_comment_count(entry):
 
 @register.simple_tag
 def get_parent_comments(entry):
-    """获取一个文章的父评论列表，逆序只选取后面的20个评论"""
-    lis = entry.article_comments.filter(parent=None).order_by("-id")[:20]
+    """获取一个文章的父评论列表，逆序只选取后面的20个评论。
+
+    一次性预取作者、被回复人、头像/认证所需的社会化账号与邮箱，以及每个父评论的子评论，
+    避免模板里逐条评论回库（原来每条评论会额外触发多次查询）。
+    """
+    cached = getattr(entry, '_parent_comments', None)
+    if cached is not None:
+        return cached
+
+    children = Prefetch(
+        'articlecomment_child_comments',
+        queryset=ArticleComment.objects
+        .select_related('author', 'rep_to__author')
+        .prefetch_related('author__socialaccount_set', 'author__emailaddress_set'),
+        to_attr='prefetched_children',
+    )
+    lis = (entry.article_comments
+           .filter(parent=None)
+           .select_related('author', 'rep_to__author')
+           .prefetch_related('author__socialaccount_set', 'author__emailaddress_set', children)
+           .order_by('-id')[:20])
+    entry._parent_comments = lis
     return lis
 
 
 @register.simple_tag
 def get_child_comments(com):
-    """获取一个父评论的子平路列表"""
-    lis = com.articlecomment_child_comments.all()
-    return lis
+    """获取一个父评论的子评论列表；父评论已在 get_parent_comments 中预取过就直接复用"""
+    prefetched = getattr(com, 'prefetched_children', None)
+    if prefetched is not None:
+        return prefetched
+    return com.articlecomment_child_comments.all()
 
 
 @register.simple_tag
 def get_comment_user_count(entry):
-    """获取评论人总数"""
-    p = []
-    lis = entry.article_comments.all()
-    for each in lis:
-        if each.author not in p:
-            p.append(each.author)
-    return len(p)
+    """获取评论人总数（一条去重计数查询，替代原来把全部评论取回内存去重）"""
+    return entry.article_comments.values('author').distinct().count()
 
 
 @register.simple_tag
