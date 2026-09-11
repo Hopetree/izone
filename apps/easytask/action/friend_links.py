@@ -22,10 +22,11 @@ async def get_link_status(session, url, timeout=5):
 
 
 class LinkChecker:
-    def __init__(self, site_link=None, white_list=None):
+    def __init__(self, site_link=None, white_list=None, concurrency=10):
         """
         :param site_link: 需要在友链页面中检验的外链
         :param white_list: 白名单中的友链将不会被校验
+        :param concurrency: 同时进行的外呼请求数量上限
         """
         self.site_link = site_link
         self.white_list = white_list or []
@@ -33,9 +34,12 @@ class LinkChecker:
             'active_num': 0,
             'to_not_show': 0,
             'to_show': 0,
-            'version': '20240924.04'
+            'version': '20260911.01'
         }
         self.lock = asyncio.Lock()  # 创建一个锁，用于保护共享数据
+        # 限制并发外呼数量：原来 gather 会把所有友链一次性全部发出，
+        # 友链多时可能同时建立大量连接，耗尽文件描述符
+        self.semaphore = asyncio.Semaphore(concurrency)
 
     async def check_link(self, session, active_friend):
         """
@@ -58,23 +62,26 @@ class LinkChecker:
         async with self.lock:
             self.result['active_num'] += 1
 
+        async with self.semaphore:
+            code, text = await get_link_status(session, active_friend.link)
+
         if active_friend.is_show:
-            code, text = await get_link_status(session, active_friend.link)
+            reason = None
             if code != 200:
+                reason = f'网页请求返回{code}'
+            elif self.site_link and not re.findall(self.site_link, text or ''):
+                reason = f'网站未设置本站外链'
+            # 只有状态真的变了才写库：原来无论结果如何都会 save 一次，
+            # 等于每轮检查都给所有健康友链空写一遍数据库
+            if reason is not None:
                 active_friend.is_show = False
-                active_friend.not_show_reason = f'网页请求返回{code}'
+                active_friend.not_show_reason = reason
                 async with self.lock:
                     self.result['to_not_show'] += 1
-            elif self.site_link and not re.findall(self.site_link, text):
-                active_friend.is_show = False
-                active_friend.not_show_reason = f'网站未设置本站外链'
-                async with self.lock:
-                    self.result['to_not_show'] += 1
-            active_friend.save(update_fields=['is_show', 'not_show_reason'])
+                active_friend.save(update_fields=['is_show', 'not_show_reason'])
         else:
-            code, text = await get_link_status(session, active_friend.link)
             if code == 200:
-                if not self.site_link or re.findall(self.site_link, text):
+                if not self.site_link or re.findall(self.site_link, text or ''):
                     active_friend.is_show = True
                     active_friend.not_show_reason = ''
                     async with self.lock:

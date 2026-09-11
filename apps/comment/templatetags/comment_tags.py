@@ -1,6 +1,10 @@
 from django import template
+from django.core.cache import cache
 from django.db.models import Prefetch
 from ..models import emoji_info, ArticleComment
+
+# 未读通知计数的缓存时间（秒）：导航栏每页都会用到，短缓存即可
+NOTIFICATION_COUNT_CACHE_TTL = 60
 
 # 创建了新的tags标签文件后必须重启服务器
 register = template.Library()
@@ -61,44 +65,71 @@ def get_comment_user_count(entry):
 
 
 @register.simple_tag
-def get_notifications(user, f=None):
-    """获取一个用户的对应条件下的提示信息"""
-    if f == 'true':
-        # 获取所有已读通知
-        lis = []
-        lis.extend(user.notification_get.filter(is_read=True))
-        lis.extend(user.systemnotification_recipient.filter(is_read=True))
-    elif f == 'false':
-        # 获取所有未读通知
-        lis = []
-        lis.extend(user.notification_get.filter(is_read=False))
-        lis.extend(user.systemnotification_recipient.filter(is_read=False))
-    else:
-        # 获取所有通知
-        lis = []
-        lis.extend(user.notification_get.all())
-        lis.extend(user.systemnotification_recipient.all())
+def _notification_count_cache_key(user_id, f):
+    return f'comment:notif_count:{user_id}:{f or "all"}'
 
+
+def clear_notification_count_cache(user_id):
+    """通知增删或已读状态变化时清掉计数缓存"""
+    cache.delete_many([_notification_count_cache_key(user_id, f)
+                       for f in ('true', 'false', None)])
+
+
+def clear_all_notification_count_cache():
+    """清掉所有用户的计数缓存（系统通知是群发，定位不到单个用户）"""
+    delete_pattern = getattr(cache, 'delete_pattern', None)
+    if delete_pattern is not None:
+        delete_pattern('comment:notif_count:*')
+    # 若缓存后端不支持按模式删除，则依赖 60 秒 TTL 自然过期
+
+
+@register.simple_tag
+def get_notifications(user, f=None):
+    """获取一个用户的对应条件下的提示信息（最多 50 条）。
+
+    两侧各取最近 50 条再合并排序，避免把所有通知都读进内存；
+    预取评论所属文章与创建者，避免模板逐条回库（模板会用到 each.comment.belong.*）。
+    """
+    limit = 50
+    if f == 'true':
+        q1 = user.notification_get.filter(is_read=True)
+        q2 = user.systemnotification_recipient.filter(is_read=True)
+    elif f == 'false':
+        q1 = user.notification_get.filter(is_read=False)
+        q2 = user.systemnotification_recipient.filter(is_read=False)
+    else:
+        q1 = user.notification_get.all()
+        q2 = user.systemnotification_recipient.all()
+
+    lis = list(q1.select_related('create_p', 'comment__belong').order_by('-create_date')[:limit])
+    lis += list(q2.order_by('-create_date')[:limit])
     # 按照 create_date 字段进行汇总后重新排序
-    lis = sorted(lis, key=lambda x: x.create_date, reverse=True)
-    return lis[:50]
+    lis.sort(key=lambda x: x.create_date, reverse=True)
+    return lis[:limit]
 
 
 @register.simple_tag
 def get_notifications_count(user, f=None):
-    """获取一个用户的对应条件下的提示信息总数"""
+    """获取一个用户的对应条件下的提示信息总数。
+
+    这个标签在导航栏和 base.html 里每页都会调用，直接查询就是每页 2 次 COUNT，
+    因此加 60 秒缓存；标记已读/删除时会立即清缓存（见 comment/signals.py）。
+    """
+    if not user.is_authenticated:
+        return 0
+    cache_key = _notification_count_cache_key(user.id, f)
+    num = cache.get(cache_key)
+    if num is not None:
+        return num
     if f == 'true':
-        num = 0
-        num += user.notification_get.filter(is_read=True).count()
-        num += user.systemnotification_recipient.filter(is_read=True).count()
+        num = (user.notification_get.filter(is_read=True).count()
+               + user.systemnotification_recipient.filter(is_read=True).count())
     elif f == 'false':
-        num = 0
-        num += user.notification_get.filter(is_read=False).count()
-        num += user.systemnotification_recipient.filter(is_read=False).count()
+        num = (user.notification_get.filter(is_read=False).count()
+               + user.systemnotification_recipient.filter(is_read=False).count())
     else:
-        num = 0
-        num += user.notification_get.all().count()
-        num += user.systemnotification_recipient.all().count()
+        num = user.notification_get.count() + user.systemnotification_recipient.count()
+    cache.set(cache_key, num, NOTIFICATION_COUNT_CACHE_TTL)
     return num
 
 

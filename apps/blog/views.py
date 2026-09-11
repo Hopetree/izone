@@ -306,6 +306,9 @@ class TimelineView(generic.ListView):
     model = Timeline
     template_name = 'blog/timeline.html'
     context_object_name = 'timeline_list'
+    # 时间线原来是全量返回，随记录增长会一直变大；分页后模板里有对应的翻页控件
+    paginate_by = 100
+    paginate_orphans = 0
 
     def get_ordering(self):
         return '-update_date',
@@ -641,7 +644,8 @@ def notes_api(request):
         }, json_dumps_params={'ensure_ascii': False})
 
     # GET
-    notes_qs = Note.objects.filter(is_publish=True).order_by('-create_date')
+    # 便签前端是一次性拉取渲染，这里加个上限避免将来无界返回全部正文
+    notes_qs = Note.objects.filter(is_publish=True).order_by('-create_date')[:500]
     notes_list = [
         {
             'id': n.pk,
