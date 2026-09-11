@@ -41,26 +41,29 @@ def white_list_check(lis, string):
 
 def action_update_article_cache():
     """
-    更新所有文章的缓存，缓存格式跟文章视图保持一致
+    预热文章 markdown 缓存，缓存格式跟文章视图保持一致。
+
+    原来用 cache.keys('article:markdown:*') 扫全部 key，Redis 的 KEYS 会阻塞服务端；
+    改为逐篇 cache.get 判断，并且只处理已发布文章、正文延迟加载（未命中的才取 body）。
     @return:
     """
     from django.core.cache import cache
     from blog.models import Article
 
     total_num, done_num = 0, 0
-    # 查询到所有缓存的key；缓存不可用时（IGNORE_EXCEPTIONS）keys 会返回 None，兜底成空列表
-    keys = cache.keys('article:markdown:*') or []
-    for obj in Article.objects.all():
+    # 只取 id/update_date，正文延迟到确实需要渲染时再取，避免把所有文章正文读进内存
+    for obj in Article.objects.filter(is_publish=True).only('id', 'update_date'):
         total_num += 1
-        ud = obj.update_date.strftime("%Y%m%d%H%M%S")
+        ud = obj.update_date.strftime('%Y%m%d%H%M%S')
         md_key = f'article:markdown:{obj.id}:{ud}'
-        # 设置不存在的缓存
-        if md_key not in keys:
-            md = make_markdown()
-            processed_content, has_mermaid = preprocess_mermaid_blocks(obj.body)
-            # 设置过期时间的时候分散时间，不要设置成同一时间
-            cache.set(md_key, (md.convert(processed_content), md.toc, has_mermaid), 3600 * 24 * 7 + 10 * done_num)
-            done_num += 1
+        if cache.get(md_key):
+            continue
+        md = make_markdown()
+        processed_content, has_mermaid = preprocess_mermaid_blocks(obj.body)
+        # 设置过期时间的时候分散时间，不要设置成同一时间
+        cache.set(md_key, (md.convert(processed_content), md.toc, has_mermaid),
+                  3600 * 24 * 7 + 10 * done_num)
+        done_num += 1
     data = {'total': total_num, 'done': done_num}
     return data
 
@@ -205,35 +208,46 @@ def action_baidu_push(baidu_url, weeks):
 
 def action_check_site_links(white_domain_list=None):
     """
-    校验导航网站有效性，只校验状态为True或者False的，为空的不校验，所以特殊地址可以设置成空跳过校验
+    校验导航网站有效性，只校验状态为True或者False的，为空的不校验，所以特殊地址可以设置成空跳过校验。
+
+    原来逐个站点串行请求（每个超时 5s），站点多时会把单人 celery worker 长时间占住；
+    这里改为有界并发（最多 8 个线程），总耗时不随站点数量线性增长。
     @param white_domain_list: 域名白名单
     @return:
     """
+    from concurrent.futures import ThreadPoolExecutor
     from webstack.models import NavigationSite
 
     white_domain_list = white_domain_list or []
-    active_num = 0
-    to_not_show = 0
-    to_show = 0
     active_site_list = NavigationSite.objects.filter(is_show__isnull=False)
-    for site in active_site_list:
-        active_num += 1
-        # 当站点包含白名单域名则直接跳过校验
-        if white_list_check(white_domain_list, site.link):
-            continue
+    active_num = active_site_list.count()
+    # 白名单站点直接跳过校验
+    sites = [s for s in active_site_list if not white_list_check(white_domain_list, s.link)]
+
+    def check_one(site):
+        """返回 'to_not_show' / 'to_show' / None"""
+        code, _ = get_link_status(site.link)
         if site.is_show is True:
-            code, text = get_link_status(site.link)
             if code < 200 or code >= 400:
                 site.is_show = False
                 site.not_show_reason = f'网页请求返回{code}'
                 site.save(update_fields=['is_show', 'not_show_reason'])
-                to_not_show += 1
+                return 'to_not_show'
         else:
-            code, text = get_link_status(site.link)
             if 200 <= code < 400:
                 site.is_show = True
                 site.not_show_reason = ''
                 site.save(update_fields=['is_show', 'not_show_reason'])
+                return 'to_show'
+        return None
+
+    to_not_show = 0
+    to_show = 0
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for outcome in pool.map(check_one, sites):
+            if outcome == 'to_not_show':
+                to_not_show += 1
+            elif outcome == 'to_show':
                 to_show += 1
     data = {'active_num': active_num, 'to_not_show': to_not_show, 'to_show': to_show}
     return data
@@ -524,6 +538,7 @@ def action_get_feed_data():
     采集feed数据并回写到数据库
     """
     import feedparser
+    import requests
     from blog.models import FeedHub
 
     headers = {
@@ -535,7 +550,10 @@ def action_get_feed_data():
     for feed in feed_items:
         try:
             data = {}
-            feed_parser = feedparser.parse(feed.url, request_headers=headers)
+            # feedparser.parse(url) 内部不带超时，慢站点会无限期挂住单人 worker；
+            # 先用 requests 带超时取回内容，再交给 feedparser 解析
+            response = requests.get(feed.url, headers=headers, timeout=8)
+            feed_parser = feedparser.parse(response.content)
             entries = [{'title': each['title'], 'link': each['link']} for each in
                        feed_parser['entries']]
             # 如果没有内容就不要去更新之前的数据，避免把数据清空

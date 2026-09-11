@@ -297,8 +297,16 @@ CELERY_RESULT_SERIALIZER = 'json'
 # 每个 worker 最多执行n个任务就会被销毁，可防止内存泄露
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
 # 为存储结果设置过期日期，默认1天过期。如果beat开启，Celery每天会自动清除，0表示永不清理
-# 这里可以设置成0，然后自己创建清理结果的机制，比较好控制
-CELERY_RESULT_EXPIRES = 0
+# 单人 worker 下高频任务（每分钟的监控检查）会不断写入结果表，这里设成 1 天自动清理
+CELERY_RESULT_EXPIRES = 3600 * 24
+# 单人 worker（--pool=solo）预取 1 条即可，避免消息在进程内积压
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+# 任务执行完再 ack：worker 意外退出时任务可重新投递，避免丢失
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+# broker 可见性超时（秒）必须大于最长任务耗时，否则长任务会被重复投递；
+# 仓库/七牛同步等任务可能跑很久，这里给到 12 小时
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 12 * 3600}
 # *************************************** celery 配置结束 ***************************************
 
 

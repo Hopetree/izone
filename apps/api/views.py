@@ -8,7 +8,7 @@ from webstack.models import NavigationSite
 from blog.models import Article, Tag, Category, Timeline
 from oauth.models import Ouser
 from tool.models import ToolLink
-from .serializers import (UserSerializer, ArticleSerializer,
+from .serializers import (UserSerializer, ArticleSerializer, ArticleListSerializer,
                           TimelineSerializer, TagSerializer,
                           CategorySerializer, ToolLinkSerializer,
                           NavigationSiteSerializer)
@@ -33,9 +33,17 @@ class ArticleListSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    def get_serializer_class(self):
+        # 列表接口用不含 body 的序列化器，避免一次返回 20 篇全文
+        if self.action == 'list':
+            return ArticleListSerializer
+        return ArticleSerializer
+
     def get_queryset(self):
-        # 仅返回 is_publish=True 的数据
-        return Article.objects.filter(is_publish=True)
+        # 仅返回 is_publish=True 的数据，并预取序列化用到的关联对象，避免逐条回库
+        return Article.objects.filter(is_publish=True).select_related(
+            'author', 'category', 'topic__subject'
+        ).prefetch_related('tags', 'keywords')
 
 
 class TagListSet(viewsets.ModelViewSet):

@@ -170,7 +170,8 @@ def clear_expired_sessions():
     return response.as_dict()
 
 
-@shared_task
+# 每分钟执行一次的高频任务，不保存结果，避免 TaskResult 表被无意义地撑大
+@shared_task(ignore_result=True)
 def check_host_status(recipient_list=None, times=None, ignore_hours=None):
     """
     定时检查服务监控的节点状态
@@ -258,6 +259,11 @@ def clear_cache_with_prefix(pattern_keys):
     response.data = result
     return response.as_dict()
 
+# 动态脚本执行的硬超时与输出长度上限：避免脚本挂住单人 worker、把超大输出塞进任务结果
+TASK_SCRIPT_TIMEOUT = 300
+TASK_SCRIPT_MAX_OUTPUT = 100 * 1024
+
+
 @shared_task
 def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="/usr/bin/bash", **kwargs):
     """执行数据库中的 Python/Shell 代码，并注入环境变量"""
@@ -283,20 +289,32 @@ def execute_task(script_name, python_path="/usr/local/bin/python3", shell_path="
             temp_script.write(script_code.encode("utf-8"))
             temp_script_path = temp_script.name  # 获取文件路径
 
-        # 设置环境变量
-        # process_env = os.environ.copy()
-        process_env = {}
+        # 只继承脚本运行必需的基础变量（避免把容器里的密钥等环境变量暴露给脚本），再叠加数据库配置
+        process_env = {k: os.environ[k] for k in ('PATH', 'HOME', 'LANG', 'TZ') if k in os.environ}
         process_env.update(env_vars)
 
-        # 执行脚本
-        if script_type == "python":
-            result = subprocess.run([python_path, temp_script_path], capture_output=True, text=True, env=process_env)
-        else:
-            result = subprocess.run([shell_path, temp_script_path], capture_output=True, text=True, env=process_env)
+        cmd = [python_path if script_type == "python" else shell_path, temp_script_path]
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, env=process_env,
+                                    timeout=TASK_SCRIPT_TIMEOUT)
+            stdout, stderr = result.stdout, result.stderr
+        except subprocess.TimeoutExpired as exc:
+            stdout = exc.stdout.decode('utf-8', 'replace') if isinstance(exc.stdout, bytes) else (exc.stdout or '')
+            stderr = f'脚本执行超时（超过 {TASK_SCRIPT_TIMEOUT} 秒，已终止）'
+        finally:
+            # 清理临时文件，避免磁盘上不断堆积
+            try:
+                os.remove(temp_script_path)
+            except OSError:
+                pass
 
-        response.data = {"script_name":script_name, "temp_script_path":temp_script_path, "stdout": result.stdout, "stderr": result.stderr}
+        response.data = {
+            "script_name": script_name,
+            "stdout": (stdout or '')[:TASK_SCRIPT_MAX_OUTPUT],
+            "stderr": (stderr or '')[:TASK_SCRIPT_MAX_OUTPUT],
+        }
 
     except TaskScript.DoesNotExist:
-        response.data = {"script_name":script_name, "error": "Script not found"}
+        response.data = {"script_name": script_name, "error": "Script not found"}
 
     return response.as_dict()

@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
-import time
 import logging
 from functools import wraps
 from datetime import datetime
 from django.apps import apps as django_apps
+from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.http import JsonResponse
@@ -200,24 +200,15 @@ def add_views(url, name=None, is_cache=True):
                 # 获取或者创建一个实例
                 # logger.info(request.headers.items())
                 if check_request_headers(request.headers):
-                    page_views = PageView.objects.filter(url=url)
-                    if page_views:
-                        obj = page_views.first()
-                    else:
+                    obj = PageView.objects.filter(url=url).first()
+                    if obj is None:
                         obj = PageView(url=url, name=name, views=0)
                         obj.save()
 
-                    if is_cache:  # 要判断缓存，则存状态
-                        cache_key = f'page_views:read:{url}'
-                        is_read_time = request.session.get(cache_key)
-                        if not is_read_time:
+                    if is_cache:
+                        # 用 Redis SET NX EX 做 30 分钟去重，替代原来读写 DB session 表
+                        if cache.add(f'page_views:read:{url}', 1, 60 * 30):
                             obj.update_views()
-                            request.session[cache_key] = time.time()
-                        else:
-                            t = time.time() - is_read_time
-                            if t > 60 * 30:
-                                obj.update_views()
-                                request.session[cache_key] = time.time()
                     else:
                         obj.update_views()
             # ******* 浏览量增加的逻辑 *******
