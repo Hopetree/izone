@@ -307,8 +307,9 @@ docker build --build-arg pip_index_url=http://mirrors.aliyun.com/pypi/simple/ \
 | `IZONE_SITE_DESCRIPTION` | 网站描述 | 内置文本 |
 | `IZONE_SITE_KEYWORDS` | 网站关键词 | 内置文本 |
 | `IZONE_EMAIL_*` | 邮件服务器配置 | 163 SMTP 默认值 |
-| `IZONE_PROTOCOL_HTTPS` | HTTP/HTTPS 协议 | `HTTP` |
+| `IZONE_PROTOCOL_HTTPS` | 站点协议；为 `https` 时给 session/CSRF cookie 加 `Secure` 标记（`SESSION_COOKIE_SECURE` / `CSRF_COOKIE_SECURE`），同时供 allauth 与绝对链接使用 | `HTTP` |
 
 | — | 2026-07-24 | 根据 commit 2ca6b0b 更新：项目结构新增 scripts 应用，请求处理流程新增脚本数据 |
 | — | 2026-09-05 | 根据 commit f7b1c7e 更新：搜索引擎切换为 MySQL FULLTEXT(n-gram)，移除 haystack/Whoosh；Celery Worker 与 Beat 合并单进程；supervisord 日志轮转；删除 whoosh_index 相关内容 |
 | — | 2026-09-11 | 根据 commit 292318d..2e20394 更新：补充 Redis 缓存清单（feed 正文/站点配置/侧边栏/未读计数/RSSHub）与 KEY_PREFIX、IGNORE_EXCEPTIONS、SESSION_ENGINE=cached_db、CONN_MAX_AGE；补充 Celery Worker 关键配置（prefetch/acks_late 策略/result 过期/visibility_timeout）与任务实现要点（脚本超时与输出上限、外呼并发上限、feed 超时）；新增 §3.4 缓存失效、浏览量按访客去重与列表分页 |
+| — | 2026-09-11 | 部署安全配置：`IZONE_PROTOCOL_HTTPS=https` 时启用 `SESSION_COOKIE_SECURE`/`CSRF_COOKIE_SECURE`（全站已由边缘 301 强制 HTTPS；注意不要开启 `SECURE_SSL_REDIRECT`，未配 `SECURE_PROXY_SSL_HEADER` 会导致重定向循环）；补生成 easytask 0002（AlterModelOptions，无 DDL）使 `makemigrations --check` 恢复干净 |

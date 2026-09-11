@@ -52,6 +52,7 @@ izone 是一个基于 **Django 2.2 + Bootstrap 4** 的个人博客站点，除�
 - 缓存失效：`blog/signals.py` 按模型精确失效（Article 全清、Tag/Category/MenuLink/ArticleComment 只清各自影响的 key；Article 仅 `views` 变化时跳过）
 - 访问量统计：`blog.utils.add_views` 装饰器与文章详情页均用 Redis `cache.add` 做 **30 分钟按访客去重**（key 里必须带 `session_key`，缺访客维度会退化成全站每 URL 只计 1 次）+ UA 黑名单过滤，作者与超管不计数；每日统计由 Celery 夜间任务写入 `ArticleView`
 - **Session 用 `cached_db`（读 Redis、写 Redis+MySQL）**，`CONN_MAX_AGE=60` 复用数据库连接；匿名访客首次计数访问会创建 session，依赖定时任务 `clear_expired_sessions` 清理
+- 全站 HTTPS 部署（边缘 301 强制）时 `IZONE_PROTOCOL_HTTPS=https` 会打开 `SESSION_COOKIE_SECURE`/`CSRF_COOKIE_SECURE`；**不要开启 `SECURE_SSL_REDIRECT`**（未配 `SECURE_PROXY_SSL_HEADER`，会重定向循环）
 
 ### Celery（2026-09-05 优化后，2026-09-11 补充配置）
 

@@ -37,6 +37,12 @@ DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
 
+# 站点协议：IZONE_PROTOCOL_HTTPS=https 表示全站走 HTTPS（边缘已 301 强制）。
+# 在这里统一解析一次，供 allauth、sitemap/绝对链接以及 cookie 的 Secure 标记共用，
+# 避免多处各自读环境变量、日后只改动其中一处时产生行为漂移。
+PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+IS_HTTPS = PROTOCOL_HTTPS == 'https'
+
 # Application definition
 
 # 添加了新的app需要重启服务器
@@ -116,7 +122,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 # 登出直接退出，不用确认
 ACCOUNT_LOGOUT_ON_GET = True
 # 是否https
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = PROTOCOL_HTTPS
 
 # 表单插件的配置
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -274,6 +280,12 @@ CACHES = {
 
 # session 读写走 cached_db（读 Redis、写同时落库），避免每个请求都查一次 session 表
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# 全站走 HTTPS（边缘已 301 强制）时给 session/CSRF cookie 加 Secure 标记；
+# IS_HTTPS 已在文件顶部统一解析（见 PROTOCOL_HTTPS），本地 HTTP 开发不受影响。
+# 注意：本就依赖边缘跳转，因此不要同时打开 SECURE_SSL_REDIRECT——本仓库未配
+# SECURE_PROXY_SSL_HEADER，Django 看到的是 HTTP，开启会造成重定向循环。
+SESSION_COOKIE_SECURE = IS_HTTPS
+CSRF_COOKIE_SECURE = IS_HTTPS
 
 
 # *************************************** celery 配置开始 ***************************************
@@ -359,8 +371,7 @@ CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
 LA51_PROTOCOL = os.getenv('IZONE_LA51_PROTOCOL', '')
 # 站长推送
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
-# 使用 http 还是 https （sitemap 中的链接可以体现出来）
-PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+# 使用 http 还是 https （sitemap 中的链接可以体现出来）；PROTOCOL_HTTPS 已在文件顶部统一定义
 # 文章页面的打赏二维码，必须微信和支付宝都存在才会显示打赏
 REWARD_WX = os.getenv('IZONE_REWARD_WX', '')
 REWARD_ZFB = os.getenv('IZONE_REWARD_ZFB', '')

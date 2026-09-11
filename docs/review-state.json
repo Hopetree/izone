@@ -1,14 +1,9 @@
 {
-  "last_reviewed_commit": "2e203945f5b33727a9689b9366315ff36cf49d15",
-  "last_reviewed_commit_short": "2e20394",
+  "last_reviewed_commit": "55c3d862ee66d38e30e315377853d4ae0c5fbf28",
+  "last_reviewed_commit_short": "55c3d86",
   "last_review_date": "2026-09-11",
-  "last_review_summary": "复审今天 7 次提交(292318d..2e20394，含修复提交 2e20394)，采用实测方式：全站 14 个 URL 冒烟无 5xx、逐页 SQL 聚类验证 N+1、事务回滚造数验证、93 个模板编译、check/check --deploy/makemigrations --check。#10-#16 修复逐项实测通过。并只读核实生产：生产仍跑 2026-09-06 构建（今天提交未上线，故 #10 回归未在生产发生）；生产 Celery beat 已有每日执行的 clear_expired_sessions（原 #17 作废撤回）、session 表处稳态；数据库连接余量充足；已确认 Celery 在任务前后接 close_old_connections，CONN_MAX_AGE=60 安全（细节见本地记忆，不写入仓库）。新发现待处理：#18 详情页文章取两遍、#19-#22 四项健壮性/优化（按用户决定只留记录不修）。生产就绪项：makemigrations --check 有 easytask 既有 Meta 漂移（用户确认部署不跑该检查，保持现状）、check --deploy 8 条安全警告（既有配置）。文档已按确认同步 01_PRD/02_TDD/04_API/README/AGENTS.md。 2026-09-11 按 --fix 修复 #18–#22（详情页重复取文章、映射兜底、Subject 失效信号、评论数走注解、easytask 日志路由），修复提交见 git log。",
+  "last_review_summary": "复审今天 8 次提交(292318d..55c3d86)，实测方式：16 URL 冒烟无 4xx/5xx、逐页 SQL 实测、事务回滚造数验证、93 个模板编译、check/check --deploy/makemigrations --check。第一轮修复 2e20394（#10-#16）逐项实测通过；第二轮 55c3d86 修复 #18-#22 也已逐项实测：详情页 SQL 18→13（文章主查询 2→1、tags/keywords 预取各 2→1）、两条独立评论 COUNT 归零且渲染值与库内一致（4/0/0/106，参与人数 35 也对）、未注册 sender 不抛异常并兜底清全部、Subject 只清 blog_info、easytask 日志路由到 error_file。重写 DetailView.get 后浏览量仍为 A+1/A再访0/B+1，302 路径与编辑页均正常，#20 注解未影响 DetailEditView。原 #17 经生产只读核实撤回（生产 beat 早已有每日 clear_expired_sessions，session 表稳态）。本轮无待处理问题。生产就绪项（既有，保持现状）：makemigrations --check 有 easytask Meta 漂移、check --deploy 8 条安全警告（其中 SESSION_COOKIE_SECURE 建议开启）。 2026-09-11 追加审查未提交的工作区改动（HTTPS cookie 安全配置 + easytask 0002 迁移 + AGENTS.md/02_TDD 同步）：实测 Secure 标记随 IZONE_PROTOCOL_HTTPS 正确开关、迁移无 DDL、makemigrations --check 已干净；生产只读核实确认容器 env 已有 IZONE_PROTOCOL_HTTPS=https 与 IZONE_DEBUG=False，故配置上线即生效。新发现 3 项 🟢 待处理：#23 同一环境变量两处派生且命名不一致、#24 check --deploy 结论未标注前提、#25 迁移文件未纳入版本控制。 2026-09-11 按 --fix 修复 #23-​#25（协议配置收敛为单一来源、报告补环境前提、迁移纳入版本控制），修复随本次提交入库。",
   "documents_updated": [
-    "docs/design/01_PRD_产品需求规格说明书.md",
-    "docs/design/02_TDD_架构设计文档.md",
-    "docs/design/04_API_接口文档.md",
-    "README.md",
-    "AGENTS.md",
     "docs/code-review.md"
   ],
   "documents": [
