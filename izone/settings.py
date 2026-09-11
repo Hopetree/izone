@@ -430,6 +430,12 @@ LOGGING = {
             'level': 'WARNING',
             'propagate': False,
         },
+        # 项目内业务日志（如 easytask 任务的告警），走错误日志而不是 django 的访问日志
+        'easytask': {
+            'handlers': ['error_file', 'console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
     }
 }
 # ****************************************** 日志配置结束 *****************************************

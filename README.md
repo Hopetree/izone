@@ -52,13 +52,13 @@
 - 全文搜索（MySQL FULLTEXT n-gram 中文分词，直接查询实时数据）
 - 文章评论系统（二级回复、微博表情、Markdown）、评论通知
 - 用户认证（Django 用户系统 + OAuth 微博/GitHub 第三方登录）
-- 浏览量统计（爬虫过滤、session 去重、每日快照）
-- 友链管理（在线申请、定时自动校链）
+- 浏览量统计（爬虫 UA 过滤、按访客 30 分钟去重、每日快照）
+- 友链管理（在线申请、定时自动校链，外呼有并发上限）
 - RSS 订阅、Sitemap 网站地图、百度 SEO 推送
-- RESTful API（条件启用，DRF DefaultRouter）
+- RESTful API（条件启用，DRF DefaultRouter；列表接口不返回正文）
 - 在线工具（条件启用）、服务监控、导航网站、流程图、脚本工具分享
 - 响应式设计（PC / iPad / 手机），暗色主题支持
-- Redis 缓存系统，Celery 定时任务调度
+- Redis 缓存（文章渲染/RSS 正文/站点配置/侧边栏统计/未读计数），Celery 定时任务调度
 
 ## 快速开始
 
@@ -144,3 +144,4 @@ izone/
 
 | — | 2026-07-24 | 根据 commit 2ca6b0b 更新：文档索引新增 Code Review 报告，功能列表新增脚本工具分享 |
 | — | 2026-09-05 | 搜索切换为 MySQL FULLTEXT（移除 haystack/Whoosh）；Celery Worker 与 Beat 合并单进程；新增 AGENTS.md |
+| — | 2026-09-11 | 浏览量改为按访客 30 分钟 Redis 去重；补充缓存清单与列表接口不返回正文；友链校链并发上限 |

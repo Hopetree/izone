@@ -304,8 +304,12 @@ DELETE /openapi/v1/articles/{id}/    # 删除文章
 | 权限 | `IsAdminUser`（全部操作需管理员） |
 | 认证 | BasicAuth / SessionAuth |
 | 过滤 | 仅返回 `is_publish=True` 的文章 |
+| 列表载荷 | 列表接口（`GET /articles/`）用 `ArticleListSerializer`，**不返回 `body`**；详情与创建/更新用 `ArticleSerializer`，返回完整字段（含 `body`） |
+| 查询优化 | 列表与详情均 `select_related(author, category, topic__subject)` + `prefetch_related(tags, keywords)`，避免逐条回库 |
 
 `ArticleSerializer` 嵌套了 `CategorySerializer`（分类详情）和 `TagSerializer`（标签列表），keywords 以 `SlugRelatedField` 展示名称数组。
+
+> **注意**：列表接口的响应中**没有 `body` 字段**。需要正文请调用详情接口 `GET /articles/{id}/`。
 
 ### 6.2 标签
 

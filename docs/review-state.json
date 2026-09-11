@@ -1,9 +1,14 @@
 {
-  "last_reviewed_commit": "36817bcdd68868f75f74fbdb03c95d86bf162cdc",
-  "last_reviewed_commit_short": "36817bc",
+  "last_reviewed_commit": "2e203945f5b33727a9689b9366315ff36cf49d15",
+  "last_reviewed_commit_short": "2e20394",
   "last_review_date": "2026-09-11",
-  "last_review_summary": "审查今天6次提交(292318d..36817bc，并复核fa87ad0)：N+1消除(详情/列表/专题/评论/通知)、侧边栏与站点配置缓存、浏览量去重改Redis、Celery与缓存配置、RSS外呼兜底、静态资源懒加载与版本号、mermaid断链修复。发现1个🔴+3个🟡+3个🟢问题（#10-#16），已于 2026-09-11 按 --fix 全部修复并验证；#10为浏览量去重键缺访客维度的功能回归。文档影响分析已输出（01_PRD/02_TDD/04_API/README/AGENTS.md），等待用户确认后写入。 修复提交见 git log（--fix 后的提交）。",
+  "last_review_summary": "复审今天 7 次提交(292318d..2e20394，含修复提交 2e20394)，采用实测方式：全站 14 个 URL 冒烟无 5xx、逐页 SQL 聚类验证 N+1、事务回滚造数验证、93 个模板编译、check/check --deploy/makemigrations --check。#10-#16 修复逐项实测通过。并只读核实生产：生产仍跑 2026-09-06 构建（今天提交未上线，故 #10 回归未在生产发生）；生产 Celery beat 已有每日执行的 clear_expired_sessions（原 #17 作废撤回）、session 表处稳态；数据库连接余量充足；已确认 Celery 在任务前后接 close_old_connections，CONN_MAX_AGE=60 安全（细节见本地记忆，不写入仓库）。新发现待处理：#18 详情页文章取两遍、#19-#22 四项健壮性/优化（按用户决定只留记录不修）。生产就绪项：makemigrations --check 有 easytask 既有 Meta 漂移（用户确认部署不跑该检查，保持现状）、check --deploy 8 条安全警告（既有配置）。文档已按确认同步 01_PRD/02_TDD/04_API/README/AGENTS.md。 2026-09-11 按 --fix 修复 #18–#22（详情页重复取文章、映射兜底、Subject 失效信号、评论数走注解、easytask 日志路由），修复提交见 git log。",
   "documents_updated": [
+    "docs/design/01_PRD_产品需求规格说明书.md",
+    "docs/design/02_TDD_架构设计文档.md",
+    "docs/design/04_API_接口文档.md",
+    "README.md",
+    "AGENTS.md",
     "docs/code-review.md"
   ],
   "documents": [
@@ -36,6 +41,12 @@
       "type": "README",
       "description": "项目 README，包含技术栈、文档索引和快速开始指南",
       "created_at": "2026-06-25"
+    },
+    {
+      "path": "AGENTS.md",
+      "type": "GUIDE",
+      "description": "代理工作指南：项目概览、架构、搜索/缓存/统计/Celery 现状、构建部署约束与 Git 工作流（仅项目内容，不含运维信息）",
+      "created_at": "2026-09-11"
     },
     {
       "path": "docs/code-review.md",

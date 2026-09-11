@@ -47,13 +47,18 @@ izone 是一个基于 **Django 2.2 + Bootstrap 4** 的个人博客站点，除�
 
 ### 缓存与统计
 
-- django-redis（`blog.utils.RedisKeys` 定义 key 模式）；`blog.context_processors.settings_info` 提供全局模板上下文
-- 访问量统计：`blog.utils.add_views` 装饰器 + UA 过滤 + 30 分钟会话去重，每日统计由 Celery 夜间任务写入 `ArticleView`
+- django-redis（`blog.utils.RedisKeys` 定义 key 模式，全局 `KEY_PREFIX=izone`，`IGNORE_EXCEPTIONS` 让 Redis 抖动时静默降级）；`blog.context_processors.settings_info` 提供全局模板上下文
+- 缓存对象：文章 Markdown（7 天）、RSS feed 正文（7 天，独立 key）、站点配置（1 小时）、侧边栏统计/标签/分类/菜单（1 小时）、未读通知计数（60 秒）
+- 缓存失效：`blog/signals.py` 按模型精确失效（Article 全清、Tag/Category/MenuLink/ArticleComment 只清各自影响的 key；Article 仅 `views` 变化时跳过）
+- 访问量统计：`blog.utils.add_views` 装饰器与文章详情页均用 Redis `cache.add` 做 **30 分钟按访客去重**（key 里必须带 `session_key`，缺访客维度会退化成全站每 URL 只计 1 次）+ UA 黑名单过滤，作者与超管不计数；每日统计由 Celery 夜间任务写入 `ArticleView`
+- **Session 用 `cached_db`（读 Redis、写 Redis+MySQL）**，`CONN_MAX_AGE=60` 复用数据库连接；匿名访客首次计数访问会创建 session，依赖定时任务 `clear_expired_sessions` 清理
 
-### Celery（2026-09-05 优化后）
+### Celery（2026-09-05 优化后，2026-09-11 补充配置）
 
 - **worker 与 beat 合并为单进程**：`celery -A izone worker -l info -B --pool=solo`（Celery 4.4 的嵌入式 beat 会作为子进程，实际是 supervisord + gunicorn master/worker + celery 共 4 个 Python 进程）
+- 关键配置（`izone/settings.py`）：`prefetch_multiplier=1`；**`CELERY_TASK_ACKS_LATE=False`（默认收到即 ack，脚本执行/推送等非幂等任务重复执行代价高于丢失），仅 `update_cache` 显式 `acks_late=True`**；`result_expires=1 天`；`visibility_timeout=12 小时`
 - 任务定义在 `apps/easytask/tasks.py`：缓存刷新、友链检查、通知清理、百度推送、日访问量统计、feed 采集、session 清理、主机监控、动态脚本执行等
+- 任务实现注意：外呼一律带超时（feed 8s、友链/导航 5s）；批量校验用有界并发（友链 semaphore、导航 8 线程且线程内 `connection.close()`）；`execute_task` 有 300s 硬超时与 100KB 输出截断，只继承 PATH/HOME/LANG/TZ
 - 定时调度用 `django_celery_beat` DatabaseScheduler（admin 里管理），admin 还有「运行任务」页面（`blog/task_views.py`，`send_task` 动态执行）
 
 ### 关键模式

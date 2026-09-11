@@ -13,7 +13,7 @@ from django.db.models import Sum
 from blog.models import Article, ArticleView, PageView
 from blog.views import make_markdown, preprocess_mermaid_blocks
 
-logger = logging.getLogger('django')
+logger = logging.getLogger(__name__)
 
 
 def get_link_status(url):

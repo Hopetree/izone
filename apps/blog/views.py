@@ -152,10 +152,13 @@ class BaseDetailView(generic.DetailView):
 
     def get_queryset(self):
         # 普通用户只能看发布的文章，作者和管理员可以看到未发布的
-        # 预取作者/分类/主题(含所属专题)以及标签/关键词，避免详情页模板逐项回库
+        # 预取作者/分类/主题(含所属专题)以及标签/关键词，并注解评论数，
+        # 避免详情页模板逐项回库（模板用 get_comment_count 复用这个注解）
         queryset = super().get_queryset().select_related(
             'author', 'category', 'topic__subject'
-        ).prefetch_related('tags', 'keywords')
+        ).prefetch_related('tags', 'keywords').annotate(
+            comment_num=Count('article_comments')
+        )
         # 非登录用户可以访问全部发布的文章
         if not self.request.user.is_authenticated:
             return queryset.filter(is_publish=True)
@@ -199,14 +202,14 @@ class DetailView(BaseDetailView):
     template_name = 'blog/detail.html'
 
     def get(self, request, *args, **kwargs):
-        # 获取实例
-        instance = self.get_object()
+        # 复用同一个实例：原来先 self.get_object() 判断有无主题，再交回 super().get()
+        # 又会 get_object() 一次；加上 select_related/prefetch 等于把整篇（含 tags/keywords）取两遍
+        self.object = instance = self.get_object()
         # 如果有主题，则跳转到主题格式的文章详情页
         if instance.topic:
-            redirect_url = reverse('blog:subject_detail', kwargs={'slug': instance.slug})
-            return redirect(redirect_url)
-        # 如果不满足条件，则继续处理视图逻辑
-        return super().get(request, *args, **kwargs)
+            return redirect(reverse('blog:subject_detail', kwargs={'slug': instance.slug}))
+        # 与 BaseDetailView.get 一致：用已取到的实例渲染
+        return self.render_to_response(self.get_context_data(object=instance))
 
 
 class SubjectDetailView(BaseDetailView):
