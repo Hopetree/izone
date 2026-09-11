@@ -1,8 +1,8 @@
 # Code Review 报告
 
-**审查范围**：`292318d` → `55c3d86`（8 次提交）+ **未提交的工作区改动**（`izone/settings.py` HTTPS cookie 安全配置、新增 `apps/easytask/migrations/0002_auto_20260911_1413.py`、`AGENTS.md` / `02_TDD` 文档同步）
+**审查范围**：`292318d` → `9c30f5a`（2026-09-11 的 9 次提交，含三轮修复 `2e20394`、`55c3d86`、`9c30f5a`）
 **日期**：2026-09-11
-**复核方式**：Django 测试客户端全站冒烟（16 个 URL）+ `CaptureQueriesContext` 逐页 SQL 实测 + 事务内造数回滚验证 + 93 个模板编译 + `check` / `check --deploy` / `makemigrations --check` + 生产环境只读核实
+**复核方式**：Django 测试客户端全站冒烟（19 个 URL）+ `CaptureQueriesContext` 逐页 SQL 实测 + 事务内造数回滚验证 + 93 个模板编译 + 真实响应头核对 cookie 标记 + `check` / `check --deploy` / `makemigrations --check` / `sqlmigrate` + 生产环境只读核实
 
 ---
 
@@ -69,7 +69,17 @@
 | 22 | ✅ 有效 | `logger.name == 'easytask.actions'`；`LOGGING['loggers']['easytask']` = `error_file`(TimedRotatingFileHandler) + `console`，`propagate=False`；按前缀规则 `easytask.actions` 命中该配置，生产（DEBUG=False、console 被 `require_debug_true` 过滤）下告警进 `log/izone-error.log` 而不再落到 lastResort/stderr |
 | — | ✅ 无回归 | 93/93 模板编译通过；`manage.py check` 通过；16 个 URL 冒烟无 4xx/5xx；`DetailEditView`（另一套 queryset，未受注解影响）编辑页与草稿编辑页均 200；`comment_tags` 已在两个模板中 load |
 
----
+### 第三轮：commit `9c30f5a`（修复 #23–#25 + 提交两项上线准备）
+
+| 项 | 结论 | 实测证据 |
+|----|------|----------|
+| #23 协议配置单一来源 | ✅ 有效 | 全仓库现在只有 `settings.py:43` 一处读 `IZONE_PROTOCOL_HTTPS`；`ACCOUNT_DEFAULT_HTTP_PROTOCOL` / `PROTOCOL_HTTPS` / cookie 三处复用。取值与改动前**逐项一致**：默认 `PROTOCOL_HTTPS='http'`、`IS_HTTPS=False`、`ACCOUNT='http'`、`site_protocol()='http'`、cookies=False；`=https` 时全部翻转为 `'https'/True`；大写 `HTTPS` 也能正确识别 |
+| Secure cookie 实际生效 | ✅ 有效 | **实测响应头**：`=https` 时 `sessionid.secure=True`，默认环境为空（不带标记）；两种环境下详情页仍 200 且浏览量 +1，说明开启后不影响计数 |
+| #24 报告前提 | ✅ 有效 | 我独立复测：`check --deploy` 默认环境 **8 条**、带 `IZONE_PROTOCOL_HTTPS=https` **6 条**，与报告修正后的表述一致 |
+| #25 迁移入库 | ✅ 有效 | `git ls-files` 已包含 `apps/easytask/migrations/0002_auto_20260911_1413.py`；`sqlmigrate easytask 0002` 只输出 `BEGIN/COMMIT` 与注释，**无任何 DDL**；`makemigrations --check` → "No changes detected" |
+| 明文 HTTP 是否为可达路径 | ✅ 安全前提成立 | `http://tendcode.com/` 会 301 → https；直接以 HTTP 访问生产主机裸 IP，返回的是反向代理的默认欢迎页（无 Set-Cookie、不经 Django）。即不存在明文 HTTP 到达博客的路径，Secure 标记不会造成 cookie 丢失 |
+| 是否有代码依赖 `request.is_secure()` | ✅ 无 | 全仓库无 `is_secure()` 调用，协议统一走 `PROTOCOL_HTTPS`；这也解释了为何本项目不需要 `SECURE_PROXY_SSL_HEADER`，以及为何 Secure 标记只认配置即可生效 |
+| 无回归 | ✅ | `manage.py check` 通过；19 个 URL 冒烟无 4xx/5xx |
 
 > **修复记录（2026-09-11，`--fix`）**：#23–#25 全部修复 —— `IZONE_PROTOCOL_HTTPS` 收敛为单一来源
 > （顶部解析一次，allauth / sitemap / cookie 三处复用）、`check --deploy` 结论补上环境变量前提、
@@ -77,10 +87,8 @@
 
 ## 工作区状态
 
-- HEAD = `55c3d86`，两次修复提交与其文档改动均已入库。
-- 2026-09-11 追加的两项上线准备**尚未提交**：`izone/settings.py`（HTTPS 下启用 Secure cookie）、`apps/easytask/migrations/0002_auto_20260911_1413.py`（新增）+ `AGENTS.md`、`docs/design/02_TDD_架构设计文档.md`、本报告与 `review-state.json` 的同步改动。
-- 本次 review 与随后的 `--fix` 均写在本报告；代码改动为 `izone/settings.py`（#23 单一来源收敛）。
-- 追加的两项上线准备（HTTPS cookie 配置、easytask 0002 迁移）经本次实测**功能正确**，遗留问题只是「未提交」与「同一环境变量两处派生」这类整洁性事项。
+- HEAD = `9c30f5a`，工作区干净；今天的 9 次提交（8 次改动 + 1 次安全/迁移提交）全部入库，共三轮修复均已实测复核。
+- 未推送、未部署：生产仍运行 2026-09-06 的镜像，上线时把 `292318d..9c30f5a` 一起发。
 
 ---
 

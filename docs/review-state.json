@@ -1,8 +1,8 @@
 {
-  "last_reviewed_commit": "55c3d862ee66d38e30e315377853d4ae0c5fbf28",
-  "last_reviewed_commit_short": "55c3d86",
+  "last_reviewed_commit": "9c30f5a79771eb56f8a1d763984055753f978b52",
+  "last_reviewed_commit_short": "9c30f5a",
   "last_review_date": "2026-09-11",
-  "last_review_summary": "复审今天 8 次提交(292318d..55c3d86)，实测方式：16 URL 冒烟无 4xx/5xx、逐页 SQL 实测、事务回滚造数验证、93 个模板编译、check/check --deploy/makemigrations --check。第一轮修复 2e20394（#10-#16）逐项实测通过；第二轮 55c3d86 修复 #18-#22 也已逐项实测：详情页 SQL 18→13（文章主查询 2→1、tags/keywords 预取各 2→1）、两条独立评论 COUNT 归零且渲染值与库内一致（4/0/0/106，参与人数 35 也对）、未注册 sender 不抛异常并兜底清全部、Subject 只清 blog_info、easytask 日志路由到 error_file。重写 DetailView.get 后浏览量仍为 A+1/A再访0/B+1，302 路径与编辑页均正常，#20 注解未影响 DetailEditView。原 #17 经生产只读核实撤回（生产 beat 早已有每日 clear_expired_sessions，session 表稳态）。本轮无待处理问题。生产就绪项（既有，保持现状）：makemigrations --check 有 easytask Meta 漂移、check --deploy 8 条安全警告（其中 SESSION_COOKIE_SECURE 建议开启）。 2026-09-11 追加审查未提交的工作区改动（HTTPS cookie 安全配置 + easytask 0002 迁移 + AGENTS.md/02_TDD 同步）：实测 Secure 标记随 IZONE_PROTOCOL_HTTPS 正确开关、迁移无 DDL、makemigrations --check 已干净；生产只读核实确认容器 env 已有 IZONE_PROTOCOL_HTTPS=https 与 IZONE_DEBUG=False，故配置上线即生效。新发现 3 项 🟢 待处理：#23 同一环境变量两处派生且命名不一致、#24 check --deploy 结论未标注前提、#25 迁移文件未纳入版本控制。 2026-09-11 按 --fix 修复 #23-​#25（协议配置收敛为单一来源、报告补环境前提、迁移纳入版本控制），修复随本次提交入库。",
+  "last_review_summary": "复审今天 9 次提交(292318d..9c30f5a)，三轮修复全部实测复核，当前无待处理问题。第三轮 9c30f5a（#23-#25 + 提交两项上线准备）实测：IZONE_PROTOCOL_HTTPS 收敛为单一来源后取值与改动前逐项一致（默认 http/false、https 时全翻转、大写也能识别），响应头实测 sessionid.secure 随该变量在 空/True 间正确切换且浏览量仍 +1；check --deploy 默认 8 条、带 https 6 条；sqlmigrate easytask 0002 无任何 DDL、git ls-files 已纳入、makemigrations --check 输出 No changes detected；已确认不存在明文 HTTP 到达博客的路径（http://tendcode.com 301，裸 IP 返回 NPM 的 Default Site 静态页、无 Set-Cookie），Secure 标记安全；全仓库无 is_secure() 依赖，协议统一走 PROTOCOL_HTTPS。前两轮 2e20394(#10-#16)、55c3d86(#18-#22) 结论见报告；#17 经生产核实撤回。19 URL 冒烟无 4xx/5xx。生产仍运行 2026-09-06 镜像，上线时把 292318d..9c30f5a 一起发。",
   "documents_updated": [
     "docs/code-review.md"
   ],
