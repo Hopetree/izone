@@ -39,9 +39,9 @@ SIDEBAR_CACHE_KEYS = (
 )
 
 
-def clear_sidebar_cache():
-    """文章/标签/分类/菜单变化时清掉侧边栏缓存，避免统计数字长时间不更新"""
-    cache.delete_many(SIDEBAR_CACHE_KEYS)
+def clear_sidebar_cache(*keys):
+    """清掉指定的侧边栏缓存；不传参数则清全部（文章增删改会影响所有统计）"""
+    cache.delete_many(keys or SIDEBAR_CACHE_KEYS)
 
 
 # 文章相关标签函数

@@ -4,6 +4,7 @@
     每个任务需要饮用的模块放到函数里面引用，方便单独调试函数
 """
 import json
+import logging
 from datetime import datetime, timedelta
 
 import requests
@@ -11,6 +12,8 @@ from django.db.models import Sum
 
 from blog.models import Article, ArticleView, PageView
 from blog.views import make_markdown, preprocess_mermaid_blocks
+
+logger = logging.getLogger('django')
 
 
 def get_link_status(url):
@@ -170,21 +173,32 @@ def action_check_site_links(white_domain_list=None):
     sites = [s for s in active_site_list if not white_list_check(white_domain_list, s.link)]
 
     def check_one(site):
-        """返回 'to_not_show' / 'to_show' / None"""
-        code, _ = get_link_status(site.link)
-        if site.is_show is True:
-            if code < 200 or code >= 400:
-                site.is_show = False
-                site.not_show_reason = f'网页请求返回{code}'
-                site.save(update_fields=['is_show', 'not_show_reason'])
-                return 'to_not_show'
-        else:
-            if 200 <= code < 400:
-                site.is_show = True
-                site.not_show_reason = ''
-                site.save(update_fields=['is_show', 'not_show_reason'])
-                return 'to_show'
-        return None
+        """返回 'to_not_show' / 'to_show' / None（异常也返回 None，避免 pool.map 整体中断）"""
+        from django.db import connection
+
+        try:
+            code, _ = get_link_status(site.link)
+            if site.is_show is True:
+                if code < 200 or code >= 400:
+                    site.is_show = False
+                    site.not_show_reason = f'网页请求返回{code}'
+                    site.save(update_fields=['is_show', 'not_show_reason'])
+                    return 'to_not_show'
+            else:
+                if 200 <= code < 400:
+                    site.is_show = True
+                    site.not_show_reason = ''
+                    site.save(update_fields=['is_show', 'not_show_reason'])
+                    return 'to_show'
+            return None
+        except Exception as e:
+            # 单个站点异常不影响其它站点
+            logger.warning(f'检查导航站点失败：{site.link} - {e}')
+            return None
+        finally:
+            # 线程池里每个线程各自持有连接，用完即关；
+            # 配合 CONN_MAX_AGE 否则这些连接会一直挂到线程对象被回收
+            connection.close()
 
     to_not_show = 0
     to_show = 0

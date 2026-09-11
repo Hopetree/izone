@@ -38,7 +38,8 @@ def simple_task(x, y):
     return x + y
 
 
-@shared_task
+# 纯缓存预热，幂等，可安全地 late-ack（worker 崩溃后重跑没有副作用）
+@shared_task(acks_late=True)
 def update_cache():
     """
     更新各种缓存

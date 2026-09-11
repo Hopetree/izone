@@ -206,8 +206,12 @@ def add_views(url, name=None, is_cache=True):
                         obj.save()
 
                     if is_cache:
-                        # 用 Redis SET NX EX 做 30 分钟去重，替代原来读写 DB session 表
-                        if cache.add(f'page_views:read:{url}', 1, 60 * 30):
+                        # 与文章详情页一致：去重键必须带访客维度，
+                        # 否则会变成全站每个 URL 30 分钟只计 1 次
+                        if not request.session.session_key:
+                            request.session.create()
+                        visitor = request.session.session_key
+                        if cache.add(f'page_views:read:{url}:{visitor}', 1, 60 * 30):
                             obj.update_views()
                     else:
                         obj.update_views()

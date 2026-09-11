@@ -170,9 +170,14 @@ class BaseDetailView(generic.DetailView):
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
         if check_request_headers(self.request.headers):  # 请求头校验通过才计算阅读量
-            # 用 Redis SET NX EX 做 30 分钟去重，替代原来读写 DB session 表
             if u != obj.author and not u.is_superuser:
-                if cache.add('article:read:{}'.format(obj.id), 1, 60 * 30):
+                # 去重维度必须是「访客」：只带文章 ID 会退化成全站 30 分钟只计 1 次。
+                # 用 session_key（没有就建一个，与原来写 session 的行为一致），
+                # 而不是退化为按 IP 去重——同一 NAT 下多个访客会互相吞掉计数。
+                if not self.request.session.session_key:
+                    self.request.session.create()
+                visitor = self.request.session.session_key
+                if cache.add('article:read:{}:{}'.format(obj.id, visitor), 1, 60 * 30):
                     obj.update_views()
         # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")

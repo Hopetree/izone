@@ -8,16 +8,16 @@ from comment.models import SystemNotification, ArticleComment
 from oauth.models import Ouser
 
 
-def _clear_sidebar_cache():
+def _clear_sidebar_cache(*keys):
     # 延迟导入，避免 app 加载期的循环依赖
     from .templatetags.blog_tags import clear_sidebar_cache
-    clear_sidebar_cache()
+    clear_sidebar_cache(*keys)
 
 
 @receiver([post_save, post_delete], sender=Article)
 def article_change_clear_sidebar_cache(sender, instance, **kwargs):
     """
-    文章增删改后清掉侧边栏统计缓存。
+    文章增删改后清掉全部侧边栏统计缓存（文章数、标签计数、分类计数都会变）。
 
     仅浏览量变化时跳过：update_views 每次浏览都会 save(update_fields=['views'])，
     若也清缓存会导致缓存形同虚设。
@@ -28,13 +28,22 @@ def article_change_clear_sidebar_cache(sender, instance, **kwargs):
     _clear_sidebar_cache()
 
 
+# 各模型只失效真正受影响的缓存，避免评论这类高频写入把标签/分类缓存也一起冲掉
+_SIDEBAR_KEYS_BY_SENDER = {
+    'Tag': ('blog:tag_list', 'blog:blog_info:sum'),
+    'Category': ('blog:category_list',),
+    'MenuLink': ('blog:menu_link',),
+    'ArticleComment': ('blog:blog_info:sum',),
+}
+
+
 @receiver([post_save, post_delete], sender=Tag)
 @receiver([post_save, post_delete], sender=Category)
 @receiver([post_save, post_delete], sender=MenuLink)
 @receiver([post_save, post_delete], sender=ArticleComment)
 def related_change_clear_sidebar_cache(sender, instance, **kwargs):
-    """标签/分类/菜单/评论变化后清掉侧边栏统计缓存"""
-    _clear_sidebar_cache()
+    """标签/分类/菜单/评论变化后，只清掉真正受影响的侧边栏缓存"""
+    _clear_sidebar_cache(*_SIDEBAR_KEYS_BY_SENDER[sender.__name__])
 
 
 @receiver(post_save, sender=FriendLink)

@@ -301,9 +301,11 @@ CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
 CELERY_RESULT_EXPIRES = 3600 * 24
 # 单人 worker（--pool=solo）预取 1 条即可，避免消息在进程内积压
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
-# 任务执行完再 ack：worker 意外退出时任务可重新投递，避免丢失
-CELERY_TASK_ACKS_LATE = True
-CELERY_TASK_REJECT_ON_WORKER_LOST = True
+# 保持 Celery 默认的「收到即 ack」：execute_task（执行脚本）、百度推送、外链检查等
+# 非幂等任务若在 worker 崩溃后被重投会重复执行，代价高于任务丢失（周期任务下次会再跑）。
+# 需要「不丢」的幂等任务再单独显式 acks_late=True（如缓存预热 update_cache）。
+CELERY_TASK_ACKS_LATE = False
+CELERY_TASK_REJECT_ON_WORKER_LOST = False
 # broker 可见性超时（秒）必须大于最长任务耗时，否则长任务会被重复投递；
 # 仓库/七牛同步等任务可能跑很久，这里给到 12 小时
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 12 * 3600}

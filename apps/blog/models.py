@@ -250,6 +250,19 @@ class Article(models.Model):
         self.views += 1
         self.save(update_fields=['views'])
 
+    def _get_subject_articles(self):
+        """
+        所属专题下的文章列表。
+
+        缓存在 subject 实例上：get_pre 和 get_next 都要用这份列表，详情页里
+        self.topic.subject 是同一个对象（视图已 select_related('topic__subject')），
+        因此同一请求只会查一次。
+        """
+        subject = self.topic.subject
+        if not hasattr(subject, '_article_list_cache'):
+            subject._article_list_cache = subject.get_article_list()
+        return subject._article_list_cache
+
     def get_pre(self):
         """
         有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回同样没有主题的。
@@ -262,7 +275,7 @@ class Article(models.Model):
 
         result = None
         if self.topic:
-            subject_articles = self.topic.subject.get_article_list()
+            subject_articles = self._get_subject_articles()
             for index, article in enumerate(subject_articles):
                 if article.pk == self.pk and index != 0:
                     result = subject_articles[index - 1]
@@ -281,7 +294,7 @@ class Article(models.Model):
 
         result = None
         if self.topic:
-            subject_articles = self.topic.subject.get_article_list()
+            subject_articles = self._get_subject_articles()
             for index, article in enumerate(subject_articles):
                 if article.pk == self.pk and index != len(subject_articles) - 1:
                     result = subject_articles[index + 1]

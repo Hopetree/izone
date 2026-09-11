@@ -1,11 +1,9 @@
 {
-  "last_reviewed_commit": "7aa89f23330384e3974e094903c53b2a2459df89",
-  "last_reviewed_commit_short": "7aa89f2",
-  "last_review_date": "2026-09-05",
-  "last_review_summary": "审查最近7次提交(f87b772..7aa89f2)：便签暗色适配、卡片放大查看器、导航清理、关键词修复、日志轮转、文档约束。发现4个🟡+2个🟢问题，#4-#8已直接修复，#9保持现状。更新02_TDD架构文档(搜索/Celery/日志)与01_PRD(便签放大查看)。",
+  "last_reviewed_commit": "36817bcdd68868f75f74fbdb03c95d86bf162cdc",
+  "last_reviewed_commit_short": "36817bc",
+  "last_review_date": "2026-09-11",
+  "last_review_summary": "审查今天6次提交(292318d..36817bc，并复核fa87ad0)：N+1消除(详情/列表/专题/评论/通知)、侧边栏与站点配置缓存、浏览量去重改Redis、Celery与缓存配置、RSS外呼兜底、静态资源懒加载与版本号、mermaid断链修复。发现1个🔴+3个🟡+3个🟢问题（#10-#16），已于 2026-09-11 按 --fix 全部修复并验证；#10为浏览量去重键缺访客维度的功能回归。文档影响分析已输出（01_PRD/02_TDD/04_API/README/AGENTS.md），等待用户确认后写入。 修复提交见 git log（--fix 后的提交）。",
   "documents_updated": [
-    "docs/design/02_TDD_架构设计文档.md",
-    "docs/design/01_PRD_产品需求规格说明书.md",
     "docs/code-review.md"
   ],
   "documents": [
