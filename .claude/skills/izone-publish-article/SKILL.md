@@ -26,7 +26,7 @@ or organizing existing material.
 
 - **Heading hierarchy**: The article body must NOT contain `#` (h1) — the blog page already has a title. Use only `##` (section) and `###` (sub-section). Max 2 levels of body headings. No `####`.
 - **Heading numbering**: Prefix `##` with numbers (`## 1.`, `## 2.`). Prefix `###` with sub-numbers (`### 1.1`, `### 1.2`, `### 2.1`).
-- **Heading length**: Keep headings short and descriptive. **Chinese headings must NOT exceed 13 characters**（二级/三级标题正文字数 ≤13 个中文长度，不含编号前缀 `1.`/`1.1`；超过会破坏博客标题导航的显示效果。用户约定 2026-09-12）。
+- **Heading length**: Keep headings short and descriptive. **Chinese headings must NOT exceed 15 characters**（二级/三级标题正文字数 ≤15 个中文长度，不含编号前缀 `1.`/`1.1`；超过会破坏博客标题导航的显示效果。用户约定 2026-09-12，同日由 13 调整为 15）。
 - **Paragraph length**: Break long paragraphs. Aim for 3-5 sentences max per paragraph.
 - **Article opening**: Start with a paragraph of context or summary (1-3 sentences), then the first `##` heading. Never start the body directly with a heading — give readers a moment to understand what the article is about.
 
