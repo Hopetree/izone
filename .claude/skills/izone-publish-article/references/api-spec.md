@@ -131,6 +131,10 @@ All constraints derive from the Django model definitions.
 | `is_publish` | boolean | no | — | `false` | Draft mode. When later set to `true`, `create_date` resets to publish time. |
 | `is_top` | boolean | no | — | `false` | |
 | `img_link` | string | no | — | — | Path from upload API, omit for default image. |
+| `topic_order` | integer | no | — | — | 文章在主题内的排序（数字，从 1 递增）。系列文章按篇号设置：01→1、02→2… |
+| `topic_short_title` | string | no | — | — | 文章在主题菜单里显示的短标题，独立于正式标题。系列文章建议"篇号 + 短关键词"，如 `01 先立规矩再干活` |
+
+> **`topic_order` / `topic_short_title` 使用场景（系列文章）**：当多篇文章属于同一主题（如"AI Agent 实战手记"），用这两个字段让主题菜单按篇号顺序展示、短标题简洁可读。二者均为可选；不传则按默认排序、菜单显示正式标题。
 
 ### Category Object
 

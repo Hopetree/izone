@@ -26,7 +26,7 @@ or organizing existing material.
 
 - **Heading hierarchy**: The article body must NOT contain `#` (h1) — the blog page already has a title. Use only `##` (section) and `###` (sub-section). Max 2 levels of body headings. No `####`.
 - **Heading numbering**: Prefix `##` with numbers (`## 1.`, `## 2.`). Prefix `###` with sub-numbers (`### 1.1`, `### 1.2`, `### 2.1`).
-- **Heading length**: Keep headings short and descriptive. Chinese headings ideally ≤15 chars.
+- **Heading length**: Keep headings short and descriptive. **Chinese headings must NOT exceed 13 characters**（二级/三级标题正文字数 ≤13 个中文长度，不含编号前缀 `1.`/`1.1`；超过会破坏博客标题导航的显示效果。用户约定 2026-09-12）。
 - **Paragraph length**: Break long paragraphs. Aim for 3-5 sentences max per paragraph.
 - **Article opening**: Start with a paragraph of context or summary (1-3 sentences), then the first `##` heading. Never start the body directly with a heading — give readers a moment to understand what the article is about.
 
@@ -54,10 +54,14 @@ or organizing existing material.
 
 ### Emoji
 
-Do not add decorative emoji to article body. Emoji may only be used when:
-- The original content already contains them
-- They carry semantic meaning (e.g., warnings, checkmarks in task lists)
-- The user explicitly requests them
+不要滥用 emoji，也不要在正文里为了"可爱"堆砌装饰性 emoji。有必要的时候可以用，让文章更鲜活：
+
+- 需要表达语气或态度时（如警告 ⚠️、重点 ✅、结果 🎉）
+- 列表或任务清单中用作标记
+- 原文内容本身就包含 emoji
+- 用户明确要求
+
+判断标准：删掉这个 emoji 会让表达变弱，就用；删掉毫无影响，就别用。避免连续多个 emoji 堆砌。
 
 ### Tone
 
@@ -66,6 +70,29 @@ Do not add decorative emoji to article body. Emoji may only be used when:
 - Use concrete examples over abstract explanations. Show code/output rather than describing it.
 - Vary sentence length. Mix short direct sentences with longer explanatory ones.
 - Read like a knowledgeable colleague writing notes, not a textbook.
+
+### Privacy Sanitization (MANDATORY — 隐私纪律，发布前必须执行)
+
+**对外发布的文章严禁出现任何真实内部信息。** 这是用户硬性要求（2026-09-10 首次固化，2026-09-11 因博客暴露真实 IP 强化），适用于写作与发布全流程。
+
+写正文时**默认用泛化占位**，不要写真实值：
+
+- **IP 地址** → 一律用 RFC 5737 保留测试地址：`203.0.113.x` / `198.51.100.x` / `192.0.2.x`
+- **真实域名/子域名** → 用 `example.com` 泛化（如 `share.example.com`）；不要写客户/自己服务的真实域名
+- **主机标识/编号** → 用「生产主机」「内网主机」等描述，不写 `106`/`203`/`114` 这类主机代号
+- **内部渠道/命名/拓扑** → 用 `渠道 A/B/C`、`客户端 A` 等占位，不暴露内部编号、渠道对应关系、实例拓扑
+- **凭据/邮箱/内网网段** → 一律不出现（`192.168.x`、`10.x`、`172.16-31.x`）
+- **证书编号如 npm-17、时间戳、端口** 属于技术示例，可保留
+
+**发布前必须执行自检**（发布流程的最后一步，不可跳过）：对正文跑一次 grep，确认无残留：
+
+```bash
+grep -nE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" /tmp/<slug>.md
+grep -nE "[a-z0-9-]+\.(com|net|cn|org)" /tmp/<slug>.md
+grep -nE "192\.168|172\.1[0-9]\.|10\.[0-9]+\." /tmp/<slug>.md
+```
+
+以上任一命中真实内部信息（`127.0.0.1`、`example.com`、RFC 5737 保留地址除外），先替换再发布。
 
 ### Cover Image (MANDATORY)
 
@@ -78,7 +105,7 @@ To generate and upload a cover image for the article, see [references/cover-desi
 - **Scheme A (Icon Row)**: Alternative — glow + label + icons + title + description. Best when you want icon visuals.
 - **Scheme B (Minimal Title)**: Minimal — glow + label + larger title + description. Best for essays/notes.
 - **MANDATORY font stack**: `'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif'`
-- **MANDATORY no emoji**: cairosvg cannot render emoji/unicode, use SVG paths for icons
+- **MANDATORY no emoji (cover SVG only)**: cairosvg cannot render emoji/unicode in cover images, use SVG paths for icons. 仅封面技术限制，正文 emoji 使用遵循上方 Emoji 规则。
 
 **Upload flow (3 steps, always execute all of them):**
 
@@ -129,7 +156,7 @@ When the user provides raw notes, bullet points, or a rough draft:
 2. Restructure headings to ≤3 levels with numbering
 3. Fix spacing (blank lines around headings, code blocks, lists)
 4. Ensure all code blocks have language identifiers
-5. Remove unnecessary emoji
+5. Remove overused/decorative emoji (keep meaningful ones)
 6. Rewrite AI-flavored phrasing to natural Chinese
 7. Write the cleaned article to `/tmp/<slug>.md`
 8. Present the cleaned article and ask: "整理完成。需要进一步调整吗？确认后可以推送到博客。"
@@ -193,6 +220,8 @@ curl -s -H "Authorization: Token $IZONE_API_TOKEN" "$IZONE_API_BASE/skill/meta/"
 
 **Topic (主题)** — Required. Match against existing topics. If no match, create new under an existing Subject (专题) via `{"name": "...", "subject_id": <id>}`. **Subject (专题) can never be created** — only use existing ones from the meta query.
 
+**Topic short title & order (主题短标题与排序)** — For series articles sharing one topic, also send `topic_short_title` (主题菜单显示的短标题，建议 "篇号 + 短关键词"，如 `01 先立规矩再干活`) and `topic_order` (篇号数字：01→1、02→2…). These keep the topic menu ordered and readable. 详见 [references/api-spec.md](references/api-spec.md) 的 Article Fields。
+
 See [references/api-spec.md](references/api-spec.md) for full payload structure and field constraints.
 
 ### Step 6: Confirm
@@ -213,6 +242,21 @@ Present summary and wait for explicit confirmation:
 
 确认提交？
 ```
+
+### Step 6.5: Privacy Check (MANDATORY — 隐私自检，不可跳过)
+
+**发布前必须对 `/tmp/<slug>.md` 执行隐私自检。** 这是用户硬性要求（2026-09-11 因真实 IP 暴露事故强化），发现真实内部信息先替换再发布。
+
+```bash
+grep -nE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" /tmp/<slug>.md
+grep -nE "[a-z0-9-]+\.(com|net|cn|org)" /tmp/<slug>.md
+grep -nE "192\.168|172\.1[0-9]\.|10\.[0-9]+\." /tmp/<slug>.md
+grep -nE "(^|[^0-9])(106|203|114|168)([^0-9]|$)" /tmp/<slug>.md   # 主机代号
+```
+
+**放行白名单**（命中可保留）：`127.0.0.1`、`example.com`、RFC 5737 保留地址（`203.0.113.x`/`198.51.100.x`/`192.0.2.x`）、`localhost`。
+
+**违规处理**：任何一条命中真实内部信息 → 先替换为泛化占位（见 Writing Guidelines 的 Privacy Sanitization 节）→ 重新检查 → 通过后才进入 Step 7。**绝不带着真实 IP/域名/主机代号发布。**
 
 ### Step 7: Publish
 
@@ -238,6 +282,9 @@ payload = json.dumps({
     'keywords': ['<kw1>', '<kw2>'],
     'topic': {'id': <id>, 'name': '<name>'},  // 已有主题
     // 或新建主题: 'topic': {'name': '<新名称>', 'subject_id': <subject_id>},
+    // 系列文章可选：主题菜单短标题 + 篇号排序
+    // 'topic_short_title': '01 先立规矩再干活',
+    // 'topic_order': 1,
 }, ensure_ascii=False)
 
 result = subprocess.run([

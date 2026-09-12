@@ -32,7 +32,7 @@ font-family="'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif"
 
 ## Common Rules (all schemes)
 
-- Never use emoji or unicode symbols — cairosvg cannot render them
+- Never use emoji or unicode symbols in cover SVG — cairosvg cannot render them (技术限制，仅限封面图；正文 emoji 使用遵循 SKILL.md 的 Emoji 规则)
 - No content cards, code blocks, or complex diagrams
 - Title max 2 lines, description max 1 line
 - Vary background shade and accent colors each article — never reuse exactly the same palette
