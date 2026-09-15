@@ -37,12 +37,48 @@ or organizing existing material.
   If unsure or no specific language fits, use `text`.
   Never leave the language field empty — `` ``` `` without a language is not allowed.
 
+### Markdown Extensions (beyond standard Markdown)
+
+The blog renders articles with a custom extension set, so a small number of non-standard syntaxes
+are available. **Read [references/markdown-extensions.md](references/markdown-extensions.md) before
+using any of them** — it has the verified syntax, the rendered HTML, and the failure modes.
+
+Quick map of what's available and when it earns its place:
+
+| Need | Syntax | Note |
+|------|--------|------|
+| Same logic in several languages | `:::: code-group` + `::: code-item <Name>` | Renders as tabs. Label must be one word. |
+| Warning / prerequisite / gotcha | `::: warning <word>` / `::: danger <word>` | Bootstrap alert. Title must be one word. |
+| Supplementary aside | `::: info <word>` / `::: primary <word>` | Also `secondary`, `success`. |
+| Show what changed (old → new) | `~~old~~` | `<del>` |
+| Inline emphasis / status | `icon:home` | FontAwesome **4.7** names only. Use sparingly. |
+| Flowchart, sequence, architecture | ` ```mermaid` | Rendered client-side by mermaid 11.4.1. |
+| Checklist, migration progress | `- [x]` / `- [ ]` | Read-only checkboxes. |
+| Source citation, side note | `[^1]` | Footnotes collect at the end of the article. |
+
+**Two rules that break these silently — always follow them:**
+
+1. **Every fence (```` ``` ```` and `:::` / `::::`) must start at column 0.** An indented Mermaid
+   fence degrades into a garbled inline-code paragraph; an indented `:::` / `::::` is not recognized
+   at all and leaks as literal text.
+2. **Put a blank line after a `:::` opening fence.** Alert titles are parsed by splitting the block,
+   so text jammed against the fence gets swallowed as the title or kills the whole block.
+
+**Also keep in mind:**
+
+- Titles on `:::` blocks and tab labels on `code-item` must be a **single word** (no spaces).
+- Icons are not validated: a wrong name renders an invisible icon rather than an error. Only use the
+  names listed in the reference.
+- Don't use extensions for their own sake. One or two alerts per article, icons as occasional inline
+  emphasis — not as bullet markers. Plain Markdown stays the default.
+
 ### Mermaid Diagrams
 
 - Use ` ```mermaid` code blocks for flowcharts, sequence diagrams, timelines, and architecture diagrams.
 - Blog renders Mermaid client-side — no server-side rendering needed.
 - Use when a diagram makes the concept clearer than text alone. Don't force it — only add when the content benefits from visual explanation.
 - Keep diagrams simple: 5-10 nodes max, avoid deeply nested subgraphs.
+- The fence must be at column 0 and `` ```mermaid `` must not carry trailing content on the same line.
 
 ### Spacing
 
@@ -140,7 +176,10 @@ Triggered when user says "写文章", "整理文章", "帮我写一篇", "整理
 
 When the user provides a topic or outline:
 
-1. Plan the article structure (numbered headings, key points, code examples)
+1. Plan the article structure (numbered headings, key points, code examples). If the content
+   involves multiple languages for one example, a version warning, a before/after comparison, or a
+   diagram, pick the matching extension syntax from [references/markdown-extensions.md](references/markdown-extensions.md)
+   and re-check the two fence rules before writing.
 2. Generate a slug from the title
 3. **Write the article to `/tmp/<slug>.md`** following Writing Guidelines (mandatory — never present content inline only)
 4. Read the file back and present to user
@@ -158,8 +197,11 @@ When the user provides raw notes, bullet points, or a rough draft:
 4. Ensure all code blocks have language identifiers
 5. Remove overused/decorative emoji (keep meaningful ones)
 6. Rewrite AI-flavored phrasing to natural Chinese
-7. Write the cleaned article to `/tmp/<slug>.md`
-8. Present the cleaned article and ask: "整理完成。需要进一步调整吗？确认后可以推送到博客。"
+7. **Re-check any `:::` / code-group fences survived the edit** — opening fence at column 0 with a
+   blank line after it, single-word titles and tab labels. Restructuring easily reflows the blank
+   line that alerts depend on, and a broken alert silently renders as literal `:::` text.
+8. Write the cleaned article to `/tmp/<slug>.md`
+9. Present the cleaned article and ask: "整理完成。需要进一步调整吗？确认后可以推送到博客。"
 
 ## Mode 2: Publish
 
