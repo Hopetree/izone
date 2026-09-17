@@ -1,7 +1,30 @@
 # -*- coding: utf-8 -*-
 from django.dispatch import receiver
-from django.db.models.signals import post_save
-from .models import ArticleComment, Notification
+from django.db.models.signals import post_save, post_delete
+from .models import ArticleComment, Notification, SystemNotification
+
+
+def _clear_notification_count_cache(user_id):
+    # 延迟导入，避免 app 加载期的循环依赖
+    from .templatetags.comment_tags import clear_notification_count_cache
+    clear_notification_count_cache(user_id)
+
+
+def _clear_all_notification_count_cache():
+    from .templatetags.comment_tags import clear_all_notification_count_cache
+    clear_all_notification_count_cache()
+
+
+@receiver([post_save, post_delete], sender=Notification)
+def notification_change_clear_count(sender, instance, **kwargs):
+    """通知新增/标记已读/删除后清掉该用户的未读计数缓存，让角标立即更新"""
+    _clear_notification_count_cache(instance.get_p_id)
+
+
+@receiver([post_save, post_delete], sender=SystemNotification)
+def system_notification_change_clear_count(sender, instance, **kwargs):
+    """系统通知是群发（get_p 是 M2M），无法定位单个用户，直接清掉所有计数缓存"""
+    _clear_all_notification_count_cache()
 
 
 @receiver(post_save, sender=ArticleComment)

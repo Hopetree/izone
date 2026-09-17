@@ -37,6 +37,12 @@ DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
 
+# 站点协议：IZONE_PROTOCOL_HTTPS=https 表示全站走 HTTPS（边缘已 301 强制）。
+# 在这里统一解析一次，供 allauth、sitemap/绝对链接以及 cookie 的 Secure 标记共用，
+# 避免多处各自读环境变量、日后只改动其中一处时产生行为漂移。
+PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+IS_HTTPS = PROTOCOL_HTTPS == 'https'
+
 # Application definition
 
 # 添加了新的app需要重启服务器
@@ -116,7 +122,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 # 登出直接退出，不用确认
 ACCOUNT_LOGOUT_ON_GET = True
 # 是否https
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = PROTOCOL_HTTPS
 
 # 表单插件的配置
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -240,6 +246,8 @@ DATABASES = {
         'PASSWORD': izone_mysql_pwd,  # 数据库的密码
         'HOST': izone_mysql_host,
         'PORT': izone_mysql_port,
+        # 复用数据库连接（秒），避免每个请求都重新建连+认证
+        'CONN_MAX_AGE': 60,
         'OPTIONS': {'charset': 'utf8mb4', 'use_unicode': True, 'connect_timeout': 30}
     }
 }
@@ -255,12 +263,29 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://{}:{}/0".format(izone_redis_host, izone_redis_port),
+        # 加前缀避免与 celery 结果/beat 等共用 db0 时 key 冲突
+        "KEY_PREFIX": "izone",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # redis 抖动时读写静默降级（读返回 None、写跳过），而不是让整个请求报错/挂起；
+            # 单 gunicorn worker 下这一点尤其重要，避免 redis 卡住拖垮全站
+            "IGNORE_EXCEPTIONS": True,
+            "SOCKET_CONNECT_TIMEOUT": 2,
+            "SOCKET_TIMEOUT": 3,
+            "CONNECTION_POOL_KWARGS": {"max_connections": 50},
         }
     }
 }
 # *************************************** 缓存配置结束 ***************************************
+
+# session 读写走 cached_db（读 Redis、写同时落库），避免每个请求都查一次 session 表
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+# 全站走 HTTPS（边缘已 301 强制）时给 session/CSRF cookie 加 Secure 标记；
+# IS_HTTPS 已在文件顶部统一解析（见 PROTOCOL_HTTPS），本地 HTTP 开发不受影响。
+# 注意：本就依赖边缘跳转，因此不要同时打开 SECURE_SSL_REDIRECT——本仓库未配
+# SECURE_PROXY_SSL_HEADER，Django 看到的是 HTTP，开启会造成重定向循环。
+SESSION_COOKIE_SECURE = IS_HTTPS
+CSRF_COOKIE_SECURE = IS_HTTPS
 
 
 # *************************************** celery 配置开始 ***************************************
@@ -284,8 +309,18 @@ CELERY_RESULT_SERIALIZER = 'json'
 # 每个 worker 最多执行n个任务就会被销毁，可防止内存泄露
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100
 # 为存储结果设置过期日期，默认1天过期。如果beat开启，Celery每天会自动清除，0表示永不清理
-# 这里可以设置成0，然后自己创建清理结果的机制，比较好控制
-CELERY_RESULT_EXPIRES = 0
+# 单人 worker 下高频任务（每分钟的监控检查）会不断写入结果表，这里设成 1 天自动清理
+CELERY_RESULT_EXPIRES = 3600 * 24
+# 单人 worker（--pool=solo）预取 1 条即可，避免消息在进程内积压
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+# 保持 Celery 默认的「收到即 ack」：execute_task（执行脚本）、百度推送、外链检查等
+# 非幂等任务若在 worker 崩溃后被重投会重复执行，代价高于任务丢失（周期任务下次会再跑）。
+# 需要「不丢」的幂等任务再单独显式 acks_late=True（如缓存预热 update_cache）。
+CELERY_TASK_ACKS_LATE = False
+CELERY_TASK_REJECT_ON_WORKER_LOST = False
+# broker 可见性超时（秒）必须大于最长任务耗时，否则长任务会被重复投递；
+# 仓库/七牛同步等任务可能跑很久，这里给到 12 小时
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 12 * 3600}
 # *************************************** celery 配置结束 ***************************************
 
 
@@ -336,8 +371,7 @@ CNZZ_PROTOCOL = os.getenv('IZONE_CNZZ_PROTOCOL', '')
 LA51_PROTOCOL = os.getenv('IZONE_LA51_PROTOCOL', '')
 # 站长推送
 MY_SITE_VERIFICATION = os.getenv('IZONE_SITE_VERIFICATION', '')
-# 使用 http 还是 https （sitemap 中的链接可以体现出来）
-PROTOCOL_HTTPS = os.getenv('IZONE_PROTOCOL_HTTPS', 'HTTP').lower()
+# 使用 http 还是 https （sitemap 中的链接可以体现出来）；PROTOCOL_HTTPS 已在文件顶部统一定义
 # 文章页面的打赏二维码，必须微信和支付宝都存在才会显示打赏
 REWARD_WX = os.getenv('IZONE_REWARD_WX', '')
 REWARD_ZFB = os.getenv('IZONE_REWARD_ZFB', '')
@@ -404,6 +438,12 @@ LOGGING = {
         },
         'django.request': {
             'handlers': izone_warn_handlers,
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # 项目内业务日志（如 easytask 任务的告警），走错误日志而不是 django 的访问日志
+        'easytask': {
+            'handlers': ['error_file', 'console'],
             'level': 'WARNING',
             'propagate': False,
         },

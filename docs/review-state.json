@@ -1,11 +1,9 @@
 {
-  "last_reviewed_commit": "7aa89f23330384e3974e094903c53b2a2459df89",
-  "last_reviewed_commit_short": "7aa89f2",
-  "last_review_date": "2026-09-05",
-  "last_review_summary": "审查最近7次提交(f87b772..7aa89f2)：便签暗色适配、卡片放大查看器、导航清理、关键词修复、日志轮转、文档约束。发现4个🟡+2个🟢问题，#4-#8已直接修复，#9保持现状。更新02_TDD架构文档(搜索/Celery/日志)与01_PRD(便签放大查看)。",
+  "last_reviewed_commit": "9c30f5a79771eb56f8a1d763984055753f978b52",
+  "last_reviewed_commit_short": "9c30f5a",
+  "last_review_date": "2026-09-11",
+  "last_review_summary": "复审今天 9 次提交(292318d..9c30f5a)，三轮修复全部实测复核，当前无待处理问题。第三轮 9c30f5a（#23-#25 + 提交两项上线准备）实测：IZONE_PROTOCOL_HTTPS 收敛为单一来源后取值与改动前逐项一致（默认 http/false、https 时全翻转、大写也能识别），响应头实测 sessionid.secure 随该变量在 空/True 间正确切换且浏览量仍 +1；check --deploy 默认 8 条、带 https 6 条；sqlmigrate easytask 0002 无任何 DDL、git ls-files 已纳入、makemigrations --check 输出 No changes detected；已确认不存在明文 HTTP 到达博客的路径（http://tendcode.com 301，裸 IP 返回 NPM 的 Default Site 静态页、无 Set-Cookie），Secure 标记安全；全仓库无 is_secure() 依赖，协议统一走 PROTOCOL_HTTPS。前两轮 2e20394(#10-#16)、55c3d86(#18-#22) 结论见报告；#17 经生产核实撤回。19 URL 冒烟无 4xx/5xx。生产仍运行 2026-09-06 镜像，上线时把 292318d..9c30f5a 一起发。",
   "documents_updated": [
-    "docs/design/02_TDD_架构设计文档.md",
-    "docs/design/01_PRD_产品需求规格说明书.md",
     "docs/code-review.md"
   ],
   "documents": [
@@ -38,6 +36,12 @@
       "type": "README",
       "description": "项目 README，包含技术栈、文档索引和快速开始指南",
       "created_at": "2026-06-25"
+    },
+    {
+      "path": "AGENTS.md",
+      "type": "GUIDE",
+      "description": "代理工作指南：项目概览、架构、搜索/缓存/统计/Celery 现状、构建部署约束与 Git 工作流（仅项目内容，不含运维信息）",
+      "created_at": "2026-09-11"
     },
     {
       "path": "docs/code-review.md",

@@ -20,7 +20,7 @@
                                 <div class="subject-card-title text-center">
                                     <h5 class="card-title">{{ subject.name }}</h5>
                                     <small class="subject-article-count">
-                                        <span class="text-secondary">文章数量：{{ subject.get_article_count }} 篇</span>
+                                        <span class="text-secondary">文章数量：{{ subject.article_count }} 篇</span>
                                     </small>
                                 </div>
                                 <p class="card-text subject-desc">
@@ -32,6 +32,10 @@
                 </div>
             {% endfor %}
         </div>
+        {% if is_paginated %}
+            <div class="d-none d-md-block">{% load_pages 10 %}</div>
+            <div class="d-md-none">{% load_pages 4 %}</div>
+        {% endif %}
     </div>
 {% endblock %}
 

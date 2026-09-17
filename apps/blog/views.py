@@ -1,5 +1,4 @@
 import re
-import time
 from datetime import datetime
 import markdown
 from django.conf import settings
@@ -95,16 +94,32 @@ def test_page_view(request):
     return render(request, 'test.html')
 
 
+def optimize_article_list(queryset):
+    """
+    文章列表页公共查询优化。
+
+    模板 blog/tags/article_list.html 里每篇文章都会访问 article.category、article.author、
+    article.tags、article.get_absolute_url（依赖 topic），并调 get_comment_count 查评论数；
+    不提前取好就是每篇 4~5 次额外查询。这里一次性取出关联对象并注解评论数，消除 N+1。
+    """
+    return queryset.select_related(
+        'author', 'category', 'topic'
+    ).prefetch_related(
+        'tags', 'author__socialaccount_set'
+    ).annotate(comment_num=Count('article_comments'))
+
+
 class ArchiveView(generic.ListView):
     model = Article
     template_name = 'blog/archive.html'
     context_object_name = 'articles'
-    paginate_by = 200
+    paginate_by = 100
     paginate_orphans = 50
 
     def get_queryset(self, **kwargs):
+        # 归档页模板只用标题/日期/链接，链接依赖 topic，预取 topic 即可，不需要标签和评论数
         queryset = super().get_queryset()
-        return queryset.filter(is_publish=True)
+        return queryset.filter(is_publish=True).select_related('topic')
 
 
 class IndexView(generic.ListView):
@@ -122,10 +137,12 @@ class IndexView(generic.ListView):
         return '-is_top', '-create_date'
 
     def get_queryset(self, **kwargs):
-        queryset = super(IndexView, self).get_queryset().filter(is_publish=True)
+        queryset = optimize_article_list(
+            super(IndexView, self).get_queryset().filter(is_publish=True)
+        )
         sort = self.request.GET.get('sort')
         if sort == 'comment':
-            queryset = queryset.annotate(com=Count('article_comments')).order_by('-com', '-views')
+            queryset = queryset.order_by('-comment_num', '-views')
         return queryset
 
 
@@ -135,7 +152,13 @@ class BaseDetailView(generic.DetailView):
 
     def get_queryset(self):
         # 普通用户只能看发布的文章，作者和管理员可以看到未发布的
-        queryset = super().get_queryset()
+        # 预取作者/分类/主题(含所属专题)以及标签/关键词，并注解评论数，
+        # 避免详情页模板逐项回库（模板用 get_comment_count 复用这个注解）
+        queryset = super().get_queryset().select_related(
+            'author', 'category', 'topic__subject'
+        ).prefetch_related('tags', 'keywords').annotate(
+            comment_num=Count('article_comments')
+        )
         # 非登录用户可以访问全部发布的文章
         if not self.request.user.is_authenticated:
             return queryset.filter(is_publish=True)
@@ -150,21 +173,15 @@ class BaseDetailView(generic.DetailView):
         # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
         u = self.request.user
         if check_request_headers(self.request.headers):  # 请求头校验通过才计算阅读量
-            ses = self.request.session
-            the_key = self.context_object_name + ':read:{}'.format(obj.id)
-            is_read_time = ses.get(the_key)
-            if u == obj.author or u.is_superuser:
-                pass
-            else:
-                if not is_read_time:
+            if u != obj.author and not u.is_superuser:
+                # 去重维度必须是「访客」：只带文章 ID 会退化成全站 30 分钟只计 1 次。
+                # 用 session_key（没有就建一个，与原来写 session 的行为一致），
+                # 而不是退化为按 IP 去重——同一 NAT 下多个访客会互相吞掉计数。
+                if not self.request.session.session_key:
+                    self.request.session.create()
+                visitor = self.request.session.session_key
+                if cache.add('article:read:{}:{}'.format(obj.id, visitor), 1, 60 * 30):
                     obj.update_views()
-                    ses[the_key] = time.time()
-                else:
-                    now_time = time.time()
-                    t = now_time - is_read_time
-                    if t > 60 * 30:
-                        obj.update_views()
-                        ses[the_key] = time.time()
         # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
         md_key = self.context_object_name + ':markdown:{}:{}'.format(obj.id, ud)
@@ -185,14 +202,14 @@ class DetailView(BaseDetailView):
     template_name = 'blog/detail.html'
 
     def get(self, request, *args, **kwargs):
-        # 获取实例
-        instance = self.get_object()
+        # 复用同一个实例：原来先 self.get_object() 判断有无主题，再交回 super().get()
+        # 又会 get_object() 一次；加上 select_related/prefetch 等于把整篇（含 tags/keywords）取两遍
+        self.object = instance = self.get_object()
         # 如果有主题，则跳转到主题格式的文章详情页
         if instance.topic:
-            redirect_url = reverse('blog:subject_detail', kwargs={'slug': instance.slug})
-            return redirect(redirect_url)
-        # 如果不满足条件，则继续处理视图逻辑
-        return super().get(request, *args, **kwargs)
+            return redirect(reverse('blog:subject_detail', kwargs={'slug': instance.slug}))
+        # 与 BaseDetailView.get 一致：用已取到的实例渲染
+        return self.render_to_response(self.get_context_data(object=instance))
 
 
 class SubjectDetailView(BaseDetailView):
@@ -221,16 +238,22 @@ class CategoryView(generic.ListView):
             return '-views', '-update_date', '-id'
         return ordering
 
+    def get_category(self):
+        # get_queryset 和 get_context_data 都要用到分类对象，缓存一次避免重复查询
+        if not hasattr(self, '_category'):
+            self._category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
+        return self._category
+
     def get_queryset(self, **kwargs):
         queryset = super(CategoryView, self).get_queryset()
-        cate = get_object_or_404(Category, slug=self.kwargs.get('slug'))
-        return queryset.filter(category=cate, is_publish=True)
+        return optimize_article_list(
+            queryset.filter(category=self.get_category(), is_publish=True)
+        )
 
     def get_context_data(self, **kwargs):
         context_data = super(CategoryView, self).get_context_data()
-        cate = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         context_data['search_tag'] = '文章分类'
-        context_data['search_instance'] = cate
+        context_data['search_instance'] = self.get_category()
         return context_data
 
 
@@ -249,16 +272,22 @@ class TagView(generic.ListView):
             return '-views', '-update_date', '-id'
         return ordering
 
+    def get_tag(self):
+        # get_queryset 和 get_context_data 都要用到标签对象，缓存一次避免重复查询
+        if not hasattr(self, '_tag'):
+            self._tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        return self._tag
+
     def get_queryset(self, **kwargs):
         queryset = super(TagView, self).get_queryset()
-        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        return queryset.filter(tags=tag, is_publish=True)
+        return optimize_article_list(
+            queryset.filter(tags=self.get_tag(), is_publish=True)
+        )
 
     def get_context_data(self, **kwargs):
         context_data = super(TagView, self).get_context_data()
-        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         context_data['search_tag'] = '文章标签'
-        context_data['search_instance'] = tag
+        context_data['search_instance'] = self.get_tag()
         return context_data
 
 
@@ -285,6 +314,9 @@ class TimelineView(generic.ListView):
     model = Timeline
     template_name = 'blog/timeline.html'
     context_object_name = 'timeline_list'
+    # 时间线原来是全量返回，随记录增长会一直变大；分页后模板里有对应的翻页控件
+    paginate_by = 100
+    paginate_orphans = 0
 
     def get_ordering(self):
         return '-update_date',
@@ -474,16 +506,30 @@ class SubjectListView(generic.ListView):
     paginate_by = 100
     paginate_orphans = 0
 
+    def get_queryset(self):
+        # 注解专题下已发布文章数，替代模板里逐个专题调 subject.get_article_count
+        return super().get_queryset().annotate(
+            article_count=Count('topics__articles',
+                                filter=Q(topics__articles__is_publish=True))
+        )
+
 
 class TagListView(generic.ListView):
     model = Tag
     template_name = 'blog/tagIndex.html'
     context_object_name = 'tags'
-    paginate_by = 500
+    paginate_by = 100
     paginate_orphans = 0
 
     def get_ordering(self):
         return 'name',
+
+    def get_queryset(self):
+        # 注解每个标签下已发布文章数，模板直接取 total_num；原模板用 tag.get_article_list.count 是每个标签一次 COUNT
+        queryset = super().get_queryset()
+        return queryset.annotate(
+            total_num=Count('article', filter=Q(article__is_publish=True))
+        )
 
 
 # dashboard页面，仅管理员可以访问，其他用户不能访问
@@ -606,7 +652,8 @@ def notes_api(request):
         }, json_dumps_params={'ensure_ascii': False})
 
     # GET
-    notes_qs = Note.objects.filter(is_publish=True).order_by('-create_date')
+    # 便签前端是一次性拉取渲染，这里加个上限避免将来无界返回全部正文
+    notes_qs = Note.objects.filter(is_publish=True).order_by('-create_date')[:500]
     notes_list = [
         {
             'id': n.pk,

@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
-import time
 import logging
 from functools import wraps
 from datetime import datetime
 from django.apps import apps as django_apps
+from django.core.cache import cache
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
 from django.http import JsonResponse
@@ -200,24 +200,19 @@ def add_views(url, name=None, is_cache=True):
                 # 获取或者创建一个实例
                 # logger.info(request.headers.items())
                 if check_request_headers(request.headers):
-                    page_views = PageView.objects.filter(url=url)
-                    if page_views:
-                        obj = page_views.first()
-                    else:
+                    obj = PageView.objects.filter(url=url).first()
+                    if obj is None:
                         obj = PageView(url=url, name=name, views=0)
                         obj.save()
 
-                    if is_cache:  # 要判断缓存，则存状态
-                        cache_key = f'page_views:read:{url}'
-                        is_read_time = request.session.get(cache_key)
-                        if not is_read_time:
+                    if is_cache:
+                        # 与文章详情页一致：去重键必须带访客维度，
+                        # 否则会变成全站每个 URL 30 分钟只计 1 次
+                        if not request.session.session_key:
+                            request.session.create()
+                        visitor = request.session.session_key
+                        if cache.add(f'page_views:read:{url}:{visitor}', 1, 60 * 30):
                             obj.update_views()
-                            request.session[cache_key] = time.time()
-                        else:
-                            t = time.time() - is_read_time
-                            if t > 60 * 30:
-                                obj.update_views()
-                                request.session[cache_key] = time.time()
                     else:
                         obj.update_views()
             # ******* 浏览量增加的逻辑 *******

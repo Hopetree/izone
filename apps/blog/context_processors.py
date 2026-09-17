@@ -2,8 +2,24 @@
 import datetime
 import json
 from django.conf import settings
+from django.core.cache import cache
 from .utils import (site_full_url, get_site_create_day)
 from blog.models import SiteConfig
+
+SITE_CONFIG_CACHE_KEY = 'blog:site_config_data'
+SITE_CONFIG_CACHE_TTL = 3600
+
+
+def get_site_config_data():
+    """站点配置 JSON（带缓存；SiteConfig.save 时会清掉此缓存）"""
+    config_data = cache.get(SITE_CONFIG_CACHE_KEY)
+    if config_data is not None:
+        return config_data
+    site_config = SiteConfig.objects.first()
+    config_data = json.loads(site_config.config_data) if site_config else {}
+    cache.set(SITE_CONFIG_CACHE_KEY, config_data, SITE_CONFIG_CACHE_TTL)
+    return config_data
+
 
 # 静态文件版本（只收集常改的，不常改的直接在页面改），每次更新了静态文件就更新一下这个版本
 # todo 可以做成自动化，每次拉git代码的时候检查是否更新了某个静态文件，自动更新版本
@@ -28,12 +44,8 @@ def settings_info(request):
     @param request:
     @return:
     """
-    # 尝试获取唯一的 SiteConfig 实例，如果不存在则返回 None
-    site_config = SiteConfig.objects.first()
-    if site_config is None:
-        config_data = {}
-    else:
-        config_data = json.loads(site_config.config_data)
+    # 站点配置从缓存取，避免每个请求都查一次数据库
+    config_data = get_site_config_data()
 
     site_create_date = config_data.get('site_create_date', settings.SITE_CREATE_DATE)
     site_create_date_info = get_site_create_day(site_create_date)

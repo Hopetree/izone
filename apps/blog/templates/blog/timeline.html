@@ -45,6 +45,10 @@
                 <p>暂时没有时间线</p>
             {% endfor %}
         </ul>
+        {% if is_paginated %}
+            <div class="d-none d-md-block">{% load_pages 10 %}</div>
+            <div class="d-md-none">{% load_pages 4 %}</div>
+        {% endif %}
     </div>
 {% endblock %}
 

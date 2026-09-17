@@ -50,6 +50,14 @@ class ArticleSerializer(serializers.ModelSerializer):
         # exclude = ('body',)
 
 
+class ArticleListSerializer(ArticleSerializer):
+    """列表接口不返回正文，避免一次拉取 20 篇文章全文（正文只在详情接口返回）。"""
+
+    class Meta:
+        model = Article
+        exclude = ('body',)
+
+
 class TimelineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Timeline

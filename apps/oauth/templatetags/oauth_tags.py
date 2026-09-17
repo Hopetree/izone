@@ -51,7 +51,8 @@ def get_user_link(user):
         'is_verified': False
     }
     accounts = {}
-    for account in user.socialaccount_set.all().iterator():
+    # 不要用 .iterator()：它会绕过 prefetch_related 的缓存，导致每条评论再查一次
+    for account in user.socialaccount_set.all():
         providers = accounts.setdefault(account.provider, [])
         providers.append(account)
     if accounts:
@@ -71,7 +72,7 @@ def get_user_link(user):
         the_link = user.link
         if the_link:
             info['link'] = the_link
-        for emailaddress in user.emailaddress_set.all().iterator():
+        for emailaddress in user.emailaddress_set.all():
             if emailaddress.verified:
                 info['is_verified'] = True
     return info

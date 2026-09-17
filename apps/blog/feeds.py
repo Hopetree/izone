@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from xml.sax.saxutils import escape
 from django.contrib.syndication.views import Feed
+from django.core.cache import cache
 from .models import Article
 from django.conf import settings
+
+# feed 正文缓存时间（秒）；key 里带 update_date，文章改动会自动失效
+FEED_BODY_CACHE_SECONDS = 3600 * 24 * 7
 
 
 class AllArticleRssFeed(Feed):
@@ -23,4 +27,12 @@ class AllArticleRssFeed(Feed):
 
     # 显示的内容的描述
     def item_description(self, item):
-        return item.body_to_markdown()
+        # 阅读器会反复抓取 feed，正文渲染（markdown + Pygments）很贵，这里单独缓存一份；
+        # 不复用文章详情页的 article:markdown:* 缓存，因为那边的元组结构不同、会被互相覆盖
+        cache_key = 'feed:article:body:{}:{}'.format(
+            item.id, item.update_date.strftime('%Y%m%d%H%M%S'))
+        body = cache.get(cache_key)
+        if body is None:
+            body = item.body_to_markdown()
+            cache.set(cache_key, body, FEED_BODY_CACHE_SECONDS)
+        return body

@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 
 from django.db import models
+from django.db.models import Prefetch
 from django.db.utils import IntegrityError
 from django.conf import settings
 from django.shortcuts import reverse
@@ -106,25 +107,34 @@ class Subject(models.Model):
         return reverse('blog:subject_page', kwargs={'pk': self.pk})
 
     def get_topics(self):
-        """得到一个专题的所有主题，按照排序进行排序"""
-        return Topic.objects.filter(subject=self).order_by('sort_order', '-pk')
+        """得到一个专题的所有主题，按照排序进行排序。
+
+        同时预取每个主题下已发布的文章，模板里 topic.get_articles 直接复用预取结果，
+        总查询数固定为 2（主题 + 文章），不再随主题数量增长。
+        """
+        return (Topic.objects.filter(subject=self)
+                .order_by('sort_order', '-pk')
+                .prefetch_related(Prefetch(
+                    'articles',
+                    queryset=Article.objects.filter(is_publish=True).order_by('topic_order', '-pk'),
+                    to_attr='pub_articles')))
 
     def get_article_count(self):
-        """获取专题下文章数量"""
-        num = 0
-        for each in self.get_topics():
-            num += each.get_articles().count()
-        return num
+        """获取专题下文章数量（一次聚合查询，替代原来逐个主题 count 的 N+1）"""
+        return Article.objects.filter(is_publish=True, topic__subject=self).count()
 
     def get_article_list(self):
         """
-        返回一个专题下文章的列表，这个跟显示的一致，可以用来得到上下文
-        @return:
+        返回一个专题下文章的列表，这个跟显示的一致，可以用来得到上下文。
+
+        顺序与页面展示一致：先按主题排序，再按主题内文章排序。
+        用一次查询替代原来「逐个主题查询再拼接」的 N+1 写法。
         """
-        article_list = []
-        for topic in self.get_topics():
-            article_list.extend(topic.get_articles())
-        return article_list
+        return list(
+            Article.objects.filter(is_publish=True, topic__subject=self)
+            .select_related('topic')
+            .order_by('topic__sort_order', '-topic__pk', 'topic_order', '-pk')
+        )
 
     def get_status_color(self):
         """返回对应状态的颜色"""
@@ -159,7 +169,13 @@ class Topic(models.Model):
         return reverse('blog:subject_page', kwargs={'pk': self.subject.pk}) + f'#{self.name}'
 
     def get_articles(self):
-        """得到一个主题的所有已发布的文章，按照主题排序排序"""
+        """得到一个主题的所有已发布的文章，按照主题排序排序。
+
+        主题若是通过 Subject.get_topics() 预取得到，直接复用预取结果，避免逐主题查询。
+        """
+        prefetched = getattr(self, 'pub_articles', None)
+        if prefetched is not None:
+            return prefetched
         return Article.objects.filter(is_publish=True, topic=self).order_by('topic_order', '-pk')
 
 
@@ -234,35 +250,62 @@ class Article(models.Model):
         self.views += 1
         self.save(update_fields=['views'])
 
+    def _get_subject_articles(self):
+        """
+        所属专题下的文章列表。
+
+        缓存在 subject 实例上：get_pre 和 get_next 都要用这份列表，详情页里
+        self.topic.subject 是同一个对象（视图已 select_related('topic__subject')），
+        因此同一请求只会查一次。
+        """
+        subject = self.topic.subject
+        if not hasattr(subject, '_article_list_cache'):
+            subject._article_list_cache = subject.get_article_list()
+        return subject._article_list_cache
+
     def get_pre(self):
         """
-        有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回同样没有主题的
-        @return:
+        有主题则只能返回这个主题所属专题下的文章，否则返回空，没有主题则按照pk返回同样没有主题的。
+
+        结果缓存到实例上：模板里 article.get_pre 会被访问多次（判断+链接+标题），
+        不缓存就是多次重复查询。
         """
+        if hasattr(self, '_pre_article'):
+            return self._pre_article
+
+        result = None
         if self.topic:
-            subject_articles = self.topic.subject.get_article_list()
+            subject_articles = self._get_subject_articles()
             for index, article in enumerate(subject_articles):
                 if article.pk == self.pk and index != 0:
-                    return subject_articles[index - 1]
-            return
-
-        return Article.objects.filter(id__lt=self.id,
-                                      is_publish=True,
-                                      topic__isnull=True
-                                      ).order_by('-id').first()
+                    result = subject_articles[index - 1]
+                    break
+        else:
+            result = Article.objects.filter(id__lt=self.id,
+                                            is_publish=True,
+                                            topic__isnull=True
+                                            ).order_by('-id').first()
+        self._pre_article = result
+        return result
 
     def get_next(self):
+        if hasattr(self, '_next_article'):
+            return self._next_article
+
+        result = None
         if self.topic:
-            subject_articles = self.topic.subject.get_article_list()
+            subject_articles = self._get_subject_articles()
             for index, article in enumerate(subject_articles):
                 if article.pk == self.pk and index != len(subject_articles) - 1:
-                    return subject_articles[index + 1]
-            return
-
-        return Article.objects.filter(id__gt=self.id,
-                                      is_publish=True,
-                                      topic__isnull=True
-                                      ).order_by('id').first()
+                    result = subject_articles[index + 1]
+                    break
+        else:
+            result = Article.objects.filter(id__gt=self.id,
+                                            is_publish=True,
+                                            topic__isnull=True
+                                            ).order_by('id').first()
+        self._next_article = result
+        return result
 
     def get_topic_title(self):
         """仅当有主题的时候优先使用短标题，这个函数给专题使用"""
@@ -537,6 +580,9 @@ class SiteConfig(models.Model):
         if SiteConfig.objects.exists() and not self.pk:
             raise IntegrityError("只能存在一个网站配置实例")
         super().save(*args, **kwargs)
+        # 站点配置每个请求都会用到，改完后立刻清掉上下文里的缓存，避免长时间不生效
+        from django.core.cache import cache
+        cache.delete('blog:site_config_data')
 
 
 class Fitness(models.Model):

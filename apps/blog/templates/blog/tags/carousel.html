@@ -18,7 +18,9 @@
             <div class="carousel-item">
                 {% endif %}
                 <a href="{{ each.url }}">
-                    <img class="w-100" src="{{ each.img_url }}" alt="{{ each.content }}">
+                    {# 首屏第一张立即加载，其余懒加载，避免一次性拉取全部轮播大图 #}
+                    <img class="w-100" src="{{ each.img_url }}" alt="{{ each.content }}"
+                         loading="{% if forloop.counter0 == 0 %}eager{% else %}lazy{% endif %}" decoding="async">
                     <div class="carousel-caption d-none d-md-block py-0">
                         {% if each.title %}<h4>{{ each.title }}</h4>{% else %}<h4>&nbsp;</h4>{% endif %}
                         {% if each.content %}<p class="f-14">{{ each.content }}</p>{% else %}<p>&nbsp;</p>{% endif %}
