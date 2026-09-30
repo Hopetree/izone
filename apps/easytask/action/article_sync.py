@@ -236,6 +236,8 @@ class BlogManager:
                 'article': 0,
                 'subject': 0,
                 'need_download': 0,
+                'sync_failed': 0,
+                'errors': [],
             },
             'github': {
                 'total': len(self.target),
@@ -251,13 +253,32 @@ class BlogManager:
         @return:
         """
         resp = requests.get(url, headers=self.api_headers, timeout=10)
-        results = resp.json()['results']
-        for item in results:
+        data = resp.json()
+        for item in data['results']:
             self.result['blog']['total'] += 1
             self.result['blog']['article'] += 1
-            self.upload_article(item)
-        if resp.json()['next']:
-            self.upload_all_articles(resp.json()['next'])
+            try:
+                self.upload_article(item)
+            except Exception as exc:
+                # 单篇失败不中断整批，记录后继续
+                self.result['blog']['sync_failed'] += 1
+                self.result['blog']['errors'].append(
+                    {'slug': item.get('slug'), 'error': str(exc)}
+                )
+        if data['next']:
+            self.upload_all_articles(data['next'])
+
+    def get_article_body(self, article_id):
+        """
+        请求详情接口获取文章正文
+        列表接口为性能考虑不返回 body，只有通过过滤器、确定要上传的文章才按需取详情
+        @param article_id: 文章 id
+        @return: 正文 markdown
+        """
+        url = f'{self.base_url}/openapi/v1/articles/{article_id}/'
+        resp = requests.get(url, headers=self.api_headers, timeout=10)
+        resp.raise_for_status()
+        return resp.json()['body']
 
     def upload_article(self, item):
         """
@@ -296,7 +317,7 @@ class BlogManager:
         else:
             sha = None
 
-        body = self.deal_with_body(item['body'], title=item['title'])
+        body = self.deal_with_body(self.get_article_body(item['id']), title=item['title'])
         response = self.github_manager.upload_file(file_path, body, sha=sha)
         if response:
             self.result['github']['upload_success'] += 1
