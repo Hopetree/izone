@@ -131,6 +131,12 @@ class ErrorApiResponse(ApiResponse):
         super().__init__(code, data, message, error)
 
 
+# 正文 markdown 渲染缓存的版本号，key 形如 article:markdown:v2:<id>:<更新时间>。
+# 渲染输出结构变化（例如给表格包滚动容器）时递增，让旧缓存自然失效，
+# 否则部署后仍会吃 7 天旧 HTML。构造 key 的地方（blog/views、blog/feeds、easytask/actions）必须保持一致。
+MARKDOWN_CACHE_VERSION = 'v2'
+
+
 class RedisKeys:
     """
     配置一些redis的key，其他组件可以引用，避免多个地方使用key不统一的问题

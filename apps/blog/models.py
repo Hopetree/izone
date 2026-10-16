@@ -13,6 +13,8 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 import markdown
 
+from utils.markdown_ext import TableWrapExtension
+
 
 # Create your models here.
 
@@ -244,6 +246,7 @@ class Article(models.Model):
         return markdown.markdown(self.body, extensions=[
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
+            TableWrapExtension(),
         ])
 
     def update_views(self):
@@ -447,6 +450,7 @@ class AboutBlog(models.Model):
         return markdown.markdown(self.body, extensions=[
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
+            TableWrapExtension(),
         ])
 
 

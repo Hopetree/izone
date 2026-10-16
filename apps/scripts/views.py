@@ -22,7 +22,7 @@ def make_markdown():
     from markdown.extensions.toc import TocExtension
     from utils.markdown_ext import (
         DelExtension, IconExtension, AlertExtension,
-        CodeItemExtension, CodeGroupExtension
+        CodeItemExtension, CodeGroupExtension, TableWrapExtension
     )
     md = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
@@ -32,7 +32,8 @@ def make_markdown():
         IconExtension(),
         AlertExtension(),
         CodeItemExtension(),
-        CodeGroupExtension()
+        CodeGroupExtension(),
+        TableWrapExtension()
     ])
     return md
 

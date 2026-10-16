@@ -11,6 +11,7 @@ import requests
 from django.db.models import Sum
 
 from blog.models import Article, ArticleView, PageView
+from blog.utils import MARKDOWN_CACHE_VERSION
 from blog.views import make_markdown, preprocess_mermaid_blocks
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ def action_update_article_cache():
     for obj in Article.objects.filter(is_publish=True).only('id', 'update_date'):
         total_num += 1
         ud = obj.update_date.strftime('%Y%m%d%H%M%S')
-        md_key = f'article:markdown:{obj.id}:{ud}'
+        md_key = f'article:markdown:{MARKDOWN_CACHE_VERSION}:{obj.id}:{ud}'
         if cache.get(md_key):
             continue
         md = make_markdown()

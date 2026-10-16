@@ -4,6 +4,7 @@ import uuid
 from markdown.blockprocessors import BlockProcessor
 from markdown.inlinepatterns import InlineProcessor
 from markdown.extensions import Extension
+from markdown.treeprocessors import Treeprocessor
 import xml.etree.ElementTree as etree
 
 
@@ -206,6 +207,42 @@ class CodeItemExtension(Extension):
 
     def extendMarkdown(self, md):
         md.parser.blockprocessors.register(CodeItemBlockProcessor(md.parser), 'code-item', 175)
+
+
+class TableWrapTreeprocessor(Treeprocessor):
+    """给正文里的表格包一层可横向滚动的容器。
+
+    表格宽度压不到内容 min-content 之下，只调 CSS 无法产生滚动条；
+    移动端宽表格会把整页撑出横向滚动（手机上又看不到页面级的滚动条）。
+    包一层 overflow 容器后，滚动条出现在表格上，页面宽度保持正常。
+    类名 table-responsive 用 Bootstrap 4 自带样式，table-wrap 对应 v2 主题的表格样式。
+    """
+
+    WRAPPER_CLASS = 'table-wrap table-responsive'
+
+    def run(self, root):
+        for parent in list(root.iter()):
+            for child in list(parent):
+                if child.tag != 'table':
+                    continue
+                index = list(parent).index(child)
+                # tail（通常是换行）要留在原位置，否则会被一起卷进 wrapper
+                tail = child.tail
+                child.tail = None
+                parent.remove(child)
+                wrapper = etree.Element('div')
+                wrapper.set('class', self.WRAPPER_CLASS)
+                wrapper.append(child)
+                wrapper.tail = tail
+                parent.insert(index, wrapper)
+        return root
+
+
+class TableWrapExtension(Extension):
+    """见 TableWrapTreeprocessor；注册在 inline(20) 之后、prettify(10) 之前执行"""
+
+    def extendMarkdown(self, md):
+        md.treeprocessors.register(TableWrapTreeprocessor(md), 'table-wrap', 15)
 
 
 if __name__ == '__main__':

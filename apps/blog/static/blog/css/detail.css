@@ -62,6 +62,15 @@
     color: #fff;
 }
 
+/* 渲染时表格被包进横向滚动容器（table-wrap/table-responsive，见 utils/markdown_ext.py），
+   打印/导出 PDF 要放开滚动限制，否则超宽的列会被裁掉 */
+@media print {
+    .article-body .table-wrap,
+    .article-body .table-responsive {
+        overflow: visible;
+    }
+}
+
 .article-body a {
     color: #ea6f5a;
     text-decoration: none;

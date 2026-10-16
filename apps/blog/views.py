@@ -39,13 +39,15 @@ from .utils import (site_full_url,
                     ApiResponse,
                     ErrorApiResponse,
                     add_views,
-                    check_request_headers)
+                    check_request_headers,
+                    MARKDOWN_CACHE_VERSION)
 from utils.markdown_ext import (
     DelExtension,
     IconExtension,
     AlertExtension,
     CodeItemExtension,
-    CodeGroupExtension
+    CodeGroupExtension,
+    TableWrapExtension
 )
 
 
@@ -83,7 +85,8 @@ def make_markdown():
         IconExtension(),
         AlertExtension(),
         CodeItemExtension(),
-        CodeGroupExtension()
+        CodeGroupExtension(),
+        TableWrapExtension()
     ])
     return md
 
@@ -184,7 +187,7 @@ class BaseDetailView(generic.DetailView):
                     obj.update_views()
         # 获取文章更新的时间，判断是否从缓存中取文章的markdown,可以避免每次都转换
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
-        md_key = self.context_object_name + ':markdown:{}:{}'.format(obj.id, ud)
+        md_key = '{}:markdown:{}:{}:{}'.format(self.context_object_name, MARKDOWN_CACHE_VERSION, obj.id, ud)
         cache_md = cache.get(md_key)
         if cache_md and settings.DEBUG is False:
             obj.body, obj.toc, obj.has_mermaid = cache_md
@@ -296,7 +299,7 @@ def AboutView(request):
     obj = AboutBlog.objects.first()
     if obj:
         ud = obj.update_date.strftime("%Y%m%d%H%M%S")
-        md_key = 'about:markdown:{}:{}'.format(obj.id, ud)
+        md_key = 'about:markdown:{}:{}:{}'.format(MARKDOWN_CACHE_VERSION, obj.id, ud)
         cache_md = cache.get(md_key)
         if cache_md and settings.DEBUG is False:
             body = cache_md

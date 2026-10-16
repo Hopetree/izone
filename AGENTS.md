@@ -36,8 +36,8 @@ izone 是一个基于 **Django 2.2 + Bootstrap 4** 的个人博客站点，除�
 ### 文章渲染管线
 
 1. 正文存原始 Markdown（`Article.body`）
-2. 视图渲染时用 `markdown` 库 + 自定义扩展（`utils/markdown_ext.py`：删除线/图标/提示块/代码组），Pygments 高亮
-3. 渲染结果进 Redis 缓存 7 天（key：`article:markdown:<id>:<update_timestamp>`）
+2. 视图渲染时用 `markdown` 库 + 自定义扩展（`utils/markdown_ext.py`：删除线/图标/提示块/代码组/表格滚动容器），Pygments 高亮
+3. 渲染结果进 Redis 缓存 7 天（key：`article:markdown:<版本号>:<id>:<update_timestamp>`；版本号见 `blog.utils.MARKDOWN_CACHE_VERSION`，渲染结构变化时递增即可让旧缓存自然失效）
 
 ### 搜索（2026-09-05 重构）
 

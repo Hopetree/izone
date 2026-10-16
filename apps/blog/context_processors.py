@@ -25,7 +25,7 @@ def get_site_config_data():
 # todo 可以做成自动化，每次拉git代码的时候检查是否更新了某个静态文件，自动更新版本
 STATIC_VERSION = {
     'css_blog_base': '20240305.02',
-    'css_blog_detail': '20240324.01',
+    'css_blog_detail': '20261016.01',
     'css_blog_night': '20260905.01',
 
     'js_blog_base': '20240305.01',
